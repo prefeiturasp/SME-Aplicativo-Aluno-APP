@@ -3,7 +3,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/utils/size_config.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -147,7 +146,12 @@ class _LoginState extends State<Login> {
                       )
                     ]),
               ),
-              Container(),
+              Container(
+                height: 40,
+                margin: EdgeInsets.only(top: 70),
+                child: Image.asset("assets/images/logo_sme.png",
+                    fit: BoxFit.cover),
+              ),
             ],
           ),
         ),
