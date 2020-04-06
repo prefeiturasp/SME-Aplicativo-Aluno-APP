@@ -61,3 +61,5 @@ build/
 ios/Podfile.lock
 cliente-ws.code-workspace
 pubspec.lock
+*.DS_Store
+*pubspec.lock
