@@ -4,6 +4,7 @@ import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/students/list_studants.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _LoginState extends State<Login> {
 
   bool _showPassword = true;
   String _cpf = '';
+
   String _dataNnascimentoAluno = '';
 
   @override
@@ -54,7 +56,7 @@ class _LoginState extends State<Login> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: _cpf.isEmpty
-                                            ? Color(0xff8b8b8b)
+                                            ? Colors.red
                                             : Color(0xffD06D12),
                                         width: screenHeight * 0.39)),
                               ),
@@ -128,6 +130,7 @@ class _LoginState extends State<Login> {
                                     _dataNnascimentoAluno =
                                         _passwordController.text;
                                   });
+                                  _formKey.currentState.validate();
                                 },
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
@@ -188,8 +191,11 @@ class _LoginState extends State<Login> {
                               child: FlatButton(
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
-                                    // Scaffold.of(context).showSnackBar(SnackBar(
-                                    //     content: Text('Processing Data')));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListStudants()));
                                   }
                                 },
                                 child: Row(
