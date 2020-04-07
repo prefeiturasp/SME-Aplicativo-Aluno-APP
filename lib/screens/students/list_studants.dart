@@ -34,9 +34,73 @@ class ListStudants extends StatelessWidget {
               height: screenHeight * 3.5,
             ),
             TagCustom(text: "FUNDAMENTAL", color: Color(0xffC65D00)),
-            CardStudent(),
-            CardStudent(),
-            CardStudent(),
+            Container(
+              height: screenHeight * 74,
+              child: ListView(
+                children: <Widget>[
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {},
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
