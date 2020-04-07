@@ -17,8 +17,8 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   bool _showPassword = true;
+  bool _autoValidate = false;
   String _cpf = '';
-
   String _dataNnascimentoAluno = '';
 
   @override

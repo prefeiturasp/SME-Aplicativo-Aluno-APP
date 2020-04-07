@@ -46,7 +46,7 @@ class CardStudent extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.only(right: screenHeight * 3),
+                      margin: EdgeInsets.only(right: screenHeight * 4),
                       width: screenHeight * 8,
                       height: screenHeight * 8,
                       decoration: BoxDecoration(
@@ -55,7 +55,7 @@ class CardStudent extends StatelessWidget {
                               BorderRadius.circular(screenHeight * 4)),
                       child: avatar != null
                           ? avatar
-                          : Image.asset("assets/images/avatar_estudante.png")),
+                          : Image.asset("assets/images/user.png")),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
