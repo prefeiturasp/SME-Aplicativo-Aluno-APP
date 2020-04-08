@@ -30,9 +30,9 @@ class CardStudent extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
-              offset: Offset(1, 1),
-              blurRadius: 10,
-              spreadRadius: 2,
+              offset: Offset(1, 2),
+              blurRadius: 2,
+              spreadRadius: 0,
             )
           ],
           borderRadius: BorderRadius.all(

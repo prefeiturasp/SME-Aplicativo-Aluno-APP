@@ -36,7 +36,8 @@ class ListStudants extends StatelessWidget {
             ),
             TagCustom(text: "FUNDAMENTAL", color: Color(0xffC65D00)),
             Container(
-              height: screenHeight * 72,
+              width: MediaQuery.of(context).size.width,
+              height: screenHeight * 69,
               child: ListView(
                 children: <Widget>[
                   CardStudent(
