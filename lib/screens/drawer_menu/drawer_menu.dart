@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/screens/messages/messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 
 class DrawerMenu extends StatelessWidget {
   @override
@@ -74,7 +76,8 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Messages()));
             },
           ),
           ListTile(
@@ -89,7 +92,8 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ResumeStudants()));
             },
           ),
           ListTile(

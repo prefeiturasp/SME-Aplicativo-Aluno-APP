@@ -36,9 +36,54 @@ class ListStudants extends StatelessWidget {
             ),
             TagCustom(text: "FUNDAMENTAL", color: Color(0xffC65D00)),
             Container(
-              height: screenHeight * 74,
+              height: screenHeight * 72,
               child: ListView(
                 children: <Widget>[
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
+                  ),
+                  CardStudent(
+                    name: "Diego Figueira Collares",
+                    schoolName: "EMEF JARDIM ELIANA",
+                    studentGrade: "5E",
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
+                  ),
                   CardStudent(
                     name: "Diego Figueira Collares",
                     schoolName: "EMEF JARDIM ELIANA",
