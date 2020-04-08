@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/dashboard/widgets/cards/card_resume_student.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
@@ -31,7 +32,7 @@ class Dashboard extends StatelessWidget {
                   text: "FUNDAMENTAL",
                   color: Color(0xffEEC25E),
                   textColor: Color(0xffD06D12)),
-              Container(height: screenHeight * 74, child: Container())
+              CardResumeStudent()
             ],
           ),
         ),
