@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
+import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/widgets/tag/tag_custom.dart';
 
 class Dashboard extends StatelessWidget {
@@ -11,89 +14,29 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
-        title: Text("Estudantes"),
+        title: Text("Resumo do Estudante"),
         backgroundColor: Color(0xffEEC25E),
       ),
-      body: Container(
-        padding: EdgeInsets.all(screenHeight * 2.5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: screenHeight * 2.5,
-            ),
-            TagCustom(text: "FUNDAMENTAL", color: Color(0xffC65D00)),
-            Container(
-              height: screenHeight * 74,
-              child: ListView(
-                children: <Widget>[
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(screenHeight * 2.5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(
+                height: screenHeight * 2.5,
               ),
-            )
-          ],
+              TagCustom(
+                  text: "FUNDAMENTAL",
+                  color: Color(0xffEEC25E),
+                  textColor: Color(0xffD06D12)),
+              Container(height: screenHeight * 74, child: Container())
+            ],
+          ),
         ),
       ),
+      drawer: DrawerMenu(),
     );
   }
 }

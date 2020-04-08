@@ -55,7 +55,7 @@ class CardStudent extends StatelessWidget {
                               BorderRadius.circular(screenHeight * 4)),
                       child: avatar != null
                           ? avatar
-                          : Image.asset("assets/images/user.png")),
+                          : Image.asset("assets/images/avatar_estudante.png")),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
