@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 class TagCustom extends StatelessWidget {
   final String text;
   final Color color;
+  final Color textColor;
 
-  TagCustom({
-    @required this.text,
-    @required this.color,
-  });
+  TagCustom({@required this.text, @required this.color, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,9 @@ class TagCustom extends StatelessWidget {
         text,
         maxFontSize: 12,
         minFontSize: 10,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        style: TextStyle(
+            color: textColor != null ? textColor : Colors.white,
+            fontWeight: FontWeight.w500),
       ),
     );
   }
