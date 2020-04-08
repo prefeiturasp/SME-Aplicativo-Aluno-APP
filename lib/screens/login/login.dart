@@ -17,8 +17,8 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   bool _showPassword = true;
+  bool _autoValidate = false;
   String _cpf = '';
-
   String _dataNnascimentoAluno = '';
 
   @override
@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
                                 border: Border(
                                     bottom: BorderSide(
                                         color: _cpf.isEmpty
-                                            ? Colors.red
+                                            ? Color(0xff8b8b8b)
                                             : Color(0xffD06D12),
                                         width: screenHeight * 0.39)),
                               ),
