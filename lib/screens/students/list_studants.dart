@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/widgets/tag/tag_custom.dart';
 
@@ -42,61 +43,10 @@ class ListStudants extends StatelessWidget {
                     name: "Diego Figueira Collares",
                     schoolName: "EMEF JARDIM ELIANA",
                     studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
-                  ),
-                  CardStudent(
-                    name: "Diego Figueira Collares",
-                    schoolName: "EMEF JARDIM ELIANA",
-                    studentGrade: "5E",
-                    onPress: () {},
+                    onPress: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Dashboard()));
+                    },
                   ),
                 ],
               ),
