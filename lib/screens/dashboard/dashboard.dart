@@ -1,10 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
-import 'package:sme_app_aluno/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -31,7 +29,28 @@ class Dashboard extends StatelessWidget {
                   text: "FUNDAMENTAL",
                   color: Color(0xffEEC25E),
                   textColor: Color(0xffD06D12)),
-              Container(height: screenHeight * 74, child: Container())
+              CardResumeStudent(),
+              CardRecentMessage(),
+              CardAlert(
+                title: "ALERTA DE NOTAS",
+                icon: Icon(
+                  FontAwesomeIcons.envelopeOpen,
+                  color: Color(0xffFFD037),
+                  size: screenHeight * 6,
+                ),
+                text:
+                    "Em breve, você terá alertas de notas neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
+              ),
+              CardAlert(
+                title: "ALERTA DE FREQUÊNCIA",
+                icon: Icon(
+                  FontAwesomeIcons.envelopeOpen,
+                  color: Color(0xffFFD037),
+                  size: screenHeight * 6,
+                ),
+                text:
+                    "Em breve, você terá alertas de frequência neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
+              )
             ],
           ),
         ),
