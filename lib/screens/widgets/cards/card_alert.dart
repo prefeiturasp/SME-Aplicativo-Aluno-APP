@@ -44,13 +44,13 @@ class CardAlert extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(right: screenHeight * 2),
                   child: Icon(
-                    FontAwesomeIcons.envelopeOpen,
+                    FontAwesomeIcons.flag,
                     color: Color(0xffC45C04),
                     size: screenHeight * 2.7,
                   ),
                 ),
                 AutoSizeText(
-                  "ALERTA DE NOTAS",
+                  title,
                   maxFontSize: 18,
                   minFontSize: 16,
                   style: TextStyle(
