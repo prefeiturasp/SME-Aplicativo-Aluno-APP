@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class CardResumeStudent extends StatelessWidget {
   @override
@@ -66,51 +68,10 @@ class CardResumeStudent extends StatelessWidget {
               ],
             ),
           ),
-          Container(
+          StudentInfo(
+            studentName: "ADRIA PEDRO GONZALES",
+            schoolName: "EMEF JARDIM ELIANA",
             padding: EdgeInsets.all(screenHeight * 2.5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(
-                    right: screenHeight * 2.5,
-                  ),
-                  width: screenHeight * 8,
-                  height: screenHeight * 8,
-                  decoration: BoxDecoration(
-                    color: Color(0xffC4C4C4),
-                    borderRadius: BorderRadius.circular(screenHeight * 4),
-                  ),
-                  child: Image.asset(
-                    "assets/images/avatar_estudante.png",
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: screenHeight * 1.8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      AutoSizeText(
-                        "ADRIA PEDRO GONZALES",
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
-                      ),
-                      AutoSizeText(
-                        "EMEF JARDIM ELIANA",
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        style: TextStyle(
-                          color: Color(0xff666666),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
           ),
           Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
@@ -122,7 +83,12 @@ class CardResumeStudent extends StatelessWidget {
                 ),
               ),
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResumeStudants()));
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
