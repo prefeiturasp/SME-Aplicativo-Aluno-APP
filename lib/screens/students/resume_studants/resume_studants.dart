@@ -21,9 +21,6 @@ class ResumeStudants extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              SizedBox(
-                height: screenHeight * 1,
-              ),
               Column(
                 children: <Widget>[
                   Container(
