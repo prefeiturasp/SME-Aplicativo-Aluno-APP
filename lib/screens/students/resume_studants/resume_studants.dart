@@ -3,6 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class ResumeStudants extends StatelessWidget {
+  Widget itemResume(BuildContext context, String infoName, String infoData,
+      double screenHeight) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          AutoSizeText(
+            infoName,
+            maxFontSize: 18,
+            minFontSize: 16,
+            style: TextStyle(color: Colors.black),
+          ),
+          SizedBox(
+            height: screenHeight * 1,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(screenHeight * 3),
+            decoration: BoxDecoration(color: Colors.white),
+            child: AutoSizeText(
+              infoData,
+              maxFontSize: 18,
+              minFontSize: 16,
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -125,72 +156,18 @@ class ResumeStudants extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        AutoSizeText(
-                          "Data de Nascimento",
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 1,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(screenHeight * 3),
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: AutoSizeText(
-                            "30/09/1984",
-                            maxFontSize: 18,
-                            minFontSize: 16,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
+                        itemResume(context, "Data de Nascimento", "30/09/1984",
+                            screenHeight),
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),
-                        AutoSizeText(
-                          "Código EOL",
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 1,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(screenHeight * 3),
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: AutoSizeText(
-                            "43689081",
-                            maxFontSize: 18,
-                            minFontSize: 16,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
+                        itemResume(
+                            context, "Código EOL", "43689081", screenHeight),
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),
-                        AutoSizeText(
-                          "Situação",
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 1,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(screenHeight * 3),
-                          decoration: BoxDecoration(color: Colors.white),
-                          child: AutoSizeText(
-                            "Matriculado em 04/02/2019",
-                            maxFontSize: 18,
-                            minFontSize: 16,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        )
+                        itemResume(context, "Situação",
+                            "Matriculado em 04/02/2019", screenHeight),
                       ],
                     ),
                   )
