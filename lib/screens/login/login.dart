@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 
 class Login extends StatefulWidget {
@@ -12,14 +15,52 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
   final _cpfController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   bool _showPassword = true;
-  bool _autoValidate = false;
+  bool busy = false;
+
   String _cpf = '';
   String _dataNnascimentoAluno = '';
+
+  handleSignIn(String cpf, String password) {
+    setState(() {
+      busy = true;
+    });
+    Provider.of<AuthenticateController>(context, listen: false)
+        .authenticateUser(cpf, password)
+        .then((data) {
+      onSuccess();
+    }).catchError((err) {
+      onError();
+    }).whenComplete(() {
+      onComplete();
+    });
+  }
+
+  onSuccess() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListStudants(),
+      ),
+    );
+  }
+
+  onError() {
+    var snackbar = new SnackBar(content: new Text("Falha no login"));
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  onComplete() {
+    setState(() {
+      busy = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +116,8 @@ class _LoginState extends State<Login> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    _cpf = _cpfController.text;
+                                    _cpf = CNPJValidator.strip(
+                                        _cpfController.text);
                                   });
                                   _formKey.currentState.validate();
                                 },
@@ -128,7 +170,8 @@ class _LoginState extends State<Login> {
                                 onChanged: (value) {
                                   setState(() {
                                     _dataNnascimentoAluno =
-                                        _passwordController.text;
+                                        _passwordController.text.replaceAll(
+                                            new RegExp(r'[^\w\s]+'), '');
                                   });
                                   _formKey.currentState.validate();
                                 },
@@ -190,26 +233,23 @@ class _LoginState extends State<Login> {
                                       screenHeight * 3.5)),
                               child: FlatButton(
                                 onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ListStudants()));
-                                  }
+                                  handleSignIn(_cpf, _dataNnascimentoAluno);
                                 },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    AutoSizeText(
-                                      "ENTRAR",
-                                      maxFontSize: 16,
-                                      minFontSize: 14,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700),
-                                    ),
+                                    busy
+                                        ? CircularProgressIndicator(
+                                            backgroundColor: Colors.black)
+                                        : AutoSizeText(
+                                            "ENTRAR",
+                                            maxFontSize: 16,
+                                            minFontSize: 14,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700),
+                                          ),
                                     SizedBox(
                                       width: screenHeight * 3,
                                     ),
