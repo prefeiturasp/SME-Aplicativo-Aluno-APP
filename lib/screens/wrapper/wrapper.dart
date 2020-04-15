@@ -8,12 +8,17 @@ import 'package:sme_app_aluno/screens/students/list_studants.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var controller =
+    var authenticateController =
         Provider.of<AuthenticateController>(context, listen: false);
 
     return Observer(builder: (context) {
-      if (controller.currentName != null) {
-        return ListStudants();
+      if (authenticateController.currentName != null) {
+        return Observer(builder: (context) {
+          return ListStudants(
+            cpf: authenticateController.currentCPF,
+            token: authenticateController.token,
+          );
+        });
       } else {
         return Login();
       }

@@ -23,6 +23,7 @@ dependencies:
   cpf_cnpj_validator: ^1.0.5
   json_serializable: ^3.3.0
   json_annotation: ^3.0.1
+  getflutter: ^1.0.11
 
 dev_dependencies:
   flutter_test:

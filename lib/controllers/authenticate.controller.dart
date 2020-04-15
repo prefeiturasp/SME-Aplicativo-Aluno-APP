@@ -40,7 +40,6 @@ abstract class _AuthenticateControllerBase with Store {
   Future<void> loadCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isData = prefs.containsKey('current_user');
-    print(isData);
     if (isData) {
       currentName = prefs.getString('current_name') ?? "";
       currentCPF = prefs.getString('current_cpf') ?? "";

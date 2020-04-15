@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 
@@ -42,13 +43,19 @@ class _LoginState extends State<Login> {
     });
   }
 
-  onSuccess() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ListStudants(),
-      ),
-    );
+  onSuccess() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isData = prefs.containsKey('current_cpf');
+    if (isData) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListStudants(
+              cpf: prefs.getString("current_cpf") ?? "",
+              token: prefs.getString("token") ?? ""),
+        ),
+      );
+    }
   }
 
   onError() {
