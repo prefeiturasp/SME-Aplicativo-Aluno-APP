@@ -47,7 +47,7 @@ class CardStudent extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.only(right: screenHeight * 3),
+                      margin: EdgeInsets.only(right: screenHeight * 1.5),
                       width: screenHeight * 8,
                       height: screenHeight * 8,
                       decoration: BoxDecoration(
@@ -63,8 +63,8 @@ class CardStudent extends StatelessWidget {
                       children: <Widget>[
                         AutoSizeText(
                           name,
-                          maxFontSize: 14,
-                          minFontSize: 12,
+                          maxFontSize: 12,
+                          minFontSize: 10,
                           style: TextStyle(color: Colors.black),
                         ),
                         SizedBox(
@@ -72,8 +72,8 @@ class CardStudent extends StatelessWidget {
                         ),
                         AutoSizeText(
                           schoolName,
-                          maxFontSize: 12,
-                          minFontSize: 10,
+                          maxFontSize: 10,
+                          minFontSize: 9,
                           style: TextStyle(color: Color(0xff666666)),
                         ),
                         SizedBox(
@@ -81,8 +81,8 @@ class CardStudent extends StatelessWidget {
                         ),
                         AutoSizeText(
                           "TURMA $studentGrade",
-                          maxFontSize: 12,
-                          minFontSize: 10,
+                          maxFontSize: 10,
+                          minFontSize: 9,
                           style: TextStyle(color: Color(0xffBBBDC9)),
                         ),
                       ],
