@@ -25,7 +25,7 @@ class CardStudent extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(screenHeight * 2),
         margin:
-            EdgeInsets.only(top: screenHeight * 2, bottom: screenHeight * 2),
+            EdgeInsets.only(top: screenHeight * 2, bottom: screenHeight * 3),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
