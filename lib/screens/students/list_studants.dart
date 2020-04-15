@@ -19,7 +19,7 @@ class ListStudants extends StatelessWidget {
 
   Widget _itemCardStudent(BuildContext context, Student model) {
     return CardStudent(
-      name: "${model.nome}",
+      name: model.nomeSocial != null ? "${model.nomeSocial}" : "${model.nome}",
       schoolName: "${model.escola}",
       studentGrade: "${model.turma}",
       onPress: () {

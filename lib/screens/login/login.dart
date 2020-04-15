@@ -234,51 +234,50 @@ class _LoginState extends State<Login> {
                             SizedBox(
                               height: screenHeight * 7,
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: screenHeight * 7,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffd06d12),
-                                  borderRadius: BorderRadius.circular(
-                                      screenHeight * 3.5)),
-                              child: FlatButton(
-                                onPressed: () {
-                                  handleSignIn(_cpf, _dataNnascimentoAluno);
-                                },
-                                child: !busy
-                                    ? Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          AutoSizeText(
-                                            "ENTRAR",
-                                            maxFontSize: 16,
-                                            minFontSize: 14,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                          SizedBox(
-                                            width: screenHeight * 3,
-                                          ),
-                                          Icon(
-                                            FontAwesomeIcons.chevronRight,
-                                            color: Color(0xffffd037),
-                                            size: screenHeight * 3,
-                                          )
-                                        ],
-                                      )
-                                    : GFLoader(
-                                        type: GFLoaderType.square,
-                                        loaderColorOne: Color(0xffDE9524),
-                                        loaderColorTwo: Color(0xffC65D00),
-                                        loaderColorThree: Color(0xffC65D00),
-                                        size: GFSize.LARGE,
-                                      ),
-                              ),
-                            )
+                            !busy
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: screenHeight * 7,
+                                    decoration: BoxDecoration(
+                                        color: Color(0xffd06d12),
+                                        borderRadius: BorderRadius.circular(
+                                            screenHeight * 3.5)),
+                                    child: FlatButton(
+                                        onPressed: () {
+                                          handleSignIn(
+                                              _cpf, _dataNnascimentoAluno);
+                                        },
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            AutoSizeText(
+                                              "ENTRAR",
+                                              maxFontSize: 16,
+                                              minFontSize: 14,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            SizedBox(
+                                              width: screenHeight * 3,
+                                            ),
+                                            Icon(
+                                              FontAwesomeIcons.chevronRight,
+                                              color: Color(0xffffd037),
+                                              size: screenHeight * 3,
+                                            )
+                                          ],
+                                        )))
+                                : GFLoader(
+                                    type: GFLoaderType.square,
+                                    loaderColorOne: Color(0xffDE9524),
+                                    loaderColorTwo: Color(0xffC65D00),
+                                    loaderColorThree: Color(0xffC65D00),
+                                    size: GFSize.LARGE,
+                                  ),
                           ]),
                     ),
                   ],

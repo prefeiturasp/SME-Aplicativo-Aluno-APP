@@ -78,7 +78,7 @@ class CardRecentMessage extends StatelessWidget {
                         height: screenHeight * 1.8,
                       ),
                       Container(
-                        width: screenHeight * 41,
+                        width: screenHeight * 36,
                         child: AutoSizeText(
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consectetur felis quis imperdiet congue. Suspendisse hendrerit placerat orci.",
                           maxFontSize: 16,

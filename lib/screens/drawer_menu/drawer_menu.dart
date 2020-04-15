@@ -1,12 +1,24 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 
 class DrawerMenu extends StatelessWidget {
+  removeValuesStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+  readValueStorage(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String newValue = prefs.getString(value) ?? "";
+    return newValue;
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -15,37 +27,40 @@ class DrawerMenu extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(
-                      right: screenHeight * 3, bottom: screenHeight * 3),
-                  width: screenHeight * 10,
-                  height: screenHeight * 10,
-                  decoration: BoxDecoration(
-                      color: Color(0xffC4C4C4),
-                      borderRadius: BorderRadius.circular(screenHeight * 5)),
-                  child: Image.asset("assets/images/avatar_estudante.png"),
-                ),
-                AutoSizeText(
-                  "Francisco de Assis Junqueira",
-                  maxFontSize: 16,
-                  minFontSize: 14,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                ),
-                AutoSizeText(
-                  "Usuário Ativo",
-                  maxFontSize: 14,
-                  minFontSize: 12,
-                  style: TextStyle(color: Color(0xffC4C4C4)),
-                ),
-              ],
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
+          Container(
+            height: screenHeight * 30,
+            child: DrawerHeader(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                        right: screenHeight * 3, bottom: screenHeight * 3),
+                    width: screenHeight * 10,
+                    height: screenHeight * 10,
+                    decoration: BoxDecoration(
+                        color: Color(0xffC4C4C4),
+                        borderRadius: BorderRadius.circular(screenHeight * 5)),
+                    child: Image.asset("assets/images/avatar_estudante.png"),
+                  ),
+                  AutoSizeText(
+                    "Francisco de Assis Junqueira",
+                    maxFontSize: 16,
+                    minFontSize: 14,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w500),
+                  ),
+                  AutoSizeText(
+                    "Usuário Ativo",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(color: Color(0xffC4C4C4)),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
             ),
           ),
           ListTile(
@@ -59,9 +74,16 @@ class DrawerMenu extends StatelessWidget {
                 size: screenHeight * 2.3,
               ),
             ),
-            onTap: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => ListStudants()));
+            onTap: () async {
+              var _cpf = await readValueStorage("current_cpf") ?? "";
+              var _token = await readValueStorage("token") ?? "";
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListStudants(
+                            cpf: _cpf,
+                            token: _token,
+                          )));
             },
           ),
           ListTile(
@@ -108,6 +130,7 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () {
+              removeValuesStorage();
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Login()));
             },
