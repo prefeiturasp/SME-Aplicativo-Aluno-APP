@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,51 +30,42 @@ class _LoginState extends State<Login> {
   String _cpf = '';
   String _dataNnascimentoAluno = '';
 
-  Future _handleSignIn(String cpf, String password) async {
+  _handleSignIn(String cpf, String password) {
     setState(() {
       busy = true;
     });
-    var data = Provider.of<AuthenticateController>(context, listen: false);
-    await data.authenticateUser(cpf, password).then((data) {
+    Provider.of<AuthenticateController>(context, listen: false)
+        .authenticateUser(cpf, password)
+        .then((data) {
       onSuccess();
     }).catchError((err) {
-      print("DEU ERRO AQUI");
-      // onError();
-    }).whenComplete(() {
-      print("COMPLETOU");
       onError();
+    }).whenComplete(() {
       onComplete();
     });
-  }
-
-  onError() {
-    // var snackbar = SnackBar(content: new Text("Falha no login"));
-    // scaffoldKey.currentState.showSnackBar(snackbar);
-    return AlertDialog(
-        title: new Text("Alert Dialog titulo"),
-        content: new Text("Alert Dialog body"),
-        actions: <Widget>[
-          // define os botões na base do dialogo
-          new FlatButton(
-            child: new Text("Fechar"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ]);
   }
 
   onSuccess() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isData = prefs.containsKey('current_cpf');
     if (isData) {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => ListStudants(
-                  cpf: prefs.getString("current_cpf") ?? "",
-                  token: prefs.getString("token") ?? "")));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListStudants(
+              cpf: prefs.getString("current_cpf") ?? "",
+              token: prefs.getString("token") ?? ""),
+        ),
+      );
+    } else {
+      onError();
     }
+  }
+
+  onError() {
+    var snackbar = SnackBar(
+        content: Text("Erro: não foi possível se autenticar no aplicativo"));
+    scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
   onComplete() {
@@ -88,8 +78,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
@@ -125,7 +115,6 @@ class _LoginState extends State<Login> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
-                                autocorrect: true,
                                 controller: _cpfController,
                                 style: TextStyle(
                                     color: Color(0xff333333),
@@ -140,12 +129,11 @@ class _LoginState extends State<Login> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    _cpf = CNPJValidator.strip(
-                                        _cpfController.text);
+                                    _cpf = CPFValidator.strip(value);
                                   });
                                 },
-                                validator: (_) {
-                                  if (_cpf.isEmpty) {
+                                validator: (value) {
+                                  if (value.isEmpty) {
                                     return 'Campo obrigatório, não pode ficar em branco.';
                                   }
 
@@ -254,8 +242,11 @@ class _LoginState extends State<Login> {
                                             screenHeight * 3.5)),
                                     child: FlatButton(
                                         onPressed: () {
-                                          _handleSignIn(
-                                              _cpf, _dataNnascimentoAluno);
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            _handleSignIn(
+                                                _cpf, _dataNnascimentoAluno);
+                                          }
                                         },
                                         child: Row(
                                           crossAxisAlignment:
