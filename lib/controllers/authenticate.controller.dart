@@ -53,6 +53,11 @@ abstract class _AuthenticateControllerBase with Store {
   }
 
   @action
+  clearCurrentUser() {
+    currentUser = null;
+  }
+
+  @action
   Future<void> loadCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isDataName = prefs.containsKey('current_name');

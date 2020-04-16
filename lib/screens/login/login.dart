@@ -42,7 +42,17 @@ class _LoginState extends State<Login> {
     _authenticateController = AuthenticateController();
   }
 
-  _handleSignIn(String cpf, String password) {
+  removeValuesStorage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+  _handleSignIn(
+    String cpf,
+    String password,
+  ) {
+    removeValuesStorage();
+    _authenticateController.clearCurrentUser();
     setState(() {
       busy = true;
     });

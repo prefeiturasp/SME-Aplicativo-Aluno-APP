@@ -162,6 +162,17 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   }
 
   @override
+  dynamic clearCurrentUser() {
+    final _$actionInfo =
+        _$_AuthenticateControllerBaseActionController.startAction();
+    try {
+      return super.clearCurrentUser();
+    } finally {
+      _$_AuthenticateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
         'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()}';
