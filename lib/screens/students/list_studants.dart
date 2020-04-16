@@ -79,7 +79,10 @@ class ListStudants extends StatelessWidget {
     var studentsController =
         Provider.of<StudentsController>(context, listen: false);
 
-    studentsController.loadingStudents(cpf, token);
+    if (cpf.isNotEmpty && token.isNotEmpty) {
+      studentsController.loadingStudents(cpf, token);
+    }
+
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(

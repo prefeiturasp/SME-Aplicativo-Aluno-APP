@@ -39,6 +39,13 @@ abstract class _AuthenticateControllerBase with Store {
   String errorMessage;
 
   @action
+  changeValue(String value) {
+    print(value);
+    String newValue = value;
+    errorMessage = newValue;
+  }
+
+  @action
   authenticateUser(String cpf, String password) async {
     isLoading = true;
     currentUser = await _authenticateRepository.loginUser(cpf, password);

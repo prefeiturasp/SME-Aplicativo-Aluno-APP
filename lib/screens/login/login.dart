@@ -13,11 +13,17 @@ import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 
 class Login extends StatefulWidget {
+  final String errorMessage;
+
+  Login({this.errorMessage});
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  AuthenticateController _authenticateController;
+
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -30,13 +36,17 @@ class _LoginState extends State<Login> {
   String _cpf = '';
   String _dataNnascimentoAluno = '';
 
+  @override
+  void initState() {
+    super.initState();
+    _authenticateController = AuthenticateController();
+  }
+
   _handleSignIn(String cpf, String password) {
     setState(() {
       busy = true;
     });
-    Provider.of<AuthenticateController>(context, listen: false)
-        .authenticateUser(cpf, password)
-        .then((data) {
+    _authenticateController.authenticateUser(cpf, password).then((data) {
       onSuccess();
     }).catchError((err) {
       onError();
@@ -63,8 +73,11 @@ class _LoginState extends State<Login> {
   }
 
   onError() {
-    var snackbar =
-        SnackBar(content: Text("Verifique seu usuário ou sua senha."));
+    var snackbar = SnackBar(
+        content: _authenticateController.currentUser != null
+            ? Text(_authenticateController.currentUser.erros[0])
+            : Text("dddd"));
+
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
@@ -78,6 +91,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
+    // var _authenticateController =
+    //     Provider.of<AuthenticateController>(context, listen: false);
+
+    // // _authenticateController.currentUser.erros[0].isNotEmpty
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,

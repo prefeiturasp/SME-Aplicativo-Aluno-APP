@@ -25,11 +25,16 @@ class AuthenticateRepository implements IAuthenticateRepository {
           currentUser.data.token,
         );
         return currentUser;
+      } else if (response.statusCode == 400) {
+        var userErro = User();
+        userErro.erros = [response.body];
+        return userErro;
       } else {
         print("Erro ao tentatar se autenticar ");
         return null;
       }
     } catch (error, stacktrace) {
+      // authenticateController.changeValue(decodeError);
       print("Erro ao tentatar se autenticar " + stacktrace.toString());
       return null;
     }

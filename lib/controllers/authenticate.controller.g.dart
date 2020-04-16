@@ -147,6 +147,20 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     return _$loadCurrentUserAsyncAction.run(() => super.loadCurrentUser());
   }
 
+  final _$_AuthenticateControllerBaseActionController =
+      ActionController(name: '_AuthenticateControllerBase');
+
+  @override
+  dynamic changeValue(String value) {
+    final _$actionInfo =
+        _$_AuthenticateControllerBaseActionController.startAction();
+    try {
+      return super.changeValue(value);
+    } finally {
+      _$_AuthenticateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =

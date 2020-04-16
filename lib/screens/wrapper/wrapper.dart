@@ -11,7 +11,8 @@ class Wrapper extends StatelessWidget {
     var authenticateController =
         Provider.of<AuthenticateController>(context, listen: false);
     return Observer(builder: (context) {
-      if (authenticateController.currentUser == null) {
+      if (authenticateController.currentUser == null ||
+          authenticateController.currentUser.erros[0].isNotEmpty) {
         return Login();
       } else {
         return ListStudants(
