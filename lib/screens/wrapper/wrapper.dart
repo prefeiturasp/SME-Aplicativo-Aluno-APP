@@ -10,17 +10,14 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     var authenticateController =
         Provider.of<AuthenticateController>(context, listen: false);
-
     return Observer(builder: (context) {
-      if (authenticateController.currentName != null) {
-        return Observer(builder: (context) {
-          return ListStudants(
-            cpf: authenticateController.currentCPF,
-            token: authenticateController.token,
-          );
-        });
-      } else {
+      if (authenticateController.currentUser == null) {
         return Login();
+      } else {
+        return ListStudants(
+          cpf: authenticateController.currentUser.data.cpf,
+          token: authenticateController.currentUser.data.token,
+        );
       }
     });
   }
