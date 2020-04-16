@@ -154,7 +154,7 @@ class _LoginState extends State<Login> {
                               height: screenHeight * 1,
                             ),
                             AutoSizeText(
-                              "Digite o CPF do resposável",
+                              "Digite o CPF do responsável",
                               maxFontSize: 14,
                               minFontSize: 12,
                               style: TextStyle(color: Color(0xff979797)),
@@ -213,7 +213,6 @@ class _LoginState extends State<Login> {
                                 },
                                 inputFormatters: [
                                   WhitelistingTextInputFormatter.digitsOnly,
-                                  DataInputFormatter(),
                                 ],
                                 keyboardType: TextInputType.number,
                               ),
@@ -222,7 +221,7 @@ class _LoginState extends State<Login> {
                               height: screenHeight * 1,
                             ),
                             AutoSizeText(
-                              "Digite a data de nacimento do aluno dd/mm/aaaa",
+                              "Digite a data de nascimento do aluno ddmmaaaa",
                               maxFontSize: 14,
                               minFontSize: 12,
                               style: TextStyle(
