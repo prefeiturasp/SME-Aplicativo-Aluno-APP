@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
+  AuthenticateController authenticateController;
+
   @override
   Future<User> loginUser(String cpf, String password) async {
     try {
@@ -23,8 +26,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         );
         return currentUser;
       } else {
-        print(
-            "Erro ao tentatar se autenticar " + response.statusCode.toString());
+        print("Erro ao tentatar se autenticar ");
         return null;
       }
     } catch (error, stacktrace) {
