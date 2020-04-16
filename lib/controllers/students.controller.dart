@@ -10,6 +10,7 @@ abstract class _StudentsControllerBase with Store {
 
   _StudentsControllerBase() {
     _studentRepository = StudentRepository();
+    print("Iniciado controller estudantes");
   }
 
   @observable

@@ -27,6 +27,23 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     }, _$currentUserAtom, name: '${_$currentUserAtom.name}_set');
   }
 
+  final _$isLoadingAtom = Atom(name: '_AuthenticateControllerBase.isLoading');
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
+    _$isLoadingAtom.reportObserved();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.context.conditionallyRunInAction(() {
+      super.isLoading = value;
+      _$isLoadingAtom.reportChanged();
+    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+  }
+
   final _$currentNameAtom =
       Atom(name: '_AuthenticateControllerBase.currentName');
 
@@ -115,13 +132,6 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     }, _$errorMessageAtom, name: '${_$errorMessageAtom.name}_set');
   }
 
-  final _$notifyErrorAsyncAction = AsyncAction('notifyError');
-
-  @override
-  Future notifyError(String newError) {
-    return _$notifyErrorAsyncAction.run(() => super.notifyError(newError));
-  }
-
   final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
 
   @override
@@ -140,7 +150,7 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   @override
   String toString() {
     final string =
-        'currentUser: ${currentUser.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()}';
+        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()}';
     return '{$string}';
   }
 }

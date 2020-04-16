@@ -14,10 +14,14 @@ abstract class _AuthenticateControllerBase with Store {
   _AuthenticateControllerBase() {
     _authenticateRepository = AuthenticateRepository();
     loadCurrentUser();
+    print("Iniciando o controler de autenticação");
   }
 
   @observable
   User currentUser;
+
+  @observable
+  bool isLoading = false;
 
   @observable
   String currentName;
@@ -35,20 +39,18 @@ abstract class _AuthenticateControllerBase with Store {
   String errorMessage;
 
   @action
-  notifyError(String newError) async {
-    errorMessage = newError;
-  }
-
-  @action
   authenticateUser(String cpf, String password) async {
+    isLoading = true;
     currentUser = await _authenticateRepository.loginUser(cpf, password);
+    isLoading = false;
   }
 
   @action
   Future<void> loadCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isData = prefs.containsKey('current_name');
-    if (isData) {
+    bool isDataName = prefs.containsKey('current_name');
+    bool isDataCPF = prefs.containsKey('current_cpf');
+    if (isDataName && isDataCPF) {
       currentName = prefs.getString('current_name') ?? "";
       currentCPF = prefs.getString('current_cpf') ?? "";
       currentEmail = prefs.getString('current_email') ?? "";
