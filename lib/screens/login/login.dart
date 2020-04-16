@@ -31,39 +31,51 @@ class _LoginState extends State<Login> {
   String _cpf = '';
   String _dataNnascimentoAluno = '';
 
-  handleSignIn(String cpf, String password) {
+  Future _handleSignIn(String cpf, String password) async {
     setState(() {
       busy = true;
     });
-    Provider.of<AuthenticateController>(context, listen: false)
-        .authenticateUser(cpf, password)
-        .then((data) {
+    var data = Provider.of<AuthenticateController>(context, listen: false);
+    await data.authenticateUser(cpf, password).then((data) {
       onSuccess();
     }).catchError((err) {
-      onError();
+      print("DEU ERRO AQUI");
+      // onError();
     }).whenComplete(() {
+      print("COMPLETOU");
+      onError();
       onComplete();
     });
+  }
+
+  onError() {
+    // var snackbar = SnackBar(content: new Text("Falha no login"));
+    // scaffoldKey.currentState.showSnackBar(snackbar);
+    return AlertDialog(
+        title: new Text("Alert Dialog titulo"),
+        content: new Text("Alert Dialog body"),
+        actions: <Widget>[
+          // define os botões na base do dialogo
+          new FlatButton(
+            child: new Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ]);
   }
 
   onSuccess() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isData = prefs.containsKey('current_cpf');
     if (isData) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ListStudants(
-              cpf: prefs.getString("current_cpf") ?? "",
-              token: prefs.getString("token") ?? ""),
-        ),
-      );
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => ListStudants(
+                  cpf: prefs.getString("current_cpf") ?? "",
+                  token: prefs.getString("token") ?? "")));
     }
-  }
-
-  onError() {
-    var snackbar = new SnackBar(content: new Text("Falha no login"));
-    scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
   onComplete() {
@@ -95,6 +107,7 @@ class _LoginState extends State<Login> {
                       child: Image.asset("assets/images/logo_app.png"),
                     ),
                     Form(
+                      autovalidate: true,
                       key: _formKey,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -112,6 +125,7 @@ class _LoginState extends State<Login> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
+                                autocorrect: true,
                                 controller: _cpfController,
                                 style: TextStyle(
                                     color: Color(0xff333333),
@@ -129,15 +143,13 @@ class _LoginState extends State<Login> {
                                     _cpf = CNPJValidator.strip(
                                         _cpfController.text);
                                   });
-                                  _formKey.currentState.validate();
                                 },
                                 validator: (_) {
                                   if (_cpf.isEmpty) {
                                     return 'Campo obrigatório, não pode ficar em branco.';
                                   }
 
-                                  if (_cpf.length == 14 &&
-                                      !CPFValidator.isValid(_cpf)) {
+                                  if (!CPFValidator.isValid(_cpf)) {
                                     return 'CPF inválido';
                                   }
 
@@ -183,7 +195,6 @@ class _LoginState extends State<Login> {
                                         _passwordController.text.replaceAll(
                                             new RegExp(r'[^\w\s]+'), '');
                                   });
-                                  _formKey.currentState.validate();
                                 },
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
@@ -207,9 +218,8 @@ class _LoginState extends State<Login> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (_) {
-                                  if (_dataNnascimentoAluno.isEmpty) {
-                                    return 'Campo obrigatório, não pode ficar em branco.';
-                                  }
+                                  if (_dataNnascimentoAluno.isEmpty)
+                                    return 'Campo obrigatório';
 
                                   return null;
                                 },
@@ -244,7 +254,7 @@ class _LoginState extends State<Login> {
                                             screenHeight * 3.5)),
                                     child: FlatButton(
                                         onPressed: () {
-                                          handleSignIn(
+                                          _handleSignIn(
                                               _cpf, _dataNnascimentoAluno);
                                         },
                                         child: Row(
