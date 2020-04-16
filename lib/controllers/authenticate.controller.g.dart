@@ -97,6 +97,31 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     }, _$tokenAtom, name: '${_$tokenAtom.name}_set');
   }
 
+  final _$errorMessageAtom =
+      Atom(name: '_AuthenticateControllerBase.errorMessage');
+
+  @override
+  String get errorMessage {
+    _$errorMessageAtom.context.enforceReadPolicy(_$errorMessageAtom);
+    _$errorMessageAtom.reportObserved();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String value) {
+    _$errorMessageAtom.context.conditionallyRunInAction(() {
+      super.errorMessage = value;
+      _$errorMessageAtom.reportChanged();
+    }, _$errorMessageAtom, name: '${_$errorMessageAtom.name}_set');
+  }
+
+  final _$notifyErrorAsyncAction = AsyncAction('notifyError');
+
+  @override
+  Future notifyError(String newError) {
+    return _$notifyErrorAsyncAction.run(() => super.notifyError(newError));
+  }
+
   final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
 
   @override
@@ -115,7 +140,7 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   @override
   String toString() {
     final string =
-        'currentUser: ${currentUser.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()}';
+        'currentUser: ${currentUser.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()}';
     return '{$string}';
   }
 }

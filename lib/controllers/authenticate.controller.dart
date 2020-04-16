@@ -31,6 +31,14 @@ abstract class _AuthenticateControllerBase with Store {
   @observable
   String token;
 
+  @observable
+  String errorMessage;
+
+  @action
+  notifyError(String newError) async {
+    errorMessage = newError;
+  }
+
   @action
   authenticateUser(String cpf, String password) async {
     currentUser = await _authenticateRepository.loginUser(cpf, password);
@@ -39,7 +47,7 @@ abstract class _AuthenticateControllerBase with Store {
   @action
   Future<void> loadCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isData = prefs.containsKey('current_user');
+    bool isData = prefs.containsKey('current_name');
     if (isData) {
       currentName = prefs.getString('current_name') ?? "";
       currentCPF = prefs.getString('current_cpf') ?? "";
