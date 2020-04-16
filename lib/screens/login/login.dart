@@ -63,8 +63,8 @@ class _LoginState extends State<Login> {
   }
 
   onError() {
-    var snackbar = SnackBar(
-        content: Text("Erro: não foi possível se autenticar no aplicativo"));
+    var snackbar =
+        SnackBar(content: Text("Verifique seu usuário ou sua senha."));
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
