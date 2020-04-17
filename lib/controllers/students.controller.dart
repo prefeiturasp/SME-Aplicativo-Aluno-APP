@@ -20,9 +20,7 @@ abstract class _StudentsControllerBase with Store {
 
   @action
   loadingStudents(String cpf, String token) async {
-    isLoading = true;
     listStudents = ObservableList<DataStudents>.of(
         await _studentRepository.fetchStudents(cpf, token));
-    isLoading = false;
   }
 }
