@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
@@ -76,13 +77,7 @@ class _ListStudantsState extends State<ListStudants> {
 
   _loadingAllStudents(
       String cpf, String token, dynamic studentsController) async {
-    setState(() {
-      _isLoading = true;
-    });
-    studentsController.loadingStudents(cpf, token);
-    setState(() {
-      _isLoading = false;
-    });
+    await studentsController.loadingStudents(cpf, token);
   }
 
   @override
@@ -125,17 +120,19 @@ class _ListStudantsState extends State<ListStudants> {
                   height: screenHeight * 3.5,
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: screenHeight * 74,
-                  child: _isLoading
-                      ? GFLoader(
+                    width: MediaQuery.of(context).size.width,
+                    height: screenHeight * 74,
+                    child: Observer(builder: (context) {
+                      if (studentsController.isLoading) {
+                        return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
                           loaderColorTwo: Color(0xffC65D00),
                           loaderColorThree: Color(0xffC65D00),
                           size: GFSize.LARGE,
-                        )
-                      : ListView.builder(
+                        );
+                      } else {
+                        return ListView.builder(
                           itemCount: studentsController.listStudents.length,
                           itemBuilder: (context, index) {
                             final dados = studentsController.listStudents;
@@ -149,8 +146,9 @@ class _ListStudantsState extends State<ListStudants> {
                               ],
                             );
                           },
-                        ),
-                )
+                        );
+                      }
+                    }))
               ],
             ),
           ),
