@@ -1,28 +1,26 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class DrawerMenu extends StatelessWidget {
-  removeValuesStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
-  readValueStorage(String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String newValue = prefs.getString(value) ?? "";
-    return newValue;
-  }
+  final Storage storage = Storage();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
+    var _authenticateController =
+        Provider.of<AuthenticateController>(context, listen: false);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -43,13 +41,15 @@ class DrawerMenu extends StatelessWidget {
                         borderRadius: BorderRadius.circular(screenHeight * 5)),
                     child: Image.asset("assets/images/avatar_estudante.png"),
                   ),
-                  AutoSizeText(
-                    "Francisco de Assis Junqueira",
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500),
-                  ),
+                  Observer(builder: (context) {
+                    return AutoSizeText(
+                      "${_authenticateController.currentName}",
+                      maxFontSize: 16,
+                      minFontSize: 14,
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                    );
+                  }),
                   AutoSizeText(
                     "Usuário Ativo",
                     maxFontSize: 14,
@@ -75,8 +75,8 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              var _cpf = await readValueStorage("current_cpf") ?? "";
-              var _token = await readValueStorage("token") ?? "";
+              var _cpf = await storage.readValueStorage("current_cpf") ?? "";
+              var _token = await storage.readValueStorage("token") ?? "";
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -130,7 +130,7 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () {
-              removeValuesStorage();
+              storage.removeAllValues();
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Login()));
             },

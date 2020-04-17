@@ -40,7 +40,6 @@ abstract class _AuthenticateControllerBase with Store {
 
   @action
   changeValue(String value) {
-    print(value);
     String newValue = value;
     errorMessage = newValue;
   }
