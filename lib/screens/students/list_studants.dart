@@ -12,12 +12,22 @@ import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
-class ListStudants extends StatelessWidget {
+class ListStudants extends StatefulWidget {
   final String cpf;
   final String token;
 
   ListStudants({@required this.cpf, @required this.token});
+
+  @override
+  _ListStudantsState createState() => _ListStudantsState();
+}
+
+class _ListStudantsState extends State<ListStudants> {
+  final Storage _storage = Storage();
+
+  bool _isLoading = false;
 
   Widget _itemCardStudent(BuildContext context, Student model) {
     return CardStudent(
@@ -39,11 +49,6 @@ class ListStudants extends StatelessWidget {
     return new Column(children: list);
   }
 
-  removeValuesStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
   Future<bool> _onBackPress(BuildContext context) {
     return showDialog(
         context: context,
@@ -55,7 +60,7 @@ class ListStudants extends StatelessWidget {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
-                  removeValuesStorage();
+                  _storage.removeAllValues();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 },
@@ -71,6 +76,17 @@ class ListStudants extends StatelessWidget {
         });
   }
 
+  _loadingAllStudents(
+      String cpf, String token, dynamic studentsController) async {
+    setState(() {
+      _isLoading = true;
+    });
+    studentsController.loadingStudents(cpf, token);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -79,9 +95,7 @@ class ListStudants extends StatelessWidget {
     var studentsController =
         Provider.of<StudentsController>(context, listen: false);
 
-    if (cpf.isNotEmpty && token.isNotEmpty) {
-      studentsController.loadingStudents(cpf, token);
-    }
+    _loadingAllStudents(widget.cpf, widget.token, studentsController);
 
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
@@ -115,33 +129,29 @@ class ListStudants extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: screenHeight * 74,
-                  child: Observer(builder: (context) {
-                    if (studentsController.isLoading) {
-                      return GFLoader(
-                        type: GFLoaderType.square,
-                        loaderColorOne: Color(0xffDE9524),
-                        loaderColorTwo: Color(0xffC65D00),
-                        loaderColorThree: Color(0xffC65D00),
-                        size: GFSize.LARGE,
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: studentsController.listStudents.length,
-                        itemBuilder: (context, index) {
-                          final dados = studentsController.listStudents;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              TagCustom(
-                                  text: "${dados[index].descricaoTipoEscola}",
-                                  color: Color(0xffC65D00)),
-                              _listStudents(dados[index].student, context),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  }),
+                  child: _isLoading
+                      ? GFLoader(
+                          type: GFLoaderType.square,
+                          loaderColorOne: Color(0xffDE9524),
+                          loaderColorTwo: Color(0xffC65D00),
+                          loaderColorThree: Color(0xffC65D00),
+                          size: GFSize.LARGE,
+                        )
+                      : ListView.builder(
+                          itemCount: studentsController.listStudents.length,
+                          itemBuilder: (context, index) {
+                            final dados = studentsController.listStudents;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                TagCustom(
+                                    text: "${dados[index].descricaoTipoEscola}",
+                                    color: Color(0xffC65D00)),
+                                _listStudents(dados[index].student, context),
+                              ],
+                            );
+                          },
+                        ),
                 )
               ],
             ),
