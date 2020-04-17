@@ -13,6 +13,18 @@ import 'package:sme_app_aluno/utils/storage.dart';
 class DrawerMenu extends StatelessWidget {
   final Storage storage = Storage();
 
+  navigateToListStudents(BuildContext context, Storage storage) async {
+    var _cpf = await storage.readValueStorage("current_cpf") ?? "";
+    var _token = await storage.readValueStorage("token") ?? "";
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListStudants(
+                  cpf: _cpf,
+                  token: _token,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -74,16 +86,8 @@ class DrawerMenu extends StatelessWidget {
                 size: screenHeight * 2.3,
               ),
             ),
-            onTap: () async {
-              var _cpf = await storage.readValueStorage("current_cpf") ?? "";
-              var _token = await storage.readValueStorage("token") ?? "";
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ListStudants(
-                            cpf: _cpf,
-                            token: _token,
-                          )));
+            onTap: () {
+              navigateToListStudents(context, storage);
             },
           ),
           ListTile(
