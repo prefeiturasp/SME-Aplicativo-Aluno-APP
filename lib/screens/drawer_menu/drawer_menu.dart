@@ -30,9 +30,9 @@ class DrawerMenu extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
-    var _authenticateController =
+    var authenticateController =
         Provider.of<AuthenticateController>(context, listen: false);
-
+    print(authenticateController);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -54,13 +54,23 @@ class DrawerMenu extends StatelessWidget {
                     child: Image.asset("assets/images/avatar_estudante.png"),
                   ),
                   Observer(builder: (context) {
-                    return AutoSizeText(
-                      "${_authenticateController.currentName}",
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
-                    );
+                    if (authenticateController.currentName != null) {
+                      return AutoSizeText(
+                        "${authenticateController.currentName}",
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                      );
+                    } else {
+                      return AutoSizeText(
+                        "Não carregado",
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w500),
+                      );
+                    }
                   }),
                   AutoSizeText(
                     "Usuário Ativo",

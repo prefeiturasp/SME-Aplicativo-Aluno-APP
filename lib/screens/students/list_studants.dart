@@ -26,8 +26,6 @@ class ListStudants extends StatefulWidget {
 class _ListStudantsState extends State<ListStudants> {
   final Storage _storage = Storage();
 
-  bool _isLoading = false;
-
   Widget _itemCardStudent(BuildContext context, Student model) {
     return CardStudent(
       name: model.nomeSocial != null ? "${model.nomeSocial}" : "${model.nome}",
@@ -48,7 +46,7 @@ class _ListStudantsState extends State<ListStudants> {
     return new Column(children: list);
   }
 
-  Future<bool> _onBackPress(BuildContext context) {
+  Future<bool> _onBackPress() {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -98,7 +96,7 @@ class _ListStudantsState extends State<ListStudants> {
         automaticallyImplyLeading: false,
       ),
       body: WillPopScope(
-        onWillPop: () => _onBackPress(context),
+        onWillPop: _onBackPress,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
