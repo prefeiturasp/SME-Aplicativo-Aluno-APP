@@ -10,6 +10,7 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class Login extends StatefulWidget {
   final String errorMessage;
@@ -22,6 +23,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   AuthenticateController _authenticateController;
+  final Storage _storage = Storage();
 
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,20 +43,16 @@ class _LoginState extends State<Login> {
     _authenticateController = AuthenticateController();
   }
 
-  removeValuesStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
   _handleSignIn(
     String cpf,
     String password,
   ) {
-    removeValuesStorage();
+    _storage.removeAllValues();
     _authenticateController.clearCurrentUser();
     setState(() {
       busy = true;
     });
+    _storage.insertString("password", password);
     _authenticateController.authenticateUser(cpf, password).then((data) {
       onSuccess();
     }).catchError((err) {
@@ -72,8 +70,10 @@ class _LoginState extends State<Login> {
         context,
         MaterialPageRoute(
           builder: (context) => ListStudants(
-              cpf: prefs.getString("current_cpf") ?? "",
-              token: prefs.getString("token") ?? ""),
+            cpf: prefs.getString("current_cpf") ?? "",
+            token: prefs.getString("token") ?? "",
+            password: prefs.getString("password") ?? "",
+          ),
         ),
       );
     } else {

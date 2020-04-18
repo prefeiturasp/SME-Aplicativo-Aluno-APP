@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,13 +17,23 @@ class DrawerMenu extends StatelessWidget {
   navigateToListStudents(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
     var _token = await storage.readValueStorage("token") ?? "";
+    var _password = await storage.readValueStorage("password") ?? "";
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ListStudants(
                   cpf: _cpf,
                   token: _token,
+                  password: _password,
                 )));
+  }
+
+  _logout(BuildContext context) {
+    BackgroundFetch.stop().then((int status) {
+      print('[BackgroundFetch] stop success: $status');
+    });
+    storage.removeAllValues();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override
@@ -32,7 +43,6 @@ class DrawerMenu extends StatelessWidget {
 
     var authenticateController =
         Provider.of<AuthenticateController>(context, listen: false);
-    print(authenticateController);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -144,9 +154,7 @@ class DrawerMenu extends StatelessWidget {
               ),
             ),
             onTap: () {
-              storage.removeAllValues();
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Login()));
+              _logout(context);
             },
           ),
         ],
