@@ -33,11 +33,11 @@ class _ListStudantsState extends State<ListStudants> {
   StudentsController _studentsController;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
     _studentsController = StudentsController();
-    await _studentsController.loadingStudents(widget.cpf, widget.token);
+    _loadingAllStudents();
     initPlatformState();
   }
 
@@ -137,10 +137,15 @@ class _ListStudantsState extends State<ListStudants> {
         });
   }
 
+  _loadingAllStudents() async {
+    await _studentsController.loadingStudents(widget.cpf, widget.token);
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    // _loadingAllStudents();
 
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
