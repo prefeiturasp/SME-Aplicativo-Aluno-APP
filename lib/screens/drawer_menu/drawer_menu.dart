@@ -3,7 +3,6 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/messages.dart';
@@ -11,8 +10,21 @@ import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
+  @override
+  _DrawerMenuState createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
   final Storage storage = Storage();
+
+  AuthenticateController _authenticateController;
+
+  @override
+  void initState() {
+    super.initState();
+    _authenticateController = AuthenticateController();
+  }
 
   navigateToListStudents(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
@@ -41,8 +53,6 @@ class DrawerMenu extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
-    var authenticateController =
-        Provider.of<AuthenticateController>(context, listen: false);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -64,9 +74,9 @@ class DrawerMenu extends StatelessWidget {
                     child: Image.asset("assets/images/avatar_estudante.png"),
                   ),
                   Observer(builder: (context) {
-                    if (authenticateController.currentName != null) {
+                    if (_authenticateController.currentName != null) {
                       return AutoSizeText(
-                        "${authenticateController.currentName}",
+                        "${_authenticateController.currentName}",
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
