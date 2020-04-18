@@ -38,6 +38,9 @@ abstract class _AuthenticateControllerBase with Store {
   @observable
   String errorMessage;
 
+  @observable
+  String password;
+
   @action
   changeValue(String value) {
     String newValue = value;
@@ -66,6 +69,7 @@ abstract class _AuthenticateControllerBase with Store {
       currentCPF = prefs.getString('current_cpf') ?? "";
       currentEmail = prefs.getString('current_email') ?? "";
       token = prefs.getString('token') ?? "";
+      password = prefs.getString('password') ?? "";
     }
   }
 }
