@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/models/student.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
@@ -16,8 +18,10 @@ import 'package:sme_app_aluno/utils/storage.dart';
 class ListStudants extends StatefulWidget {
   final String cpf;
   final String token;
+  final String password;
 
-  ListStudants({@required this.cpf, @required this.token});
+  ListStudants(
+      {@required this.cpf, @required this.token, @required this.password});
 
   @override
   _ListStudantsState createState() => _ListStudantsState();
@@ -25,6 +29,63 @@ class ListStudants extends StatefulWidget {
 
 class _ListStudantsState extends State<ListStudants> {
   final Storage _storage = Storage();
+  AuthenticateController _authenticateController;
+  StudentsController _studentsController;
+
+  @override
+  void initState() {
+    super.initState();
+    _authenticateController = AuthenticateController();
+    _studentsController = StudentsController();
+    _loadingAllStudents();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    BackgroundFetch.configure(
+            BackgroundFetchConfig(
+              minimumFetchInterval: 1,
+              forceAlarmManager: false,
+              stopOnTerminate: false,
+              startOnBoot: true,
+              enableHeadless: true,
+              requiresBatteryNotLow: false,
+              requiresCharging: false,
+              requiresStorageNotLow: false,
+              requiresDeviceIdle: false,
+              requiredNetworkType: NetworkType.NONE,
+            ),
+            _onBackgroundFetch)
+        .then((int status) {
+      print('[BackgroundFetch] configure success: $status');
+    }).catchError((e) {
+      print('[BackgroundFetch] configure ERROR: $e');
+    });
+
+    BackgroundFetch.scheduleTask(TaskConfig(
+        taskId: "com.transistorsoft.customtask",
+        delay: 10000,
+        periodic: true,
+        forceAlarmManager: true,
+        stopOnTerminate: false,
+        enableHeadless: true));
+  }
+
+  void _onBackgroundFetch(String taskId) async {
+    await _authenticateController.authenticateUser(widget.cpf, widget.password);
+
+    if (_authenticateController.currentUser.erros.isNotEmpty &&
+        _authenticateController.currentUser.erros[0] != null) {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
+      _storage.removeAllValues();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Login()));
+    }
+
+    BackgroundFetch.finish(taskId);
+  }
 
   Widget _itemCardStudent(BuildContext context, Student model) {
     return CardStudent(
@@ -57,6 +118,9 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
+                  BackgroundFetch.stop().then((int status) {
+                    print('[BackgroundFetch] stop success: $status');
+                  });
                   _storage.removeAllValues();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
@@ -73,20 +137,15 @@ class _ListStudantsState extends State<ListStudants> {
         });
   }
 
-  _loadingAllStudents(
-      String cpf, String token, dynamic studentsController) async {
-    await studentsController.loadingStudents(cpf, token);
+  _loadingAllStudents() async {
+    await _studentsController.loadingStudents(widget.cpf, widget.token);
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
-    var studentsController =
-        Provider.of<StudentsController>(context, listen: false);
-
-    _loadingAllStudents(widget.cpf, widget.token, studentsController);
+    // _loadingAllStudents();
 
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
@@ -121,7 +180,7 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (studentsController.isLoading) {
+                      if (_studentsController.isLoading) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -131,9 +190,9 @@ class _ListStudantsState extends State<ListStudants> {
                         );
                       } else {
                         return ListView.builder(
-                          itemCount: studentsController.listStudents.length,
+                          itemCount: _studentsController.listStudents.length,
                           itemBuilder: (context, index) {
-                            final dados = studentsController.listStudents;
+                            final dados = _studentsController.listStudents;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[

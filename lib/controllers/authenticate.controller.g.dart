@@ -132,6 +132,23 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     }, _$errorMessageAtom, name: '${_$errorMessageAtom.name}_set');
   }
 
+  final _$passwordAtom = Atom(name: '_AuthenticateControllerBase.password');
+
+  @override
+  String get password {
+    _$passwordAtom.context.enforceReadPolicy(_$passwordAtom);
+    _$passwordAtom.reportObserved();
+    return super.password;
+  }
+
+  @override
+  set password(String value) {
+    _$passwordAtom.context.conditionallyRunInAction(() {
+      super.password = value;
+      _$passwordAtom.reportChanged();
+    }, _$passwordAtom, name: '${_$passwordAtom.name}_set');
+  }
+
   final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
 
   @override
@@ -175,7 +192,7 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   @override
   String toString() {
     final string =
-        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()}';
+        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()},password: ${password.toString()}';
     return '{$string}';
   }
 }
