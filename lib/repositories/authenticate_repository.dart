@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/data.dart';
-import 'package:sme_app_aluno/models/user.dart';
 import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
@@ -16,15 +12,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
   Future<Data> loginUser(String cpf, String password) async {
     String userPassword = await storage.readValueStorage("current_password");
     try {
-      if(GlobalConfig.Environment == "test") {
-        return Data(erros: [], ok: true, user: User(
-          cpf: "1234567890",
-          id: 0,
-          nome: "Fulano",
-          token: ""
-        ));
-      }
-      
       final response =
           await http.post("${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password");
 

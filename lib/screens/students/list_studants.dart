@@ -12,6 +12,7 @@ import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class ListStudants extends StatefulWidget {
@@ -43,7 +44,7 @@ class _ListStudantsState extends State<ListStudants> {
   Future<void> initPlatformState() async {
     BackgroundFetch.configure(
             BackgroundFetchConfig(
-              minimumFetchInterval: 1,
+              minimumFetchInterval: 2,
               forceAlarmManager: false,
               stopOnTerminate: false,
               startOnBoot: true,
@@ -71,7 +72,12 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    await _authenticateController.authenticateUser(widget.cpf, widget.password);
+    if (GlobalConfig.Environment == "test") {
+      await _authenticateController.authenticateUser(widget.cpf, "20032005");
+    } else {
+      await _authenticateController.authenticateUser(
+          widget.cpf, widget.password);
+    }
 
     if (_authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros[0] != null) {
