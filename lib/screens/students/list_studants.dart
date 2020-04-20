@@ -5,7 +5,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/models/student.dart';

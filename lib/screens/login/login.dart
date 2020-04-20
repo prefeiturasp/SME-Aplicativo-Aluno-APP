@@ -13,10 +13,6 @@ import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class Login extends StatefulWidget {
-  final String errorMessage;
-
-  Login({this.errorMessage});
-
   @override
   _LoginState createState() => _LoginState();
 }
@@ -52,7 +48,7 @@ class _LoginState extends State<Login> {
     setState(() {
       busy = true;
     });
-    _storage.insertString("password", password);
+    _storage.insertString("current_password", password);
     _authenticateController.authenticateUser(cpf, password).then((data) {
       onSuccess();
     }).catchError((err) {
@@ -72,7 +68,7 @@ class _LoginState extends State<Login> {
           builder: (context) => ListStudants(
             cpf: prefs.getString("current_cpf") ?? "",
             token: prefs.getString("token") ?? "",
-            password: prefs.getString("password") ?? "",
+            password: prefs.getString("current_password") ?? "",
           ),
         ),
       );

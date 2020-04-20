@@ -29,7 +29,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   navigateToListStudents(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
     var _token = await storage.readValueStorage("token") ?? "";
-    var _password = await storage.readValueStorage("password") ?? "";
+    var _password = await storage.readValueStorage("current_password") ?? "";
     Navigator.push(
         context,
         MaterialPageRoute(

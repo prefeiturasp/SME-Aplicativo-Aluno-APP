@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/models/user.dart';
+import 'package:sme_app_aluno/models/data.dart';
 import 'package:sme_app_aluno/repositories/authenticate_repository.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 part 'authenticate.controller.g.dart';
 
@@ -9,16 +9,16 @@ class AuthenticateController = _AuthenticateControllerBase
     with _$AuthenticateController;
 
 abstract class _AuthenticateControllerBase with Store {
+  final Storage _storage = Storage();
   AuthenticateRepository _authenticateRepository;
 
   _AuthenticateControllerBase() {
     _authenticateRepository = AuthenticateRepository();
     loadCurrentUser();
-    print("Iniciando o controler de autenticação");
   }
 
   @observable
-  User currentUser;
+  Data currentUser;
 
   @observable
   bool isLoading = false;
@@ -33,19 +33,10 @@ abstract class _AuthenticateControllerBase with Store {
   String currentEmail;
 
   @observable
+  String currentPassword;
+
+  @observable
   String token;
-
-  @observable
-  String errorMessage;
-
-  @observable
-  String password;
-
-  @action
-  changeValue(String value) {
-    String newValue = value;
-    errorMessage = newValue;
-  }
 
   @action
   authenticateUser(String cpf, String password) async {
@@ -61,15 +52,11 @@ abstract class _AuthenticateControllerBase with Store {
 
   @action
   Future<void> loadCurrentUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isDataName = prefs.containsKey('current_name');
-    bool isDataCPF = prefs.containsKey('current_cpf');
-    if (isDataName && isDataCPF) {
-      currentName = prefs.getString('current_name') ?? "";
-      currentCPF = prefs.getString('current_cpf') ?? "";
-      currentEmail = prefs.getString('current_email') ?? "";
-      token = prefs.getString('token') ?? "";
-      password = prefs.getString('password') ?? "";
-    }
+    print("Carregando dados do Storage");
+    currentName = await _storage.readValueStorage('current_name');
+    currentCPF = await _storage.readValueStorage('current_cpf');
+    currentEmail = await _storage.readValueStorage('current_email');
+    currentPassword = await _storage.readValueStorage('current_password');
+    token = await _storage.readValueStorage('token');
   }
 }

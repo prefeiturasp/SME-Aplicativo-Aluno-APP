@@ -3,53 +3,50 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
-import 'package:sme_app_aluno/models/user.dart';
+import 'package:sme_app_aluno/models/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
-  AuthenticateController authenticateController;
+  final Storage storage = Storage();
 
   @override
-  Future<User> loginUser(String cpf, String password) async {
+  Future<Data> loginUser(String cpf, String password) async {
+    String userPassword = await storage.readValueStorage("current_password");
     try {
       final response =
           await http.post("${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password");
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        User currentUser = User.fromJson(decodeJson);
-        addCurrentUserToStorage(
-          currentUser.data.nome,
-          currentUser.data.cpf,
-          currentUser.data.email,
-          currentUser.data.token,
-        );
-        return currentUser;
-      } else if (response.statusCode == 400) {
-        var userErro = User();
-        userErro.erros = [response.body];
-        return userErro;
+        var data = Data.fromJson(decodeJson);
+        if (data.user.cpf.isNotEmpty) {
+          addCurrentUserToStorage(
+            data.user.nome,
+            data.user.cpf,
+            data.user.email,
+            data.user.token,
+            userPassword,
+          );
+        }
+        return data;
       } else {
-        print("Erro ao tentatar se autenticar ");
-        return null;
+        var dataError = Data();
+        dataError.erros = [response.body];
+        return dataError;
       }
     } catch (error, stacktrace) {
-      // authenticateController.changeValue(decodeError);
       print("Erro ao tentatar se autenticar " + stacktrace.toString());
       return null;
     }
   }
 
-  addCurrentUserToStorage(
-      String name, String cpf, String email, String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    try {
-      prefs.setString('current_name', name);
-      prefs.setString('current_cpf', cpf);
-      prefs.setString('current_email', email);
-      prefs.setString('token', token);
-    } catch (e) {
-      print("Erro ao gravar no local storage $e");
-    }
+  addCurrentUserToStorage(String name, String cpf, String email, String token,
+      String password) async {
+    storage.insertString('current_name', name);
+    storage.insertString('current_cpf', cpf);
+    storage.insertString('current_email', email);
+    storage.insertString('token', token);
+    storage.insertString('token', password);
   }
 }

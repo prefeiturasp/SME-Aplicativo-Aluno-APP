@@ -13,14 +13,14 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
       Atom(name: '_AuthenticateControllerBase.currentUser');
 
   @override
-  User get currentUser {
+  Data get currentUser {
     _$currentUserAtom.context.enforceReadPolicy(_$currentUserAtom);
     _$currentUserAtom.reportObserved();
     return super.currentUser;
   }
 
   @override
-  set currentUser(User value) {
+  set currentUser(Data value) {
     _$currentUserAtom.context.conditionallyRunInAction(() {
       super.currentUser = value;
       _$currentUserAtom.reportChanged();
@@ -97,6 +97,24 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     }, _$currentEmailAtom, name: '${_$currentEmailAtom.name}_set');
   }
 
+  final _$currentPasswordAtom =
+      Atom(name: '_AuthenticateControllerBase.currentPassword');
+
+  @override
+  String get currentPassword {
+    _$currentPasswordAtom.context.enforceReadPolicy(_$currentPasswordAtom);
+    _$currentPasswordAtom.reportObserved();
+    return super.currentPassword;
+  }
+
+  @override
+  set currentPassword(String value) {
+    _$currentPasswordAtom.context.conditionallyRunInAction(() {
+      super.currentPassword = value;
+      _$currentPasswordAtom.reportChanged();
+    }, _$currentPasswordAtom, name: '${_$currentPasswordAtom.name}_set');
+  }
+
   final _$tokenAtom = Atom(name: '_AuthenticateControllerBase.token');
 
   @override
@@ -112,41 +130,6 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
       super.token = value;
       _$tokenAtom.reportChanged();
     }, _$tokenAtom, name: '${_$tokenAtom.name}_set');
-  }
-
-  final _$errorMessageAtom =
-      Atom(name: '_AuthenticateControllerBase.errorMessage');
-
-  @override
-  String get errorMessage {
-    _$errorMessageAtom.context.enforceReadPolicy(_$errorMessageAtom);
-    _$errorMessageAtom.reportObserved();
-    return super.errorMessage;
-  }
-
-  @override
-  set errorMessage(String value) {
-    _$errorMessageAtom.context.conditionallyRunInAction(() {
-      super.errorMessage = value;
-      _$errorMessageAtom.reportChanged();
-    }, _$errorMessageAtom, name: '${_$errorMessageAtom.name}_set');
-  }
-
-  final _$passwordAtom = Atom(name: '_AuthenticateControllerBase.password');
-
-  @override
-  String get password {
-    _$passwordAtom.context.enforceReadPolicy(_$passwordAtom);
-    _$passwordAtom.reportObserved();
-    return super.password;
-  }
-
-  @override
-  set password(String value) {
-    _$passwordAtom.context.conditionallyRunInAction(() {
-      super.password = value;
-      _$passwordAtom.reportChanged();
-    }, _$passwordAtom, name: '${_$passwordAtom.name}_set');
   }
 
   final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
@@ -168,17 +151,6 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
       ActionController(name: '_AuthenticateControllerBase');
 
   @override
-  dynamic changeValue(String value) {
-    final _$actionInfo =
-        _$_AuthenticateControllerBaseActionController.startAction();
-    try {
-      return super.changeValue(value);
-    } finally {
-      _$_AuthenticateControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   dynamic clearCurrentUser() {
     final _$actionInfo =
         _$_AuthenticateControllerBaseActionController.startAction();
@@ -192,7 +164,7 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   @override
   String toString() {
     final string =
-        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},token: ${token.toString()},errorMessage: ${errorMessage.toString()},password: ${password.toString()}';
+        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},currentPassword: ${currentPassword.toString()},token: ${token.toString()}';
     return '{$string}';
   }
 }

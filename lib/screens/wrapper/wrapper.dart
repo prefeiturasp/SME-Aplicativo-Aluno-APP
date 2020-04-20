@@ -1,26 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
+import 'package:getflutter/components/loader/gf_loader.dart';
+import 'package:getflutter/size/gf_size.dart';
+import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
-class Wrapper extends StatelessWidget {
+class Wrapper extends StatefulWidget {
+  @override
+  _WrapperState createState() => _WrapperState();
+}
+
+class _WrapperState extends State<Wrapper> {
+  final Storage storage = Storage();
+  AuthenticateController _authenticateController;
+
+  String _cpf;
+  String _token;
+  String _password;
+  bool _loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadCurrentUser();
+    _authenticateController = AuthenticateController();
+  }
+
+  loadCurrentUser() async {
+    setState(() {
+      _loading = true;
+    });
+    bool isCurrentUser = await storage.containsKey("current_cpf");
+    if (isCurrentUser) {
+      String cpf = await storage.readValueStorage('current_cpf');
+      String token = await storage.readValueStorage('token');
+      String password = await storage.readValueStorage('current_password');
+      setState(() {
+        _cpf = cpf;
+        _token = token;
+        _password = password;
+      });
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var authenticateController =
-        Provider.of<AuthenticateController>(context, listen: false);
+    bool isAuthenticated = _cpf != null && _token != null;
 
-    return Observer(builder: (context) {
-      if (authenticateController.currentUser == null ||
-          authenticateController.currentUser.erros[0].isNotEmpty) {
-        return Login();
-      } else {
-        return ListStudants(
-          cpf: authenticateController.currentUser.data.cpf,
-          token: authenticateController.currentUser.data.token,
-        );
-      }
-    });
+    bool notErrorAuthenticate = _authenticateController.currentUser != null &&
+        _authenticateController.currentUser.erros[0].isNotEmpty;
+
+    if (!isAuthenticated || notErrorAuthenticate) {
+      return Scaffold(
+          backgroundColor: Colors.white,
+          body: _loading
+              ? GFLoader(
+                  type: GFLoaderType.square,
+                  loaderColorOne: Color(0xffDE9524),
+                  loaderColorTwo: Color(0xffC65D00),
+                  loaderColorThree: Color(0xffC65D00),
+                  size: GFSize.LARGE,
+                )
+              : Login());
+    } else {
+      return ListStudants(cpf: _cpf, token: _token, password: _password);
+    }
   }
 }
