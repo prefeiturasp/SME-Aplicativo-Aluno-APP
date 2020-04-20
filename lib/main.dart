@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);
@@ -19,6 +20,10 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp() {
+    GlobalConfig.Environment = "prod";
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
