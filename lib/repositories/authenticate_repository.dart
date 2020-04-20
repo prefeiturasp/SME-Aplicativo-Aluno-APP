@@ -17,17 +17,17 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
-        if (data.user.cpf.isNotEmpty) {
+        var user = Data.fromJson(decodeJson);
+        if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
-            data.user.nome,
-            data.user.cpf,
-            data.user.email,
-            data.user.token,
+            user.data.nome,
+            user.data.cpf,
+            user.data.email,
+            user.data.token,
             userPassword,
           );
         }
-        return data;
+        return user;
       } else {
         var dataError = Data();
         dataError.erros = [response.body];
