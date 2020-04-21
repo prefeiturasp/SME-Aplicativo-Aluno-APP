@@ -1,19 +1,19 @@
-import 'package:sme_app_aluno/models/student.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 
-class DataStudents {
+class Data {
   String descricaoTipoEscola;
   int codigoTipoEscola;
-  List<Student> student;
+  List<Student> students;
 
-  DataStudents({this.descricaoTipoEscola, this.codigoTipoEscola, this.student});
+  Data({this.descricaoTipoEscola, this.codigoTipoEscola, this.students});
 
-  DataStudents.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     descricaoTipoEscola = json['descricaoTipoEscola'];
     codigoTipoEscola = json['codigoTipoEscola'];
     if (json['alunos'] != null) {
-      student = new List<Student>();
+      students = new List<Student>();
       json['alunos'].forEach((v) {
-        student.add(new Student.fromJson(v));
+        students.add(new Student.fromJson(v));
       });
     }
   }
@@ -22,8 +22,8 @@ class DataStudents {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['descricaoTipoEscola'] = this.descricaoTipoEscola;
     data['codigoTipoEscola'] = this.codigoTipoEscola;
-    if (this.student != null) {
-      data['alunos'] = this.student.map((v) => v.toJson()).toList();
+    if (this.students != null) {
+      data['alunos'] = this.students.map((v) => v.toJson()).toList();
     }
     return data;
   }

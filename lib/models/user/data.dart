@@ -1,9 +1,9 @@
-import 'package:sme_app_aluno/models/user.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 
 class Data {
   bool ok;
   List<String> erros;
-  dynamic data;
+  User data;
 
   Data({this.ok, this.erros, this.data});
 
