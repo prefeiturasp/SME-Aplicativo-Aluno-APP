@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
+import 'package:intl/intl.dart';
 
 class ResumeStudants extends StatelessWidget {
   final Student student;
@@ -43,6 +44,9 @@ class ResumeStudants extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    var formatter = new DateFormat('dd/MM/yyyy');
+    String dateFormatted =
+        formatter.format(DateTime.parse(student.dataNascimento));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -163,8 +167,8 @@ class ResumeStudants extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        itemResume(context, "Data de Nascimento", "30/09/1984",
-                            screenHeight),
+                        itemResume(context, "Data de Nascimento",
+                            "$dateFormatted", screenHeight),
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),
@@ -173,8 +177,8 @@ class ResumeStudants extends StatelessWidget {
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),
-                        itemResume(context, "Situação",
-                            "Matriculado em 04/02/2019", screenHeight),
+                        itemResume(context, "Situação", "Matriculado em -",
+                            screenHeight),
                       ],
                     ),
                   )

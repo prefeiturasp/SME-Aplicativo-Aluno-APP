@@ -7,6 +7,7 @@ class Student {
   String descricaoTipoEscola;
   String siglaDre;
   String turma;
+  String dataNascimento;
 
   Student(
       {this.codigoEol,
@@ -16,7 +17,8 @@ class Student {
       this.codigoTipoEscola,
       this.descricaoTipoEscola,
       this.siglaDre,
-      this.turma});
+      this.turma,
+      this.dataNascimento});
 
   Student.fromJson(Map<String, dynamic> json) {
     codigoEol = json['codigoEol'];
@@ -27,6 +29,7 @@ class Student {
     descricaoTipoEscola = json['descricaoTipoEscola'];
     siglaDre = json['siglaDre'];
     turma = json['turma'];
+    dataNascimento = json["dataNascimento"];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class Student {
     data['descricaoTipoEscola'] = this.descricaoTipoEscola;
     data['siglaDre'] = this.siglaDre;
     data['turma'] = this.turma;
+    data["dataNascimento"] = this.dataNascimento;
     return data;
   }
 }
