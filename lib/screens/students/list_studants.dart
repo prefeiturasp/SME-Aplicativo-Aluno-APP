@@ -7,7 +7,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
-import 'package:sme_app_aluno/models/student.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
@@ -195,16 +195,17 @@ class _ListStudantsState extends State<ListStudants> {
                         );
                       } else {
                         return ListView.builder(
-                          itemCount: _studentsController.listStudents.length,
+                          itemCount:
+                              _studentsController.dataEstudent.data.length,
                           itemBuilder: (context, index) {
-                            final dados = _studentsController.listStudents;
+                            final dados = _studentsController.dataEstudent.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TagCustom(
                                     text: "${dados[index].descricaoTipoEscola}",
                                     color: Color(0xffC65D00)),
-                                _listStudents(dados[index].student, context),
+                                _listStudents(dados[index].students, context),
                               ],
                             );
                           },
