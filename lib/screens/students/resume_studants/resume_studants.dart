@@ -67,7 +67,9 @@ class ResumeStudants extends StatelessWidget {
                             bottom: BorderSide(
                                 color: Color(0xffC5C5C5), width: 0.5))),
                     child: StudentInfo(
-                      studentName: student.nome,
+                      studentName: student.nomeSocial != ""
+                          ? student.nomeSocial
+                          : student.nome,
                       schoolName: student.escola,
                     ),
                   ),
