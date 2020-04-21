@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 
 class Dashboard extends StatelessWidget {
+  final Student student;
+
+  Dashboard({@required this.student});
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -26,10 +31,12 @@ class Dashboard extends StatelessWidget {
                 height: screenHeight * 2.5,
               ),
               TagCustom(
-                  text: "FUNDAMENTAL",
+                  text: student.descricaoTipoEscola,
                   color: Color(0xffEEC25E),
                   textColor: Color(0xffD06D12)),
-              CardResumeStudent(),
+              CardResumeStudent(
+                student: student,
+              ),
               CardRecentMessage(),
               CardAlert(
                 title: "ALERTA DE NOTAS",
@@ -55,7 +62,9 @@ class Dashboard extends StatelessWidget {
           ),
         ),
       ),
-      drawer: DrawerMenu(),
+      drawer: DrawerMenu(
+        student: student,
+      ),
     );
   }
 }

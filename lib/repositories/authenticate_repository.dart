@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
-import 'package:sme_app_aluno/models/data.dart';
+import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -19,19 +17,19 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
-        if (data.user.cpf.isNotEmpty) {
+        var user = Data.fromJson(decodeJson);
+        if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
-            data.user.nome,
-            data.user.cpf,
-            data.user.email,
-            data.user.token,
+            user.data.nome,
+            user.data.cpf,
+            user.data.email,
+            user.data.token,
             userPassword,
           );
         }
-        return data;
+        return user;
       } else {
-        var dataError = Data();
+        Data dataError = Data();
         dataError.erros = [response.body];
         return dataError;
       }

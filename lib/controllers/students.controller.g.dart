@@ -9,21 +9,21 @@ part of 'students.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$StudentsController on _StudentsControllerBase, Store {
-  final _$listStudentsAtom = Atom(name: '_StudentsControllerBase.listStudents');
+  final _$dataEstudentAtom = Atom(name: '_StudentsControllerBase.dataEstudent');
 
   @override
-  ObservableList<DataStudents> get listStudents {
-    _$listStudentsAtom.context.enforceReadPolicy(_$listStudentsAtom);
-    _$listStudentsAtom.reportObserved();
-    return super.listStudents;
+  DataStudent get dataEstudent {
+    _$dataEstudentAtom.context.enforceReadPolicy(_$dataEstudentAtom);
+    _$dataEstudentAtom.reportObserved();
+    return super.dataEstudent;
   }
 
   @override
-  set listStudents(ObservableList<DataStudents> value) {
-    _$listStudentsAtom.context.conditionallyRunInAction(() {
-      super.listStudents = value;
-      _$listStudentsAtom.reportChanged();
-    }, _$listStudentsAtom, name: '${_$listStudentsAtom.name}_set');
+  set dataEstudent(DataStudent value) {
+    _$dataEstudentAtom.context.conditionallyRunInAction(() {
+      super.dataEstudent = value;
+      _$dataEstudentAtom.reportChanged();
+    }, _$dataEstudentAtom, name: '${_$dataEstudentAtom.name}_set');
   }
 
   final _$isLoadingAtom = Atom(name: '_StudentsControllerBase.isLoading');
@@ -54,7 +54,7 @@ mixin _$StudentsController on _StudentsControllerBase, Store {
   @override
   String toString() {
     final string =
-        'listStudents: ${listStudents.toString()},isLoading: ${isLoading.toString()}';
+        'dataEstudent: ${dataEstudent.toString()},isLoading: ${isLoading.toString()}';
     return '{$string}';
   }
 }

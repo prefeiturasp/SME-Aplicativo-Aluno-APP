@@ -12,4 +12,9 @@ A aplicação utiliza o recurso de generators do Flutter, logo precisamos rodar 
 
 > flutter pub run build_runner build
 
+Para compilar a versão com mock:
 
+> flutter build apk -t lib/main.mock.dart
+Para compilar a versão release:
+
+> flutter build apk -t lib/main.dart

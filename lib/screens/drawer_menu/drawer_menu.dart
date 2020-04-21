@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
@@ -11,6 +12,8 @@ import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.d
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class DrawerMenu extends StatefulWidget {
+  final Student student;
+  DrawerMenu({@required this.student});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
@@ -148,8 +151,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ResumeStudants()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ResumeStudants(
+                            student: widget.student,
+                          )));
             },
           ),
           ListTile(

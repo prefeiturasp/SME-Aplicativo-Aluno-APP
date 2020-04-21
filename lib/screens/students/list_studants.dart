@@ -7,11 +7,12 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
-import 'package:sme_app_aluno/models/student.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class ListStudants extends StatefulWidget {
@@ -43,7 +44,7 @@ class _ListStudantsState extends State<ListStudants> {
   Future<void> initPlatformState() async {
     BackgroundFetch.configure(
             BackgroundFetchConfig(
-              minimumFetchInterval: 1,
+              minimumFetchInterval: 2,
               forceAlarmManager: false,
               stopOnTerminate: false,
               startOnBoot: true,
@@ -71,7 +72,12 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    await _authenticateController.authenticateUser(widget.cpf, widget.password);
+    if (GlobalConfig.Environment == "test") {
+      await _authenticateController.authenticateUser(widget.cpf, "20032005");
+    } else {
+      await _authenticateController.authenticateUser(
+          widget.cpf, widget.password);
+    }
 
     if (_authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros[0] != null) {
@@ -92,8 +98,8 @@ class _ListStudantsState extends State<ListStudants> {
       schoolName: "${model.escola}",
       studentGrade: "${model.turma}",
       onPress: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Dashboard()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Dashboard(student: model)));
       },
     );
   }
@@ -189,16 +195,17 @@ class _ListStudantsState extends State<ListStudants> {
                         );
                       } else {
                         return ListView.builder(
-                          itemCount: _studentsController.listStudents.length,
+                          itemCount:
+                              _studentsController.dataEstudent.data.length,
                           itemBuilder: (context, index) {
-                            final dados = _studentsController.listStudents;
+                            final dados = _studentsController.dataEstudent.data;
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TagCustom(
                                     text: "${dados[index].descricaoTipoEscola}",
                                     color: Color(0xffC65D00)),
-                                _listStudents(dados[index].student, context),
+                                _listStudents(dados[index].students, context),
                               ],
                             );
                           },

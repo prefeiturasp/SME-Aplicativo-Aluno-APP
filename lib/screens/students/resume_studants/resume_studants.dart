@@ -1,8 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class ResumeStudants extends StatelessWidget {
+  final Student student;
+
+  ResumeStudants({@required this.student});
+
   Widget itemResume(BuildContext context, String infoName, String infoData,
       double screenHeight) {
     return Container(
@@ -62,8 +67,8 @@ class ResumeStudants extends StatelessWidget {
                             bottom: BorderSide(
                                 color: Color(0xffC5C5C5), width: 0.5))),
                     child: StudentInfo(
-                      studentName: "ADRIA PEDRO GONZALES",
-                      schoolName: "EMEF JARDIM ELIANA",
+                      studentName: student.nome,
+                      schoolName: student.escola,
                     ),
                   ),
                   Container(
@@ -161,8 +166,8 @@ class ResumeStudants extends StatelessWidget {
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),
-                        itemResume(
-                            context, "Código EOL", "43689081", screenHeight),
+                        itemResume(context, "Código EOL",
+                            "${student.codigoEol}", screenHeight),
                         SizedBox(
                           height: screenHeight * 2.5,
                         ),

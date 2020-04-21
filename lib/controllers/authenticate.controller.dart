@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/data.dart';
+import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/repositories/authenticate_repository.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
