@@ -114,11 +114,11 @@ class _LoginState extends State<Login> {
                 child: Column(
                   children: <Widget>[
                     Container(
+                      width: screenHeight * 45,
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(
                           top: screenHeight * 8, bottom: screenHeight * 6),
-                      width: double.infinity,
-                      child: Image.asset("assets/images/logo_app.png"),
+                      child: Image.asset("assets/images/Logo_escola_aqui.png"),
                     ),
                     Form(
                       autovalidate: true,
