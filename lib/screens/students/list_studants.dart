@@ -98,8 +98,8 @@ class _ListStudantsState extends State<ListStudants> {
       schoolName: "${model.escola}",
       studentGrade: "${model.turma}",
       onPress: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Dashboard()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => Dashboard(student: model)));
       },
     );
   }
