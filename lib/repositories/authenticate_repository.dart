@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
-import 'package:sme_app_aluno/models/data.dart';
+import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -29,7 +29,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         }
         return user;
       } else {
-        var dataError = Data();
+        Data dataError = Data();
         dataError.erros = [response.body];
         return dataError;
       }
