@@ -111,12 +111,12 @@ class CardRecentMessage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                    width: screenHeight * 7,
-                    height: screenHeight * 7,
+                    width: screenHeight * 6,
+                    height: screenHeight * 6,
                     decoration: BoxDecoration(
                       border: Border.all(color: Color(0xffC65D00), width: 1),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(screenHeight * 3.5),
+                        Radius.circular(screenHeight * 3),
                       ),
                     ),
                     child: Icon(
@@ -127,10 +127,11 @@ class CardRecentMessage extends StatelessWidget {
                 ),
                 Container(
                   child: Container(
+                    height: screenHeight * 6,
                     decoration: BoxDecoration(
                       border: Border.all(color: Color(0xffC65D00), width: 1),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(screenHeight * 4),
+                        Radius.circular(screenHeight * 3),
                       ),
                     ),
                     child: FlatButton(

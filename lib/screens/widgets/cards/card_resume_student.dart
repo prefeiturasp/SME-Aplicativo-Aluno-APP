@@ -79,12 +79,17 @@ class CardResumeStudent extends StatelessWidget {
             padding: EdgeInsets.all(screenHeight * 2.5),
           ),
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
+            padding: EdgeInsets.only(
+                left: screenHeight * 2.5,
+                top: screenHeight * 2.5,
+                right: screenHeight * 2.5,
+                bottom: screenHeight * 1.5),
             child: Container(
+              height: screenHeight * 6,
               decoration: BoxDecoration(
                 border: Border.all(color: Color(0xffC65D00), width: 1),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(screenHeight * 4),
+                  Radius.circular(screenHeight * 3),
                 ),
               ),
               child: FlatButton(

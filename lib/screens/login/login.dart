@@ -258,11 +258,11 @@ class _LoginState extends State<Login> {
                             !busy
                                 ? Container(
                                     width: MediaQuery.of(context).size.width,
-                                    height: screenHeight * 7,
+                                    height: screenHeight * 6,
                                     decoration: BoxDecoration(
                                         color: Color(0xffd06d12),
                                         borderRadius: BorderRadius.circular(
-                                            screenHeight * 3.5)),
+                                            screenHeight * 3)),
                                     child: FlatButton(
                                         onPressed: () {
                                           if (_formKey.currentState
