@@ -13,6 +13,7 @@ class TagCustom extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
+      margin: EdgeInsets.only(top: screenHeight * 1, bottom: screenHeight * 2),
       padding: EdgeInsets.only(
           left: screenHeight * 2.2,
           top: screenHeight * 0.9,

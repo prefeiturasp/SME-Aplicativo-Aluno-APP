@@ -24,8 +24,7 @@ class CardStudent extends StatelessWidget {
       onTap: onPress,
       child: Container(
         padding: EdgeInsets.all(screenHeight * 2),
-        margin:
-            EdgeInsets.only(top: screenHeight * 1, bottom: screenHeight * 3),
+        margin: EdgeInsets.only(bottom: screenHeight * 1.5),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
