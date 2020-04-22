@@ -141,7 +141,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Messages()));
+                  context, MaterialPageRoute(builder: (context) => MessagesWidget()));
             },
           ),
           ListTile(

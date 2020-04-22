@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/global_config.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthenticateController>.value(value: AuthenticateController()),
         Provider<StudentsController>.value(value: StudentsController()),
+        Provider<MessagesController>.value(value: MessagesController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

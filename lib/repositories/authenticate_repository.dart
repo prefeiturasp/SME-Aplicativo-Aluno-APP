@@ -45,6 +45,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
     storage.insertString('current_cpf', cpf);
     storage.insertString('current_email', email);
     storage.insertString('token', token);
-    storage.insertString('token', password);
+    storage.insertString('password', password);
   }
 }
