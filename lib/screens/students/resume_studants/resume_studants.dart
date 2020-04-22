@@ -4,11 +4,19 @@ import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:intl/intl.dart';
 
-class ResumeStudants extends StatelessWidget {
+class ResumeStudants extends StatefulWidget {
   final Student student;
 
   ResumeStudants({@required this.student});
 
+  @override
+  _ResumeStudantsState createState() => _ResumeStudantsState();
+}
+
+class _ResumeStudantsState extends State<ResumeStudants> {
+  bool abaDados = true;
+  bool abaBoletim = false;
+  bool abaFrequencia = false;
   Widget itemResume(BuildContext context, String infoName, String infoData,
       double screenHeight) {
     return Container(
@@ -40,13 +48,49 @@ class ResumeStudants extends StatelessWidget {
     );
   }
 
+  content(BuildContext context, double screenHeight, Student data) {
+    var formatter = new DateFormat('dd/MM/yyyy');
+    String dateFormatted =
+        formatter.format(DateTime.parse(data.dataNascimento));
+    String dateSituacaoMatricula =
+        formatter.format(DateTime.parse(data.dataSituacaoMatricula));
+    if (abaDados) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(screenHeight * 2.5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            itemResume(
+                context, "Data de Nascimento", "$dateFormatted", screenHeight),
+            SizedBox(
+              height: screenHeight * 2.5,
+            ),
+            itemResume(
+                context, "Código EOL", "${data.codigoEol}", screenHeight),
+            SizedBox(
+              height: screenHeight * 2.5,
+            ),
+            itemResume(context, "Situação",
+                "Matriculado em $dateSituacaoMatricula", screenHeight),
+          ],
+        ),
+      );
+    }
+
+    if (abaBoletim) {
+      return Text("Hello Boletim");
+    }
+
+    if (abaFrequencia) {
+      return Text("Hello Frequencia");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var formatter = new DateFormat('dd/MM/yyyy');
-    String dateFormatted =
-        formatter.format(DateTime.parse(student.dataNascimento));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,17 +115,23 @@ class ResumeStudants extends StatelessWidget {
                             bottom: BorderSide(
                                 color: Color(0xffC5C5C5), width: 0.5))),
                     child: StudentInfo(
-                      studentName: student.nomeSocial != null
-                          ? student.nomeSocial
-                          : student.nome,
-                      schoolName: student.escola,
+                      studentName: widget.student.nomeSocial != null
+                          ? widget.student.nomeSocial
+                          : widget.student.nome,
+                      schoolName: widget.student.escola,
                     ),
                   ),
                   Container(
                       child: Row(
                     children: <Widget>[
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            abaDados = true;
+                            abaBoletim = false;
+                            abaFrequencia = false;
+                          });
+                        },
                         child: Container(
                           width:
                               (MediaQuery.of(context).size.width / 100) * 33.33,
@@ -92,7 +142,10 @@ class ResumeStudants extends StatelessWidget {
                             color: Colors.white,
                             border: Border(
                                 bottom: BorderSide(
-                                    color: Color(0xffC65D00), width: 2)),
+                                    color: abaDados
+                                        ? Color(0xffC65D00)
+                                        : Color(0xffCECECE),
+                                    width: 2)),
                           ),
                           child: Center(
                             child: AutoSizeText(
@@ -100,14 +153,22 @@ class ResumeStudants extends StatelessWidget {
                               maxFontSize: 16,
                               minFontSize: 14,
                               style: TextStyle(
-                                  color: Color(0xffC65D00),
+                                  color: abaDados
+                                      ? Color(0xffC65D00)
+                                      : Color(0xffCECECE),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            abaDados = false;
+                            abaBoletim = true;
+                            abaFrequencia = false;
+                          });
+                        },
                         child: Container(
                           width:
                               (MediaQuery.of(context).size.width / 100) * 33.33,
@@ -118,7 +179,10 @@ class ResumeStudants extends StatelessWidget {
                             color: Colors.white,
                             border: Border(
                                 bottom: BorderSide(
-                                    color: Color(0xffCECECE), width: 2)),
+                                    color: abaBoletim
+                                        ? Color(0xffC65D00)
+                                        : Color(0xffCECECE),
+                                    width: 2)),
                           ),
                           child: Center(
                             child: AutoSizeText(
@@ -126,14 +190,22 @@ class ResumeStudants extends StatelessWidget {
                               maxFontSize: 16,
                               minFontSize: 14,
                               style: TextStyle(
-                                  color: Color(0xffCECECE),
+                                  color: abaBoletim
+                                      ? Color(0xffC65D00)
+                                      : Color(0xffCECECE),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            abaDados = false;
+                            abaBoletim = false;
+                            abaFrequencia = true;
+                          });
+                        },
                         child: Container(
                           width:
                               (MediaQuery.of(context).size.width / 100) * 33.33,
@@ -145,7 +217,10 @@ class ResumeStudants extends StatelessWidget {
                             color: Colors.white,
                             border: Border(
                                 bottom: BorderSide(
-                                    color: Color(0xffCECECE), width: 2)),
+                                    color: abaFrequencia
+                                        ? Color(0xffC65D00)
+                                        : Color(0xffCECECE),
+                                    width: 2)),
                           ),
                           child: Center(
                             child: AutoSizeText(
@@ -153,7 +228,9 @@ class ResumeStudants extends StatelessWidget {
                               maxFontSize: 16,
                               minFontSize: 14,
                               style: TextStyle(
-                                  color: Color(0xffCECECE),
+                                  color: abaFrequencia
+                                      ? Color(0xffC65D00)
+                                      : Color(0xffCECECE),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -161,27 +238,7 @@ class ResumeStudants extends StatelessWidget {
                       )
                     ],
                   )),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(screenHeight * 2.5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        itemResume(context, "Data de Nascimento",
-                            "$dateFormatted", screenHeight),
-                        SizedBox(
-                          height: screenHeight * 2.5,
-                        ),
-                        itemResume(context, "Código EOL",
-                            "${student.codigoEol}", screenHeight),
-                        SizedBox(
-                          height: screenHeight * 2.5,
-                        ),
-                        itemResume(context, "Situação", "Matriculado em -",
-                            screenHeight),
-                      ],
-                    ),
-                  )
+                  content(context, screenHeight, widget.student)
                 ],
               )
             ],

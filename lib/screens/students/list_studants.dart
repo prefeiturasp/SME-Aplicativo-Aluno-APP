@@ -127,7 +127,7 @@ class _ListStudantsState extends State<ListStudants> {
                   BackgroundFetch.stop().then((int status) {
                     print('[BackgroundFetch] stop success: $status');
                   });
-                  _storage.removeAllValues();
+
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 },
