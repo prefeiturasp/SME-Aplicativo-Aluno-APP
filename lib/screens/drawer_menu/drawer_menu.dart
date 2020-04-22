@@ -19,7 +19,7 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  final Storage storage = Storage();
+  final Storage _storage = Storage();
 
   AuthenticateController _authenticateController;
 
@@ -33,21 +33,26 @@ class _DrawerMenuState extends State<DrawerMenu> {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
     var _token = await storage.readValueStorage("token") ?? "";
     var _password = await storage.readValueStorage("current_password") ?? "";
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ListStudants(
-                  cpf: _cpf,
-                  token: _token,
-                  password: _password,
-                )));
+    bool isCurrentUser = await storage.containsKey("current_cpf");
+    if (isCurrentUser) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ListStudants(
+                    cpf: _cpf,
+                    token: _token,
+                    password: _password,
+                  )));
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    }
   }
 
   _logout(BuildContext context) {
     BackgroundFetch.stop().then((int status) {
       print('[BackgroundFetch] stop success: $status');
     });
-    storage.removeAllValues();
+    _storage.removeAllValues();
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
 
@@ -120,7 +125,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              navigateToListStudents(context, storage);
+              navigateToListStudents(context, _storage);
             },
           ),
           ListTile(
