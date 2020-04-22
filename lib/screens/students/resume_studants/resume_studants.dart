@@ -247,7 +247,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                                 bottom: BorderSide(
                                     color: abaFrequencia
                                         ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
+                                        : Color(0xffCECECE),
                                     width: 2)),
                           ),
                           child: Center(
