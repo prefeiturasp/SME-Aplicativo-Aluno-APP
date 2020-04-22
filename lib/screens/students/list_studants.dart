@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,10 @@ class _ListStudantsState extends State<ListStudants> {
       await _authenticateController.authenticateUser(
           widget.cpf, widget.password);
     }
+
+    print(
+      "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}"
+    );
 
     if (_authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros.length > 0 &&
