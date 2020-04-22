@@ -139,7 +139,7 @@ class CardRecentMessage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Messages()));
+                                builder: (context) => MessagesWidget()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
