@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:intl/intl.dart';
 
@@ -79,11 +81,37 @@ class _ResumeStudantsState extends State<ResumeStudants> {
     }
 
     if (abaBoletim) {
-      return Text("Hello Boletim");
+      return Container(
+        padding: EdgeInsets.all(screenHeight * 2.5),
+        child: CardAlert(
+          isHeader: false,
+          icon: Icon(
+            FontAwesomeIcons.envelopeOpen,
+            color: Color(0xffFFD037),
+            size: screenHeight * 8,
+          ),
+          text:
+              "Em breve, você terá, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
+          textSize: 20,
+        ),
+      );
     }
 
     if (abaFrequencia) {
-      return Text("Hello Frequencia");
+      return Container(
+        padding: EdgeInsets.all(screenHeight * 2.5),
+        child: CardAlert(
+          isHeader: false,
+          icon: Icon(
+            FontAwesomeIcons.envelopeOpen,
+            color: Color(0xffFFD037),
+            size: screenHeight * 8,
+          ),
+          text:
+              "Em breve, você terá, você terá acesso aos dados de Frequência. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
+          textSize: 20,
+        ),
+      );
     }
   }
 
@@ -155,7 +183,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                               style: TextStyle(
                                   color: abaDados
                                       ? Color(0xffC65D00)
-                                      : Color(0xffCECECE),
+                                      : Color(0xff9f9f9f),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -192,7 +220,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                               style: TextStyle(
                                   color: abaBoletim
                                       ? Color(0xffC65D00)
-                                      : Color(0xffCECECE),
+                                      : Color(0xff9f9f9f),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -219,7 +247,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                                 bottom: BorderSide(
                                     color: abaFrequencia
                                         ? Color(0xffC65D00)
-                                        : Color(0xffCECECE),
+                                        : Color(0xff9f9f9f),
                                     width: 2)),
                           ),
                           child: Center(
@@ -230,7 +258,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                               style: TextStyle(
                                   color: abaFrequencia
                                       ? Color(0xffC65D00)
-                                      : Color(0xffCECECE),
+                                      : Color(0xff9f9f9f),
                                   fontWeight: FontWeight.w500),
                             ),
                           ),

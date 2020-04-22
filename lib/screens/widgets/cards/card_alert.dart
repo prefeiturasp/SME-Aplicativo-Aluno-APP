@@ -6,8 +6,11 @@ class CardAlert extends StatelessWidget {
   final String title;
   final Icon icon;
   final String text;
+  final double textSize;
+  final bool isHeader;
 
-  CardAlert({this.title, this.icon, this.text});
+  CardAlert(
+      {this.title, this.icon, this.text, this.isHeader = true, this.textSize});
 
   @override
   Widget build(BuildContext context) {
@@ -32,30 +35,36 @@ class CardAlert extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
+            padding:
+                isHeader ? EdgeInsets.all(screenHeight * 2.5) : EdgeInsets.zero,
             decoration: BoxDecoration(
-                color: Color(0xffFFD037),
+                color: isHeader ? Color(0xffFFD037) : Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: screenHeight * 2),
-                  child: Icon(
-                    FontAwesomeIcons.flag,
-                    color: Color(0xffC45C04),
-                    size: screenHeight * 2.7,
-                  ),
-                ),
-                AutoSizeText(
-                  title,
-                  maxFontSize: 18,
-                  minFontSize: 16,
-                  style: TextStyle(
-                      color: Color(0xffC45C04), fontWeight: FontWeight.w700),
-                )
+                isHeader
+                    ? Container(
+                        margin: EdgeInsets.only(right: screenHeight * 2),
+                        child: Icon(
+                          FontAwesomeIcons.flag,
+                          color: Color(0xffC45C04),
+                          size: screenHeight * 2.7,
+                        ),
+                      )
+                    : Container(),
+                isHeader
+                    ? AutoSizeText(
+                        title,
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: TextStyle(
+                            color: Color(0xffC45C04),
+                            fontWeight: FontWeight.w700),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -76,8 +85,8 @@ class CardAlert extends StatelessWidget {
                         child: Center(
                           child: AutoSizeText(
                             text,
-                            maxFontSize: 16,
-                            minFontSize: 14,
+                            maxFontSize: textSize != null ? textSize : 16,
+                            minFontSize: textSize != null ? textSize - 2 : 14,
                             maxLines: 5,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
