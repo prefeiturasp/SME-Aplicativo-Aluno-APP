@@ -2,7 +2,7 @@ class User {
   int id;
   String nome;
   String cpf;
-  Null email;
+  String email;
   String token;
 
   User({this.id, this.nome, this.cpf, this.email, this.token});

@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
     var snackbar = SnackBar(
         content: _authenticateController.currentUser != null
             ? Text(_authenticateController.currentUser.erros[0])
-            : Text("dddd"));
+            : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
