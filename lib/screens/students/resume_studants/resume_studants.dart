@@ -91,7 +91,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
             size: screenHeight * 8,
           ),
           text:
-              "Em breve, você terá, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
+              "Em breve, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
           textSize: 20,
         ),
       );
@@ -108,7 +108,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
             size: screenHeight * 8,
           ),
           text:
-              "Em breve, você terá, você terá acesso aos dados de Frequência. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
+              "Em breve, você terá acesso aos dados de Frequência. Aguarde a próxima versão do aplicativo e atualize assim que estive disponível",
           textSize: 20,
         ),
       );
