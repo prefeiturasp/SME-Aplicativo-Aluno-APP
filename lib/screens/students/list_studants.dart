@@ -81,8 +81,7 @@ class _ListStudantsState extends State<ListStudants> {
     }
 
     print(
-      "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}"
-    );
+        "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
 
     if (_authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros.length > 0 &&
@@ -100,9 +99,10 @@ class _ListStudantsState extends State<ListStudants> {
 
   Widget _itemCardStudent(BuildContext context, Student model) {
     return CardStudent(
-      name: model.nomeSocial != null ? "${model.nomeSocial}" : "${model.nome}",
-      schoolName: "${model.escola}",
-      studentGrade: "${model.turma}",
+      name: model.nomeSocial != null ? model.nomeSocial : model.nome,
+      schoolName: model.escola,
+      studentGrade: model.turma,
+      schooType: model.descricaoTipoEscola,
       onPress: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => Dashboard(student: model)));

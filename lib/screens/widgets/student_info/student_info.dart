@@ -1,15 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class StudentInfo extends StatelessWidget {
   final String studentName;
   final String schoolName;
+  final String schoolType;
   final Widget avatar;
   final EdgeInsets padding;
 
   StudentInfo(
       {@required this.studentName,
       @required this.schoolName,
+      @required this.schoolType,
       this.avatar,
       this.padding});
 
@@ -17,7 +20,9 @@ class StudentInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
     return Container(
+      alignment: Alignment.center,
       padding: padding != null ? padding : EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -39,23 +44,26 @@ class StudentInfo extends StatelessWidget {
                   ),
           ),
           Container(
-            margin: EdgeInsets.only(top: screenHeight * 1.8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 AutoSizeText(
-                  studentName,
+                  StringSupport.truncateEndString(studentName, 25),
                   maxFontSize: 16,
                   minFontSize: 14,
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
                 ),
-                AutoSizeText(
-                  schoolName,
-                  maxFontSize: 16,
-                  minFontSize: 14,
-                  style: TextStyle(
-                    color: Color(0xff666666),
+                Container(
+                  width: screenHeight * 30,
+                  child: AutoSizeText(
+                    "$schoolType $schoolName",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: Color(0xff666666),
+                    ),
                   ),
                 )
               ],

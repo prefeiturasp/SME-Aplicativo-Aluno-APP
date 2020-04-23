@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class CardStudent extends StatelessWidget {
   final String name;
   final String schoolName;
+  final String schooType;
   final String studentGrade;
   final Function onPress;
   final Image avatar;
@@ -14,12 +16,14 @@ class CardStudent extends StatelessWidget {
       @required this.schoolName,
       @required this.studentGrade,
       @required this.onPress,
+      @required this.schooType,
       this.avatar});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
     return GestureDetector(
       onTap: onPress,
       child: Container(
@@ -63,7 +67,7 @@ class CardStudent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AutoSizeText(
-                          name,
+                          StringSupport.truncateEndString(name, 25),
                           maxFontSize: 12,
                           minFontSize: 10,
                           style: TextStyle(color: Colors.black),
@@ -72,9 +76,9 @@ class CardStudent extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          schoolName,
+                          "$schooType ${StringSupport.truncateEndString(schoolName, 25)}",
                           maxFontSize: 10,
-                          minFontSize: 9,
+                          minFontSize: 8,
                           style: TextStyle(color: Color(0xff666666)),
                         ),
                         SizedBox(
@@ -83,7 +87,7 @@ class CardStudent extends StatelessWidget {
                         AutoSizeText(
                           "TURMA $studentGrade",
                           maxFontSize: 10,
-                          minFontSize: 9,
+                          minFontSize: 8,
                           style: TextStyle(color: Color(0xffBBBDC9)),
                         ),
                       ],

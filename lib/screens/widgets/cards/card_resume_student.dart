@@ -77,6 +77,7 @@ class CardResumeStudent extends StatelessWidget {
             studentName:
                 student.nomeSocial != null ? student.nomeSocial : student.nome,
             schoolName: student.escola,
+            schoolType: student.descricaoTipoEscola,
             padding: EdgeInsets.all(screenHeight * 2.5),
           ),
           Container(
