@@ -56,8 +56,8 @@ class StudentInfo extends StatelessWidget {
                   width: screenHeight * 30,
                   child: AutoSizeText(
                     "$schoolType $schoolName",
-                    maxFontSize: 14,
-                    minFontSize: 12,
+                    maxFontSize: 12,
+                    minFontSize: 10,
                     maxLines: 2,
                     style: TextStyle(
                       color: Color(0xff666666),
