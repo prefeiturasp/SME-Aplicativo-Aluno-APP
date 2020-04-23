@@ -22,11 +22,9 @@ class StudentInfo extends StatelessWidget {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Container(
-      alignment: Alignment.center,
       padding: padding != null ? padding : EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(

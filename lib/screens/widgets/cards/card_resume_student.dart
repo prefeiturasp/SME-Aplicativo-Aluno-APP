@@ -107,7 +107,7 @@ class CardResumeStudent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     AutoSizeText(
-                      "VER HISTÓRICO COMPLETO",
+                      "MAIS INFORMAÇÕES",
                       maxFontSize: 16,
                       minFontSize: 14,
                       style: TextStyle(
