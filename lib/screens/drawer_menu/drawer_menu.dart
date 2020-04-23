@@ -74,12 +74,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   Container(
                     margin: EdgeInsets.only(
                         right: screenHeight * 3, bottom: screenHeight * 3),
-                    width: screenHeight * 10,
-                    height: screenHeight * 10,
-                    decoration: BoxDecoration(
-                        color: Color(0xffC4C4C4),
-                        borderRadius: BorderRadius.circular(screenHeight * 5)),
-                    child: Image.asset("assets/images/avatar_estudante.png"),
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/avatar_estudante.png",
+                        width: screenHeight * 8,
+                        height: screenHeight * 8,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   Observer(builder: (context) {
                     if (_authenticateController.currentName != null) {
@@ -140,8 +142,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => MessagesWidget()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MessagesWidget()));
             },
           ),
           ListTile(

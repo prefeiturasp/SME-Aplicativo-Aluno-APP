@@ -46,16 +46,18 @@ class CardStudent extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.only(right: screenHeight * 1.5),
-                      width: screenHeight * 8,
-                      height: screenHeight * 8,
-                      decoration: BoxDecoration(
-                          color: Color(0xffC4C4C4),
-                          borderRadius:
-                              BorderRadius.circular(screenHeight * 4)),
-                      child: avatar != null
-                          ? avatar
-                          : Image.asset("assets/images/avatar_estudante.png")),
+                    margin: EdgeInsets.only(right: screenHeight * 1.5),
+                    child: avatar != null
+                        ? avatar
+                        : ClipOval(
+                            child: Image.asset(
+                              "assets/images/avatar_estudante.png",
+                              width: screenHeight * 8,
+                              height: screenHeight * 8,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
                   Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
