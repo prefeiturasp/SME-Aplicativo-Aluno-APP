@@ -67,7 +67,7 @@ class CardStudent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         AutoSizeText(
-                          StringSupport.truncateEndString(name, 25),
+                          StringSupport.truncateEndString(name, 30),
                           maxFontSize: 12,
                           minFontSize: 10,
                           style: TextStyle(color: Colors.black),
@@ -76,7 +76,7 @@ class CardStudent extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          "$schooType ${StringSupport.truncateEndString(schoolName, 25)}",
+                          "$schooType ${StringSupport.truncateEndString(schoolName, 40)}",
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xff666666)),

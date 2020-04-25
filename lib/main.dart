@@ -2,6 +2,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
@@ -25,9 +26,22 @@ class MyApp extends StatelessWidget {
     GlobalConfig.Environment = "prod";
   }
 
+  check() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      // I am connected to a mobile network.
+      print("---> I am connected to a mobile network");
+    } else {
+      print("---> I am connected to a wifi network");
+      // I am connected to a wifi network.
+    }
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    check();
     return MultiProvider(
       providers: [
         Provider<AuthenticateController>.value(value: AuthenticateController()),
