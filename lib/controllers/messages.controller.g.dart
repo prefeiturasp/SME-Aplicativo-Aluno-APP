@@ -12,14 +12,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   final _$messagesAtom = Atom(name: '_MessagesControllerBase.messages');
 
   @override
-  List<Message> get messages {
+  ObservableList<Message> get messages {
     _$messagesAtom.context.enforceReadPolicy(_$messagesAtom);
     _$messagesAtom.reportObserved();
     return super.messages;
   }
 
   @override
-  set messages(List<Message> value) {
+  set messages(ObservableList<Message> value) {
     _$messagesAtom.context.conditionallyRunInAction(() {
       super.messages = value;
       _$messagesAtom.reportChanged();
@@ -46,8 +46,9 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   final _$loadMessagesAsyncAction = AsyncAction('loadMessages');
 
   @override
-  Future<List<Message>> loadMessages(String token) {
-    return _$loadMessagesAsyncAction.run(() => super.loadMessages(token));
+  Future loadMessages({String token}) {
+    return _$loadMessagesAsyncAction
+        .run(() => super.loadMessages(token: token));
   }
 
   @override

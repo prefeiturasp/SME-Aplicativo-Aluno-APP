@@ -14,16 +14,19 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @observable
-  List<Message> messages;
+  ObservableList<Message> messages;
+
+  @observable
+  Message recentMessage;
 
   @observable
   bool isLoading = false;
 
   @action
-  Future<List<Message>> loadMessages(String token) async {
-    this.isLoading = true;
-    this.messages = await _messagesRepository.fetchMessages(token);
-    this.isLoading = false;
-    return this.messages;
+  loadMessages({String token}) async {
+    isLoading = true;
+    messages = ObservableList<Message>.of(
+        await _messagesRepository.fetchMessages(token));
+    isLoading = false;
   }
 }
