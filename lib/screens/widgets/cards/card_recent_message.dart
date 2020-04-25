@@ -1,9 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/messages.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class CardRecentMessage extends StatelessWidget {
+  final Message message;
+  final int countMessages;
+
+  CardRecentMessage({@required this.message, this.countMessages});
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -34,71 +42,123 @@ class CardRecentMessage extends StatelessWidget {
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: screenHeight * 2),
-                  child: Icon(
-                    FontAwesomeIcons.envelopeOpen,
-                    color: Color(0xffFFD037),
-                    size: screenHeight * 2.7,
+                    margin: EdgeInsets.only(right: screenHeight * 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(
+                          FontAwesomeIcons.envelopeOpen,
+                          color: Color(0xffFFD037),
+                          size: screenHeight * 2.7,
+                        ),
+                        SizedBox(
+                          width: screenHeight * 1.5,
+                        ),
+                        AutoSizeText(
+                          "MENSAGEM MAIS RECENTE",
+                          maxFontSize: 18,
+                          minFontSize: 16,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    )),
+                Stack(overflow: Overflow.visible, children: <Widget>[
+                  Container(
+                    width: screenHeight * 3.5,
+                    height: screenHeight * 3.5,
+                    decoration: BoxDecoration(
+                      color: Color(0xfffac635),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(screenHeight * 1.750),
+                      ),
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.envelopeOpen,
+                      color: Color(0xffC65D00),
+                      size: 10,
+                    ),
                   ),
-                ),
-                AutoSizeText(
-                  "MENSAGEM MAIS RECENTE",
-                  maxFontSize: 18,
-                  minFontSize: 16,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w700),
-                )
+                  Positioned(
+                    top: -10.0,
+                    right: 0.0,
+                    child: Container(
+                        width: screenHeight * 3,
+                        height: screenHeight * 3,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 1.5),
+                          ),
+                        ),
+                        child: Center(
+                          child: AutoSizeText(
+                            "24",
+                            maxFontSize: 11,
+                            minFontSize: 9,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffC45C04)),
+                          ),
+                        )),
+                  ),
+                ]),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
-            color: Color(0xffC45C04),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: screenHeight * 1.8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      AutoSizeText(
-                        "ADRIA PEDRO GONZALES",
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(screenHeight * 2.5),
+              color: Color(0xffC45C04),
+              child: Container(
+                margin: EdgeInsets.only(top: screenHeight * 1.8),
+                child: message != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          AutoSizeText(
+                            message.titulo,
+                            maxFontSize: 16,
+                            minFontSize: 14,
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 1.8,
+                          ),
+                          Container(
+                            width: screenHeight * 36,
+                            child: AutoSizeText(
+                              StringSupport.truncateEndString(
+                                  message.mensagem, 250),
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 3,
+                          ),
+                        ],
+                      )
+                    : AutoSizeText(
+                        "Nenhuma mensagem está disponível para este aluno",
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 2,
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.w700),
                       ),
-                      SizedBox(
-                        height: screenHeight * 1.8,
-                      ),
-                      Container(
-                        width: screenHeight * 36,
-                        child: AutoSizeText(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consectetur felis quis imperdiet congue. Suspendisse hendrerit placerat orci.",
-                          maxFontSize: 16,
-                          minFontSize: 14,
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenHeight * 3,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+              )),
           Container(
             padding: EdgeInsets.only(
                 left: screenHeight * 2.5,
