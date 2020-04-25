@@ -97,7 +97,7 @@ class _ListStudantsState extends State<ListStudants> {
     BackgroundFetch.finish(taskId);
   }
 
-  Widget _itemCardStudent(BuildContext context, Student model) {
+  Widget _itemCardStudent(BuildContext context, Student model, String token) {
     return CardStudent(
       name: model.nomeSocial != null ? model.nomeSocial : model.nome,
       schoolName: model.escola,
@@ -105,15 +105,15 @@ class _ListStudantsState extends State<ListStudants> {
       schooType: model.descricaoTipoEscola,
       onPress: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Dashboard(student: model)));
+            MaterialPageRoute(builder: (context) => Dashboard(student: model, token: token)));
       },
     );
   }
 
-  Widget _listStudents(List<Student> students, BuildContext context) {
+  Widget _listStudents(List<Student> students, BuildContext context, String token) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
-      list.add(_itemCardStudent(context, students[i]));
+      list.add(_itemCardStudent(context, students[i], token));
     }
     return new Column(children: list);
   }
@@ -211,7 +211,7 @@ class _ListStudantsState extends State<ListStudants> {
                                 TagCustom(
                                     text: "${dados[index].descricaoTipoEscola}",
                                     color: Color(0xffC65D00)),
-                                _listStudents(dados[index].students, context),
+                                _listStudents(dados[index].students, context, widget.token),
                               ],
                             );
                           },
