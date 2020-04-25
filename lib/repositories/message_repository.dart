@@ -8,27 +8,20 @@ class MessageRepository implements IMessageRepository {
   @override
   Future<List<Message>> fetchMessages(String token) async {
     try {
-      final response = await http.get(
-        "${Api.HOST}/Notificacao",
-        headers: {"Authorization": "Bearer $token"}
-      );
+      final response = await http.get("${Api.HOST}/Notificacao",
+          headers: {"Authorization": "Bearer $token"});
 
-      return response.statusCode == 200
-        ? _handleSuccess(response)
-        : _handleError(response);
+      if (response.statusCode == 200) {
+        List<dynamic> messages = jsonDecode(response.body);
+        return messages.map((i) => Message.fromJson(i)).toList();
+      } else {
+        print("[MessageRepository] Erro ao carregar lista de Mensagens " +
+            response.statusCode.toString());
+        return null;
+      }
     } catch (e, stacktrace) {
-      print("[ DEBUG ] MessageRepository._handleSuccess: Erro ao carregar lista de Mensagens ${stacktrace.toString()}");
+      print("Erro ao carregar lista de Mensagens " + stacktrace.toString());
       return null;
     }
-  }
-
-  _handleSuccess(response) {
-    List<dynamic> json = jsonDecode(response.body);
-    return json.map((i) => Message.fromJson(i)).toList();
-  }
-
-  _handleError(response) {
-    print("[ DEBUG ] MessageRepository._handleError: Erro ao carregar lista de Mensagens ${jsonEncode(response)}");
-    return null;
   }
 }
