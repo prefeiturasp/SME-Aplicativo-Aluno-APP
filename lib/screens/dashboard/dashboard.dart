@@ -46,55 +46,62 @@ class _DashboardState extends State<Dashboard> {
           padding: EdgeInsets.all(screenHeight * 2.5),
           child: Observer(builder: (context) {
             var recentMessage = _messagesController.messages;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                SizedBox(
-                  height: screenHeight * 2.5,
-                ),
-                TagCustom(
-                    text: widget.student.descricaoTipoEscola,
-                    color: Color(0xffEEC25E),
-                    textColor: Color(0xffD06D12)),
-                CardResumeStudent(
-                  student: widget.student,
-                ),
-                Visibility(
-                    child: CardRecentMessage(
+            if (recentMessage != null) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(
+                    height: screenHeight * 2.5,
+                  ),
+                  TagCustom(
+                      text: widget.student.descricaoTipoEscola,
+                      color: Color(0xffEEC25E),
+                      textColor: Color(0xffD06D12)),
+                  CardResumeStudent(
+                    student: widget.student,
+                  ),
+                  Visibility(
+                      child: CardRecentMessage(
                         message: recentMessage.last,
-                        countMessages: recentMessage.length),
-                    visible: _messagesController.isLoading == false,
-                    replacement: Container(
-                      child: GFLoader(
-                        type: GFLoaderType.square,
-                        loaderColorOne: Color(0xffDE9524),
-                        loaderColorTwo: Color(0xffC65D00),
-                        loaderColorThree: Color(0xffC65D00),
-                        size: GFSize.LARGE,
+                        countMessages: recentMessage.length,
+                        token: widget.token,
                       ),
-                    )),
-                CardAlert(
-                  title: "ALERTA DE NOTAS",
-                  icon: Icon(
-                    FontAwesomeIcons.envelopeOpen,
-                    color: Color(0xffFFD037),
-                    size: screenHeight * 6,
+                      visible: _messagesController.isLoading == null ||
+                          _messagesController.isLoading == false,
+                      replacement: Container(
+                        child: GFLoader(
+                          type: GFLoaderType.square,
+                          loaderColorOne: Color(0xffDE9524),
+                          loaderColorTwo: Color(0xffC65D00),
+                          loaderColorThree: Color(0xffC65D00),
+                          size: GFSize.LARGE,
+                        ),
+                      )),
+                  CardAlert(
+                    title: "ALERTA DE NOTAS",
+                    icon: Icon(
+                      FontAwesomeIcons.envelopeOpen,
+                      color: Color(0xffFFD037),
+                      size: screenHeight * 6,
+                    ),
+                    text:
+                        "Em breve, você terá alertas de notas neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
                   ),
-                  text:
-                      "Em breve, você terá alertas de notas neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
-                ),
-                CardAlert(
-                  title: "ALERTA DE FREQUÊNCIA",
-                  icon: Icon(
-                    FontAwesomeIcons.envelopeOpen,
-                    color: Color(0xffFFD037),
-                    size: screenHeight * 6,
-                  ),
-                  text:
-                      "Em breve, você terá alertas de frequência neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
-                )
-              ],
-            );
+                  CardAlert(
+                    title: "ALERTA DE FREQUÊNCIA",
+                    icon: Icon(
+                      FontAwesomeIcons.envelopeOpen,
+                      color: Color(0xffFFD037),
+                      size: screenHeight * 6,
+                    ),
+                    text:
+                        "Em breve, você terá alertas de frequência neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
+                  )
+                ],
+              );
+            } else {
+              return Container();
+            }
           }),
         ),
       ),

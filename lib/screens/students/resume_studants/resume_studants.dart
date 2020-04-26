@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
-import 'package:intl/intl.dart';
+import 'package:sme_app_aluno/utils/date_format.dart';
 
 class ResumeStudants extends StatefulWidget {
   final Student student;
@@ -51,11 +51,11 @@ class _ResumeStudantsState extends State<ResumeStudants> {
   }
 
   content(BuildContext context, double screenHeight, Student data) {
-    var formatter = new DateFormat('dd/MM/yyyy');
     String dateFormatted =
-        formatter.format(DateTime.parse(data.dataNascimento));
-    String dateSituacaoMatricula =
-        formatter.format(DateTime.parse(data.dataSituacaoMatricula));
+        DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
+    String dateSituacaoMatricula = DateFormatSuport.formatStringDate(
+        data.dataSituacaoMatricula, 'dd/MM/yyyy');
+
     if (abaDados) {
       return Container(
         width: MediaQuery.of(context).size.width,

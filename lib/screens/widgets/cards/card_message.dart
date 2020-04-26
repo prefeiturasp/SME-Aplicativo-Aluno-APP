@@ -23,7 +23,7 @@ class CardMessage extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
-      margin: EdgeInsets.only(top: screenHeight * 3),
+      margin: EdgeInsets.only(top: screenHeight * 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -51,7 +51,7 @@ class CardMessage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Visibility(
-                  visible: headerIcon,
+                  visible: headerIcon ? headerIcon : false,
                   child: Container(
                     margin: EdgeInsets.only(right: screenHeight * 2),
                     child: Icon(

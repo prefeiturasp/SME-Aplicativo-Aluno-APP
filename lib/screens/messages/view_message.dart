@@ -1,9 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 
 class ViewMessage extends StatelessWidget {
+  final Message message;
+  final String token;
+
+  ViewMessage({@required this.message, @required this.token});
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -35,7 +42,7 @@ class ViewMessage extends StatelessWidget {
                 recentMessage: false,
                 content: <Widget>[
                   AutoSizeText(
-                    "Próximas atualizações do app",
+                    message.titulo,
                     maxFontSize: 16,
                     minFontSize: 14,
                     maxLines: 2,
@@ -48,7 +55,7 @@ class ViewMessage extends StatelessWidget {
                   Container(
                     width: screenHeight * 41,
                     child: AutoSizeText(
-                      "Em breve, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estiver disponível. Em breve, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estiver disponível. Em breve, você terá acesso aos dados do Boletim. Aguarde a próxima versão do aplicativo e atualize assim que estiver disponível. www.qualquerurl.com.br",
+                      message.mensagem,
                       maxFontSize: 16,
                       minFontSize: 14,
                       maxLines: 20,
@@ -92,7 +99,11 @@ class ViewMessage extends StatelessWidget {
                       ),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ListMessages(token: token)));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

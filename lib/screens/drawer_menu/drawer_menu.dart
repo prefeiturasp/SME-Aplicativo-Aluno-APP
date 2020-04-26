@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
-import 'package:sme_app_aluno/screens/messages/messages.dart';
+import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
@@ -27,6 +27,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
   void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
+  }
+
+  navigateToListMessages(BuildContext context, Storage storage) async {
+    var _token = await storage.readValueStorage("token") ?? "";
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListMessages(
+                  token: _token,
+                )));
   }
 
   navigateToListStudents(BuildContext context, Storage storage) async {
@@ -142,8 +152,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MessagesWidget()));
+              navigateToListMessages(context, _storage);
             },
           ),
           ListTile(

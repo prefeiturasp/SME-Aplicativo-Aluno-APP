@@ -2,15 +2,20 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/screens/messages/messages.dart';
-import 'package:html/dom.dart' as dom;
+import 'package:sme_app_aluno/screens/messages/list_messages.dart';
+import 'package:sme_app_aluno/screens/messages/view_message.dart';
+import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class CardRecentMessage extends StatelessWidget {
   final Message message;
   final int countMessages;
+  final String token;
 
-  CardRecentMessage({@required this.message, this.countMessages});
+  CardRecentMessage(
+      {@required this.message,
+      @required this.countMessages,
+      @required this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -96,9 +101,9 @@ class CardRecentMessage extends StatelessWidget {
                         ),
                         child: Center(
                           child: AutoSizeText(
-                            "24",
-                            maxFontSize: 11,
-                            minFontSize: 9,
+                            "$countMessages",
+                            maxFontSize: 12,
+                            minFontSize: 10,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xffC45C04)),
@@ -109,56 +114,75 @@ class CardRecentMessage extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(screenHeight * 2.5),
-              color: Color(0xffC45C04),
-              child: Container(
-                margin: EdgeInsets.only(top: screenHeight * 1.8),
-                child: message != null
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          AutoSizeText(
-                            message.titulo,
-                            maxFontSize: 16,
-                            minFontSize: 14,
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          SizedBox(
-                            height: screenHeight * 1.8,
-                          ),
-                          Container(
-                            width: screenHeight * 36,
-                            child: AutoSizeText(
-                              StringSupport.truncateEndString(
-                                  message.mensagem, 250),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewMessage(message: message, token: token)));
+            },
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(screenHeight * 2.5),
+                color: Color(0xffC45C04),
+                child: Container(
+                  margin: EdgeInsets.only(top: screenHeight * 1.8),
+                  child: message != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            AutoSizeText(
+                              message.titulo,
                               maxFontSize: 16,
                               minFontSize: 14,
-                              maxLines: 5,
-                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
-                                color: Colors.white,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              height: screenHeight * 1.8,
+                            ),
+                            Container(
+                              width: screenHeight * 36,
+                              child: AutoSizeText(
+                                StringSupport.truncateEndString(
+                                    message.mensagem, 250),
+                                maxFontSize: 16,
+                                minFontSize: 14,
+                                maxLines: 5,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: screenHeight * 3,
-                          ),
-                        ],
-                      )
-                    : AutoSizeText(
-                        "Nenhuma mensagem está disponível para este aluno",
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        maxLines: 2,
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700),
-                      ),
-              )),
+                            SizedBox(
+                              height: screenHeight * 3,
+                            ),
+                            AutoSizeText(
+                              DateFormatSuport.formatStringDate(
+                                  message.criadoEm, 'dd/MM/yyyy'),
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        )
+                      : AutoSizeText(
+                          "Nenhuma mensagem está disponível para este aluno",
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                          maxLines: 2,
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w700),
+                        ),
+                )),
+          ),
           Container(
             padding: EdgeInsets.only(
                 left: screenHeight * 2.5,
@@ -199,7 +223,8 @@ class CardRecentMessage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MessagesWidget()));
+                                builder: (context) =>
+                                    ListMessages(token: token)));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
