@@ -169,7 +169,8 @@ class CardRecentMessage extends StatelessWidget {
                               maxLines: 2,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w700),
+                                  fontWeight: FontWeight.w700,
+                                  height: screenHeight * 0.5),
                             ),
                           ],
                         )
@@ -231,7 +232,7 @@ class CardRecentMessage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           AutoSizeText(
-                            "VER TODOS",
+                            "VER TODAS",
                             maxFontSize: 16,
                             minFontSize: 14,
                             style: TextStyle(

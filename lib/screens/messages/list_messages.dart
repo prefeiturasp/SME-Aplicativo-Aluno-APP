@@ -67,7 +67,8 @@ class _ListMessageState extends State<ListMessages> {
           maxFontSize: 16,
           minFontSize: 14,
           maxLines: 2,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+          style:
+              TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
         ),
       ],
       footer: true,
@@ -137,8 +138,9 @@ class _ListMessageState extends State<ListMessages> {
       BuildContext context, num screenHeight, String token) {
     return Observer(builder: (context) {
       var messages = _messagesController.messages;
+
       if (messages != null) {
-        var recentMessage = messages.last;
+        var recentMessage = messages.first;
         return Visibility(
           visible: !_messagesController.isLoading,
           child: Column(
@@ -180,6 +182,7 @@ class _ListMessageState extends State<ListMessages> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
+                        height: screenHeight * 0.240,
                       ),
                     ),
                   ),
@@ -272,11 +275,14 @@ class _ListMessageState extends State<ListMessages> {
               AutoSizeText(
                 messages.length > 1
                     ? "${messages.length - 1} MENSAGENS ANTIGAS"
-                    : "${messages.length} MENSSAGEM ANTIGA",
+                    : "${messages.length} MENSAGEM ANTIGA",
                 maxFontSize: 18,
                 minFontSize: 16,
                 style: TextStyle(
                     color: Color(0xffDE9524), fontWeight: FontWeight.w500),
+              ),
+              SizedBox(
+                height: screenHeight * 3,
               ),
               Container(
                 height: screenHeight * 60,

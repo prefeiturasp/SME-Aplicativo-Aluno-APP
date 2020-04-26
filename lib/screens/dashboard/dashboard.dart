@@ -62,7 +62,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   Visibility(
                       child: CardRecentMessage(
-                        message: recentMessage.last,
+                        message: recentMessage.first,
                         countMessages: recentMessage.length,
                         token: widget.token,
                       ),

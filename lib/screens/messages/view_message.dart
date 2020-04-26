@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/utils/date_format.dart';
 
 class ViewMessage extends StatelessWidget {
   final Message message;
@@ -62,12 +63,21 @@ class ViewMessage extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Color(0xff666666),
-                        height: screenHeight * 0.2,
+                        height: screenHeight * 0.240,
                       ),
                     ),
                   ),
                   SizedBox(
                     height: screenHeight * 3,
+                  ),
+                  AutoSizeText(
+                    DateFormatSuport.formatStringDate(
+                        message.criadoEm, 'dd/MM/yyyy'),
+                    maxFontSize: 16,
+                    minFontSize: 14,
+                    maxLines: 2,
+                    style: TextStyle(
+                        color: Color(0xff666666), fontWeight: FontWeight.w700),
                   ),
                 ],
                 footer: true,
