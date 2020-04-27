@@ -100,7 +100,13 @@ class _DashboardState extends State<Dashboard> {
                 ],
               );
             } else {
-              return Container();
+              return GFLoader(
+                type: GFLoaderType.square,
+                loaderColorOne: Color(0xffDE9524),
+                loaderColorTwo: Color(0xffC65D00),
+                loaderColorThree: Color(0xffC65D00),
+                size: GFSize.LARGE,
+              );
             }
           }),
         ),

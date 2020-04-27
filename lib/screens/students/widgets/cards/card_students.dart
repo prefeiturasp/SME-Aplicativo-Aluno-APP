@@ -76,7 +76,7 @@ class CardStudent extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          "$schooType ${StringSupport.truncateEndString(schoolName, 40)}",
+                          "$schooType ${StringSupport.truncateEndString(schoolName, 30)}",
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xff666666)),
