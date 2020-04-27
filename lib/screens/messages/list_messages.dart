@@ -50,7 +50,8 @@ class _ListMessageState extends State<ListMessages> {
         Container(
           width: screenHeight * 41,
           child: AutoSizeText(
-            StringSupport.truncateEndString(message.mensagem, 250),
+            StringSupport.parseHtmlString(
+                StringSupport.truncateEndString(message.mensagem, 250)),
             maxFontSize: 16,
             minFontSize: 14,
             maxLines: 5,
@@ -175,7 +176,7 @@ class _ListMessageState extends State<ListMessages> {
                   Container(
                     width: screenHeight * 41,
                     child: AutoSizeText(
-                      recentMessage.mensagem,
+                      StringSupport.parseHtmlString(recentMessage.mensagem),
                       maxFontSize: 16,
                       minFontSize: 14,
                       maxLines: 5,

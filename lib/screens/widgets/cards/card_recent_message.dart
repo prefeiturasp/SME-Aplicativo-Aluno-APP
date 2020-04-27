@@ -147,8 +147,9 @@ class CardRecentMessage extends StatelessWidget {
                             Container(
                               width: screenHeight * 36,
                               child: AutoSizeText(
-                                StringSupport.truncateEndString(
-                                    message.mensagem, 250),
+                                StringSupport.parseHtmlString(
+                                    StringSupport.truncateEndString(
+                                        message.mensagem, 250)),
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 5,
