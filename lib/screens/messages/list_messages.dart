@@ -102,11 +102,12 @@ class _ListMessageState extends State<ListMessages> {
                     ),
                     Container(
                       child: Container(
+                        height: screenHeight * 6,
                         decoration: BoxDecoration(
                           border:
                               Border.all(color: Color(0xffC65D00), width: 1),
                           borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 4),
+                            Radius.circular(screenHeight * 3),
                           ),
                         ),
                         child: FlatButton(
@@ -135,7 +136,7 @@ class _ListMessageState extends State<ListMessages> {
                               Icon(
                                 FontAwesomeIcons.envelopeOpen,
                                 color: Color(0xffffd037),
-                                size: screenHeight * 3,
+                                size: 16,
                               )
                             ],
                           ),
@@ -223,12 +224,12 @@ class _ListMessageState extends State<ListMessages> {
                                   message: recentMessage, token: token)));
                     },
                     child: Container(
-                      width: screenHeight * 7,
-                      height: screenHeight * 7,
+                      width: screenHeight * 6,
+                      height: screenHeight * 6,
                       decoration: BoxDecoration(
                         border: Border.all(color: Color(0xffC65D00), width: 1),
                         borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3.5),
+                          Radius.circular(screenHeight * 3),
                         ),
                       ),
                       child: Icon(
@@ -239,10 +240,11 @@ class _ListMessageState extends State<ListMessages> {
                   ),
                   Container(
                     child: Container(
+                      height: screenHeight * 6,
                       decoration: BoxDecoration(
                         border: Border.all(color: Color(0xffC65D00), width: 1),
                         borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 4),
+                          Radius.circular(screenHeight * 3),
                         ),
                       ),
                       child: FlatButton(
@@ -256,8 +258,6 @@ class _ListMessageState extends State<ListMessages> {
                                       )));
                         },
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             AutoSizeText(
                               "LER MENSAGEM",
@@ -273,7 +273,7 @@ class _ListMessageState extends State<ListMessages> {
                             Icon(
                               FontAwesomeIcons.envelopeOpen,
                               color: Color(0xffffd037),
-                              size: screenHeight * 3,
+                              size: 16,
                             )
                           ],
                         ),
