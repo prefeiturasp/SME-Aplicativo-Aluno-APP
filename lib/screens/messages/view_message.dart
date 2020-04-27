@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
@@ -55,17 +56,7 @@ class ViewMessage extends StatelessWidget {
                   ),
                   Container(
                     width: screenHeight * 41,
-                    child: AutoSizeText(
-                      message.mensagem,
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      maxLines: 20,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Color(0xff666666),
-                        height: screenHeight * 0.240,
-                      ),
-                    ),
+                    child: Html(data: message.mensagem),
                   ),
                   SizedBox(
                     height: screenHeight * 3,

@@ -30,109 +30,121 @@ class _ListMessageState extends State<ListMessages> {
     _messagesController.loadMessages(token: widget.token);
   }
 
-  Widget _cardItems(BuildContext context, Message message, num screenHeight) {
-    return CardMessage(
-      headerTitle: "ASSUNTO",
-      headerIcon: false,
-      recentMessage: false,
-      content: <Widget>[
-        AutoSizeText(
-          message.titulo,
-          maxFontSize: 16,
-          minFontSize: 14,
-          maxLines: 2,
-          style:
-              TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
-        ),
-        SizedBox(
-          height: screenHeight * 1.8,
-        ),
-        Container(
-          width: screenHeight * 41,
-          child: AutoSizeText(
-            StringSupport.parseHtmlString(
-                StringSupport.truncateEndString(message.mensagem, 250)),
-            maxFontSize: 16,
-            minFontSize: 14,
-            maxLines: 5,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Color(0xff666666), height: screenHeight * 0.240),
-          ),
-        ),
-        SizedBox(
-          height: screenHeight * 3,
-        ),
-        AutoSizeText(
-          DateFormatSuport.formatStringDate(message.criadoEm, 'dd/MM/yyyy'),
-          maxFontSize: 16,
-          minFontSize: 14,
-          maxLines: 2,
-          style:
-              TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
-        ),
-      ],
-      footer: true,
-      footerContent: <Widget>[
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            width: screenHeight * 6,
-            height: screenHeight * 6,
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xffC65D00), width: 1),
-              borderRadius: BorderRadius.all(
-                Radius.circular(screenHeight * 3),
-              ),
-            ),
-            child: Icon(
-              FontAwesomeIcons.trashAlt,
-              color: Color(0xffC65D00),
-            ),
-          ),
-        ),
-        Container(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xffC65D00), width: 1),
-              borderRadius: BorderRadius.all(
-                Radius.circular(screenHeight * 4),
-              ),
-            ),
-            child: FlatButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewMessage(
-                            message: message, token: widget.token)));
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  AutoSizeText(
-                    "LER MENSAGEM",
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    style: TextStyle(
-                        color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    width: screenHeight * 2,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.envelopeOpen,
-                    color: Color(0xffffd037),
-                    size: screenHeight * 3,
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+  Widget _listCardsMessages(List<Message> messages, BuildContext context,
+      double screenHeight, String token) {
+    return new Column(
+        children: messages
+            .map((item) => CardMessage(
+                  headerTitle: "ASSUNTO",
+                  headerIcon: false,
+                  recentMessage: false,
+                  content: <Widget>[
+                    AutoSizeText(
+                      item.titulo,
+                      maxFontSize: 16,
+                      minFontSize: 14,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Color(0xff666666),
+                          fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 1.8,
+                    ),
+                    Container(
+                      width: screenHeight * 41,
+                      child: AutoSizeText(
+                        StringSupport.parseHtmlString(
+                            StringSupport.truncateEndString(
+                                item.mensagem, 250)),
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Color(0xff666666),
+                            height: screenHeight * 0.240),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 3,
+                    ),
+                    AutoSizeText(
+                      DateFormatSuport.formatStringDate(
+                          item.criadoEm, 'dd/MM/yyyy'),
+                      maxFontSize: 16,
+                      minFontSize: 14,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Color(0xff666666),
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                  footer: true,
+                  footerContent: <Widget>[
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: screenHeight * 6,
+                        height: screenHeight * 6,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xffC65D00), width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 3),
+                          ),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.trashAlt,
+                          color: Color(0xffC65D00),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xffC65D00), width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 4),
+                          ),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewMessage(
+                                        message: item, token: widget.token)));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              AutoSizeText(
+                                "LER MENSAGEM",
+                                maxFontSize: 16,
+                                minFontSize: 14,
+                                style: TextStyle(
+                                    color: Color(0xffC65D00),
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: screenHeight * 2,
+                              ),
+                              Icon(
+                                FontAwesomeIcons.envelopeOpen,
+                                color: Color(0xffffd037),
+                                size: screenHeight * 3,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ))
+            .toList());
   }
 
   Widget _buildListMessages(
@@ -282,17 +294,7 @@ class _ListMessageState extends State<ListMessages> {
                 style: TextStyle(
                     color: Color(0xffDE9524), fontWeight: FontWeight.w500),
               ),
-              SizedBox(
-                height: screenHeight * 3,
-              ),
-              Container(
-                height: screenHeight * 60,
-                child: ListView.builder(
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      return _cardItems(context, messages[index], screenHeight);
-                    }),
-              )
+              _listCardsMessages(messages, context, screenHeight, token)
             ],
           ),
           replacement: GFLoader(
@@ -304,7 +306,13 @@ class _ListMessageState extends State<ListMessages> {
           ),
         );
       } else {
-        return Container();
+        return GFLoader(
+          type: GFLoaderType.square,
+          loaderColorOne: Color(0xffDE9524),
+          loaderColorTwo: Color(0xffC65D00),
+          loaderColorThree: Color(0xffC65D00),
+          size: GFSize.LARGE,
+        );
       }
     });
   }
