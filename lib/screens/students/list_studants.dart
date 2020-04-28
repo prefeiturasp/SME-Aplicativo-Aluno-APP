@@ -97,23 +97,28 @@ class _ListStudantsState extends State<ListStudants> {
     BackgroundFetch.finish(taskId);
   }
 
-  Widget _itemCardStudent(BuildContext context, Student model, String token) {
+  Widget _itemCardStudent(
+      BuildContext context, Student model, String token, String groupSchool) {
     return CardStudent(
       name: model.nomeSocial != null ? model.nomeSocial : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
       schooType: model.descricaoTipoEscola,
       onPress: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => Dashboard(student: model, token: token)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Dashboard(
+                    student: model, groupSchool: groupSchool, token: token)));
       },
     );
   }
 
-  Widget _listStudents(List<Student> students, BuildContext context, String token) {
+  Widget _listStudents(List<Student> students, BuildContext context,
+      String groupSchool, String token) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
-      list.add(_itemCardStudent(context, students[i], token));
+      list.add(_itemCardStudent(context, students[i], token, groupSchool));
     }
     return new Column(children: list);
   }
@@ -209,9 +214,10 @@ class _ListStudantsState extends State<ListStudants> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TagCustom(
-                                    text: "${dados[index].descricaoTipoEscola}",
+                                    text: "${dados[index].grupo}",
                                     color: Color(0xffC65D00)),
-                                _listStudents(dados[index].students, context, widget.token),
+                                _listStudents(dados[index].students, context,
+                                    dados[index].grupo, widget.token),
                               ],
                             );
                           },

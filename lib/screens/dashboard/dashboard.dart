@@ -12,9 +12,13 @@ import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 
 class Dashboard extends StatefulWidget {
   final Student student;
+  final String groupSchool;
   final String token;
 
-  Dashboard({@required this.student, this.token});
+  Dashboard(
+      {@required this.student,
+      @required this.groupSchool,
+      @required this.token});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -54,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
                     height: screenHeight * 2.5,
                   ),
                   TagCustom(
-                      text: widget.student.descricaoTipoEscola,
+                      text: widget.groupSchool ?? "Não informado",
                       color: Color(0xffEEC25E),
                       textColor: Color(0xffD06D12)),
                   CardResumeStudent(
