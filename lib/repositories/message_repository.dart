@@ -14,7 +14,9 @@ class MessageRepository implements IMessageRepository {
       if (response.statusCode == 200) {
         List<dynamic> messages = jsonDecode(response.body);
         var sortMessages = messages.map((i) => Message.fromJson(i)).toList();
-        sortMessages..sort((a, b) => b.criadoEm.compareTo(a.criadoEm));
+        sortMessages
+          ..sort((a, b) =>
+              DateTime.parse(b.criadoEm).compareTo(DateTime.parse(a.criadoEm)));
         return sortMessages;
       } else {
         print("[MessageRepository] Erro ao carregar lista de Mensagens " +

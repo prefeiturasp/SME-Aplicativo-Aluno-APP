@@ -56,7 +56,9 @@ class ViewMessage extends StatelessWidget {
                   ),
                   Container(
                     width: screenHeight * 41,
-                    child: Html(data: message.mensagem),
+                    child: Html(
+                      data: message.mensagem,
+                    ),
                   ),
                   SizedBox(
                     height: screenHeight * 3,
