@@ -152,7 +152,6 @@ class CardRecentMessage extends StatelessWidget {
                                         message.mensagem, 250)),
                                 maxFontSize: 16,
                                 minFontSize: 14,
-                                maxLines: 5,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.white,

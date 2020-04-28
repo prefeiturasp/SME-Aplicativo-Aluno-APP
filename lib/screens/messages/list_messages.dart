@@ -32,8 +32,10 @@ class _ListMessageState extends State<ListMessages> {
 
   Widget _listCardsMessages(List<Message> messages, BuildContext context,
       double screenHeight, String token) {
+    var oldMessages = messages;
+    oldMessages.removeAt(0);
     return new Column(
-        children: messages
+        children: oldMessages
             .map((item) => CardMessage(
                   headerTitle: "ASSUNTO",
                   headerIcon: false,
@@ -59,7 +61,7 @@ class _ListMessageState extends State<ListMessages> {
                                 item.mensagem, 250)),
                         maxFontSize: 16,
                         minFontSize: 14,
-                        maxLines: 5,
+                        maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Color(0xff666666),
@@ -155,6 +157,7 @@ class _ListMessageState extends State<ListMessages> {
 
       if (messages != null) {
         var recentMessage = messages.first;
+
         return Visibility(
           visible: !_messagesController.isLoading,
           child: Column(
