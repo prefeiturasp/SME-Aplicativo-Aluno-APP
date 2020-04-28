@@ -328,16 +328,21 @@ class _ListMessageState extends State<ListMessages> {
         title: Text("Mensagens"),
         backgroundColor: Color(0xffEEC25E),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(
-              horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildListMessages(context, screenHeight, widget.token),
-            ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _messagesController.loadMessages(token: widget.token);
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(
+                horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _buildListMessages(context, screenHeight, widget.token),
+              ],
+            ),
           ),
         ),
       ),
