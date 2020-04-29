@@ -32,10 +32,10 @@ class _ListMessageState extends State<ListMessages> {
 
   Widget _listCardsMessages(List<Message> messages, BuildContext context,
       double screenHeight, String token) {
-    var oldMessages = messages;
-    oldMessages.removeAt(0);
     return new Column(
-        children: oldMessages
+        children: messages
+            .where((e) => e.id != messages[0].id)
+            .toList()
             .map((item) => CardMessage(
                   headerTitle: "ASSUNTO",
                   headerIcon: false,
