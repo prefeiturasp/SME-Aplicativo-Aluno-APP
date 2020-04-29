@@ -17,9 +17,6 @@ abstract class _MessagesControllerBase with Store {
   ObservableList<Message> messages;
 
   @observable
-  Message recentMessage;
-
-  @observable
   bool isLoading = false;
 
   @action
