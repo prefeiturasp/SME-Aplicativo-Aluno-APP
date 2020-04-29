@@ -52,7 +52,6 @@ abstract class _AuthenticateControllerBase with Store {
 
   @action
   Future<void> loadCurrentUser() async {
-    print("Carregando dados do Storage");
     currentName = await _storage.readValueStorage('current_name');
     currentCPF = await _storage.readValueStorage('current_cpf');
     currentEmail = await _storage.readValueStorage('current_email');
