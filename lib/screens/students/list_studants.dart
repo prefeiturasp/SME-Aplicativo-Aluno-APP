@@ -74,7 +74,7 @@ class _ListStudantsState extends State<ListStudants> {
 
   void _onBackgroundFetch(String taskId) async {
     if (GlobalConfig.Environment == "test") {
-      await _authenticateController.authenticateUser(widget.cpf, "20032005");
+      await _authenticateController.authenticateUser(widget.cpf, "--------");
     } else {
       await _authenticateController.authenticateUser(
           widget.cpf, widget.password);

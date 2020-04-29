@@ -141,7 +141,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           ListTile(
-            title: Text('Menssagens'),
+            title: Text('Mensagens'),
             leading: CircleAvatar(
               radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
