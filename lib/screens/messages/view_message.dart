@@ -103,11 +103,7 @@ class ViewMessage extends StatelessWidget {
                       ),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ListMessages(token: token)));
+                          Navigator.pop(context);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
