@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:device_info/device_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
@@ -11,18 +12,23 @@ class AuthenticateRepository implements IAuthenticateRepository {
   @override
   Future<Data> loginUser(String cpf, String password) async {
     String userPassword = await storage.readValueStorage("current_password");
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+
     try {
-      final response =
-          await http.post("${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password");
+      final response = await http.post(
+          "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$androidInfo.id");
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
+            androidInfo.id,
             user.data.nome,
             user.data.cpf,
-            user.data.email,
+            user.data.email ?? "",
             user.data.token,
             userPassword,
           );
@@ -39,12 +45,13 @@ class AuthenticateRepository implements IAuthenticateRepository {
     }
   }
 
-  addCurrentUserToStorage(String name, String cpf, String email, String token,
-      String password) async {
+  addCurrentUserToStorage(String dispositivoId, String name, String cpf,
+      String email, String token, String password) async {
     storage.insertString('current_name', name);
     storage.insertString('current_cpf', cpf);
     storage.insertString('current_email', email);
     storage.insertString('token', token);
     storage.insertString('password', password);
+    storage.insertString('dispositivo_id', dispositivoId);
   }
 }
