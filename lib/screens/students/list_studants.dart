@@ -83,7 +83,8 @@ class _ListStudantsState extends State<ListStudants> {
     print(
         "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
 
-    if (_authenticateController.currentUser.erros.isNotEmpty &&
+    if (_authenticateController.currentUser.erros != null &&
+        _authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros.length > 0 &&
         _authenticateController.currentUser.erros[0] != null) {
       BackgroundFetch.stop().then((int status) {
