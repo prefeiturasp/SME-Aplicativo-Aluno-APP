@@ -6,6 +6,7 @@ class StudentInfo extends StatelessWidget {
   final String studentName;
   final String schoolName;
   final String schoolType;
+  final String studentGrade;
   final Widget avatar;
   final EdgeInsets padding;
 
@@ -13,6 +14,7 @@ class StudentInfo extends StatelessWidget {
       {@required this.studentName,
       @required this.schoolName,
       @required this.schoolType,
+      this.studentGrade,
       this.avatar,
       this.padding});
 
@@ -63,7 +65,17 @@ class StudentInfo extends StatelessWidget {
                       color: Color(0xff666666),
                     ),
                   ),
-                )
+                ),
+                Visibility(
+                  visible: studentGrade != null,
+                  child: AutoSizeText(
+                    "TURMA $studentGrade",
+                    maxFontSize: 12,
+                    minFontSize: 10,
+                    style: TextStyle(
+                        color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                  ),
+                ),
               ],
             ),
           )

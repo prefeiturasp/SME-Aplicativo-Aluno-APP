@@ -91,7 +91,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
             size: screenHeight * 8,
           ),
           text:
-              "Em breve você visualizará alertas de notas neste espaço. Aguarde as próximas atualizações do aplicativo.",
+              "Em breve você terá acesso ao boletim do estudante neste espaço. Aguarde as próximas atualizações do aplicativo.",
           textSize: 20,
         ),
       );
@@ -108,7 +108,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
             size: screenHeight * 8,
           ),
           text:
-              "Em breve você visualizará alertas de frequência neste espaço. Aguarde as próximas atualizações do aplicativo.",
+              "Em breve você terá acesso aos dados de frequência do estudante neste espaço. Aguarde as próximas atualizações do aplicativo.",
           textSize: 20,
         ),
       );
@@ -148,6 +148,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                           : widget.student.nome,
                       schoolName: widget.student.escola,
                       schoolType: widget.student.descricaoTipoEscola,
+                      studentGrade: widget.student.turma,
                     ),
                   ),
                   Container(

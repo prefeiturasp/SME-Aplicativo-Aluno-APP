@@ -87,7 +87,7 @@ class CardAlert extends StatelessWidget {
                             text,
                             maxFontSize: textSize != null ? textSize : 16,
                             minFontSize: textSize != null ? textSize - 2 : 14,
-                            maxLines: 5,
+                            maxLines: 10,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
