@@ -89,7 +89,7 @@ class _DashboardState extends State<Dashboard> {
                       size: screenHeight * 6,
                     ),
                     text:
-                        "Em breve, você terá alertas de notas neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
+                        "Em breve você visualizará alertas de notas neste espaço. Aguarde as próximas atualizações do aplicativo.",
                   ),
                   CardAlert(
                     title: "ALERTA DE FREQUÊNCIA",
@@ -99,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
                       size: screenHeight * 6,
                     ),
                     text:
-                        "Em breve, você terá alertas de frequência neste espeço. Aguarde a próxima versão do aplicativo e atualize assim que estiver diponível",
+                        "Em breve você visualizará alertas de frequência neste espaço. Aguarde as próximas atualizações do aplicativo.",
                   )
                 ],
               );
