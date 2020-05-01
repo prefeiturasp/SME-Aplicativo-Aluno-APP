@@ -15,10 +15,11 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    String idDevice = androidInfo.id;
 
     try {
       final response = await http.post(
-          "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$androidInfo.id");
+          "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
