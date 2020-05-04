@@ -30,6 +30,9 @@ class _LoginState extends State<Login> {
   bool _showPassword = true;
   bool busy = false;
 
+  bool _cpfIsError = false;
+  bool _passwordIsError = false;
+
   String _cpf = '';
   String _dataNnascimentoAluno = '';
 
@@ -137,8 +140,8 @@ class _LoginState extends State<Login> {
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _cpf.isEmpty
-                                              ? Color(0xff8b8b8b)
+                                          color: _cpfIsError
+                                              ? Colors.red
                                               : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
@@ -195,8 +198,8 @@ class _LoginState extends State<Login> {
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _dataNnascimentoAluno.isEmpty
-                                              ? Color(0xff8b8b8b)
+                                          color: _passwordIsError
+                                              ? Colors.red
                                               : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
@@ -274,6 +277,11 @@ class _LoginState extends State<Login> {
                                                 .validate()) {
                                               _handleSignIn(
                                                   _cpf, _dataNnascimentoAluno);
+                                            } else {
+                                              setState(() {
+                                                _cpfIsError = true;
+                                                _passwordIsError = true;
+                                              });
                                             }
                                           },
                                           child: Row(
