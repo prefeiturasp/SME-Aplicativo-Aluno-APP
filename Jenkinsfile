@@ -22,9 +22,14 @@ pipeline {
         steps {
           sh "echo executando build de projeto"
           sh 'flutter pub get && flutter build apk'
-          archiveArtifacts '**/*.apk'
+          //archiveArtifacts '**/*.apk'
         }
       }
+       stage('sign apk') {
+         steps{
+           step([$class: 'SignApksBuilder', apksToSign: '**/*.apk', keyAlias: '', keyStoreId: '77b8ac0b-5b0e-4664-8882-3f70e1338484', skipZipalign: true])
+         }
+       } 
 
              
   } 
