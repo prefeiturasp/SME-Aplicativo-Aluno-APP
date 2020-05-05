@@ -188,6 +188,16 @@ class CardRecentMessage extends StatelessWidget {
                 )),
           ),
           Container(
+              decoration: BoxDecoration(
+                  color: message != null && countMessages > 0
+                      ? null
+                      : Color(0xffC45C04),
+                  borderRadius: message != null && countMessages > 0
+                      ? null
+                      : BorderRadius.only(
+                          bottomLeft: Radius.circular(screenHeight * 2),
+                          bottomRight: Radius.circular(screenHeight * 2),
+                        )),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,
                   right: screenHeight * 2.5,

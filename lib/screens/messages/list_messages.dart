@@ -154,159 +154,149 @@ class _ListMessageState extends State<ListMessages> {
       BuildContext context, num screenHeight, String token) {
     return Observer(builder: (context) {
       var messages = _messagesController.messages;
-
       if (messages != null && messages.isNotEmpty) {
         var recentMessage = messages.first;
-
-        return Visibility(
-          visible: !_messagesController.isLoading,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: screenHeight * 3,
-              ),
-              AutoSizeText(
-                "MENSAGEM MAIS RECENTE",
-                maxFontSize: 18,
-                minFontSize: 16,
-                style: TextStyle(
-                    color: Color(0xffDE9524), fontWeight: FontWeight.w500),
-              ),
-              CardMessage(
-                headerTitle: "ASSUNTO",
-                headerIcon: true,
-                recentMessage: true,
-                content: <Widget>[
-                  AutoSizeText(
-                    recentMessage.titulo,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: screenHeight * 3,
+            ),
+            AutoSizeText(
+              "MENSAGEM MAIS RECENTE",
+              maxFontSize: 18,
+              minFontSize: 16,
+              style: TextStyle(
+                  color: Color(0xffDE9524), fontWeight: FontWeight.w500),
+            ),
+            CardMessage(
+              headerTitle: "ASSUNTO",
+              headerIcon: true,
+              recentMessage: true,
+              content: <Widget>[
+                AutoSizeText(
+                  recentMessage.titulo,
+                  maxFontSize: 16,
+                  minFontSize: 14,
+                  maxLines: 2,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(
+                  height: screenHeight * 1.8,
+                ),
+                Container(
+                  width: screenHeight * 41,
+                  child: AutoSizeText(
+                    StringSupport.parseHtmlString(recentMessage.mensagem),
                     maxFontSize: 16,
                     minFontSize: 14,
-                    maxLines: 2,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                      color: Colors.white,
+                      height: screenHeight * 0.240,
+                    ),
                   ),
-                  SizedBox(
-                    height: screenHeight * 1.8,
+                ),
+                SizedBox(
+                  height: screenHeight * 3,
+                ),
+                AutoSizeText(
+                  DateFormatSuport.formatStringDate(
+                      recentMessage.criadoEm, 'dd/MM/yyyy'),
+                  maxFontSize: 16,
+                  minFontSize: 14,
+                  maxLines: 2,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w700),
+                ),
+              ],
+              footer: true,
+              footerContent: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewMessage(
+                                message: recentMessage, token: token)));
+                  },
+                  child: Container(
+                    width: screenHeight * 6,
+                    height: screenHeight * 6,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffC65D00), width: 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(screenHeight * 3),
+                      ),
+                    ),
+                    child: Icon(
+                      FontAwesomeIcons.times,
+                      color: Color(0xffC65D00),
+                    ),
                   ),
-                  Container(
-                    width: screenHeight * 41,
-                    child: AutoSizeText(
-                      StringSupport.parseHtmlString(recentMessage.mensagem),
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.white,
-                        height: screenHeight * 0.240,
+                ),
+                Container(
+                  child: Container(
+                    height: screenHeight * 6,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color(0xffC65D00), width: 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(screenHeight * 3),
+                      ),
+                    ),
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewMessage(
+                                      token: token,
+                                      message: recentMessage,
+                                    )));
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          AutoSizeText(
+                            "LER MENSAGEM",
+                            maxFontSize: 16,
+                            minFontSize: 14,
+                            style: TextStyle(
+                                color: Color(0xffC65D00),
+                                fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            width: screenHeight * 2,
+                          ),
+                          Icon(
+                            FontAwesomeIcons.envelopeOpen,
+                            color: Color(0xffffd037),
+                            size: 16,
+                          )
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: screenHeight * 3,
-                  ),
-                  AutoSizeText(
-                    DateFormatSuport.formatStringDate(
-                        recentMessage.criadoEm, 'dd/MM/yyyy'),
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    maxLines: 2,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: screenHeight * 5,
+            ),
+            messages.length == 1
+                ? Container()
+                : AutoSizeText(
+                    messages.length > 1
+                        ? "${messages.length - 1} MENSAGENS ANTIGAS"
+                        : "${messages.length} MENSAGEM ANTIGA",
+                    maxFontSize: 18,
+                    minFontSize: 16,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: Color(0xffDE9524), fontWeight: FontWeight.w500),
                   ),
-                ],
-                footer: true,
-                footerContent: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewMessage(
-                                  message: recentMessage, token: token)));
-                    },
-                    child: Container(
-                      width: screenHeight * 6,
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
-                        ),
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.times,
-                        color: Color(0xffC65D00),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Container(
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
-                        ),
-                      ),
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewMessage(
-                                        token: token,
-                                        message: recentMessage,
-                                      )));
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            AutoSizeText(
-                              "LER MENSAGEM",
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              style: TextStyle(
-                                  color: Color(0xffC65D00),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(
-                              width: screenHeight * 2,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.envelopeOpen,
-                              color: Color(0xffffd037),
-                              size: 16,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: screenHeight * 5,
-              ),
-              AutoSizeText(
-                messages.length > 1
-                    ? "${messages.length - 1} MENSAGENS ANTIGAS"
-                    : "${messages.length} MENSAGEM ANTIGA",
-                maxFontSize: 18,
-                minFontSize: 16,
-                style: TextStyle(
-                    color: Color(0xffDE9524), fontWeight: FontWeight.w500),
-              ),
-              _listCardsMessages(messages, context, screenHeight, token)
-            ],
-          ),
-          replacement: GFLoader(
-            type: GFLoaderType.square,
-            loaderColorOne: Color(0xffDE9524),
-            loaderColorTwo: Color(0xffC65D00),
-            loaderColorThree: Color(0xffC65D00),
-            size: GFSize.LARGE,
-          ),
+            _listCardsMessages(messages, context, screenHeight, token)
+          ],
         );
       } else {
         return Container(

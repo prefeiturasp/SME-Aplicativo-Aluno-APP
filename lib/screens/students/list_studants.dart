@@ -13,7 +13,6 @@ import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
-import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class ListStudants extends StatefulWidget {
