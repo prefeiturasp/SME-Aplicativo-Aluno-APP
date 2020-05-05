@@ -63,24 +63,24 @@ class _DashboardState extends State<Dashboard> {
                 student: widget.student,
               ),
               Observer(builder: (context) {
-                if (_messagesController.messages != null &&
-                    _messagesController.messages.isNotEmpty) {
-                  return Visibility(
-                      visible: _messagesController.isLoading,
-                      child: GFLoader(
-                        type: GFLoaderType.square,
-                        loaderColorOne: Color(0xffDE9524),
-                        loaderColorTwo: Color(0xffC65D00),
-                        loaderColorThree: Color(0xffC65D00),
-                        size: GFSize.LARGE,
-                      ),
-                      replacement: CardRecentMessage(
-                        message: _messagesController.messages.first,
-                        countMessages: _messagesController.messages.length,
-                        token: widget.token,
-                      ));
+                if (!_messagesController.isLoading) {
+                  if (_messagesController.messages.isEmpty) {
+                    return CardRecentMessage();
+                  } else {
+                    return CardRecentMessage(
+                      message: _messagesController.messages.first,
+                      countMessages: _messagesController.messages.length,
+                      token: widget.token,
+                    );
+                  }
                 } else {
-                  return CardRecentMessage();
+                  return GFLoader(
+                    type: GFLoaderType.square,
+                    loaderColorOne: Color(0xffDE9524),
+                    loaderColorTwo: Color(0xffC65D00),
+                    loaderColorThree: Color(0xffC65D00),
+                    size: GFSize.LARGE,
+                  );
                 }
               }),
               CardAlert(
