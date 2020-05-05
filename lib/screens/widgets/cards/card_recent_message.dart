@@ -12,10 +12,7 @@ class CardRecentMessage extends StatelessWidget {
   final int countMessages;
   final String token;
 
-  CardRecentMessage(
-      {@required this.message,
-      @required this.countMessages,
-      @required this.token});
+  CardRecentMessage({this.message, this.countMessages, this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -71,56 +68,61 @@ class CardRecentMessage extends StatelessWidget {
                         ),
                       ],
                     )),
-                Stack(overflow: Overflow.visible, children: <Widget>[
-                  Container(
-                    width: screenHeight * 3.5,
-                    height: screenHeight * 3.5,
-                    decoration: BoxDecoration(
-                      color: Color(0xfffac635),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(screenHeight * 1.750),
+                Visibility(
+                  visible: countMessages != null && countMessages > 0,
+                  child: Stack(overflow: Overflow.visible, children: <Widget>[
+                    Container(
+                      width: screenHeight * 3.5,
+                      height: screenHeight * 3.5,
+                      decoration: BoxDecoration(
+                        color: Color(0xfffac635),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenHeight * 1.750),
+                        ),
+                      ),
+                      child: Icon(
+                        FontAwesomeIcons.envelopeOpen,
+                        color: Color(0xffC65D00),
+                        size: 10,
                       ),
                     ),
-                    child: Icon(
-                      FontAwesomeIcons.envelopeOpen,
-                      color: Color(0xffC65D00),
-                      size: 10,
+                    Positioned(
+                      top: -10.0,
+                      right: 0.0,
+                      child: Container(
+                          width: screenHeight * 3,
+                          height: screenHeight * 3,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(screenHeight * 1.5),
+                            ),
+                          ),
+                          child: Center(
+                            child: AutoSizeText(
+                              "$countMessages",
+                              maxFontSize: 12,
+                              minFontSize: 10,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffC45C04)),
+                            ),
+                          )),
                     ),
-                  ),
-                  Positioned(
-                    top: -10.0,
-                    right: 0.0,
-                    child: Container(
-                        width: screenHeight * 3,
-                        height: screenHeight * 3,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 1.5),
-                          ),
-                        ),
-                        child: Center(
-                          child: AutoSizeText(
-                            "$countMessages",
-                            maxFontSize: 12,
-                            minFontSize: 10,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffC45C04)),
-                          ),
-                        )),
-                  ),
-                ]),
+                  ]),
+                ),
               ],
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ViewMessage(message: message, token: token)));
+              message != null
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewMessage(message: message, token: token)))
+                  : () => false;
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -186,76 +188,79 @@ class CardRecentMessage extends StatelessWidget {
                 )),
           ),
           Container(
-            padding: EdgeInsets.only(
-                left: screenHeight * 2.5,
-                right: screenHeight * 2.5,
-                top: screenHeight * 1.5,
-                bottom: screenHeight * 1.5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: screenHeight * 6,
-                    height: screenHeight * 6,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffC65D00), width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(screenHeight * 3),
-                      ),
-                    ),
-                    child: Icon(
-                      FontAwesomeIcons.times,
-                      color: Color(0xffC65D00),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Container(
-                    height: screenHeight * 6,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xffC65D00), width: 1),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(screenHeight * 3),
-                      ),
-                    ),
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ListMessages(token: token)));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          AutoSizeText(
-                            "VER TODAS",
-                            maxFontSize: 16,
-                            minFontSize: 14,
-                            style: TextStyle(
-                                color: Color(0xffC65D00),
-                                fontWeight: FontWeight.w700),
+              padding: EdgeInsets.only(
+                  left: screenHeight * 2.5,
+                  right: screenHeight * 2.5,
+                  top: screenHeight * 1.5,
+                  bottom: screenHeight * 1.5),
+              child: message != null && countMessages > 0
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: screenHeight * 6,
+                            height: screenHeight * 6,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0xffC65D00), width: 1),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(screenHeight * 3),
+                              ),
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.times,
+                              color: Color(0xffC65D00),
+                            ),
                           ),
-                          SizedBox(
-                            width: screenHeight * 2,
+                        ),
+                        Container(
+                          child: Container(
+                            height: screenHeight * 6,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0xffC65D00), width: 1),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(screenHeight * 3),
+                              ),
+                            ),
+                            child: FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListMessages(token: token)));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  AutoSizeText(
+                                    "VER TODAS",
+                                    maxFontSize: 16,
+                                    minFontSize: 14,
+                                    style: TextStyle(
+                                        color: Color(0xffC65D00),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(
+                                    width: screenHeight * 2,
+                                  ),
+                                  Icon(
+                                    FontAwesomeIcons.envelopeOpen,
+                                    color: Color(0xffffd037),
+                                    size: screenHeight * 3,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
-                          Icon(
-                            FontAwesomeIcons.envelopeOpen,
-                            color: Color(0xffffd037),
-                            size: screenHeight * 3,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                        ),
+                      ],
+                    )
+                  : Container()),
         ],
       ),
     );
