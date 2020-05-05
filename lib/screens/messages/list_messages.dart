@@ -155,7 +155,7 @@ class _ListMessageState extends State<ListMessages> {
     return Observer(builder: (context) {
       var messages = _messagesController.messages;
 
-      if (messages != null) {
+      if (messages != null && messages.isNotEmpty) {
         var recentMessage = messages.first;
 
         return Visibility(
@@ -309,13 +309,19 @@ class _ListMessageState extends State<ListMessages> {
           ),
         );
       } else {
-        return GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        );
+        return Container(
+            child: Column(
+          children: <Widget>[
+            AutoSizeText(
+              "Nenhuma mensagem está disponível para este aluno",
+              maxFontSize: 18,
+              minFontSize: 16,
+            ),
+            Divider(
+              color: Color(0xffcecece),
+            )
+          ],
+        ));
       }
     });
   }
