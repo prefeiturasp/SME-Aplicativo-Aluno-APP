@@ -10,7 +10,6 @@ import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
-import 'package:sme_app_aluno/services/connectivity_service.dart';
 
 class Dashboard extends StatefulWidget {
   final Student student;
@@ -40,11 +39,6 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var connectivityService = Provider.of<ConnectivityService>(context);
-
-    // print("connectionStatus: -----------------");
-    // print("${connectivityService.connectionStatusController}");
-    // print("connectionStatus: -----------------");
 
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
