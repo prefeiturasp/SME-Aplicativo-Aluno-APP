@@ -153,9 +153,13 @@ class _ListMessageState extends State<ListMessages> {
   Widget _buildListMessages(
       BuildContext context, num screenHeight, String token) {
     return Observer(builder: (context) {
-      var messages = _messagesController.messages;
-      if (!_messagesController.isLoading) {
-        if (messages.isEmpty) {
+      if (_messagesController.messages != null) {
+        final groupmessages = _messagesController.messages
+            .where(
+              (m) => m.grupos.any((g) => g.codigo == widget.codigoGrupo),
+            )
+            .toList();
+        if (groupmessages.isEmpty) {
           return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Column(
@@ -171,11 +175,6 @@ class _ListMessageState extends State<ListMessages> {
                 ],
               ));
         } else {
-          final groupmessages = messages
-              .where(
-                (m) => m.grupos.any((g) => g.codigo == widget.codigoGrupo),
-              )
-              .toList();
           var recentMessage = groupmessages.first;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
