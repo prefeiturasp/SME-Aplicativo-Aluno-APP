@@ -157,18 +157,19 @@ class _ListMessageState extends State<ListMessages> {
       if (!_messagesController.isLoading) {
         if (messages.isEmpty) {
           return Container(
+              margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Column(
-            children: <Widget>[
-              AutoSizeText(
-                "Nenhuma mensagem está disponível para este aluno",
-                maxFontSize: 18,
-                minFontSize: 16,
-              ),
-              Divider(
-                color: Color(0xffcecece),
-              )
-            ],
-          ));
+                children: <Widget>[
+                  AutoSizeText(
+                    "Nenhuma mensagem está disponível para este aluno",
+                    maxFontSize: 18,
+                    minFontSize: 16,
+                  ),
+                  Divider(
+                    color: Color(0xffcecece),
+                  )
+                ],
+              ));
         } else {
           final groupmessages = messages
               .where(

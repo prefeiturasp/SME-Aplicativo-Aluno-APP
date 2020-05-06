@@ -23,7 +23,7 @@ class CardRecentMessage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: screenHeight * 3),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: message == null ? Color(0xffC45C04) : Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(screenHeight * 2),
         ),
@@ -124,7 +124,7 @@ class CardRecentMessage extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) =>
                               ViewMessage(message: message, token: token)))
-                  : () => false;
+                  : () => {};
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
