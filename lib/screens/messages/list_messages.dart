@@ -15,8 +15,8 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ListMessages extends StatefulWidget {
   final String token;
-
-  ListMessages({@required this.token});
+  final int codigoGrupo;
+  ListMessages({@required this.token, @required this.codigoGrupo});
   _ListMessageState createState() => _ListMessageState();
 }
 
@@ -170,7 +170,12 @@ class _ListMessageState extends State<ListMessages> {
             ],
           ));
         } else {
-          var recentMessage = messages.first;
+          final groupmessages = messages
+              .where(
+                (m) => m.grupos.any((g) => g.codigo == widget.codigoGrupo),
+              )
+              .toList();
+          var recentMessage = groupmessages.first;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -299,19 +304,19 @@ class _ListMessageState extends State<ListMessages> {
               SizedBox(
                 height: screenHeight * 5,
               ),
-              messages.length == 1
+              groupmessages.length == 1
                   ? Container()
                   : AutoSizeText(
-                      messages.length > 1
-                          ? "${messages.length - 1} MENSAGENS ANTIGAS"
-                          : "${messages.length} MENSAGEM ANTIGA",
+                      (groupmessages.length - 1) == 1
+                          ? "${groupmessages.length - 1} MENSAGEM ANTIGA"
+                          : "${groupmessages.length - 1} MENSAGENS ANTIGAS",
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
-              _listCardsMessages(messages, context, screenHeight, token)
+              _listCardsMessages(groupmessages, context, screenHeight, token)
             ],
           );
         }

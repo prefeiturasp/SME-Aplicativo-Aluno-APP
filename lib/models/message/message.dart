@@ -1,8 +1,10 @@
+import 'package:sme_app_aluno/models/message/grupo.dart';
+
 class Message {
   int id;
   String mensagem;
   String titulo;
-  String grupo;
+  List<Grupo> grupos;
   String dataEnvio;
   String dataExpiracao;
   String criadoEm;
@@ -14,7 +16,7 @@ class Message {
       {this.id,
       this.mensagem,
       this.titulo,
-      this.grupo,
+      this.grupos,
       this.dataEnvio,
       this.dataExpiracao,
       this.criadoEm,
@@ -26,7 +28,12 @@ class Message {
     id = json['id'];
     mensagem = json['mensagem'];
     titulo = json['titulo'];
-    grupo = json['grupo'];
+    if (json['grupos'] != null) {
+      grupos = new List<Grupo>();
+      json['grupos'].forEach((v) {
+        grupos.add(new Grupo.fromJson(v));
+      });
+    }
     dataEnvio = json['dataEnvio'];
     dataExpiracao = json['dataExpiracao'];
     criadoEm = json['criadoEm'];
@@ -40,7 +47,9 @@ class Message {
     data['id'] = this.id;
     data['mensagem'] = this.mensagem;
     data['titulo'] = this.titulo;
-    data['grupo'] = this.grupo;
+    if (this.grupos != null) {
+      data['grupos'] = this.grupos.map((v) => v.toJson()).toList();
+    }
     data['dataEnvio'] = this.dataEnvio;
     data['dataExpiracao'] = this.dataExpiracao;
     data['criadoEm'] = this.criadoEm;

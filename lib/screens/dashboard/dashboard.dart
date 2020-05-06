@@ -14,11 +14,13 @@ class Dashboard extends StatefulWidget {
   final Student student;
   final String groupSchool;
   final String token;
+  final int codigoGrupo;
 
   Dashboard(
       {@required this.student,
       @required this.groupSchool,
-      @required this.token});
+      @required this.token,
+      @required this.codigoGrupo});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -67,11 +69,17 @@ class _DashboardState extends State<Dashboard> {
                   if (_messagesController.messages.isEmpty) {
                     return CardRecentMessage();
                   } else {
+                    final groupmessages = _messagesController.messages
+                        .where(
+                          (m) => m.grupos
+                              .any((g) => g.codigo == widget.codigoGrupo),
+                        )
+                        .toList();
                     return CardRecentMessage(
-                      message: _messagesController.messages.first,
-                      countMessages: _messagesController.messages.length,
-                      token: widget.token,
-                    );
+                        message: groupmessages.first,
+                        countMessages: groupmessages.length,
+                        token: widget.token,
+                        codigoGrupo: widget.codigoGrupo);
                   }
                 } else {
                   return GFLoader(

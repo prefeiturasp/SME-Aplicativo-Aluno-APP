@@ -11,8 +11,10 @@ class CardRecentMessage extends StatelessWidget {
   final Message message;
   final int countMessages;
   final String token;
+  final int codigoGrupo;
 
-  CardRecentMessage({this.message, this.countMessages, this.token});
+  CardRecentMessage(
+      {this.message, this.countMessages, this.token, this.codigoGrupo});
 
   @override
   Widget build(BuildContext context) {
@@ -240,8 +242,9 @@ class CardRecentMessage extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            ListMessages(token: token)));
+                                        builder: (context) => ListMessages(
+                                            token: token,
+                                            codigoGrupo: codigoGrupo)));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
