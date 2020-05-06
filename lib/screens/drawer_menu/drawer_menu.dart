@@ -13,7 +13,8 @@ import 'package:sme_app_aluno/utils/storage.dart';
 
 class DrawerMenu extends StatefulWidget {
   final Student student;
-  DrawerMenu({@required this.student});
+  final int codigoGrupo;
+  DrawerMenu({@required this.student, @required this.codigoGrupo});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
@@ -36,6 +37,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
         MaterialPageRoute(
             builder: (context) => ListMessages(
                   token: _token,
+                  codigoGrupo: widget.codigoGrupo,
                 )));
   }
 

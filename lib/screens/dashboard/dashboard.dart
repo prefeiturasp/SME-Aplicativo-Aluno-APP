@@ -115,9 +115,8 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
-      drawer: DrawerMenu(
-        student: widget.student,
-      ),
+      drawer:
+          DrawerMenu(student: widget.student, codigoGrupo: widget.codigoGrupo),
     );
   }
 }
