@@ -65,16 +65,16 @@ class _DashboardState extends State<Dashboard> {
                 student: widget.student,
               ),
               Observer(builder: (context) {
+                final groupmessages = _messagesController.messages
+                    .where(
+                      (m) =>
+                          m.grupos.any((g) => g.codigo == widget.codigoGrupo),
+                    )
+                    .toList();
                 if (!_messagesController.isLoading) {
-                  if (_messagesController.messages.isEmpty) {
+                  if (groupmessages.isEmpty) {
                     return CardRecentMessage();
                   } else {
-                    final groupmessages = _messagesController.messages
-                        .where(
-                          (m) => m.grupos
-                              .any((g) => g.codigo == widget.codigoGrupo),
-                        )
-                        .toList();
                     return CardRecentMessage(
                         message: groupmessages.first,
                         countMessages: groupmessages.length,
