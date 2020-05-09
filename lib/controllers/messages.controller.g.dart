@@ -26,6 +26,43 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     }, _$messagesAtom, name: '${_$messagesAtom.name}_set');
   }
 
+  final _$groupmessagesAtom =
+      Atom(name: '_MessagesControllerBase.groupmessages');
+
+  @override
+  ObservableList<Message> get groupmessages {
+    _$groupmessagesAtom.context.enforceReadPolicy(_$groupmessagesAtom);
+    _$groupmessagesAtom.reportObserved();
+    return super.groupmessages;
+  }
+
+  @override
+  set groupmessages(ObservableList<Message> value) {
+    _$groupmessagesAtom.context.conditionallyRunInAction(() {
+      super.groupmessages = value;
+      _$groupmessagesAtom.reportChanged();
+    }, _$groupmessagesAtom, name: '${_$groupmessagesAtom.name}_set');
+  }
+
+  final _$messagesNotDeletedAtom =
+      Atom(name: '_MessagesControllerBase.messagesNotDeleted');
+
+  @override
+  ObservableList<Message> get messagesNotDeleted {
+    _$messagesNotDeletedAtom.context
+        .enforceReadPolicy(_$messagesNotDeletedAtom);
+    _$messagesNotDeletedAtom.reportObserved();
+    return super.messagesNotDeleted;
+  }
+
+  @override
+  set messagesNotDeleted(ObservableList<Message> value) {
+    _$messagesNotDeletedAtom.context.conditionallyRunInAction(() {
+      super.messagesNotDeleted = value;
+      _$messagesNotDeletedAtom.reportChanged();
+    }, _$messagesNotDeletedAtom, name: '${_$messagesNotDeletedAtom.name}_set');
+  }
+
   final _$isLoadingAtom = Atom(name: '_MessagesControllerBase.isLoading');
 
   @override
@@ -43,6 +80,32 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
   }
 
+  final _$countMessageAtom = Atom(name: '_MessagesControllerBase.countMessage');
+
+  @override
+  int get countMessage {
+    _$countMessageAtom.context.enforceReadPolicy(_$countMessageAtom);
+    _$countMessageAtom.reportObserved();
+    return super.countMessage;
+  }
+
+  @override
+  set countMessage(int value) {
+    _$countMessageAtom.context.conditionallyRunInAction(() {
+      super.countMessage = value;
+      _$countMessageAtom.reportChanged();
+    }, _$countMessageAtom, name: '${_$countMessageAtom.name}_set');
+  }
+
+  final _$loadMessagesNotDeletedsAsyncAction =
+      AsyncAction('loadMessagesNotDeleteds');
+
+  @override
+  Future loadMessagesNotDeleteds() {
+    return _$loadMessagesNotDeletedsAsyncAction
+        .run(() => super.loadMessagesNotDeleteds());
+  }
+
   final _$loadMessagesAsyncAction = AsyncAction('loadMessages');
 
   @override
@@ -51,10 +114,24 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessages(token: token));
   }
 
+  final _$_MessagesControllerBaseActionController =
+      ActionController(name: '_MessagesControllerBase');
+
+  @override
+  dynamic messagesPerGroups(dynamic codigoGrupo) {
+    final _$actionInfo =
+        _$_MessagesControllerBaseActionController.startAction();
+    try {
+      return super.messagesPerGroups(codigoGrupo);
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =
-        'messages: ${messages.toString()},isLoading: ${isLoading.toString()}';
+        'messages: ${messages.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()}';
     return '{$string}';
   }
 }

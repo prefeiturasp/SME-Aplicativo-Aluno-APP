@@ -65,21 +65,41 @@ class _DashboardState extends State<Dashboard> {
                 student: widget.student,
               ),
               Observer(builder: (context) {
+                if (_messagesController.isLoading) {
+                  return GFLoader(
+                    type: GFLoaderType.square,
+                    loaderColorOne: Color(0xffDE9524),
+                    loaderColorTwo: Color(0xffC65D00),
+                    loaderColorThree: Color(0xffC65D00),
+                    size: GFSize.LARGE,
+                  );
+                } else {
+                  _messagesController.messagesPerGroups(widget.codigoGrupo);
+                  _messagesController.loadMessagesNotDeleteds();
+                }
+
                 if (_messagesController.messages != null) {
-                  final groupmessages = _messagesController.messages
-                      .where(
-                        (m) =>
-                            m.grupos.any((g) => g.codigo == widget.codigoGrupo),
-                      )
-                      .toList();
-                  if (groupmessages.isNotEmpty) {
-                    return CardRecentMessage(
-                        message: groupmessages.first,
-                        countMessages: groupmessages.length,
-                        token: widget.token,
-                        codigoGrupo: widget.codigoGrupo);
+                  _messagesController.messagesPerGroups(widget.codigoGrupo);
+                  _messagesController.loadMessagesNotDeleteds();
+
+                  if (_messagesController.messagesNotDeleted == null ||
+                      _messagesController.messagesNotDeleted.isEmpty) {
+                    return Container(
+                      child: Visibility(
+                          visible: _messagesController.messagesNotDeleted !=
+                                  null &&
+                              _messagesController.messagesNotDeleted.isEmpty,
+                          child: CardRecentMessage()),
+                    );
                   } else {
-                    return CardRecentMessage();
+                    return CardRecentMessage(
+                      message: _messagesController.messagesNotDeleted.first,
+                      countMessages:
+                          _messagesController.messagesNotDeleted.length,
+                      token: widget.token,
+                      codigoGrupo: widget.codigoGrupo,
+                      deleteBtn: false,
+                    );
                   }
                 } else {
                   return GFLoader(

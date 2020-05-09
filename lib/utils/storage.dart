@@ -9,7 +9,7 @@ class Storage {
 
   void insertString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
+    prefs.setString(key, value) ?? "";
   }
 
   void removeAllValues() async {
