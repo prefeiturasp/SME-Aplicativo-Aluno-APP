@@ -12,9 +12,14 @@ class CardRecentMessage extends StatelessWidget {
   final int countMessages;
   final String token;
   final int codigoGrupo;
+  final bool deleteBtn;
 
   CardRecentMessage(
-      {this.message, this.countMessages, this.token, this.codigoGrupo});
+      {this.message,
+      this.countMessages,
+      this.token,
+      this.codigoGrupo,
+      this.deleteBtn = true});
 
   @override
   Widget build(BuildContext context) {
@@ -209,21 +214,24 @@ class CardRecentMessage extends StatelessWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            width: screenHeight * 6,
-                            height: screenHeight * 6,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffC65D00), width: 1),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(screenHeight * 3),
+                        Visibility(
+                          visible: deleteBtn,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              width: screenHeight * 6,
+                              height: screenHeight * 6,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color(0xffC65D00), width: 1),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(screenHeight * 3),
+                                ),
                               ),
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.times,
-                              color: Color(0xffC65D00),
+                              child: Icon(
+                                FontAwesomeIcons.times,
+                                color: Color(0xffC65D00),
+                              ),
                             ),
                           ),
                         ),

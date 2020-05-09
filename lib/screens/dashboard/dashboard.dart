@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
@@ -28,12 +31,27 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   MessagesController _messagesController;
+  List<String> _ids = [];
 
   @override
   void initState() {
     super.initState();
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
+    loadingIds();
+  }
+
+  loadingIds() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String json = prefs.getString("deleted_id");
+    if (json != null) {
+      setState(() {
+        _ids = jsonDecode(json).cast<String>();
+      });
+      print("--------");
+      print(_ids);
+      print("--------");
+    }
   }
 
   @override
@@ -65,21 +83,42 @@ class _DashboardState extends State<Dashboard> {
                 student: widget.student,
               ),
               Observer(builder: (context) {
+                if (_messagesController.isLoading) {
+                  return GFLoader(
+                    type: GFLoaderType.square,
+                    loaderColorOne: Color(0xffDE9524),
+                    loaderColorTwo: Color(0xffC65D00),
+                    loaderColorThree: Color(0xffC65D00),
+                    size: GFSize.LARGE,
+                  );
+                } else {
+                  _messagesController.messagesPerGroups(widget.codigoGrupo);
+                  _messagesController.loadMessagesNotDeleteds();
+                }
+
                 if (_messagesController.messages != null) {
-                  final groupmessages = _messagesController.messages
-                      .where(
-                        (m) =>
-                            m.grupos.any((g) => g.codigo == widget.codigoGrupo),
-                      )
-                      .toList();
-                  if (groupmessages.isNotEmpty) {
-                    return CardRecentMessage(
-                        message: groupmessages.first,
-                        countMessages: groupmessages.length,
-                        token: widget.token,
-                        codigoGrupo: widget.codigoGrupo);
+                  _messagesController.messagesPerGroups(widget.codigoGrupo);
+                  _messagesController.loadMessagesNotDeleteds();
+
+                  if (_messagesController.messagesNotDeleted == null ||
+                      _messagesController.messagesNotDeleted.isEmpty) {
+                    return Container(
+                      child: Visibility(
+                          visible: _messagesController.messagesNotDeleted !=
+                                  null &&
+                              _messagesController.messagesNotDeleted.isEmpty,
+                          child: CardRecentMessage()),
+                    );
                   } else {
-                    return CardRecentMessage();
+                    return CardRecentMessage(
+                      message: _messagesController.messagesNotDeleted.first,
+                      countMessages:
+                          _messagesController.messagesNotDeleted.length,
+                      token: widget.token,
+                      codigoGrupo: widget.codigoGrupo,
+                      deleteBtn: false,
+                    );
+                    ;
                   }
                 } else {
                   return GFLoader(

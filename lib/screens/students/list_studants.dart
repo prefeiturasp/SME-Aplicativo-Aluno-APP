@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
@@ -72,6 +73,7 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     await _authenticateController.authenticateUser(widget.cpf, widget.password);
 
     print(
@@ -84,7 +86,11 @@ class _ListStudantsState extends State<ListStudants> {
       BackgroundFetch.stop().then((int status) {
         print('[BackgroundFetch] stop success: $status');
       });
-      _storage.removeAllValues();
+      prefs.remove('current_cpf');
+      prefs.remove('current_email');
+      prefs.remove('token');
+      prefs.remove('password');
+      prefs.remove('dispositivo_id');
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Login()));
     }
@@ -132,11 +138,18 @@ class _ListStudantsState extends State<ListStudants> {
             actions: <Widget>[
               FlatButton(
                 child: Text("SIM"),
-                onPressed: () {
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   BackgroundFetch.stop().then((int status) {
                     print('[BackgroundFetch] stop success: $status');
                   });
-                  _storage.removeAllValues();
+                  prefs.remove('current_name');
+                  prefs.remove('current_cpf');
+                  prefs.remove('current_email');
+                  prefs.remove('token');
+                  prefs.remove('password');
+                  prefs.remove('dispositivo_id');
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 },

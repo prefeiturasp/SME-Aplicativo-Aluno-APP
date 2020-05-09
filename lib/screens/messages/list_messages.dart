@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -5,12 +7,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ListMessages extends StatefulWidget {
@@ -22,12 +26,25 @@ class ListMessages extends StatefulWidget {
 
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
+  Storage storage;
 
   @override
   void initState() {
     super.initState();
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
+  }
+
+  removeMesageToStorage(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> ids = [];
+    String currentName = prefs.getString("current_name");
+    String json = prefs.getString("${currentName}_deleted_id");
+    if (json != null) {
+      ids = jsonDecode(json).cast<String>();
+    }
+    ids.add(id.toString());
+    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
   Widget _listCardsMessages(List<Message> messages, BuildContext context,
@@ -85,7 +102,7 @@ class _ListMessageState extends State<ListMessages> {
                   footer: true,
                   footerContent: <Widget>[
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => removeMesageToStorage(item.id),
                       child: Container(
                         width: screenHeight * 6,
                         height: screenHeight * 6,
@@ -153,29 +170,39 @@ class _ListMessageState extends State<ListMessages> {
   Widget _buildListMessages(
       BuildContext context, num screenHeight, String token) {
     return Observer(builder: (context) {
-      if (_messagesController.messages != null) {
-        final groupmessages = _messagesController.messages
-            .where(
-              (m) => m.grupos.any((g) => g.codigo == widget.codigoGrupo),
-            )
-            .toList();
-        if (groupmessages.isEmpty) {
+      if (_messagesController.isLoading) {
+        return GFLoader(
+          type: GFLoaderType.square,
+          loaderColorOne: Color(0xffDE9524),
+          loaderColorTwo: Color(0xffC65D00),
+          loaderColorThree: Color(0xffC65D00),
+          size: GFSize.LARGE,
+        );
+      } else {
+        _messagesController.messagesPerGroups(widget.codigoGrupo);
+        _messagesController.loadMessagesNotDeleteds();
+
+        if (_messagesController.messagesNotDeleted == null ||
+            _messagesController.messagesNotDeleted.isEmpty) {
           return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
-              child: Column(
-                children: <Widget>[
-                  AutoSizeText(
-                    "Nenhuma mensagem está disponível para este aluno",
-                    maxFontSize: 18,
-                    minFontSize: 16,
-                  ),
-                  Divider(
-                    color: Color(0xffcecece),
-                  )
-                ],
+              child: Visibility(
+                visible: _messagesController.messagesNotDeleted != null &&
+                    _messagesController.messagesNotDeleted.isEmpty,
+                child: Column(
+                  children: <Widget>[
+                    AutoSizeText(
+                      "Nenhuma mensagem está disponível para este aluno",
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                    ),
+                    Divider(
+                      color: Color(0xffcecece),
+                    )
+                  ],
+                ),
               ));
         } else {
-          var recentMessage = groupmessages.first;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -195,7 +222,7 @@ class _ListMessageState extends State<ListMessages> {
                 recentMessage: true,
                 content: <Widget>[
                   AutoSizeText(
-                    recentMessage.titulo,
+                    _messagesController.messagesNotDeleted.first.titulo,
                     maxFontSize: 16,
                     minFontSize: 14,
                     maxLines: 2,
@@ -208,7 +235,8 @@ class _ListMessageState extends State<ListMessages> {
                   Container(
                     width: screenHeight * 41,
                     child: AutoSizeText(
-                      StringSupport.parseHtmlString(recentMessage.mensagem),
+                      StringSupport.parseHtmlString(_messagesController
+                          .messagesNotDeleted.first.mensagem),
                       maxFontSize: 16,
                       minFontSize: 14,
                       maxLines: 5,
@@ -224,7 +252,8 @@ class _ListMessageState extends State<ListMessages> {
                   ),
                   AutoSizeText(
                     DateFormatSuport.formatStringDate(
-                        recentMessage.criadoEm, 'dd/MM/yyyy'),
+                        _messagesController.messagesNotDeleted.first.criadoEm,
+                        'dd/MM/yyyy'),
                     maxFontSize: 16,
                     minFontSize: 14,
                     maxLines: 2,
@@ -236,11 +265,8 @@ class _ListMessageState extends State<ListMessages> {
                 footerContent: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewMessage(
-                                  message: recentMessage, token: token)));
+                      removeMesageToStorage(
+                          _messagesController.messagesNotDeleted.first.id);
                     },
                     child: Container(
                       width: screenHeight * 6,
@@ -273,7 +299,8 @@ class _ListMessageState extends State<ListMessages> {
                               MaterialPageRoute(
                                   builder: (context) => ViewMessage(
                                         token: token,
-                                        message: recentMessage,
+                                        message: _messagesController
+                                            .messagesNotDeleted.first,
                                       )));
                         },
                         child: Row(
@@ -304,30 +331,23 @@ class _ListMessageState extends State<ListMessages> {
               SizedBox(
                 height: screenHeight * 5,
               ),
-              groupmessages.length == 1
+              _messagesController.messagesNotDeleted.length == 1
                   ? Container()
                   : AutoSizeText(
-                      (groupmessages.length - 1) == 1
-                          ? "${groupmessages.length - 1} MENSAGEM ANTIGA"
-                          : "${groupmessages.length - 1} MENSAGENS ANTIGAS",
+                      (_messagesController.messagesNotDeleted.length - 1) == 1
+                          ? "${_messagesController.messagesNotDeleted.length - 1} MENSAGEM ANTIGA"
+                          : "${_messagesController.messagesNotDeleted.length - 1} MENSAGENS ANTIGAS",
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
-              _listCardsMessages(groupmessages, context, screenHeight, token)
+              _listCardsMessages(_messagesController.messagesNotDeleted,
+                  context, screenHeight, token)
             ],
           );
         }
-      } else {
-        return GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        );
       }
     });
   }

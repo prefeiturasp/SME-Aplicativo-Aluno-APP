@@ -3,6 +3,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
@@ -60,11 +61,17 @@ class _DrawerMenuState extends State<DrawerMenu> {
     }
   }
 
-  _logout(BuildContext context) {
+  _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     BackgroundFetch.stop().then((int status) {
       print('[BackgroundFetch] stop success: $status');
     });
-    _storage.removeAllValues();
+    prefs.remove('current_name');
+    prefs.remove('current_cpf');
+    prefs.remove('current_email');
+    prefs.remove('token');
+    prefs.remove('password');
+    prefs.remove('dispositivo_id');
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
 
