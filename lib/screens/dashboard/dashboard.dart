@@ -48,9 +48,6 @@ class _DashboardState extends State<Dashboard> {
       setState(() {
         _ids = jsonDecode(json).cast<String>();
       });
-      print("--------");
-      print(_ids);
-      print("--------");
     }
   }
 
