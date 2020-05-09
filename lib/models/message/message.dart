@@ -11,6 +11,7 @@ class Message {
   String criadoPor;
   String alteradoEm;
   String alteradoPor;
+  String mensagemVisualizada;
 
   Message(
       {this.id,
@@ -22,7 +23,8 @@ class Message {
       this.criadoEm,
       this.criadoPor,
       this.alteradoEm,
-      this.alteradoPor});
+      this.alteradoPor,
+      this.mensagemVisualizada});
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -40,6 +42,7 @@ class Message {
     criadoPor = json['criadoPor'];
     alteradoEm = json['alteradoEm'];
     alteradoPor = json['alteradoPor'];
+    mensagemVisualizada = json['mensagemVisualizada'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +59,7 @@ class Message {
     data['criadoPor'] = this.criadoPor;
     data['alteradoEm'] = this.alteradoEm;
     data['alteradoPor'] = this.alteradoPor;
+    data['mensagemVisualizada'] = this.mensagemVisualizada;
     return data;
   }
 }
