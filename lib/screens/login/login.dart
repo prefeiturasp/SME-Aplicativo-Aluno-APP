@@ -53,7 +53,6 @@ class _LoginState extends State<Login> {
     prefs.remove('token');
     prefs.remove('password');
     prefs.remove('dispositivo_id');
-    // _storage.removeAllValues();
     _authenticateController.clearCurrentUser();
     setState(() {
       busy = true;

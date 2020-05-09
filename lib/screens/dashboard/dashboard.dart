@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
@@ -31,24 +28,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   MessagesController _messagesController;
-  List<String> _ids = [];
 
   @override
   void initState() {
     super.initState();
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
-    loadingIds();
-  }
-
-  loadingIds() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String json = prefs.getString("deleted_id");
-    if (json != null) {
-      setState(() {
-        _ids = jsonDecode(json).cast<String>();
-      });
-    }
   }
 
   @override
@@ -115,7 +100,6 @@ class _DashboardState extends State<Dashboard> {
                       codigoGrupo: widget.codigoGrupo,
                       deleteBtn: false,
                     );
-                    ;
                   }
                 } else {
                   return GFLoader(

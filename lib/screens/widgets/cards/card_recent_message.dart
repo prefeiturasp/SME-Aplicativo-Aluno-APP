@@ -123,13 +123,13 @@ class CardRecentMessage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              message != null
-                  ? Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewMessage(message: message, token: token)))
-                  : () => {};
+              if (message != null) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewMessage(message: message, token: token)));
+              }
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
