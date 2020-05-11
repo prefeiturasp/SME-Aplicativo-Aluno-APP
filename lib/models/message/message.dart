@@ -11,7 +11,7 @@ class Message {
   String criadoPor;
   String alteradoEm;
   String alteradoPor;
-  String mensagemVisualizada;
+  bool mensagemVisualizada;
 
   Message(
       {this.id,

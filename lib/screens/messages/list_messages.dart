@@ -35,7 +35,31 @@ class _ListMessageState extends State<ListMessages> {
     _messagesController.loadMessages(token: widget.token);
   }
 
-  removeMesageToStorage(int id) async {
+  Future<bool> _confirmDeleteMessage(int id) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Atenção"),
+            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("SIM"),
+                  onPressed: () {
+                    _removeMesageToStorage(id);
+                  }),
+              FlatButton(
+                child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  _removeMesageToStorage(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> ids = [];
     String currentName = prefs.getString("current_name");
@@ -56,7 +80,7 @@ class _ListMessageState extends State<ListMessages> {
             .map((item) => CardMessage(
                   headerTitle: "ASSUNTO",
                   headerIcon: false,
-                  recentMessage: false,
+                  recentMessage: !item.mensagemVisualizada,
                   content: <Widget>[
                     AutoSizeText(
                       item.titulo,
@@ -64,7 +88,9 @@ class _ListMessageState extends State<ListMessages> {
                       minFontSize: 14,
                       maxLines: 2,
                       style: TextStyle(
-                          color: Color(0xff666666),
+                          color: !item.mensagemVisualizada
+                              ? Colors.white
+                              : Color(0xff666666),
                           fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
@@ -81,7 +107,9 @@ class _ListMessageState extends State<ListMessages> {
                         maxLines: 10,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            color: Color(0xff666666),
+                            color: !item.mensagemVisualizada
+                                ? Colors.white
+                                : Color(0xff666666),
                             height: screenHeight * 0.240),
                       ),
                     ),
@@ -95,14 +123,16 @@ class _ListMessageState extends State<ListMessages> {
                       minFontSize: 14,
                       maxLines: 2,
                       style: TextStyle(
-                          color: Color(0xff666666),
+                          color: !item.mensagemVisualizada
+                              ? Colors.white
+                              : Color(0xff666666),
                           fontWeight: FontWeight.w700),
                     ),
                   ],
                   footer: true,
                   footerContent: <Widget>[
                     GestureDetector(
-                      onTap: () => removeMesageToStorage(item.id),
+                      onTap: () => _confirmDeleteMessage(item.id),
                       child: Container(
                         width: screenHeight * 6,
                         height: screenHeight * 6,
@@ -265,7 +295,7 @@ class _ListMessageState extends State<ListMessages> {
                 footerContent: <Widget>[
                   GestureDetector(
                     onTap: () {
-                      removeMesageToStorage(
+                      _confirmDeleteMessage(
                           _messagesController.messagesNotDeleted.first.id);
                     },
                     child: Container(

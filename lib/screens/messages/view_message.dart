@@ -1,16 +1,60 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 
-class ViewMessage extends StatelessWidget {
+class ViewMessage extends StatefulWidget {
   final Message message;
   final String token;
 
   ViewMessage({@required this.message, @required this.token});
+
+  @override
+  _ViewMessageState createState() => _ViewMessageState();
+}
+
+class _ViewMessageState extends State<ViewMessage> {
+  Future<bool> _confirmDeleteMessage(int id) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Atenção"),
+            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("SIM"),
+                  onPressed: () {
+                    _removeMesageToStorage(id);
+                  }),
+              FlatButton(
+                child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  _removeMesageToStorage(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> ids = [];
+    String currentName = prefs.getString("current_name");
+    String json = prefs.getString("${currentName}_deleted_id");
+    if (json != null) {
+      ids = jsonDecode(json).cast<String>();
+    }
+    ids.add(id.toString());
+    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +87,7 @@ class ViewMessage extends StatelessWidget {
                 recentMessage: false,
                 content: <Widget>[
                   AutoSizeText(
-                    message.titulo,
+                    widget.message.titulo,
                     maxFontSize: 16,
                     minFontSize: 14,
                     maxLines: 2,
@@ -56,7 +100,7 @@ class ViewMessage extends StatelessWidget {
                   Container(
                     width: screenHeight * 41,
                     child: Html(
-                      data: message.mensagem,
+                      data: widget.message.mensagem,
                     ),
                   ),
                   SizedBox(
@@ -64,7 +108,7 @@ class ViewMessage extends StatelessWidget {
                   ),
                   AutoSizeText(
                     DateFormatSuport.formatStringDate(
-                        message.criadoEm, 'dd/MM/yyyy'),
+                        widget.message.criadoEm, 'dd/MM/yyyy'),
                     maxFontSize: 16,
                     minFontSize: 14,
                     maxLines: 2,
@@ -75,7 +119,10 @@ class ViewMessage extends StatelessWidget {
                 footer: true,
                 footerContent: <Widget>[
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _confirmDeleteMessage(widget.message.id);
+                      Navigator.pop(context);
+                    },
                     child: Container(
                       width: screenHeight * 6,
                       height: screenHeight * 6,

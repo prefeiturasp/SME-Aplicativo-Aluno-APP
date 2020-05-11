@@ -1,13 +1,16 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
-class CardRecentMessage extends StatelessWidget {
+class CardRecentMessage extends StatefulWidget {
   final Message message;
   final int countMessages;
   final String token;
@@ -22,13 +25,54 @@ class CardRecentMessage extends StatelessWidget {
       this.deleteBtn = true});
 
   @override
+  _CardRecentMessageState createState() => _CardRecentMessageState();
+}
+
+class _CardRecentMessageState extends State<CardRecentMessage> {
+  Future<bool> _confirmDeleteMessage(int id) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Atenção"),
+            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("SIM"),
+                  onPressed: () {
+                    _removeMesageToStorage(id);
+                  }),
+              FlatButton(
+                child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  _removeMesageToStorage(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> ids = [];
+    String currentName = prefs.getString("current_name");
+    String json = prefs.getString("${currentName}_deleted_id");
+    if (json != null) {
+      ids = jsonDecode(json).cast<String>();
+    }
+    ids.add(id.toString());
+    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
       margin: EdgeInsets.only(top: screenHeight * 3),
       decoration: BoxDecoration(
-        color: message == null ? Color(0xffC45C04) : Colors.white,
+        color: widget.message == null ? Color(0xffC45C04) : Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(screenHeight * 2),
         ),
@@ -76,7 +120,8 @@ class CardRecentMessage extends StatelessWidget {
                       ],
                     )),
                 Visibility(
-                  visible: countMessages != null && countMessages > 0,
+                  visible:
+                      widget.countMessages != null && widget.countMessages > 0,
                   child: Stack(overflow: Overflow.visible, children: <Widget>[
                     Container(
                       width: screenHeight * 3.5,
@@ -107,7 +152,7 @@ class CardRecentMessage extends StatelessWidget {
                           ),
                           child: Center(
                             child: AutoSizeText(
-                              "$countMessages",
+                              "${widget.countMessages}",
                               maxFontSize: 12,
                               minFontSize: 10,
                               style: TextStyle(
@@ -123,12 +168,12 @@ class CardRecentMessage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              if (message != null) {
+              if (widget.message != null) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            ViewMessage(message: message, token: token)));
+                        builder: (context) => ViewMessage(
+                            message: widget.message, token: widget.token)));
               }
             },
             child: Container(
@@ -137,12 +182,12 @@ class CardRecentMessage extends StatelessWidget {
                 color: Color(0xffC45C04),
                 child: Container(
                   margin: EdgeInsets.only(top: screenHeight * 1.8),
-                  child: message != null
+                  child: widget.message != null
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             AutoSizeText(
-                              message.titulo,
+                              widget.message.titulo,
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 2,
@@ -158,7 +203,7 @@ class CardRecentMessage extends StatelessWidget {
                               child: AutoSizeText(
                                 StringSupport.parseHtmlString(
                                     StringSupport.truncateEndString(
-                                        message.mensagem, 250)),
+                                        widget.message.mensagem, 250)),
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 10,
@@ -173,7 +218,7 @@ class CardRecentMessage extends StatelessWidget {
                             ),
                             AutoSizeText(
                               DateFormatSuport.formatStringDate(
-                                  message.criadoEm, 'dd/MM/yyyy'),
+                                  widget.message.criadoEm, 'dd/MM/yyyy'),
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 2,
@@ -196,28 +241,31 @@ class CardRecentMessage extends StatelessWidget {
           ),
           Container(
               decoration: BoxDecoration(
-                  color: message != null && countMessages > 0
+                  color: widget.message != null && widget.countMessages > 0
                       ? null
                       : Color(0xffC45C04),
-                  borderRadius: message != null && countMessages > 0
-                      ? null
-                      : BorderRadius.only(
-                          bottomLeft: Radius.circular(screenHeight * 2),
-                          bottomRight: Radius.circular(screenHeight * 2),
-                        )),
+                  borderRadius:
+                      widget.message != null && widget.countMessages > 0
+                          ? null
+                          : BorderRadius.only(
+                              bottomLeft: Radius.circular(screenHeight * 2),
+                              bottomRight: Radius.circular(screenHeight * 2),
+                            )),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,
                   right: screenHeight * 2.5,
                   top: screenHeight * 1.5,
                   bottom: screenHeight * 1.5),
-              child: message != null && countMessages > 0
+              child: widget.message != null && widget.countMessages > 0
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Visibility(
-                          visible: deleteBtn,
+                          visible: widget.deleteBtn,
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              _confirmDeleteMessage(widget.message.id);
+                            },
                             child: Container(
                               width: screenHeight * 6,
                               height: screenHeight * 6,
@@ -251,8 +299,8 @@ class CardRecentMessage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ListMessages(
-                                            token: token,
-                                            codigoGrupo: codigoGrupo)));
+                                            token: widget.token,
+                                            codigoGrupo: widget.codigoGrupo)));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
