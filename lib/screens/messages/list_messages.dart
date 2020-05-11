@@ -35,7 +35,7 @@ class _ListMessageState extends State<ListMessages> {
     _messagesController.loadMessages(token: widget.token);
   }
 
-  Future<bool> _confirmDeleteMessage(int id) {
+  Future<bool> _confirmDeleteMessage(int id) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -47,6 +47,7 @@ class _ListMessageState extends State<ListMessages> {
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(id);
+                    Navigator.of(context).pop(false);
                   }),
               FlatButton(
                 child: Text("NÃO"),

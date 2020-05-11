@@ -20,7 +20,7 @@ class ViewMessage extends StatefulWidget {
 }
 
 class _ViewMessageState extends State<ViewMessage> {
-  Future<bool> _confirmDeleteMessage(int id) {
+  Future<bool> _confirmDeleteMessage(int id) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -32,6 +32,8 @@ class _ViewMessageState extends State<ViewMessage> {
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(id);
+                    Navigator.of(context).pop(false);
+                    Navigator.pop(context);
                   }),
               FlatButton(
                 child: Text("NÃO"),
@@ -119,10 +121,7 @@ class _ViewMessageState extends State<ViewMessage> {
                 footer: true,
                 footerContent: <Widget>[
                   GestureDetector(
-                    onTap: () {
-                      _confirmDeleteMessage(widget.message.id);
-                      Navigator.pop(context);
-                    },
+                    onTap: () => _confirmDeleteMessage(widget.message.id),
                     child: Container(
                       width: screenHeight * 6,
                       height: screenHeight * 6,
