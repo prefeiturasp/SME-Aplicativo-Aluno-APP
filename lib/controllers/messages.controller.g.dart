@@ -114,6 +114,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessages(token: token));
   }
 
+  final _$updateMessageAsyncAction = AsyncAction('updateMessage');
+
+  @override
+  Future updateMessage({int id, int userId, String token}) {
+    return _$updateMessageAsyncAction
+        .run(() => super.updateMessage(id: id, userId: userId, token: token));
+  }
+
   final _$_MessagesControllerBaseActionController =
       ActionController(name: '_MessagesControllerBase');
 

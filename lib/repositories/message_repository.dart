@@ -28,4 +28,27 @@ class MessageRepository implements IMessageRepository {
       return null;
     }
   }
+
+  @override
+  Future<void> readMessage(int id, int userId, String token) async {
+    Map data = {"id": id, "usuarioId": userId};
+
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    try {
+      final response = await http.post(
+        "${Api.HOST}/UsuarioNotificacao",
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+      print("${response.statusCode}");
+      print("${response.body}");
+    } catch (error, stacktrace) {
+      print("Erro de requisição: $error" + "$stacktrace");
+    }
+  }
 }
