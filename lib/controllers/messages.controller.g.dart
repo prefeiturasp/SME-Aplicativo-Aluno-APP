@@ -97,6 +97,24 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     }, _$countMessageAtom, name: '${_$countMessageAtom.name}_set');
   }
 
+  final _$isReadMessageAtom =
+      Atom(name: '_MessagesControllerBase.isReadMessage');
+
+  @override
+  bool get isReadMessage {
+    _$isReadMessageAtom.context.enforceReadPolicy(_$isReadMessageAtom);
+    _$isReadMessageAtom.reportObserved();
+    return super.isReadMessage;
+  }
+
+  @override
+  set isReadMessage(bool value) {
+    _$isReadMessageAtom.context.conditionallyRunInAction(() {
+      super.isReadMessage = value;
+      _$isReadMessageAtom.reportChanged();
+    }, _$isReadMessageAtom, name: '${_$isReadMessageAtom.name}_set');
+  }
+
   final _$loadMessagesNotDeletedsAsyncAction =
       AsyncAction('loadMessagesNotDeleteds');
 
@@ -139,7 +157,7 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   @override
   String toString() {
     final string =
-        'messages: ${messages.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()}';
+        'messages: ${messages.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()},isReadMessage: ${isReadMessage.toString()}';
     return '{$string}';
   }
 }

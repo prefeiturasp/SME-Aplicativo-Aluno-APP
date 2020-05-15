@@ -29,6 +29,9 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessage;
 
+  @observable
+  bool isReadMessage = false;
+
   @action
   messagesPerGroups(codigoGrupo) {
     groupmessages = ObservableList<Message>.of(messages
@@ -61,6 +64,6 @@ abstract class _MessagesControllerBase with Store {
   @action
   updateMessage({int id, int userId, String token}) async {
     await _messagesRepository.readMessage(id, userId, token);
-    loadMessagesNotDeleteds();
+    loadMessages(token: token);
   }
 }
