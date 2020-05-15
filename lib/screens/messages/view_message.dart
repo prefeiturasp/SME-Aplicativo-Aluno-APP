@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 
@@ -22,15 +23,17 @@ class ViewMessage extends StatefulWidget {
 
 class _ViewMessageState extends State<ViewMessage> {
   MessagesController _messagesController;
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
     _messagesController = MessagesController();
-    _viewMessageUpdate();
+    _viewMessageUpdate(false);
   }
 
-  _viewMessageUpdate() async {
-    if (!widget.message.mensagemVisualizada) {
+  _viewMessageUpdate(bool isNotRead) async {
+    if (!widget.message.mensagemVisualizada || isNotRead) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt("current_user_id");
 
@@ -67,6 +70,35 @@ class _ViewMessageState extends State<ViewMessage> {
         });
   }
 
+  Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Atenção"),
+            content: Text(
+                "Você tem certeza que deseja marcar esta mensagem como não lida?"),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("SIM"),
+                  onPressed: () {
+                    _viewMessageUpdate(true);
+                    Navigator.of(context).pop(false);
+                    var snackbar = SnackBar(
+                        content: Text("Mensagem marcada como não lida"));
+                    scaffoldKey.currentState.showSnackBar(snackbar);
+                  }),
+              FlatButton(
+                child: Text("NÃO"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              )
+            ],
+          );
+        });
+  }
+
   _removeMesageToStorage(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> ids = [];
@@ -84,6 +116,7 @@ class _ViewMessageState extends State<ViewMessage> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
         title: Text("Mensagens"),
@@ -141,21 +174,30 @@ class _ViewMessageState extends State<ViewMessage> {
                 ],
                 footer: true,
                 footerContent: <Widget>[
-                  GestureDetector(
-                    onTap: () => _confirmDeleteMessage(widget.message.id),
-                    child: Container(
-                      width: screenHeight * 6,
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        EAIconButton(
+                          iconBtn: Icon(
+                            FontAwesomeIcons.trashAlt,
+                            color: Color(0xffC65D00),
+                          ),
+                          screenHeight: screenHeight,
+                          onPress: () =>
+                              _confirmDeleteMessage(widget.message.id),
                         ),
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.trashAlt,
-                        color: Color(0xffC65D00),
-                      ),
+                        SizedBox(
+                          width: screenHeight * 2,
+                        ),
+                        EAIconButton(
+                            iconBtn: Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Color(0xffC65D00),
+                            ),
+                            screenHeight: screenHeight,
+                            onPress: () => _confirmNotReadeMessage(
+                                widget.message.id, scaffoldKey)),
+                      ],
                     ),
                   ),
                   Container(

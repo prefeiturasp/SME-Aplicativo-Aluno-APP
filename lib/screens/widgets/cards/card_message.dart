@@ -7,6 +7,7 @@ class CardMessage extends StatelessWidget {
   final bool headerIcon;
   final List<Widget> content;
   final bool recentMessage;
+  final bool firstMessage;
   final bool footer;
   final List<Widget> footerContent;
 
@@ -15,6 +16,7 @@ class CardMessage extends StatelessWidget {
       this.headerIcon,
       this.content,
       this.recentMessage,
+      this.firstMessage,
       this.footer,
       this.footerContent});
 
@@ -56,7 +58,9 @@ class CardMessage extends StatelessWidget {
                     margin: EdgeInsets.only(right: screenHeight * 2),
                     child: Icon(
                       FontAwesomeIcons.envelopeOpen,
-                      color: Color(0xffFFD037),
+                      color: !recentMessage
+                          ? Color(0xffE1771D)
+                          : Color(0xffFFD037),
                       size: screenHeight * 2.7,
                     ),
                   ),

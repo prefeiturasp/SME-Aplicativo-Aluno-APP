@@ -166,7 +166,9 @@ class _ListMessageState extends State<ListMessages> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ViewMessage(
-                                        message: item, token: widget.token)));
+                                          message: item,
+                                          token: widget.token,
+                                        )));
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -250,7 +252,8 @@ class _ListMessageState extends State<ListMessages> {
               CardMessage(
                 headerTitle: "ASSUNTO",
                 headerIcon: true,
-                recentMessage: true,
+                recentMessage: !_messagesController
+                    .messagesNotDeleted.first.mensagemVisualizada,
                 content: <Widget>[
                   AutoSizeText(
                     _messagesController.messagesNotDeleted.first.titulo,
@@ -258,7 +261,11 @@ class _ListMessageState extends State<ListMessages> {
                     minFontSize: 14,
                     maxLines: 2,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: !_messagesController
+                                .messagesNotDeleted.first.mensagemVisualizada
+                            ? Colors.white
+                            : Color(0xff666666),
+                        fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
                     height: screenHeight * 1.8,
@@ -273,7 +280,10 @@ class _ListMessageState extends State<ListMessages> {
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: !_messagesController
+                                .messagesNotDeleted.first.mensagemVisualizada
+                            ? Colors.white
+                            : Color(0xff666666),
                         height: screenHeight * 0.240,
                       ),
                     ),
@@ -289,7 +299,11 @@ class _ListMessageState extends State<ListMessages> {
                     minFontSize: 14,
                     maxLines: 2,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w700),
+                        color: !_messagesController
+                                .messagesNotDeleted.first.mensagemVisualizada
+                            ? Colors.white
+                            : Color(0xff666666),
+                        fontWeight: FontWeight.w700),
                   ),
                 ],
                 footer: true,
