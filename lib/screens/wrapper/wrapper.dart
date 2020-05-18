@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
@@ -26,6 +27,22 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     loadCurrentUser();
     _authenticateController = AuthenticateController();
+    _initPushNotificationHandlers();
+  }
+
+  void _initPushNotificationHandlers() {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging.requestNotificationPermissions();
+    _firebaseMessaging.getToken().then(print);
+    _firebaseMessaging.configure(
+        onMessage: _onMessage,
+        onBackgroundMessage: _onMessage,
+        onLaunch: _onMessage,
+        onResume: _onMessage);
+  }
+
+  static Future<dynamic> _onMessage(Map<String, dynamic> message) async {
+    print(message);
   }
 
   loadCurrentUser() async {

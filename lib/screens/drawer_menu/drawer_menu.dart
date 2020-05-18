@@ -72,6 +72,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
     prefs.remove('token');
     prefs.remove('password');
     prefs.remove('dispositivo_id');
+    prefs.remove('current_user_id');
     // prefs.clear();
     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }

@@ -24,7 +24,36 @@ class MessageRepository implements IMessageRepository {
         return null;
       }
     } catch (e, stacktrace) {
-      print("Erro ao carregar lista de Mensagens " + stacktrace.toString());
+      print("[MessageRepository] Erro de requisição " + stacktrace.toString());
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> readMessage(int id, int userId, String token) async {
+    Map data = {"id": id, "usuarioId": userId};
+
+    //encode Map to JSON
+    var body = json.encode(data);
+
+    try {
+      final response = await http.post(
+        "${Api.HOST}/UsuarioNotificacao",
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        print("[MessageRepository] Erro ao atualizar mensagem " +
+            response.statusCode.toString());
+        return null;
+      }
+    } catch (error, stacktrace) {
+      print("[MessageRepository] Erro de requisição " + stacktrace.toString());
       return null;
     }
   }

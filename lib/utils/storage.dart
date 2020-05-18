@@ -12,6 +12,11 @@ class Storage {
     prefs.setString(key, value) ?? "";
   }
 
+  void insertInt(String key, int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(key, value);
+  }
+
   void removeAllValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -20,6 +25,12 @@ class Storage {
   Future<String> readValueStorage(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String newValue = prefs.getString(value) ?? "";
+    return newValue;
+  }
+
+  Future<int> readValueIntStorage(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int newValue = prefs.getInt(value);
     return newValue;
   }
 }

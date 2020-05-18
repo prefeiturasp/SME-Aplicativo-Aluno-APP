@@ -32,6 +32,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
             user.data.email ?? "",
             user.data.token,
             userPassword,
+            user.data.id,
           );
         }
         return user;
@@ -47,12 +48,14 @@ class AuthenticateRepository implements IAuthenticateRepository {
   }
 
   addCurrentUserToStorage(String dispositivoId, String name, String cpf,
-      String email, String token, String password) async {
+      String email, String token, String password, int userId) async {
+    storage.insertString('current_id', name);
     storage.insertString('current_name', name);
     storage.insertString('current_cpf', cpf);
     storage.insertString('current_email', email);
     storage.insertString('token', token);
     storage.insertString('password', password);
     storage.insertString('dispositivo_id', dispositivoId);
+    storage.insertInt('current_user_id', userId);
   }
 }
