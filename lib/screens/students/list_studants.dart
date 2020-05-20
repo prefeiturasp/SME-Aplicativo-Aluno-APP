@@ -81,6 +81,9 @@ class _ListStudantsState extends State<ListStudants> {
         _authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros.length > 0 &&
         _authenticateController.currentUser.erros[0] != null) {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
       Auth.logout(context);
     }
 
