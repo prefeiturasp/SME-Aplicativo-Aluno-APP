@@ -10,6 +10,7 @@ import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class DrawerMenu extends StatefulWidget {
@@ -59,22 +60,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
-  }
-
-  _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    BackgroundFetch.stop().then((int status) {
-      print('[BackgroundFetch] stop success: $status');
-    });
-    prefs.remove('current_name');
-    prefs.remove('current_cpf');
-    prefs.remove('current_email');
-    prefs.remove('token');
-    prefs.remove('password');
-    prefs.remove('dispositivo_id');
-    prefs.remove('current_user_id');
-    // prefs.clear();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override
@@ -199,6 +184,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               _logout(context);
+              Auth.logout(context);
             },
           ),
         ],

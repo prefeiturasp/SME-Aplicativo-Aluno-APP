@@ -14,6 +14,7 @@ import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/utils/auth.dart';
 
 class ListStudants extends StatefulWidget {
   final String cpf;
@@ -71,7 +72,6 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     await _authenticateController.authenticateUser(widget.cpf, widget.password);
 
     print(
@@ -81,17 +81,7 @@ class _ListStudantsState extends State<ListStudants> {
         _authenticateController.currentUser.erros.isNotEmpty &&
         _authenticateController.currentUser.erros.length > 0 &&
         _authenticateController.currentUser.erros[0] != null) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
-      prefs.remove('current_cpf');
-      prefs.remove('current_email');
-      prefs.remove('token');
-      prefs.remove('password');
-      prefs.remove('dispositivo_id');
-      prefs.remove('current_user_id');
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Login()));
+      Auth.logout(context);
     }
 
     BackgroundFetch.finish(taskId);
