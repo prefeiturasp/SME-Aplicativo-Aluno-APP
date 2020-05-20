@@ -16,13 +16,15 @@ class CardRecentMessage extends StatefulWidget {
   final String token;
   final int codigoGrupo;
   final bool deleteBtn;
+  final bool recent;
 
   CardRecentMessage(
       {this.message,
       this.countMessages,
       this.token,
       this.codigoGrupo,
-      this.deleteBtn = true});
+      this.deleteBtn = true,
+      this.recent = false});
 
   @override
   _CardRecentMessageState createState() => _CardRecentMessageState();
@@ -90,7 +92,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
           Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
             decoration: BoxDecoration(
-                color: Color(0xffE1771D),
+                color: widget.recent ? Color(0xffE1771D) : Color(0xffF8E8C2),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
@@ -104,7 +106,9 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                       children: <Widget>[
                         Icon(
                           FontAwesomeIcons.envelopeOpen,
-                          color: Color(0xffFFD037),
+                          color: widget.recent
+                              ? Color(0xffFFD037)
+                              : Color(0xffE1771D),
                           size: screenHeight * 2.7,
                         ),
                         SizedBox(
@@ -115,7 +119,10 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           maxFontSize: 18,
                           minFontSize: 16,
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                              color: widget.recent
+                                  ? Colors.white
+                                  : Color(0xffE1771D),
+                              fontWeight: FontWeight.w700),
                         ),
                       ],
                     )),
@@ -179,7 +186,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(screenHeight * 2.5),
-                color: Color(0xffC45C04),
+                color: widget.recent ? Color(0xffC45C04) : Colors.white,
                 child: Container(
                   margin: EdgeInsets.only(top: screenHeight * 1.8),
                   child: widget.message != null
@@ -192,7 +199,9 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               minFontSize: 14,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: widget.recent
+                                      ? Colors.white
+                                      : Color(0xff666666),
                                   fontWeight: FontWeight.w700),
                             ),
                             SizedBox(
@@ -209,7 +218,9 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: widget.recent
+                                      ? Colors.white
+                                      : Color(0xff666666),
                                 ),
                               ),
                             ),
@@ -223,7 +234,9 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               minFontSize: 14,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: widget.recent
+                                      ? Colors.white
+                                      : Color(0xff666666),
                                   fontWeight: FontWeight.w700,
                                   height: screenHeight * 0.5),
                             ),
@@ -242,15 +255,20 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
           Container(
               decoration: BoxDecoration(
                   color: widget.message != null && widget.countMessages > 0
-                      ? null
+                      ? widget.recent ? null : Color(0xffF3F3F3)
                       : Color(0xffC45C04),
-                  borderRadius:
-                      widget.message != null && widget.countMessages > 0
+                  borderRadius: widget.message != null &&
+                          widget.countMessages > 0
+                      ? widget.recent
                           ? null
                           : BorderRadius.only(
                               bottomLeft: Radius.circular(screenHeight * 2),
                               bottomRight: Radius.circular(screenHeight * 2),
-                            )),
+                            )
+                      : BorderRadius.only(
+                          bottomLeft: Radius.circular(screenHeight * 2),
+                          bottomRight: Radius.circular(screenHeight * 2),
+                        )),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,
                   right: screenHeight * 2.5,

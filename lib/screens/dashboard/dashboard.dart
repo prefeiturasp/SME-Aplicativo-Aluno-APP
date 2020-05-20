@@ -99,6 +99,8 @@ class _DashboardState extends State<Dashboard> {
                       token: widget.token,
                       codigoGrupo: widget.codigoGrupo,
                       deleteBtn: false,
+                      recent: !_messagesController
+                          .messagesNotDeleted.first.mensagemVisualizada,
                     );
                   }
                 } else {
