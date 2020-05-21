@@ -17,6 +17,7 @@ class CardRecentMessage extends StatefulWidget {
   final int codigoGrupo;
   final bool deleteBtn;
   final bool recent;
+  final Function onPress;
 
   CardRecentMessage(
       {this.message,
@@ -24,7 +25,8 @@ class CardRecentMessage extends StatefulWidget {
       this.token,
       this.codigoGrupo,
       this.deleteBtn = true,
-      this.recent = false});
+      this.recent = false,
+      this.onPress});
 
   @override
   _CardRecentMessageState createState() => _CardRecentMessageState();
@@ -176,11 +178,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
           GestureDetector(
             onTap: () {
               if (widget.message != null) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewMessage(
-                            message: widget.message, token: widget.token)));
+                widget.onPress();
               }
             },
             child: Container(

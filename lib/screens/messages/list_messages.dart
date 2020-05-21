@@ -28,11 +28,24 @@ class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
   Storage storage;
 
+  List<Message> listOfmessages;
+
   @override
   void initState() {
     super.initState();
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
+    _loadingMessages();
+  }
+
+  _loadingMessages() {
+    _messagesController = MessagesController();
+    _messagesController.loadMessages(token: widget.token);
+  }
+
+  _loadingBackMessages() {
+    _loadingMessages();
+    print("BATEU AQUI FIOTE");
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -162,13 +175,24 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewMessage(
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //         builder: (BuildContext context) =>
+                            //             ViewMessage(
+                            //               message: item,
+                            //               token: widget.token,
+                            //             )))
+                            //     .whenComplete(() {
+                            //   _functionThatSetsTheState();
+                            // });
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ViewMessage(
                                           message: item,
                                           token: widget.token,
-                                        )));
+                                        )))
+                                .whenComplete(() => _loadingBackMessages());
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
