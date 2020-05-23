@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:device_info/device_info.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
@@ -8,14 +8,12 @@ import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
   final Storage storage = Storage();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   Future<Data> loginUser(String cpf, String password) async {
     String userPassword = await storage.readValueStorage("current_password");
-
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    String idDevice = androidInfo.id;
+    String idDevice = await _firebaseMessaging.getToken();
 
     try {
       final response = await http.post(
@@ -26,7 +24,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
-            androidInfo.id,
+            idDevice,
             user.data.nome,
             user.data.cpf,
             user.data.email ?? "",
@@ -49,7 +47,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
   addCurrentUserToStorage(String dispositivoId, String name, String cpf,
       String email, String token, String password, int userId) async {
-    storage.insertString('current_id', name);
     storage.insertString('current_name', name);
     storage.insertString('current_cpf', cpf);
     storage.insertString('current_email', email);
