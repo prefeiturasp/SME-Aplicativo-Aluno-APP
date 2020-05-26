@@ -20,9 +20,10 @@ pipeline {
 
        stage('Build APK') {
         steps {
-          sh "echo executando build de projeto"
+          withCredentials([file(credentialsId: 'google-service', variable: 'GOOGLEJSON')]) {
+	  sh 'cp $GOOGLEJSON android/app/google-services.json'	  
           sh 'flutter pub get && flutter build apk'
-          //archiveArtifacts '**/*.apk'
+	  }
         }
       }
        stage('sign apk') {
