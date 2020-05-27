@@ -43,11 +43,6 @@ class _ListMessageState extends State<ListMessages> {
     _messagesController.loadMessages(token: widget.token);
   }
 
-  _loadingBackMessages() {
-    _loadingMessages();
-    print("BATEU AQUI FIOTE");
-  }
-
   Future<bool> _confirmDeleteMessage(int id) async {
     return showDialog(
         context: context,
@@ -175,16 +170,6 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //         builder: (BuildContext context) =>
-                            //             ViewMessage(
-                            //               message: item,
-                            //               token: widget.token,
-                            //             )))
-                            //     .whenComplete(() {
-                            //   _functionThatSetsTheState();
-                            // });
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
@@ -192,7 +177,7 @@ class _ListMessageState extends State<ListMessages> {
                                           message: item,
                                           token: widget.token,
                                         )))
-                                .whenComplete(() => _loadingBackMessages());
+                                .whenComplete(() => _loadingMessages());
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
