@@ -45,7 +45,7 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  superscribeGroupIdToFirebase() {
+  subscribeGroupIdToFirebase() {
     if ((messages?.length ?? 0) > 0) {
       messages.forEach((element) {
         print("Codigo: ${element.grupos[0].codigo}");
@@ -72,7 +72,7 @@ abstract class _MessagesControllerBase with Store {
     isLoading = true;
     messages = ObservableList<Message>.of(
         await _messagesRepository.fetchMessages(token));
-    superscribeGroupIdToFirebase();
+    subscribeGroupIdToFirebase();
     isLoading = false;
   }
 
