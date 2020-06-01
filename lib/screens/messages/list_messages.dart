@@ -34,13 +34,13 @@ class _ListMessageState extends State<ListMessages> {
   void initState() {
     super.initState();
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: widget.token);
     _loadingMessages();
   }
 
   _loadingMessages() {
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
+    _messagesController.subscribeGroupIdToFirebase();
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {

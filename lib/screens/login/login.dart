@@ -58,7 +58,7 @@ class _LoginState extends State<Login> {
       busy = true;
     });
     _storage.insertString("current_password", password);
-    _authenticateController.authenticateUser(cpf, password).then((data) {
+    _authenticateController.authenticateUser(cpf, password, false).then((data) {
       onSuccess();
     }).catchError((err) {
       onError();
