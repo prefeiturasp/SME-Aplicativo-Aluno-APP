@@ -1,5 +1,5 @@
 import 'package:sme_app_aluno/models/user/data.dart';
 
 abstract class IAuthenticateRepository {
-  Future<Data> loginUser(String cpf, String password);
+  Future<Data> loginUser(String cpf, String password, bool onBackgroundFetch);
 }

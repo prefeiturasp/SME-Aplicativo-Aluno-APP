@@ -11,9 +11,18 @@ class AuthenticateRepository implements IAuthenticateRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
-  Future<Data> loginUser(String cpf, String password) async {
+  Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
     String userPassword = await storage.readValueStorage("current_password");
     String idDevice = await _firebaseMessaging.getToken();
+    print("FIREBASE TOKEN: $idDevice");
+
+    if (!onBackgroundFetch) {
+      var ids = new List<int>.generate(20, (i) => i + 1);
+      ids.forEach((element) {
+        print("Ids: $element");
+        _firebaseMessaging.unsubscribeFromTopic(element.toString());
+      });
+    }
 
     try {
       final response = await http.post(
