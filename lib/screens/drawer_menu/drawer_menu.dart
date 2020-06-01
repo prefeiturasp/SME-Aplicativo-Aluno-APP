@@ -3,9 +3,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
@@ -26,7 +24,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
   final Storage _storage = Storage();
 
   AuthenticateController _authenticateController;
-  MessagesController _messagesController;
 
   @override
   void initState() {
