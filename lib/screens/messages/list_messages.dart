@@ -349,13 +349,14 @@ class _ListMessageState extends State<ListMessages> {
                       child: FlatButton(
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewMessage(
-                                        token: token,
-                                        message: _messagesController
-                                            .messagesNotDeleted.first,
-                                      )));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewMessage(
+                                            token: token,
+                                            message: _messagesController
+                                                .messagesNotDeleted.first,
+                                          )))
+                              .whenComplete(() => _loadingMessages());
                         },
                         child: Row(
                           children: <Widget>[
