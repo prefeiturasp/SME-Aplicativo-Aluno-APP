@@ -34,6 +34,7 @@ class _WrapperState extends State<Wrapper> {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.getToken().then(print);
+    _firebaseMessaging.subscribeToTopic("AppAluno");
     _firebaseMessaging.configure(
         onMessage: _onMessage,
         onBackgroundMessage: _onMessage,
@@ -42,7 +43,9 @@ class _WrapperState extends State<Wrapper> {
   }
 
   static Future<dynamic> _onMessage(Map<String, dynamic> message) async {
-    print(message);
+    print("--------------------------------");
+    print("Foi pressionadi:  $message");
+    print("--------------------------------");
   }
 
   loadCurrentUser() async {

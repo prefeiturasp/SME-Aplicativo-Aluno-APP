@@ -34,18 +34,13 @@ class _ListMessageState extends State<ListMessages> {
   void initState() {
     super.initState();
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: widget.token);
     _loadingMessages();
   }
 
   _loadingMessages() {
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: widget.token);
-  }
-
-  _loadingBackMessages() {
-    _loadingMessages();
-    print("BATEU AQUI FIOTE");
+    _messagesController.subscribeGroupIdToFirebase();
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -60,7 +55,7 @@ class _ListMessageState extends State<ListMessages> {
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(id);
-                    Navigator.of(context).pop(false);
+                    Navigator.of(context).pop(true);
                   }),
               FlatButton(
                 child: Text("NÃO"),
@@ -175,16 +170,6 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //         builder: (BuildContext context) =>
-                            //             ViewMessage(
-                            //               message: item,
-                            //               token: widget.token,
-                            //             )))
-                            //     .whenComplete(() {
-                            //   _functionThatSetsTheState();
-                            // });
                             Navigator.of(context)
                                 .push(MaterialPageRoute(
                                     builder: (BuildContext context) =>
@@ -192,7 +177,7 @@ class _ListMessageState extends State<ListMessages> {
                                           message: item,
                                           token: widget.token,
                                         )))
-                                .whenComplete(() => _loadingBackMessages());
+                                .whenComplete(() => _loadingMessages());
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -347,7 +332,7 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                       ),
                       child: Icon(
-                        FontAwesomeIcons.times,
+                        FontAwesomeIcons.trashAlt,
                         color: Color(0xffC65D00),
                       ),
                     ),
@@ -364,13 +349,14 @@ class _ListMessageState extends State<ListMessages> {
                       child: FlatButton(
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ViewMessage(
-                                        token: token,
-                                        message: _messagesController
-                                            .messagesNotDeleted.first,
-                                      )));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewMessage(
+                                            token: token,
+                                            message: _messagesController
+                                                .messagesNotDeleted.first,
+                                          )))
+                              .whenComplete(() => _loadingMessages());
                         },
                         child: Row(
                           children: <Widget>[
@@ -431,6 +417,12 @@ class _ListMessageState extends State<ListMessages> {
       appBar: AppBar(
         title: Text("Mensagens"),
         backgroundColor: Color(0xffEEC25E),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {

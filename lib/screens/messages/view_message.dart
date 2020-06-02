@@ -36,7 +36,6 @@ class _ViewMessageState extends State<ViewMessage> {
     if (!widget.message.mensagemVisualizada || isNotRead) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt("current_user_id");
-
       _messagesController.updateMessage(
           token: widget.token, id: widget.message.id, userId: userId);
     }

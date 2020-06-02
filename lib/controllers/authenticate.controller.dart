@@ -39,9 +39,10 @@ abstract class _AuthenticateControllerBase with Store {
   String token;
 
   @action
-  authenticateUser(String cpf, String password) async {
+  authenticateUser(String cpf, String password, bool onBackgroundFetch) async {
     isLoading = true;
-    currentUser = await _authenticateRepository.loginUser(cpf, password);
+    currentUser = await _authenticateRepository.loginUser(
+        cpf, password, onBackgroundFetch);
     isLoading = false;
   }
 

@@ -135,9 +135,9 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
 
   @override
-  Future authenticateUser(String cpf, String password) {
+  Future authenticateUser(String cpf, String password, bool onBackgroundFetch) {
     return _$authenticateUserAsyncAction
-        .run(() => super.authenticateUser(cpf, password));
+        .run(() => super.authenticateUser(cpf, password, onBackgroundFetch));
   }
 
   final _$loadCurrentUserAsyncAction = AsyncAction('loadCurrentUser');

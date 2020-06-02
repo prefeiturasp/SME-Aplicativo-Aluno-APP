@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -9,13 +10,18 @@ class MessagesController = _MessagesControllerBase with _$MessagesController;
 
 abstract class _MessagesControllerBase with Store {
   MessageRepository _messagesRepository;
+  FirebaseMessaging _firebaseMessaging;
 
   _MessagesControllerBase() {
     _messagesRepository = MessageRepository();
+    _firebaseMessaging = FirebaseMessaging();
   }
 
   @observable
   ObservableList<Message> messages;
+
+  @observable
+  Message message;
 
   @observable
   ObservableList<Message> groupmessages;
@@ -29,8 +35,10 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessage;
 
-  @observable
-  bool isReadMessage = false;
+  @action
+  loadMessage(int id) {
+    message = messages.where((element) => element.id == id).toList().first;
+  }
 
   @action
   messagesPerGroups(codigoGrupo) {
@@ -39,6 +47,17 @@ abstract class _MessagesControllerBase with Store {
           (m) => m.grupos.any((g) => g.codigo == codigoGrupo),
         )
         .toList());
+  }
+
+  @action
+  subscribeGroupIdToFirebase() {
+    if ((messages?.length ?? 0) > 0) {
+      messages.forEach((element) {
+        print("Codigo: ${element.grupos[0].codigo}");
+        _firebaseMessaging
+            .subscribeToTopic(element.grupos[0].codigo.toString());
+      });
+    }
   }
 
   @action
@@ -58,6 +77,7 @@ abstract class _MessagesControllerBase with Store {
     isLoading = true;
     messages = ObservableList<Message>.of(
         await _messagesRepository.fetchMessages(token));
+    subscribeGroupIdToFirebase();
     isLoading = false;
   }
 

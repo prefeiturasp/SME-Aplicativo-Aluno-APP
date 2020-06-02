@@ -3,8 +3,8 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
@@ -25,23 +25,39 @@ class _DrawerMenuState extends State<DrawerMenu> {
   final Storage _storage = Storage();
 
   AuthenticateController _authenticateController;
-
+  MessagesController _messagesController;
   @override
   void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
   }
 
+  _loadingBackRecentMessage(String token) {
+    setState(() {});
+    _messagesController = MessagesController();
+    _messagesController.loadMessages(token: token);
+  }
+
   navigateToListMessages(BuildContext context, Storage storage) async {
     var _token = await storage.readValueStorage("token") ?? "";
+
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ListMessages(
                   token: _token,
                   codigoGrupo: widget.codigoGrupo,
-                )));
+                ))).whenComplete(() => _loadingBackRecentMessage(_token));
   }
+
+  // Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => ViewMessage(
+  //             message: _messagesController
+  //                 .messagesNotDeleted.first,
+  //             token: widget.token)))
+  // .whenComplete(() => _loadingBackRecentMessage());
 
   navigateToListStudents(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
