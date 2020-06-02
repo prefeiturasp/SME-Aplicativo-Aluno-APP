@@ -332,7 +332,7 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                       ),
                       child: Icon(
-                        FontAwesomeIcons.times,
+                        FontAwesomeIcons.trashAlt,
                         color: Color(0xffC65D00),
                       ),
                     ),
