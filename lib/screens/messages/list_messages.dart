@@ -55,7 +55,7 @@ class _ListMessageState extends State<ListMessages> {
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(id);
-                    Navigator.of(context).pop(false);
+                    Navigator.of(context).pop(true);
                   }),
               FlatButton(
                 child: Text("NÃO"),
@@ -417,6 +417,12 @@ class _ListMessageState extends State<ListMessages> {
       appBar: AppBar(
         title: Text("Mensagens"),
         backgroundColor: Color(0xffEEC25E),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () async {

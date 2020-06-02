@@ -26,6 +26,23 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     }, _$messagesAtom, name: '${_$messagesAtom.name}_set');
   }
 
+  final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
+
+  @override
+  Message get message {
+    _$messageAtom.context.enforceReadPolicy(_$messageAtom);
+    _$messageAtom.reportObserved();
+    return super.message;
+  }
+
+  @override
+  set message(Message value) {
+    _$messageAtom.context.conditionallyRunInAction(() {
+      super.message = value;
+      _$messageAtom.reportChanged();
+    }, _$messageAtom, name: '${_$messageAtom.name}_set');
+  }
+
   final _$groupmessagesAtom =
       Atom(name: '_MessagesControllerBase.groupmessages');
 
@@ -97,24 +114,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     }, _$countMessageAtom, name: '${_$countMessageAtom.name}_set');
   }
 
-  final _$isReadMessageAtom =
-      Atom(name: '_MessagesControllerBase.isReadMessage');
-
-  @override
-  bool get isReadMessage {
-    _$isReadMessageAtom.context.enforceReadPolicy(_$isReadMessageAtom);
-    _$isReadMessageAtom.reportObserved();
-    return super.isReadMessage;
-  }
-
-  @override
-  set isReadMessage(bool value) {
-    _$isReadMessageAtom.context.conditionallyRunInAction(() {
-      super.isReadMessage = value;
-      _$isReadMessageAtom.reportChanged();
-    }, _$isReadMessageAtom, name: '${_$isReadMessageAtom.name}_set');
-  }
-
   final _$loadMessagesNotDeletedsAsyncAction =
       AsyncAction('loadMessagesNotDeleteds');
 
@@ -144,6 +143,17 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       ActionController(name: '_MessagesControllerBase');
 
   @override
+  dynamic loadMessage(int id) {
+    final _$actionInfo =
+        _$_MessagesControllerBaseActionController.startAction();
+    try {
+      return super.loadMessage(id);
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic messagesPerGroups(dynamic codigoGrupo) {
     final _$actionInfo =
         _$_MessagesControllerBaseActionController.startAction();
@@ -168,7 +178,7 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   @override
   String toString() {
     final string =
-        'messages: ${messages.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()},isReadMessage: ${isReadMessage.toString()}';
+        'messages: ${messages.toString()},message: ${message.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()}';
     return '{$string}';
   }
 }

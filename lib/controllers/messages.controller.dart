@@ -21,6 +21,9 @@ abstract class _MessagesControllerBase with Store {
   ObservableList<Message> messages;
 
   @observable
+  Message message;
+
+  @observable
   ObservableList<Message> groupmessages;
 
   @observable
@@ -32,8 +35,10 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessage;
 
-  @observable
-  bool isReadMessage = false;
+  @action
+  loadMessage(int id) {
+    message = messages.where((element) => element.id == id).toList().first;
+  }
 
   @action
   messagesPerGroups(codigoGrupo) {

@@ -97,26 +97,30 @@ class _DashboardState extends State<Dashboard> {
                           child: CardRecentMessage()),
                     );
                   } else {
-                    return CardRecentMessage(
-                      message: _messagesController.messagesNotDeleted.first,
-                      countMessages:
-                          _messagesController.messagesNotDeleted.length,
-                      token: widget.token,
-                      codigoGrupo: widget.codigoGrupo,
-                      deleteBtn: false,
-                      recent: !_messagesController
-                          .messagesNotDeleted.first.mensagemVisualizada,
-                      onPress: () {
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewMessage(
-                                        message: _messagesController
-                                            .messagesNotDeleted.first,
-                                        token: widget.token)))
-                            .whenComplete(() => _loadingBackRecentMessage());
-                      },
-                    );
+                    return Observer(builder: (_) {
+                      _messagesController.loadMessage(
+                          _messagesController.messagesNotDeleted.first.id);
+                      return CardRecentMessage(
+                        message: _messagesController.message,
+                        countMessages:
+                            _messagesController.messagesNotDeleted.length,
+                        token: widget.token,
+                        codigoGrupo: widget.codigoGrupo,
+                        deleteBtn: false,
+                        recent:
+                            !_messagesController.message.mensagemVisualizada,
+                        onPress: () {
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewMessage(
+                                          message: _messagesController
+                                              .messagesNotDeleted.first,
+                                          token: widget.token)))
+                              .whenComplete(() => _loadingBackRecentMessage());
+                        },
+                      );
+                    });
                   }
                 } else {
                   return GFLoader(

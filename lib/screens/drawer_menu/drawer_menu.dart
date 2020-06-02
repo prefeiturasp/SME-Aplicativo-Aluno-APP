@@ -33,12 +33,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
   }
 
   _loadingBackRecentMessage(String token) {
+    setState(() {});
     _messagesController = MessagesController();
     _messagesController.loadMessages(token: token);
   }
 
   navigateToListMessages(BuildContext context, Storage storage) async {
     var _token = await storage.readValueStorage("token") ?? "";
+
     Navigator.push(
         context,
         MaterialPageRoute(
