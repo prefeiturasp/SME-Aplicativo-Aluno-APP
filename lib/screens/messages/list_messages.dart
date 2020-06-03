@@ -320,23 +320,28 @@ class _ListMessageState extends State<ListMessages> {
                 ],
                 footer: true,
                 footerContent: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      _confirmDeleteMessage(
-                          _messagesController.messagesNotDeleted.first.id);
-                    },
-                    child: Container(
-                      width: screenHeight * 6,
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
+                  Visibility(
+                    visible: _messagesController
+                        .messagesNotDeleted.first.mensagemVisualizada,
+                    child: GestureDetector(
+                      onTap: () {
+                        _confirmDeleteMessage(
+                            _messagesController.messagesNotDeleted.first.id);
+                      },
+                      child: Container(
+                        width: screenHeight * 6,
+                        height: screenHeight * 6,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xffC65D00), width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 3),
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.trashAlt,
-                        color: Color(0xffC65D00),
+                        child: Icon(
+                          FontAwesomeIcons.trashAlt,
+                          color: Color(0xffC65D00),
+                        ),
                       ),
                     ),
                   ),
