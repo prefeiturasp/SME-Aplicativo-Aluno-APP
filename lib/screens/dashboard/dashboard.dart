@@ -94,7 +94,9 @@ class _DashboardState extends State<Dashboard> {
                           visible: _messagesController.messagesNotDeleted !=
                                   null &&
                               _messagesController.messagesNotDeleted.isEmpty,
-                          child: CardRecentMessage()),
+                          child: CardRecentMessage(
+                            recent: true,
+                          )),
                     );
                   } else {
                     return Observer(builder: (_) {
