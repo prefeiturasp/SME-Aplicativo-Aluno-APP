@@ -140,21 +140,24 @@ class _ListMessageState extends State<ListMessages> {
                   ],
                   footer: true,
                   footerContent: <Widget>[
-                    GestureDetector(
-                      onTap: () => _confirmDeleteMessage(item.id),
-                      child: Container(
-                        width: screenHeight * 6,
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
+                    Visibility(
+                      visible: item.mensagemVisualizada,
+                      child: GestureDetector(
+                        onTap: () => _confirmDeleteMessage(item.id),
+                        child: Container(
+                          width: screenHeight * 6,
+                          height: screenHeight * 6,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Color(0xffC65D00), width: 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(screenHeight * 3),
+                            ),
                           ),
-                        ),
-                        child: Icon(
-                          FontAwesomeIcons.trashAlt,
-                          color: Color(0xffC65D00),
+                          child: Icon(
+                            FontAwesomeIcons.trashAlt,
+                            color: Color(0xffC65D00),
+                          ),
                         ),
                       ),
                     ),
