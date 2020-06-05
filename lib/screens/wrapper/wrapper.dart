@@ -4,7 +4,9 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -15,6 +17,7 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   final Storage storage = Storage();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   AuthenticateController _authenticateController;
 
   String _cpf;
@@ -23,30 +26,61 @@ class _WrapperState extends State<Wrapper> {
   bool _loading = false;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     loadCurrentUser();
     _authenticateController = AuthenticateController();
     _initPushNotificationHandlers();
   }
 
-  void _initPushNotificationHandlers() {
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _initPushNotificationHandlers() {
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.getToken().then(print);
     _firebaseMessaging.subscribeToTopic("AppAluno");
     _firebaseMessaging.configure(
-        onMessage: _onMessage,
-        onBackgroundMessage: _onMessage,
-        onLaunch: _onMessage,
-        onResume: _onMessage);
+      onMessage: (Map<String, dynamic> message) async {
+        print("--------------------------------");
+        print("onMessage:  $message");
+        print("--------------------------------");
+        _navigateToItemDetail(message);
+      },
+      onBackgroundMessage: (Map<String, dynamic> message) async {
+        print("--------------------------------");
+        print("onBackgroundMessage:  $message");
+        print("--------------------------------");
+        _navigateToItemDetail(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("--------------------------------");
+        print("onLaunch:  $message");
+        print("--------------------------------");
+        _navigateToItemDetail(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("--------------------------------");
+        print("onResume:  $message");
+        print("--------------------------------");
+        _navigateToItemDetail(message);
+      },
+    );
   }
 
-  static Future<dynamic> _onMessage(Map<String, dynamic> message) async {
-    print("--------------------------------");
-    print("Foi pressionadi:  $message");
-    print("--------------------------------");
+  //PRIVATE METHOD TO HANDLE NAVIGATION TO SPECIFIC PAGE
+  void _navigateToItemDetail(Map<String, dynamic> message) {
+    Message _message = Message(id: 85);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => ViewMessage(
+              message: _message,
+              token: _token,
+            )));
   }
+
+  // static Future<dynamic> _onMessage(Map<String, dynamic> message) async {
+  //   print("--------------------------------");
+  //   print("Foi pressionadi:  $message");
+  //   print("--------------------------------");
+  // }
 
   loadCurrentUser() async {
     setState(() {
