@@ -25,9 +25,6 @@ class MyApp extends StatelessWidget {
     GlobalConfig.Environment = "prod";
   }
 
-  static final GlobalKey<NavigatorState> navigatorKey =
-      new GlobalKey<NavigatorState>();
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        navigatorKey: navigatorKey,
         home: Wrapper(),
       ),
     );
