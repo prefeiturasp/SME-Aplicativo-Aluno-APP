@@ -29,7 +29,7 @@ class _ViewMessageState extends State<ViewMessage> {
   void initState() {
     super.initState();
     _messagesController = MessagesController();
-    // _viewMessageUpdate(false);
+    _viewMessageUpdate(false);
   }
 
   _viewMessageUpdate(bool isNotRead) async {
