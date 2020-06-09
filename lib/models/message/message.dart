@@ -6,11 +6,7 @@ class Message {
   String titulo;
   List<Grupo> grupos;
   String dataEnvio;
-  String dataExpiracao;
   String criadoEm;
-  String criadoPor;
-  String alteradoEm;
-  String alteradoPor;
   bool mensagemVisualizada;
 
   Message(
@@ -19,11 +15,7 @@ class Message {
       this.titulo,
       this.grupos,
       this.dataEnvio,
-      this.dataExpiracao,
       this.criadoEm,
-      this.criadoPor,
-      this.alteradoEm,
-      this.alteradoPor,
       this.mensagemVisualizada});
 
   Message.fromJson(Map<String, dynamic> json) {
@@ -37,11 +29,7 @@ class Message {
       });
     }
     dataEnvio = json['dataEnvio'];
-    dataExpiracao = json['dataExpiracao'];
     criadoEm = json['criadoEm'];
-    criadoPor = json['criadoPor'];
-    alteradoEm = json['alteradoEm'];
-    alteradoPor = json['alteradoPor'];
     mensagemVisualizada = json['mensagemVisualizada'];
   }
 
@@ -54,11 +42,7 @@ class Message {
       data['grupos'] = this.grupos.map((v) => v.toJson()).toList();
     }
     data['dataEnvio'] = this.dataEnvio;
-    data['dataExpiracao'] = this.dataExpiracao;
     data['criadoEm'] = this.criadoEm;
-    data['criadoPor'] = this.criadoPor;
-    data['alteradoEm'] = this.alteradoEm;
-    data['alteradoPor'] = this.alteradoPor;
     data['mensagemVisualizada'] = this.mensagemVisualizada;
     return data;
   }
