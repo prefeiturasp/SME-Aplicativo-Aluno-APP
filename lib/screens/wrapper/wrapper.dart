@@ -53,6 +53,7 @@ class _WrapperState extends State<Wrapper> {
     );
   }
 
+  // teste
   _navigateToMessageView(Map<String, dynamic> message) async {
     Message _message = Message(
       id: int.parse(message["data"]["Id"]),
