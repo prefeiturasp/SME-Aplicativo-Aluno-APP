@@ -39,8 +39,7 @@ class _ListMessageState extends State<ListMessages> {
 
   _loadingMessages() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: widget.token);
-    _messagesController.subscribeGroupIdToFirebase();
+    _messagesController.loadMessages();
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -434,7 +433,7 @@ class _ListMessageState extends State<ListMessages> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          await _messagesController.loadMessages(token: widget.token);
+          await _messagesController.loadMessages();
         },
         child: SingleChildScrollView(
           child: Container(

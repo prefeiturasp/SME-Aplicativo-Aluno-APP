@@ -7,22 +7,25 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
-class ViewMessage extends StatefulWidget {
+class ViewMessageNotification extends StatefulWidget {
   final Message message;
-  final String token;
+  final int codigoGrupo;
 
-  ViewMessage({@required this.message, @required this.token});
+  ViewMessageNotification({@required this.message, @required this.codigoGrupo});
 
   @override
-  _ViewMessageState createState() => _ViewMessageState();
+  _ViewMessageNotificationState createState() =>
+      _ViewMessageNotificationState();
 }
 
-class _ViewMessageState extends State<ViewMessage> {
+class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -70,6 +73,15 @@ class _ViewMessageState extends State<ViewMessage> {
             ],
           );
         });
+  }
+
+  _navigateToListMessage() async {
+    String token = await storage.readValueStorage("token");
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ListMessages(token: token, codigoGrupo: widget.codigoGrupo)));
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
@@ -123,6 +135,11 @@ class _ViewMessageState extends State<ViewMessage> {
       appBar: AppBar(
         title: Text("Mensagens"),
         backgroundColor: Color(0xffEEC25E),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              _navigateToListMessage();
+            }),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -212,8 +229,8 @@ class _ViewMessageState extends State<ViewMessage> {
                         ),
                       ),
                       child: FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
+                        onPressed: () async {
+                          _navigateToListMessage();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

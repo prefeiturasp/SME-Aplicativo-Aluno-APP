@@ -1,8 +1,8 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 part 'messages.controller.g.dart';
 
@@ -10,11 +10,11 @@ class MessagesController = _MessagesControllerBase with _$MessagesController;
 
 abstract class _MessagesControllerBase with Store {
   MessageRepository _messagesRepository;
-  FirebaseMessaging _firebaseMessaging;
+  Storage _storage;
 
   _MessagesControllerBase() {
     _messagesRepository = MessageRepository();
-    _firebaseMessaging = FirebaseMessaging();
+    _storage = Storage();
   }
 
   @observable
@@ -50,17 +50,6 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  subscribeGroupIdToFirebase() {
-    if ((messages?.length ?? 0) > 0) {
-      messages.forEach((element) {
-        print("Codigo: ${element.grupos[0].codigo}");
-        _firebaseMessaging
-            .subscribeToTopic(element.grupos[0].codigo.toString());
-      });
-    }
-  }
-
-  @action
   loadMessagesNotDeleteds() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (groupmessages != null) {
@@ -73,17 +62,22 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  loadMessages({String token}) async {
+  loadMessages() async {
+    String token = await _storage.readValueStorage("token");
     isLoading = true;
     messages = ObservableList<Message>.of(
         await _messagesRepository.fetchMessages(token));
-    subscribeGroupIdToFirebase();
     isLoading = false;
   }
 
   @action
-  updateMessage({int id, int userId, String token}) async {
-    await _messagesRepository.readMessage(id, userId, token);
-    loadMessages(token: token);
+  updateMessage({
+    int notificacaoId,
+    String cpfUsuario,
+    bool mensagemVisualia,
+  }) async {
+    await _messagesRepository.readMessage(
+        notificacaoId, cpfUsuario, mensagemVisualia);
+    loadMessages();
   }
 }

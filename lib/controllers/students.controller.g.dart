@@ -51,6 +51,20 @@ mixin _$StudentsController on _StudentsControllerBase, Store {
         .run(() => super.loadingStudents(cpf, token));
   }
 
+  final _$_StudentsControllerBaseActionController =
+      ActionController(name: '_StudentsControllerBase');
+
+  @override
+  dynamic subscribeGroupIdToFirebase() {
+    final _$actionInfo =
+        _$_StudentsControllerBaseActionController.startAction();
+    try {
+      return super.subscribeGroupIdToFirebase();
+    } finally {
+      _$_StudentsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =
