@@ -7,6 +7,7 @@ import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
+import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -54,20 +55,18 @@ class _WrapperState extends State<Wrapper> {
 
   _navigateToMessageView(Map<String, dynamic> message) async {
     Message _message = Message(
-        id: int.parse(message["data"]["Id"]),
-        titulo: message["data"]["Titulo"],
-        mensagem: message["data"]["Mensagem"],
-        criadoEm: message["data"]["CriadoEm"]);
-
-    print('Message $_message');
+      id: int.parse(message["data"]["Id"]),
+      titulo: message["data"]["Titulo"],
+      mensagem: message["data"]["Mensagem"],
+      criadoEm: message["data"]["CriadoEm"],
+    );
 
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => ViewMessage(
-                  message: _message,
-                  token: _token,
-                )));
+            builder: (BuildContext context) => ViewMessageNotification(
+                message: _message,
+                codigoGrupo: int.parse(message["data"]["Grupo"]))));
   }
 
   loadCurrentUser() async {
