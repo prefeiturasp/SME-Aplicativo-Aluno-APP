@@ -38,7 +38,7 @@ class _DashboardState extends State<Dashboard> {
 
   _loadingBackRecentMessage() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: widget.token);
+    _messagesController.loadMessages();
   }
 
   @override
