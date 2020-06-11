@@ -10,6 +10,7 @@ import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class ViewMessage extends StatefulWidget {
   final Message message;
@@ -22,6 +23,7 @@ class ViewMessage extends StatefulWidget {
 }
 
 class _ViewMessageState extends State<ViewMessage> {
+  final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -34,10 +36,11 @@ class _ViewMessageState extends State<ViewMessage> {
 
   _viewMessageUpdate(bool isNotRead) async {
     if (!widget.message.mensagemVisualizada || isNotRead) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      int userId = prefs.getInt("current_user_id");
+      String cpfUsuario = await storage.readValueStorage("current_cpf");
       _messagesController.updateMessage(
-          token: widget.token, id: widget.message.id, userId: userId);
+          notificacaoId: widget.message.id,
+          cpfUsuario: cpfUsuario,
+          mensagemVisualia: !widget.message.mensagemVisualizada);
     }
 
     return null;

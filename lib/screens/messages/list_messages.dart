@@ -40,7 +40,6 @@ class _ListMessageState extends State<ListMessages> {
   _loadingMessages() {
     _messagesController = MessagesController();
     _messagesController.loadMessages();
-    _messagesController.subscribeGroupIdToFirebase();
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
