@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -11,12 +10,10 @@ class MessagesController = _MessagesControllerBase with _$MessagesController;
 
 abstract class _MessagesControllerBase with Store {
   MessageRepository _messagesRepository;
-  FirebaseMessaging _firebaseMessaging;
   Storage _storage;
 
   _MessagesControllerBase() {
     _messagesRepository = MessageRepository();
-    _firebaseMessaging = FirebaseMessaging();
     _storage = Storage();
   }
 
@@ -53,17 +50,6 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  subscribeGroupIdToFirebase() {
-    if ((messages?.length ?? 0) > 0) {
-      messages.forEach((element) {
-        print("Codigo: ${element.grupos[0].codigo}");
-        _firebaseMessaging
-            .subscribeToTopic(element.grupos[0].codigo.toString());
-      });
-    }
-  }
-
-  @action
   loadMessagesNotDeleteds() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (groupmessages != null) {
@@ -81,7 +67,6 @@ abstract class _MessagesControllerBase with Store {
     isLoading = true;
     messages = ObservableList<Message>.of(
         await _messagesRepository.fetchMessages(token));
-    subscribeGroupIdToFirebase();
     isLoading = false;
   }
 

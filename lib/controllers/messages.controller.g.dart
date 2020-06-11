@@ -167,17 +167,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   }
 
   @override
-  dynamic subscribeGroupIdToFirebase() {
-    final _$actionInfo =
-        _$_MessagesControllerBaseActionController.startAction();
-    try {
-      return super.subscribeGroupIdToFirebase();
-    } finally {
-      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     final string =
         'messages: ${messages.toString()},message: ${message.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()}';
