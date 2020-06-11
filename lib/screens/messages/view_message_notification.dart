@@ -10,7 +10,6 @@ import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
-import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
