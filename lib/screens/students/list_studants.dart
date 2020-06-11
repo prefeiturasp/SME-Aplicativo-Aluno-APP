@@ -39,6 +39,7 @@ class _ListStudantsState extends State<ListStudants> {
     _studentsController = StudentsController();
     _loadingAllStudents();
     initPlatformState();
+    // _studentsController.subscribeGroupIdToFirebase();
   }
 
   Future<void> initPlatformState() async {
