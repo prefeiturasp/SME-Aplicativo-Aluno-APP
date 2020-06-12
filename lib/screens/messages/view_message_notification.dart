@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/screens/messages/list_messages.dart';
+import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
@@ -15,9 +15,10 @@ import 'package:sme_app_aluno/utils/storage.dart';
 
 class ViewMessageNotification extends StatefulWidget {
   final Message message;
-  final int codigoGrupo;
 
-  ViewMessageNotification({@required this.message, @required this.codigoGrupo});
+  ViewMessageNotification({
+    @required this.message,
+  });
 
   @override
   _ViewMessageNotificationState createState() =>
@@ -76,11 +77,17 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
 
   _navigateToListMessage() async {
     String token = await storage.readValueStorage("token");
+    String cpf = await storage.readValueStorage("current_cpf");
+    String password = await storage.readValueStorage("current_cpf");
+
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                ListMessages(token: token, codigoGrupo: widget.codigoGrupo)));
+            builder: (context) => ListStudants(
+                  cpf: cpf,
+                  password: password,
+                  token: token,
+                )));
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
