@@ -66,8 +66,8 @@ class _WrapperState extends State<Wrapper> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ViewMessageNotification(
-                message: _message,
-                codigoGrupo: int.parse(message["data"]["Grupo"]))));
+                  message: _message,
+                )));
   }
 
   loadCurrentUser() async {
