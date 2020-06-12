@@ -6,7 +6,6 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
-import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
