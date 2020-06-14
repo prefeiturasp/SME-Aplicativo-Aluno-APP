@@ -42,11 +42,13 @@ abstract class _MessagesControllerBase with Store {
 
   @action
   messagesPerGroups(codigoGrupo) {
-    groupmessages = ObservableList<Message>.of(messages
-        .where(
-          (m) => m.grupos.any((g) => g.codigo == codigoGrupo),
-        )
-        .toList());
+    if (messages != null) {
+      groupmessages = ObservableList<Message>.of(messages
+          .where(
+            (m) => m.grupos.any((g) => g.codigo == codigoGrupo),
+          )
+          .toList());
+    }
   }
 
   @action
