@@ -26,6 +26,8 @@ class _ViewMessageState extends State<ViewMessage> {
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  bool messageIsRead = false;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +86,9 @@ class _ViewMessageState extends State<ViewMessage> {
                   child: Text("SIM"),
                   onPressed: () {
                     _viewMessageUpdate(true);
+                    setState(() {
+                      messageIsRead = !messageIsRead;
+                    });
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(
                         content: Text("Mensagem marcada como não lida"));
@@ -193,14 +198,17 @@ class _ViewMessageState extends State<ViewMessage> {
                         SizedBox(
                           width: screenHeight * 2,
                         ),
-                        EAIconButton(
-                            iconBtn: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Color(0xffC65D00),
-                            ),
-                            screenHeight: screenHeight,
-                            onPress: () => _confirmNotReadeMessage(
-                                widget.message.id, scaffoldKey)),
+                        Visibility(
+                          visible: !messageIsRead,
+                          child: EAIconButton(
+                              iconBtn: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Color(0xffC65D00),
+                              ),
+                              screenHeight: screenHeight,
+                              onPress: () => _confirmNotReadeMessage(
+                                  widget.message.id, scaffoldKey)),
+                        ),
                       ],
                     ),
                   ),
