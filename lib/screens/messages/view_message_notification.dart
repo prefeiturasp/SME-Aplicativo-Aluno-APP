@@ -171,7 +171,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     widget.message.titulo,
                     maxFontSize: 16,
                     minFontSize: 14,
-                    maxLines: 2,
+                    maxLines: 5,
                     style: TextStyle(
                         color: Color(0xff666666), fontWeight: FontWeight.w700),
                   ),

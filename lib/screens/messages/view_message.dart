@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
@@ -102,15 +101,14 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
+    String currentName = await storage.readValueStorage("current_name");
+    String json = await storage.readValueStorage("${currentName}_deleted_id");
     if (json != null) {
       ids = jsonDecode(json).cast<String>();
     }
     ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
+    storage.insertString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
   @override
@@ -148,7 +146,7 @@ class _ViewMessageState extends State<ViewMessage> {
                     widget.message.titulo,
                     maxFontSize: 16,
                     minFontSize: 14,
-                    maxLines: 2,
+                    maxLines: 5,
                     style: TextStyle(
                         color: Color(0xff666666), fontWeight: FontWeight.w700),
                   ),
