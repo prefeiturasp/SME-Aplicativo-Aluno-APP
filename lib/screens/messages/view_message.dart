@@ -142,13 +142,17 @@ class _ViewMessageState extends State<ViewMessage> {
                 headerIcon: false,
                 recentMessage: false,
                 content: <Widget>[
-                  AutoSizeText(
-                    widget.message.titulo,
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    maxLines: 5,
-                    style: TextStyle(
-                        color: Color(0xff666666), fontWeight: FontWeight.w700),
+                  Container(
+                    width: screenHeight * 40,
+                    child: AutoSizeText(
+                      widget.message.titulo,
+                      maxFontSize: 16,
+                      minFontSize: 14,
+                      maxLines: 5,
+                      style: TextStyle(
+                          color: Color(0xff666666),
+                          fontWeight: FontWeight.w700),
+                    ),
                   ),
                   SizedBox(
                     height: screenHeight * 1.8,
