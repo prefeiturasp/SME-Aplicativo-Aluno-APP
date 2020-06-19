@@ -90,16 +90,19 @@ class _ListMessageState extends State<ListMessages> {
                   headerIcon: false,
                   recentMessage: !item.mensagemVisualizada,
                   content: <Widget>[
-                    AutoSizeText(
-                      item.titulo,
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: !item.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
-                          fontWeight: FontWeight.w700),
+                    Container(
+                      width: screenHeight * 40,
+                      child: AutoSizeText(
+                        item.titulo,
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: !item.mensagemVisualizada
+                                ? Colors.white
+                                : Color(0xff666666),
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                     SizedBox(
                       height: screenHeight * 1.8,
@@ -266,17 +269,20 @@ class _ListMessageState extends State<ListMessages> {
                 recentMessage: !_messagesController
                     .messagesNotDeleted.first.mensagemVisualizada,
                 content: <Widget>[
-                  AutoSizeText(
-                    _messagesController.messagesNotDeleted.first.titulo,
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: !_messagesController
-                                .messagesNotDeleted.first.mensagemVisualizada
-                            ? Colors.white
-                            : Color(0xff666666),
-                        fontWeight: FontWeight.w700),
+                  Container(
+                    width: screenHeight * 40,
+                    child: AutoSizeText(
+                      _messagesController.messagesNotDeleted.first.titulo,
+                      maxFontSize: 16,
+                      minFontSize: 14,
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: !_messagesController
+                                  .messagesNotDeleted.first.mensagemVisualizada
+                              ? Colors.white
+                              : Color(0xff666666),
+                          fontWeight: FontWeight.w700),
+                    ),
                   ),
                   SizedBox(
                     height: screenHeight * 1.8,
