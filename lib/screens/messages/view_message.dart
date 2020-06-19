@@ -26,7 +26,7 @@ class _ViewMessageState extends State<ViewMessage> {
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  bool messageIsRead = false;
+  bool messageIsRead = true;
 
   @override
   void initState() {

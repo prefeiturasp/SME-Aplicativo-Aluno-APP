@@ -29,7 +29,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool messageIsRead = false;
+  bool messageIsRead = true;
 
   @override
   void initState() {
