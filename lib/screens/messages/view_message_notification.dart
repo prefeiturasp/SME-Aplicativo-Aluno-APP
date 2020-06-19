@@ -39,15 +39,11 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _viewMessageUpdate(bool isNotRead) async {
-    if (!widget.message.mensagemVisualizada || isNotRead) {
-      String cpfUsuario = await storage.readValueStorage("current_cpf");
-      _messagesController.updateMessage(
-          notificacaoId: widget.message.id,
-          cpfUsuario: cpfUsuario,
-          mensagemVisualia: !widget.message.mensagemVisualizada);
-    }
-
-    return null;
+    String cpfUsuario = await storage.readValueStorage("current_cpf");
+    _messagesController.updateMessage(
+        notificacaoId: widget.message.id,
+        cpfUsuario: cpfUsuario,
+        mensagemVisualia: true);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -223,7 +219,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                           width: screenHeight * 2,
                         ),
                         Visibility(
-                          visible: !messageIsRead,
+                          visible: messageIsRead,
                           child: EAIconButton(
                               iconBtn: Icon(
                                 FontAwesomeIcons.envelope,

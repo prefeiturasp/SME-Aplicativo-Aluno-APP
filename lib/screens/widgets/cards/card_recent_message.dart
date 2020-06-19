@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
@@ -17,12 +16,14 @@ class CardRecentMessage extends StatefulWidget {
   final bool deleteBtn;
   final bool recent;
   final Function onPress;
+  final Function outherRoutes;
 
   CardRecentMessage(
       {this.message,
       this.countMessages,
       this.token,
       this.codigoGrupo,
+      this.outherRoutes,
       this.deleteBtn = true,
       this.recent = false,
       this.onPress});
@@ -309,14 +310,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               ),
                             ),
                             child: FlatButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ListMessages(
-                                            token: widget.token,
-                                            codigoGrupo: widget.codigoGrupo)));
-                              },
+                              onPressed: widget.outherRoutes,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -6,6 +6,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
@@ -39,6 +40,7 @@ class _DashboardState extends State<Dashboard> {
   _loadingBackRecentMessage() {
     _messagesController = MessagesController();
     _messagesController.loadMessages();
+    setState(() {});
   }
 
   @override
@@ -119,6 +121,16 @@ class _DashboardState extends State<Dashboard> {
                                           message: _messagesController
                                               .messagesNotDeleted.first,
                                           token: widget.token)))
+                              .whenComplete(() => _loadingBackRecentMessage());
+                        },
+                        outherRoutes: () {
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ListMessages(
+                                            token: widget.token,
+                                            codigoGrupo: widget.codigoGrupo,
+                                          )))
                               .whenComplete(() => _loadingBackRecentMessage());
                         },
                       );
