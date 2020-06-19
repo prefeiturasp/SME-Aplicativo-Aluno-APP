@@ -29,6 +29,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool messageIsRead = false;
 
   @override
   void initState() {
@@ -44,6 +45,10 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
           notificacaoId: widget.message.id,
           cpfUsuario: cpfUsuario,
           mensagemVisualia: !widget.message.mensagemVisualizada);
+
+      setState(() {
+        messageIsRead = !messageIsRead;
+      });
     }
 
     return null;
@@ -218,14 +223,17 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                         SizedBox(
                           width: screenHeight * 2,
                         ),
-                        EAIconButton(
-                            iconBtn: Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Color(0xffC65D00),
-                            ),
-                            screenHeight: screenHeight,
-                            onPress: () => _confirmNotReadeMessage(
-                                widget.message.id, scaffoldKey)),
+                        Visibility(
+                          visible: !messageIsRead,
+                          child: EAIconButton(
+                              iconBtn: Icon(
+                                FontAwesomeIcons.envelope,
+                                color: Color(0xffC65D00),
+                              ),
+                              screenHeight: screenHeight,
+                              onPress: () => _confirmNotReadeMessage(
+                                  widget.message.id, scaffoldKey)),
+                        ),
                       ],
                     ),
                   ),

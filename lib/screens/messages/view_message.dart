@@ -42,6 +42,10 @@ class _ViewMessageState extends State<ViewMessage> {
           notificacaoId: widget.message.id,
           cpfUsuario: cpfUsuario,
           mensagemVisualia: !widget.message.mensagemVisualizada);
+
+      setState(() {
+        messageIsRead = !messageIsRead;
+      });
     }
 
     return null;
@@ -86,9 +90,7 @@ class _ViewMessageState extends State<ViewMessage> {
                   child: Text("SIM"),
                   onPressed: () {
                     _viewMessageUpdate(true);
-                    setState(() {
-                      messageIsRead = !messageIsRead;
-                    });
+
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(
                         content: Text("Mensagem marcada como não lida"));
