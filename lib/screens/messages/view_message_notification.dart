@@ -45,10 +45,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
           notificacaoId: widget.message.id,
           cpfUsuario: cpfUsuario,
           mensagemVisualia: !widget.message.mensagemVisualizada);
-
-      setState(() {
-        messageIsRead = !messageIsRead;
-      });
     }
 
     return null;
@@ -112,6 +108,9 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     var snackbar = SnackBar(
                         content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
+                    setState(() {
+                      messageIsRead = !messageIsRead;
+                    });
                   }),
               FlatButton(
                 child: Text("NÃO"),

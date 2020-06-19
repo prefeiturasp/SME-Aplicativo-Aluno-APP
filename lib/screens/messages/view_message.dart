@@ -42,12 +42,7 @@ class _ViewMessageState extends State<ViewMessage> {
           notificacaoId: widget.message.id,
           cpfUsuario: cpfUsuario,
           mensagemVisualia: !widget.message.mensagemVisualizada);
-
-      setState(() {
-        messageIsRead = !messageIsRead;
-      });
     }
-
     return null;
   }
 
@@ -90,11 +85,13 @@ class _ViewMessageState extends State<ViewMessage> {
                   child: Text("SIM"),
                   onPressed: () {
                     _viewMessageUpdate(true);
-
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(
                         content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
+                    setState(() {
+                      messageIsRead = !messageIsRead;
+                    });
                   }),
               FlatButton(
                 child: Text("NÃO"),
@@ -201,7 +198,7 @@ class _ViewMessageState extends State<ViewMessage> {
                           width: screenHeight * 2,
                         ),
                         Visibility(
-                          visible: !messageIsRead,
+                          visible: messageIsRead,
                           child: EAIconButton(
                               iconBtn: Icon(
                                 FontAwesomeIcons.envelope,

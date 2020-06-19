@@ -40,7 +40,11 @@ class MessageRepository implements IMessageRepository {
   Future<bool> readMessage(
       int notificacaoId, String cpfUsuario, bool mensagemVisualia) async {
     String token = await _storage.readValueStorage("token");
-    Map data = {"id": notificacaoId, "usuarioId": cpfUsuario};
+    Map data = {
+      "notificacaoId": notificacaoId,
+      "cpfUsuario": cpfUsuario,
+      "mensagemVisualizada": mensagemVisualia
+    };
 
     //encode Map to JSON
     var body = json.encode(data);
