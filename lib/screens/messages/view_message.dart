@@ -90,7 +90,7 @@ class _ViewMessageState extends State<ViewMessage> {
                         content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
                     setState(() {
-                      messageIsRead = !messageIsRead;
+                      messageIsRead = false;
                     });
                   }),
               FlatButton(
