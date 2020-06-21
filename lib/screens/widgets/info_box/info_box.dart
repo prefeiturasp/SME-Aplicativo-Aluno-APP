@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InfoBox extends StatelessWidget {
   final List<Widget> content;
@@ -15,6 +14,7 @@ class InfoBox extends StatelessWidget {
       overflow: Overflow.visible,
       children: <Widget>[
         Container(
+          width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(screenHeight * 2),
           margin:
               EdgeInsets.only(top: screenHeight * 5, bottom: screenHeight * 4),
@@ -32,7 +32,7 @@ class InfoBox extends StatelessWidget {
         Visibility(
           visible: icon != null,
           child: Positioned(
-              top: screenHeight * 2.5,
+              top: screenHeight * 2.4,
               right: screenHeight * 2.5,
               child: Container(
                 width: screenHeight * 5,
@@ -40,7 +40,7 @@ class InfoBox extends StatelessWidget {
                 color: Color(0xffffffff),
                 child: Icon(
                   icon,
-                  size: screenHeight * 2.5,
+                  size: screenHeight * 2.3,
                   color: Color(0xff666666),
                 ),
               )),
