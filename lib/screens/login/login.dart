@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: screenHeight * 45,
+                        width: screenHeight * 36,
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(
                             top: screenHeight * 8, bottom: screenHeight * 6),
