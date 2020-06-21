@@ -259,9 +259,10 @@ class _LoginState extends State<Login> {
                                 height: screenHeight * 1,
                               ),
                               AutoSizeText(
-                                "Digite a data de nascimento do aluno ddmmaaaa",
+                                "Digite a sua senha. Caso você ainda não tenha uma senha pessoal informe a data de nascimento do aluno no padrão ddmmaaaa.",
                                 maxFontSize: 14,
                                 minFontSize: 12,
+                                maxLines: 3,
                                 style: TextStyle(
                                   color: Color(0xff979797),
                                 ),
