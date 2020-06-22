@@ -19,8 +19,8 @@ class _FirstAccessState extends State<FirstAccess> {
   bool _showPassword = true;
   bool busy = false;
   bool _passwordIsError = false;
-  String _password;
-  String _confirmPassword;
+  String _password = '';
+  String _confirmPassword = '';
 
   @override
   Widget build(BuildContext context) {
