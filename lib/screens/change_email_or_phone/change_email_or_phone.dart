@@ -20,10 +20,10 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
 
   bool busy = false;
 
-  String _email = '';
+  String _email;
   bool _emailError = false;
 
-  String _phone = '';
+  String _phone;
   bool _phoneError = false;
 
   @override
