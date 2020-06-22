@@ -73,6 +73,5 @@ class AuthenticateRepository implements IAuthenticateRepository {
     storage.insertString('dispositivo_id', dispositivoId);
     storage.insertInt('current_user_id', userId);
     storage.insertString('current_celular', celular);
-    ;
   }
 }
