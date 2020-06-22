@@ -9,6 +9,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -67,23 +68,34 @@ class _LoginState extends State<Login> {
     });
   }
 
-  onSuccess() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isData = prefs.containsKey('current_cpf');
+  _navigateToScreen() async {
+    bool isData = await _storage.containsKey('current_cpf');
+    String cpf = await _storage.readValueStorage("current_cpf");
+    String token = await _storage.readValueStorage("token");
+    String password = await _storage.readValueStorage("current_password");
+
     if (isData) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ListStudants(
-            cpf: prefs.getString("current_cpf") ?? "",
-            token: prefs.getString("token") ?? "",
-            password: prefs.getString("current_password") ?? "",
-          ),
-        ),
-      );
+      if (!_authenticateController.currentUser.data.primeiroAcesso) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => FirstAccess()));
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListStudants(
+                cpf: cpf,
+                token: token,
+                password: password,
+              ),
+            ));
+      }
     } else {
       onError();
     }
+  }
+
+  onSuccess() async {
+    _navigateToScreen();
   }
 
   onError() {
@@ -105,12 +117,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
-    // var _authenticateController =
-    //     Provider.of<AuthenticateController>(context, listen: false);
-
-    // // _authenticateController.currentUser.erros[0].isNotEmpty
-
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
