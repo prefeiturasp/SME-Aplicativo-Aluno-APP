@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
-import 'package:string_validator/string_validator.dart';
 
 class FirstAccess extends StatefulWidget {
   @override
@@ -15,21 +13,14 @@ class FirstAccess extends StatefulWidget {
 }
 
 class _FirstAccessState extends State<FirstAccess> {
-  AuthenticateController _authenticateController;
-
-  final Storage _storage = Storage();
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-
   bool _showPassword = true;
   bool busy = false;
-  bool _cpfIsError = false;
   bool _passwordIsError = false;
-  String _cpf = '';
-  String _dataNnascimentoAluno = '';
+  String _password;
+  String _confirmPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +56,7 @@ class _FirstAccessState extends State<FirstAccess> {
                         )),
                     Form(
                       key: _formKey,
+                      autovalidate: true,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,22 +73,28 @@ class _FirstAccessState extends State<FirstAccess> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
-                                controller: _passwordController,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
-                                onChanged: (value) {},
-                                decoration: InputDecoration(
-                                  labelText: 'Nova senha',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.text,
-                              ),
+                                  obscureText: _showPassword,
+                                  style: TextStyle(
+                                      color: Color(0xff333333),
+                                      fontWeight: FontWeight.w600),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _password = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: 'Nova senha',
+                                    labelStyle:
+                                        TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                    // hintText: "Data de nascimento do aluno",
+                                    border: InputBorder.none,
+                                  ),
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12)
+                                  ],
+                                  keyboardType: TextInputType.text),
                             ),
                             SizedBox(
                               height: screenHeight * 1,
@@ -114,13 +112,29 @@ class _FirstAccessState extends State<FirstAccess> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
-                                controller: _confirmPasswordController,
                                 style: TextStyle(
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),
                                 obscureText: _showPassword,
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  setState(() {
+                                    _confirmPassword = value;
+                                  });
+                                },
                                 decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: _showPassword
+                                        ? Icon(FontAwesomeIcons.eye)
+                                        : Icon(FontAwesomeIcons.eyeSlash),
+                                    color: Color(0xff6e6e6e),
+                                    iconSize: screenHeight * 3.0,
+                                    onPressed: () {
+                                      setState(() {
+                                        _showPassword = !_showPassword;
+                                      });
+                                    },
+                                  ),
+
                                   labelText: 'Confirmar a nova senha',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
@@ -129,16 +143,16 @@ class _FirstAccessState extends State<FirstAccess> {
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
-                                validator: (_) {
-                                  if (_dataNnascimentoAluno.isEmpty)
-                                    return 'Campo obrigatório';
-
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(12)
+                                ],
+                                validator: (value) {
+                                  if (value != _password) {
+                                    return "Senhas não correspondem";
+                                  }
                                   return null;
                                 },
-                                inputFormatters: [
-                                  WhitelistingTextInputFormatter.digitsOnly,
-                                ],
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                               ),
                             ),
                             SizedBox(
@@ -161,8 +175,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                 CheckLine(
                                     screenHeight: screenHeight,
                                     text: "Uma letra maiúscula",
-                                    checked:
-                                        isUppercase(_passwordController.text)),
+                                    checked: true),
                                 CheckLine(
                                   screenHeight: screenHeight,
                                   text: "Uma letra minúscula",
@@ -185,48 +198,20 @@ class _FirstAccessState extends State<FirstAccess> {
                               ],
                             ),
                             !busy
-                                ? Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: screenHeight * 6,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xffd06d12),
-                                        borderRadius: BorderRadius.circular(
-                                            screenHeight * 3)),
-                                    child: FlatButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState
-                                              .validate()) {
-                                          } else {
-                                            setState(() {
-                                              _cpfIsError = true;
-                                              _passwordIsError = true;
-                                            });
-                                          }
-                                        },
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            AutoSizeText(
-                                              "ENTRAR",
-                                              maxFontSize: 16,
-                                              minFontSize: 14,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            SizedBox(
-                                              width: screenHeight * 3,
-                                            ),
-                                            Icon(
-                                              FontAwesomeIcons.chevronRight,
-                                              color: Color(0xffffd037),
-                                              size: screenHeight * 3,
-                                            )
-                                          ],
-                                        )))
+                                ? EAButton(
+                                    text: "CADASTRAR",
+                                    icon: FontAwesomeIcons.chevronRight,
+                                    iconColor: Color(0xffffd037),
+                                    btnColor: Color(0xffd06d12),
+                                    desabled: (_password.isNotEmpty &&
+                                            _confirmPassword.isNotEmpty) &&
+                                        (_confirmPassword == _password),
+                                    onPress: () {
+                                      if (true) {
+                                        print("----> DEU CERTO => ");
+                                      } else {}
+                                    },
+                                  )
                                 : GFLoader(
                                     type: GFLoaderType.square,
                                     loaderColorOne: Color(0xffDE9524),
