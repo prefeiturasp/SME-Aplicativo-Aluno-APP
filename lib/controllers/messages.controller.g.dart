@@ -126,17 +126,19 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   final _$loadMessagesAsyncAction = AsyncAction('loadMessages');
 
   @override
-  Future loadMessages({String token}) {
-    return _$loadMessagesAsyncAction
-        .run(() => super.loadMessages(token: token));
+  Future loadMessages() {
+    return _$loadMessagesAsyncAction.run(() => super.loadMessages());
   }
 
   final _$updateMessageAsyncAction = AsyncAction('updateMessage');
 
   @override
-  Future updateMessage({int id, int userId, String token}) {
-    return _$updateMessageAsyncAction
-        .run(() => super.updateMessage(id: id, userId: userId, token: token));
+  Future updateMessage(
+      {int notificacaoId, String cpfUsuario, bool mensagemVisualia}) {
+    return _$updateMessageAsyncAction.run(() => super.updateMessage(
+        notificacaoId: notificacaoId,
+        cpfUsuario: cpfUsuario,
+        mensagemVisualia: mensagemVisualia));
   }
 
   final _$_MessagesControllerBaseActionController =
@@ -159,17 +161,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         _$_MessagesControllerBaseActionController.startAction();
     try {
       return super.messagesPerGroups(codigoGrupo);
-    } finally {
-      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic subscribeGroupIdToFirebase() {
-    final _$actionInfo =
-        _$_MessagesControllerBaseActionController.startAction();
-    try {
-      return super.subscribeGroupIdToFirebase();
     } finally {
       _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
     }

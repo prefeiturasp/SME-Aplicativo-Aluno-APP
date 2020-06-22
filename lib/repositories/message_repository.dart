@@ -3,8 +3,15 @@ import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class MessageRepository implements IMessageRepository {
+  Storage _storage;
+
+  MessageRepository() {
+    _storage = Storage();
+  }
+
   @override
   Future<List<Message>> fetchMessages(String token) async {
     try {
@@ -30,8 +37,14 @@ class MessageRepository implements IMessageRepository {
   }
 
   @override
-  Future<bool> readMessage(int id, int userId, String token) async {
-    Map data = {"id": id, "usuarioId": userId};
+  Future<bool> readMessage(
+      int notificacaoId, String cpfUsuario, bool mensagemVisualia) async {
+    String token = await _storage.readValueStorage("token");
+    Map data = {
+      "notificacaoId": notificacaoId,
+      "cpfUsuario": cpfUsuario,
+      "mensagemVisualizada": mensagemVisualia
+    };
 
     //encode Map to JSON
     var body = json.encode(data);

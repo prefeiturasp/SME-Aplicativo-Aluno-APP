@@ -4,28 +4,31 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
-class ViewMessage extends StatefulWidget {
+class ViewMessageNotification extends StatefulWidget {
   final Message message;
-  final String token;
 
-  ViewMessage({@required this.message, @required this.token});
+  ViewMessageNotification({
+    @required this.message,
+  });
 
   @override
-  _ViewMessageState createState() => _ViewMessageState();
+  _ViewMessageNotificationState createState() =>
+      _ViewMessageNotificationState();
 }
 
-class _ViewMessageState extends State<ViewMessage> {
+class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
-
   bool messageIsRead = true;
 
   @override
@@ -36,14 +39,11 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _viewMessageUpdate(bool isNotRead) async {
-    if (!widget.message.mensagemVisualizada || isNotRead) {
-      String cpfUsuario = await storage.readValueStorage("current_cpf");
-      _messagesController.updateMessage(
-          notificacaoId: widget.message.id,
-          cpfUsuario: cpfUsuario,
-          mensagemVisualia: !widget.message.mensagemVisualizada);
-    }
-    return null;
+    String cpfUsuario = await storage.readValueStorage("current_cpf");
+    _messagesController.updateMessage(
+        notificacaoId: widget.message.id,
+        cpfUsuario: cpfUsuario,
+        mensagemVisualia: true);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -72,6 +72,21 @@ class _ViewMessageState extends State<ViewMessage> {
         });
   }
 
+  _navigateToListMessage() async {
+    String token = await storage.readValueStorage("token");
+    String cpf = await storage.readValueStorage("current_cpf");
+    String password = await storage.readValueStorage("current_cpf");
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListStudants(
+                  cpf: cpf,
+                  password: password,
+                  token: token,
+                )));
+  }
+
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
     return showDialog(
         context: context,
@@ -90,7 +105,7 @@ class _ViewMessageState extends State<ViewMessage> {
                         content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
                     setState(() {
-                      messageIsRead = false;
+                      messageIsRead = !messageIsRead;
                     });
                   }),
               FlatButton(
@@ -105,14 +120,15 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _removeMesageToStorage(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> ids = [];
-    String currentName = await storage.readValueStorage("current_name");
-    String json = await storage.readValueStorage("${currentName}_deleted_id");
+    String currentName = prefs.getString("current_name");
+    String json = prefs.getString("${currentName}_deleted_id");
     if (json != null) {
       ids = jsonDecode(json).cast<String>();
     }
     ids.add(id.toString());
-    storage.insertString("${currentName}_deleted_id", jsonEncode(ids));
+    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
   @override
@@ -125,6 +141,11 @@ class _ViewMessageState extends State<ViewMessage> {
       appBar: AppBar(
         title: Text("Mensagens"),
         backgroundColor: Color(0xffEEC25E),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              _navigateToListMessage();
+            }),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -221,8 +242,8 @@ class _ViewMessageState extends State<ViewMessage> {
                         ),
                       ),
                       child: FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
+                        onPressed: () async {
+                          _navigateToListMessage();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
