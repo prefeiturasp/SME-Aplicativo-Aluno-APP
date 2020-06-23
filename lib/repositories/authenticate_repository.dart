@@ -74,4 +74,10 @@ class AuthenticateRepository implements IAuthenticateRepository {
     storage.insertInt('current_user_id', userId);
     storage.insertString('current_celular', celular);
   }
+
+  @override
+  Future<Data> fetchFirstAccess(int id, String novaSenha) {
+    // TODO: implement fetchFirstAccess
+    throw UnimplementedError();
+  }
 }
