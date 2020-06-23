@@ -12,6 +12,7 @@ import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessageNotification extends StatefulWidget {
   final Message message;
@@ -131,6 +132,14 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -186,6 +195,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     width: screenHeight * 41,
                     child: Html(
                       data: widget.message.mensagem,
+                      onLinkTap: (url) => _launchURL(url),
                     ),
                   ),
                   SizedBox(
