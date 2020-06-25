@@ -11,6 +11,7 @@ class NotInteernet extends StatelessWidget {
       appBar: AppBar(
         title: Text("Mensagem importante"),
         backgroundColor: Color(0xffEEC25E),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         padding: EdgeInsets.all(screenHeight * 4),
