@@ -28,7 +28,7 @@ class NotInteernet extends StatelessWidget {
               height: screenHeight * 2,
             ),
             AutoSizeText(
-              "Sua internet parece não estar funcionando corretamente. Vá para um ambiente com interent para navegar no aplicativo",
+              "Sua internet parece não estar funcionando corretamente. Vá para um ambiente com internet para navegar no aplicativo",
               textAlign: TextAlign.center,
               style: TextStyle(height: 1.3, color: Color(0xff333333)),
               maxFontSize: 20,
