@@ -6,6 +6,7 @@ import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
+import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/global_config.dart';
 
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticateController>.value(value: AuthenticateController()),
         Provider<StudentsController>.value(value: StudentsController()),
         Provider<MessagesController>.value(value: MessagesController()),
+        StreamProvider<ConnectivityStatus>(
+            create: (context) =>
+                ConnectivityService().connectionStatusController.stream),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
