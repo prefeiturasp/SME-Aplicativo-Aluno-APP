@@ -1,18 +1,22 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
+import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
@@ -437,39 +441,48 @@ class _ListMessageState extends State<ListMessages> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
-    return Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      appBar: AppBar(
-        title: Text("Mensagens"),
-        backgroundColor: Color(0xffEEC25E),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop(true);
-          },
+    if (connectionStatus == ConnectivityStatus.Offline) {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
+      return NotInteernet();
+    } else {
+      var size = MediaQuery.of(context).size;
+      var screenHeight =
+          (size.height - MediaQuery.of(context).padding.top) / 100;
+      return Scaffold(
+        backgroundColor: Color(0xffE5E5E5),
+        appBar: AppBar(
+          title: Text("Mensagens"),
+          backgroundColor: Color(0xffEEC25E),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
         ),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await _messagesController.loadMessages();
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(
-                horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildListMessages(context, screenHeight, widget.token),
-              ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await _messagesController.loadMessages();
+          },
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildListMessages(context, screenHeight, widget.token),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
