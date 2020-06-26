@@ -14,12 +14,13 @@ class AuthenticateRepository implements IAuthenticateRepository {
   Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
     String userPassword = await storage.readValueStorage("current_password");
     String idDevice = await _firebaseMessaging.getToken();
+
     print("FIREBASE TOKEN: $idDevice");
 
     if (!onBackgroundFetch) {
       var ids = new List<int>.generate(20, (i) => i + 1);
       ids.forEach((element) {
-        print("Ids: $element");
+        print("Remove ids: $element");
         _firebaseMessaging.unsubscribeFromTopic(element.toString());
       });
     }
@@ -73,11 +74,5 @@ class AuthenticateRepository implements IAuthenticateRepository {
     storage.insertString('dispositivo_id', dispositivoId);
     storage.insertInt('current_user_id', userId);
     storage.insertString('current_celular', celular);
-  }
-
-  @override
-  Future<Data> fetchFirstAccess(int id, String novaSenha) {
-    // TODO: implement fetchFirstAccess
-    throw UnimplementedError();
   }
 }
