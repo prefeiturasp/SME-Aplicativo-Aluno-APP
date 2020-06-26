@@ -11,9 +11,10 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<Data> changeNewPassword(int id, String password) async {
     String token = await storage.readValueStorage("token");
-    Map data = {"id": 30, "novaSenha": password};
+    int _id = await storage.readValueIntStorage("current_user_id");
+    Map _data = {"id": _id, "novaSenha": password};
 
-    var body = json.encode(data);
+    var body = json.encode(_data);
     try {
       final response = await http.post(
         "${Api.HOST}/Autenticacao/PrimeiroAcesso",
