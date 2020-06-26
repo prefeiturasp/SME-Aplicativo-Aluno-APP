@@ -75,9 +75,15 @@ class _LoginState extends State<Login> {
     String password = await _storage.readValueStorage("current_password");
 
     if (isData) {
-      if (!_authenticateController.currentUser.data.primeiroAcesso) {
+      if (_authenticateController.currentUser.data.primeiroAcesso) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => FirstAccess()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => FirstAccess(
+                      id: _authenticateController.currentUser.data.id,
+                      isPhoneAndEmail: _authenticateController
+                          .currentUser.data.informarCelularEmail,
+                    )));
       } else {
         Navigator.push(
             context,
@@ -224,8 +230,9 @@ class _LoginState extends State<Login> {
                                   onChanged: (value) {
                                     setState(() {
                                       _dataNnascimentoAluno =
-                                          _passwordController.text.replaceAll(
-                                              new RegExp(r'[^\w\s]+'), '');
+                                          _passwordController.text;
+                                      // _passwordController.text.replaceAll(
+                                      //     new RegExp(r'[^\w\s]+'), '');
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -255,10 +262,7 @@ class _LoginState extends State<Login> {
 
                                     return null;
                                   },
-                                  inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
-                                  ],
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.text,
                                 ),
                               ),
                               SizedBox(
