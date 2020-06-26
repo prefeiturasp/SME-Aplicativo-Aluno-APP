@@ -47,6 +47,9 @@ abstract class _AuthenticateControllerBase with Store {
   }
 
   @action
+  fetchFirstAccess(int id, String password) async {}
+
+  @action
   clearCurrentUser() {
     currentUser = null;
   }

@@ -19,7 +19,7 @@ dependencies:
   connectivity: ^0.4.8+6
   mobx: ^1.1.1
   flutter_mobx: ^1.1.0
-  brasil_fields: ^0.0.7+2
+  brasil_fields: ^0.2.0
   cpf_cnpj_validator: ^1.0.5
   json_serializable: ^3.3.0
   json_annotation: ^3.0.1
@@ -30,6 +30,9 @@ dependencies:
   flutter_html: ^0.11.1
   device_info: ^0.4.2+2
   url_launcher: ^5.4.10
+  string_validator: ^0.1.4
+  email_validator: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:

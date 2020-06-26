@@ -4,8 +4,19 @@ class User {
   String cpf;
   String email;
   String token;
+  bool primeiroAcesso;
+  bool informarCelularEmail;
+  String celular;
 
-  User({this.id, this.nome, this.cpf, this.email, this.token});
+  User(
+      {this.id,
+      this.nome,
+      this.cpf,
+      this.email,
+      this.token,
+      this.primeiroAcesso,
+      this.informarCelularEmail,
+      this.celular});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -13,6 +24,9 @@ class User {
     cpf = json['cpf'];
     email = json['email'];
     token = json['token'];
+    primeiroAcesso = json['primeiroAcesso'];
+    informarCelularEmail = json['informarCelularEmail'];
+    celular = json['celular'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +36,9 @@ class User {
     data['cpf'] = this.cpf;
     data['email'] = this.email;
     data['token'] = this.token;
+    data['primeiroAcesso'] = this.primeiroAcesso;
+    data['informarCelularEmail'] = this.informarCelularEmail;
+    data['celular'] = this.celular;
     return data;
   }
 }

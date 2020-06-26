@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticateController>.value(value: AuthenticateController()),
         Provider<StudentsController>.value(value: StudentsController()),
         Provider<MessagesController>.value(value: MessagesController()),
+        Provider<FirstAccessController>.value(value: FirstAccessController()),
         StreamProvider<ConnectivityStatus>(
             create: (context) =>
                 ConnectivityService().connectionStatusController.stream),

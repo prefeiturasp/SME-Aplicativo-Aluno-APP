@@ -9,6 +9,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -67,23 +68,40 @@ class _LoginState extends State<Login> {
     });
   }
 
-  onSuccess() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isData = prefs.containsKey('current_cpf');
+  _navigateToScreen() async {
+    bool isData = await _storage.containsKey('current_cpf');
+    String cpf = await _storage.readValueStorage("current_cpf");
+    String token = await _storage.readValueStorage("token");
+    String password = await _storage.readValueStorage("current_password");
+
     if (isData) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ListStudants(
-            cpf: prefs.getString("current_cpf") ?? "",
-            token: prefs.getString("token") ?? "",
-            password: prefs.getString("current_password") ?? "",
-          ),
-        ),
-      );
+      if (_authenticateController.currentUser.data.primeiroAcesso) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FirstAccess(
+                      id: _authenticateController.currentUser.data.id,
+                      isPhoneAndEmail: _authenticateController
+                          .currentUser.data.informarCelularEmail,
+                    )));
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ListStudants(
+                cpf: cpf,
+                token: token,
+                password: password,
+              ),
+            ));
+      }
     } else {
       onError();
     }
+  }
+
+  onSuccess() async {
+    _navigateToScreen();
   }
 
   onError() {
@@ -105,12 +123,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
-    // var _authenticateController =
-    //     Provider.of<AuthenticateController>(context, listen: false);
-
-    // // _authenticateController.currentUser.erros[0].isNotEmpty
-
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -125,7 +137,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: screenHeight * 45,
+                        width: screenHeight * 36,
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(
                             top: screenHeight * 8, bottom: screenHeight * 6),
@@ -218,8 +230,9 @@ class _LoginState extends State<Login> {
                                   onChanged: (value) {
                                     setState(() {
                                       _dataNnascimentoAluno =
-                                          _passwordController.text.replaceAll(
-                                              new RegExp(r'[^\w\s]+'), '');
+                                          _passwordController.text;
+                                      // _passwordController.text.replaceAll(
+                                      //     new RegExp(r'[^\w\s]+'), '');
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -249,19 +262,17 @@ class _LoginState extends State<Login> {
 
                                     return null;
                                   },
-                                  inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
-                                  ],
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.text,
                                 ),
                               ),
                               SizedBox(
                                 height: screenHeight * 1,
                               ),
                               AutoSizeText(
-                                "Digite a data de nascimento do aluno ddmmaaaa",
+                                "Digite a sua senha. Caso você ainda não tenha uma senha pessoal informe a data de nascimento do aluno no padrão ddmmaaaa.",
                                 maxFontSize: 14,
                                 minFontSize: 12,
+                                maxLines: 3,
                                 style: TextStyle(
                                   color: Color(0xff979797),
                                 ),

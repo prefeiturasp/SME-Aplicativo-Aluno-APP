@@ -6,41 +6,37 @@ part of 'messages.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$MessagesController on _MessagesControllerBase, Store {
   final _$messagesAtom = Atom(name: '_MessagesControllerBase.messages');
 
   @override
   ObservableList<Message> get messages {
-    _$messagesAtom.context.enforceReadPolicy(_$messagesAtom);
-    _$messagesAtom.reportObserved();
+    _$messagesAtom.reportRead();
     return super.messages;
   }
 
   @override
   set messages(ObservableList<Message> value) {
-    _$messagesAtom.context.conditionallyRunInAction(() {
+    _$messagesAtom.reportWrite(value, super.messages, () {
       super.messages = value;
-      _$messagesAtom.reportChanged();
-    }, _$messagesAtom, name: '${_$messagesAtom.name}_set');
+    });
   }
 
   final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
 
   @override
   Message get message {
-    _$messageAtom.context.enforceReadPolicy(_$messageAtom);
-    _$messageAtom.reportObserved();
+    _$messageAtom.reportRead();
     return super.message;
   }
 
   @override
   set message(Message value) {
-    _$messageAtom.context.conditionallyRunInAction(() {
+    _$messageAtom.reportWrite(value, super.message, () {
       super.message = value;
-      _$messageAtom.reportChanged();
-    }, _$messageAtom, name: '${_$messageAtom.name}_set');
+    });
   }
 
   final _$groupmessagesAtom =
@@ -48,17 +44,15 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   ObservableList<Message> get groupmessages {
-    _$groupmessagesAtom.context.enforceReadPolicy(_$groupmessagesAtom);
-    _$groupmessagesAtom.reportObserved();
+    _$groupmessagesAtom.reportRead();
     return super.groupmessages;
   }
 
   @override
   set groupmessages(ObservableList<Message> value) {
-    _$groupmessagesAtom.context.conditionallyRunInAction(() {
+    _$groupmessagesAtom.reportWrite(value, super.groupmessages, () {
       super.groupmessages = value;
-      _$groupmessagesAtom.reportChanged();
-    }, _$groupmessagesAtom, name: '${_$groupmessagesAtom.name}_set');
+    });
   }
 
   final _$messagesNotDeletedAtom =
@@ -66,56 +60,49 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   ObservableList<Message> get messagesNotDeleted {
-    _$messagesNotDeletedAtom.context
-        .enforceReadPolicy(_$messagesNotDeletedAtom);
-    _$messagesNotDeletedAtom.reportObserved();
+    _$messagesNotDeletedAtom.reportRead();
     return super.messagesNotDeleted;
   }
 
   @override
   set messagesNotDeleted(ObservableList<Message> value) {
-    _$messagesNotDeletedAtom.context.conditionallyRunInAction(() {
+    _$messagesNotDeletedAtom.reportWrite(value, super.messagesNotDeleted, () {
       super.messagesNotDeleted = value;
-      _$messagesNotDeletedAtom.reportChanged();
-    }, _$messagesNotDeletedAtom, name: '${_$messagesNotDeletedAtom.name}_set');
+    });
   }
 
   final _$isLoadingAtom = Atom(name: '_MessagesControllerBase.isLoading');
 
   @override
   bool get isLoading {
-    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
-    _$isLoadingAtom.reportObserved();
+    _$isLoadingAtom.reportRead();
     return super.isLoading;
   }
 
   @override
   set isLoading(bool value) {
-    _$isLoadingAtom.context.conditionallyRunInAction(() {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
       super.isLoading = value;
-      _$isLoadingAtom.reportChanged();
-    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+    });
   }
 
   final _$countMessageAtom = Atom(name: '_MessagesControllerBase.countMessage');
 
   @override
   int get countMessage {
-    _$countMessageAtom.context.enforceReadPolicy(_$countMessageAtom);
-    _$countMessageAtom.reportObserved();
+    _$countMessageAtom.reportRead();
     return super.countMessage;
   }
 
   @override
   set countMessage(int value) {
-    _$countMessageAtom.context.conditionallyRunInAction(() {
+    _$countMessageAtom.reportWrite(value, super.countMessage, () {
       super.countMessage = value;
-      _$countMessageAtom.reportChanged();
-    }, _$countMessageAtom, name: '${_$countMessageAtom.name}_set');
+    });
   }
 
   final _$loadMessagesNotDeletedsAsyncAction =
-      AsyncAction('loadMessagesNotDeleteds');
+      AsyncAction('_MessagesControllerBase.loadMessagesNotDeleteds');
 
   @override
   Future loadMessagesNotDeleteds() {
@@ -123,14 +110,16 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessagesNotDeleteds());
   }
 
-  final _$loadMessagesAsyncAction = AsyncAction('loadMessages');
+  final _$loadMessagesAsyncAction =
+      AsyncAction('_MessagesControllerBase.loadMessages');
 
   @override
   Future loadMessages() {
     return _$loadMessagesAsyncAction.run(() => super.loadMessages());
   }
 
-  final _$updateMessageAsyncAction = AsyncAction('updateMessage');
+  final _$updateMessageAsyncAction =
+      AsyncAction('_MessagesControllerBase.updateMessage');
 
   @override
   Future updateMessage(
@@ -146,8 +135,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   dynamic loadMessage(int id) {
-    final _$actionInfo =
-        _$_MessagesControllerBaseActionController.startAction();
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.loadMessage');
     try {
       return super.loadMessage(id);
     } finally {
@@ -157,8 +146,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   dynamic messagesPerGroups(dynamic codigoGrupo) {
-    final _$actionInfo =
-        _$_MessagesControllerBaseActionController.startAction();
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.messagesPerGroups');
     try {
       return super.messagesPerGroups(codigoGrupo);
     } finally {
@@ -168,8 +157,13 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'messages: ${messages.toString()},message: ${message.toString()},groupmessages: ${groupmessages.toString()},messagesNotDeleted: ${messagesNotDeleted.toString()},isLoading: ${isLoading.toString()},countMessage: ${countMessage.toString()}';
-    return '{$string}';
+    return '''
+messages: ${messages},
+message: ${message},
+groupmessages: ${groupmessages},
+messagesNotDeleted: ${messagesNotDeleted},
+isLoading: ${isLoading},
+countMessage: ${countMessage}
+    ''';
   }
 }
