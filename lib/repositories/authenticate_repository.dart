@@ -46,8 +46,8 @@ class AuthenticateRepository implements IAuthenticateRepository {
         }
         return user;
       } else {
-        Data dataError = Data();
-        dataError.erros = [response.body];
+        var decodeError = jsonDecode(response.body);
+        var dataError = Data.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
