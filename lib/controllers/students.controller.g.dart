@@ -6,44 +6,41 @@ part of 'students.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$StudentsController on _StudentsControllerBase, Store {
   final _$dataEstudentAtom = Atom(name: '_StudentsControllerBase.dataEstudent');
 
   @override
   DataStudent get dataEstudent {
-    _$dataEstudentAtom.context.enforceReadPolicy(_$dataEstudentAtom);
-    _$dataEstudentAtom.reportObserved();
+    _$dataEstudentAtom.reportRead();
     return super.dataEstudent;
   }
 
   @override
   set dataEstudent(DataStudent value) {
-    _$dataEstudentAtom.context.conditionallyRunInAction(() {
+    _$dataEstudentAtom.reportWrite(value, super.dataEstudent, () {
       super.dataEstudent = value;
-      _$dataEstudentAtom.reportChanged();
-    }, _$dataEstudentAtom, name: '${_$dataEstudentAtom.name}_set');
+    });
   }
 
   final _$isLoadingAtom = Atom(name: '_StudentsControllerBase.isLoading');
 
   @override
   bool get isLoading {
-    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
-    _$isLoadingAtom.reportObserved();
+    _$isLoadingAtom.reportRead();
     return super.isLoading;
   }
 
   @override
   set isLoading(bool value) {
-    _$isLoadingAtom.context.conditionallyRunInAction(() {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
       super.isLoading = value;
-      _$isLoadingAtom.reportChanged();
-    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+    });
   }
 
-  final _$loadingStudentsAsyncAction = AsyncAction('loadingStudents');
+  final _$loadingStudentsAsyncAction =
+      AsyncAction('_StudentsControllerBase.loadingStudents');
 
   @override
   Future loadingStudents(String cpf, String token) {
@@ -56,8 +53,8 @@ mixin _$StudentsController on _StudentsControllerBase, Store {
 
   @override
   dynamic subscribeGroupIdToFirebase() {
-    final _$actionInfo =
-        _$_StudentsControllerBaseActionController.startAction();
+    final _$actionInfo = _$_StudentsControllerBaseActionController.startAction(
+        name: '_StudentsControllerBase.subscribeGroupIdToFirebase');
     try {
       return super.subscribeGroupIdToFirebase();
     } finally {
@@ -67,8 +64,9 @@ mixin _$StudentsController on _StudentsControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'dataEstudent: ${dataEstudent.toString()},isLoading: ${isLoading.toString()}';
-    return '{$string}';
+    return '''
+dataEstudent: ${dataEstudent},
+isLoading: ${isLoading}
+    ''';
   }
 }
