@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/repositories/first_access_repository.dart';
 
 part 'first_access.controller.g.dart';
@@ -18,6 +18,9 @@ abstract class _FirstAccessControllerBase with Store {
   Data data;
 
   @observable
+  Data dataEmailOrPhone;
+
+  @observable
   bool isLoading = false;
 
   @action
@@ -25,6 +28,19 @@ abstract class _FirstAccessControllerBase with Store {
     isLoading = true;
     data = await _firstAccessRepository.changeNewPassword(id, password);
     isLoading = false;
-    return data;
+  }
+
+  @action
+  changeEmail(int id, String email) async {
+    isLoading = true;
+    dataEmailOrPhone = await _firstAccessRepository.changeEmail(id, email);
+    isLoading = false;
+  }
+
+  @action
+  changePhone(int id, String phone) async {
+    isLoading = true;
+    dataEmailOrPhone = await _firstAccessRepository.changePhone(id, phone);
+    isLoading = false;
   }
 }
