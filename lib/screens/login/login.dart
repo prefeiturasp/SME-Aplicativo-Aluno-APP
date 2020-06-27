@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class Login extends StatefulWidget {
@@ -182,12 +183,10 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                   validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Campo obrigatório, não pode ficar em branco.';
-                                    }
-
-                                    if (!CPFValidator.isValid(_cpf)) {
-                                      return 'CPF inválido';
+                                    if (value.isNotEmpty) {
+                                      if (!CPFValidator.isValid(_cpf)) {
+                                        return 'CPF inválido';
+                                      }
                                     }
 
                                     return null;
@@ -235,6 +234,15 @@ class _LoginState extends State<Login> {
                                       //     new RegExp(r'[^\w\s]+'), '');
                                     });
                                   },
+                                  validator: (value) {
+                                    if (value.isNotEmpty) {
+                                      if (value.length <= 7) {
+                                        return 'Sua senha deve conter no mínimo 8 caracteres';
+                                      }
+                                    }
+
+                                    return null;
+                                  },
                                   decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                       icon: _showPassword
@@ -256,12 +264,6 @@ class _LoginState extends State<Login> {
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
-                                  validator: (_) {
-                                    if (_dataNnascimentoAluno.isEmpty)
-                                      return 'Campo obrigatório';
-
-                                    return null;
-                                  },
                                   keyboardType: TextInputType.text,
                                 ),
                               ),
@@ -281,51 +283,25 @@ class _LoginState extends State<Login> {
                                 height: screenHeight * 7,
                               ),
                               !busy
-                                  ? Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: screenHeight * 6,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xffd06d12),
-                                          borderRadius: BorderRadius.circular(
-                                              screenHeight * 3)),
-                                      child: FlatButton(
-                                          onPressed: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
-                                              _handleSignIn(
-                                                  _cpf, _dataNnascimentoAluno);
-                                            } else {
-                                              setState(() {
-                                                _cpfIsError = true;
-                                                _passwordIsError = true;
-                                              });
-                                            }
-                                          },
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              AutoSizeText(
-                                                "ENTRAR",
-                                                maxFontSize: 16,
-                                                minFontSize: 14,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                              SizedBox(
-                                                width: screenHeight * 3,
-                                              ),
-                                              Icon(
-                                                FontAwesomeIcons.chevronRight,
-                                                color: Color(0xffffd037),
-                                                size: screenHeight * 3,
-                                              )
-                                            ],
-                                          )))
+                                  ? EAButton(
+                                      text: "ENTRAR",
+                                      icon: FontAwesomeIcons.chevronRight,
+                                      iconColor: Color(0xffffd037),
+                                      btnColor: Color(0xffd06d12),
+                                      desabled: CPFValidator.isValid(_cpf) &&
+                                          _dataNnascimentoAluno.length >= 7,
+                                      onPress: () {
+                                        if (_formKey.currentState.validate()) {
+                                          _handleSignIn(
+                                              _cpf, _dataNnascimentoAluno);
+                                        } else {
+                                          setState(() {
+                                            _cpfIsError = true;
+                                            _passwordIsError = true;
+                                          });
+                                        }
+                                      },
+                                    )
                                   : GFLoader(
                                       type: GFLoaderType.square,
                                       loaderColorOne: Color(0xffDE9524),
