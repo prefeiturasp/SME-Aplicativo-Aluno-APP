@@ -1,12 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/controllers/first_access.controller.dart';
+import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class ChangeEmailOrPhone extends StatefulWidget {
   @override
@@ -14,17 +19,87 @@ class ChangeEmailOrPhone extends StatefulWidget {
 }
 
 class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
-  final _formKey = GlobalKey<FormState>();
+  final Storage _storage = Storage();
 
+  final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  bool busy = false;
+  FirstAccessController _firstAccessController;
 
-  String _email;
+  ReactionDisposer disposer;
+
+  bool _busy = false;
+
+  String _email = '';
   bool _emailError = false;
 
-  String _phone;
+  String _phone = '';
   bool _phoneError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstAccessController = FirstAccessController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    disposer =
+        reaction((_) => _firstAccessController.dataEmailOrPhone.ok, (isOk) {
+      if (isOk) {
+        _navigateToListStudents();
+      } else {
+        onError();
+      }
+    });
+  }
+
+  _changeEmail(String newEmail) async {
+    int _id = await _storage.readValueIntStorage("current_user_id");
+    setState(() {
+      _busy = true;
+    });
+    await _firstAccessController.changeEmail(_id, newEmail);
+    setState(() {
+      _busy = false;
+    });
+  }
+
+  _changePhone(String newPhone) async {
+    int _id = await _storage.readValueIntStorage("current_user_id");
+    setState(() {
+      _busy = true;
+    });
+    await _firstAccessController.changePhone(_id, newPhone);
+    setState(() {
+      _busy = false;
+    });
+  }
+
+  onError() {
+    var snackbar = SnackBar(
+        content: _firstAccessController.data != null
+            ? Text(_firstAccessController.data.erros[0])
+            : Text("Erro de serviço"));
+
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  _navigateToListStudents() async {
+    String _cpf = await _storage.readValueStorage("current_cpf");
+    String _token = await _storage.readValueStorage("token");
+    String _password = await _storage.readValueStorage("password");
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ListStudants(
+            cpf: _cpf,
+            token: _token,
+            password: _password,
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +284,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 ),
                               ],
                             ),
-                            !busy
+                            !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
                                     icon: FontAwesomeIcons.chevronRight,
@@ -223,7 +298,11 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                                   _email)) ||
                                           (_email.isEmpty &&
                                               _phone.length == 15)) {
-                                        print("----> DEU CERTO => ");
+                                        if (_phone.isNotEmpty) {
+                                          _changePhone(_phone);
+                                        } else {
+                                          _changeEmail(_email);
+                                        }
                                       } else {
                                         setState(() {
                                           _emailError = true;
