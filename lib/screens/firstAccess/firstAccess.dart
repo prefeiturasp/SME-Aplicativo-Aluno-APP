@@ -1,10 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
-import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -35,6 +38,8 @@ class _FirstAccessState extends State<FirstAccess> {
 
   FirstAccessController _firstAccessController;
 
+  ReactionDisposer disposer;
+
   bool _showPassword = true;
   bool _busy = false;
   bool _passwordIsError = false;
@@ -51,16 +56,10 @@ class _FirstAccessState extends State<FirstAccess> {
     setState(() {
       _busy = true;
     });
-    Data data =
-        await _firstAccessController.changeNewPassword(widget.id, password);
+    await _firstAccessController.changeNewPassword(widget.id, password);
     setState(() {
       _busy = false;
     });
-    if (data.ok) {
-      _navigateToListStudents();
-    } else {
-      onError();
-    }
   }
 
   onError() {
@@ -70,6 +69,19 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
+      if (isOk) {
+        Navigator.of(context).pushReplacement(
+            CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
+      } else {
+        onError();
+      }
+    });
   }
 
   _navigateToListStudents() async {
