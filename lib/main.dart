@@ -9,12 +9,24 @@ import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/global_config.dart';
+import 'package:sentry/sentry.dart';
 
 void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);
 }
 
-void main() {
+void main() async {
+  final SentryClient sentry = new SentryClient(dsn: GlobalConfig.SENTRY_DSN);
+  try {
+    print("DEU CERTO");
+  } catch (error, stackTrace) {
+    print('SENTRY | error --->, $error');
+    print('SENTRY | stackTrace --->, $stackTrace');
+    await sentry.captureException(
+      exception: error,
+      stackTrace: stackTrace,
+    );
+  }
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color(0xffde9524), // status bar color
   ));

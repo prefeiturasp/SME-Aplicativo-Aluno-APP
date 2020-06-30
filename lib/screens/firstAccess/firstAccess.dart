@@ -52,6 +52,24 @@ class _FirstAccessState extends State<FirstAccess> {
     _firstAccessController = FirstAccessController();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
+      if (isOk) {
+        Navigator.of(context).pushReplacement(
+            CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
+      }
+    });
+
+    disposer =
+        reaction((_) => _firstAccessController.data.erros != null, (error) {
+      if (error) {
+        onError();
+      }
+    });
+  }
+
   _registerNewPassword(String password) async {
     setState(() {
       _busy = true;
@@ -69,19 +87,6 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
-      if (isOk) {
-        Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
-      } else {
-        onError();
-      }
-    });
   }
 
   _navigateToListStudents() async {
