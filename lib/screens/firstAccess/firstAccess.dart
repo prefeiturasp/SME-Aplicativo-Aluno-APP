@@ -5,13 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class FirstAccess extends StatefulWidget {
   final int id;
@@ -24,7 +22,6 @@ class FirstAccess extends StatefulWidget {
 }
 
 class _FirstAccessState extends State<FirstAccess> {
-  final Storage _storage = Storage();
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -33,6 +30,7 @@ class _FirstAccessState extends State<FirstAccess> {
   final upperCaseChar = RegExp(r"[^a-z]");
   final lowCaseChar = RegExp(r"[^A-Z]");
   final accents = RegExp(r"[a-zà-ú]");
+  final spaceNull = RegExp(r"[/\s/]");
 
   FirstAccessController _firstAccessController;
 
@@ -146,6 +144,15 @@ class _FirstAccessState extends State<FirstAccess> {
                                     setState(() {
                                       _password = value;
                                     });
+                                  },
+                                  validator: (value) {
+                                    if (value.isNotEmpty) {
+                                      if (spaceNull.hasMatch(value)) {
+                                        return "Senha não pode ter espaço em branco";
+                                      }
+                                    }
+
+                                    return null;
                                   },
                                   decoration: InputDecoration(
                                     labelText: 'Nova senha',
@@ -270,7 +277,8 @@ class _FirstAccessState extends State<FirstAccess> {
                                     iconColor: Color(0xffffd037),
                                     btnColor: Color(0xffd06d12),
                                     desabled: (_password.isNotEmpty &&
-                                            _confirmPassword.isNotEmpty) &&
+                                            _confirmPassword.isNotEmpty &&
+                                            !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
                                     onPress: () {
                                       _registerNewPassword(_password);

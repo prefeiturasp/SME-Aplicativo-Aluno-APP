@@ -136,7 +136,7 @@ class _WrapperState extends State<Wrapper> {
                   )
                 : Login());
       } else {
-        if (_primeiroAcesso) {
+        if (true) {
           return FirstAccess(
             id: _id,
             isPhoneAndEmail: _informarCelularEmail,
