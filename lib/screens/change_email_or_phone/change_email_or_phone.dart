@@ -24,15 +24,15 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  TextEditingController _emailController;
+  TextEditingController _phoneController;
   FirstAccessController _firstAccessController;
 
   ReactionDisposer disposer;
 
   bool _busy = false;
-
   String _email = '';
   bool _emailError = false;
-
   String _phone = '';
   bool _phoneError = false;
 
@@ -40,6 +40,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   void initState() {
     super.initState();
     _firstAccessController = FirstAccessController();
+    loadCurrentUser();
   }
 
   @override
@@ -55,23 +56,18 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     });
   }
 
-  _changeEmail(String newEmail) async {
-    int _id = await _storage.readValueIntStorage("current_user_id");
-    setState(() {
-      _busy = true;
-    });
-    await _firstAccessController.changeEmail(_id, newEmail);
-    setState(() {
-      _busy = false;
-    });
+  loadCurrentUser() async {
+    String email = await _storage.readValueStorage('current_email') ?? "";
+    String celular = await _storage.readValueStorage('current_celular') ?? "";
+    _emailController = TextEditingController(text: email);
+    _phoneController = TextEditingController(text: celular);
   }
 
-  _changePhone(String newPhone) async {
-    int _id = await _storage.readValueIntStorage("current_user_id");
+  fetchChangeEmailOrPhone(String email, String phone) async {
     setState(() {
       _busy = true;
     });
-    await _firstAccessController.changePhone(_id, newPhone);
+    await _firstAccessController.changeEmailAndPhone(email, phone);
     setState(() {
       _busy = false;
     });
@@ -105,6 +101,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -154,6 +151,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
+                                controller: _emailController,
                                 autovalidate:
                                     _phone.isEmpty && _email.isNotEmpty,
                                 style: TextStyle(
@@ -222,6 +220,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
+                                controller: _phoneController,
                                 autovalidate:
                                     _email.isEmpty && _phone.isNotEmpty,
                                 style: TextStyle(
@@ -298,11 +297,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                                   _email)) ||
                                           (_email.isEmpty &&
                                               _phone.length == 15)) {
-                                        if (_phone.isNotEmpty) {
-                                          _changePhone(_phone);
-                                        } else {
-                                          _changeEmail(_email);
-                                        }
+                                        fetchChangeEmailOrPhone(_email, _phone);
                                       } else {
                                         setState(() {
                                           _emailError = true;
