@@ -33,6 +33,7 @@ dependencies:
   string_validator: ^0.1.4
   email_validator: ^1.0.4
   sentry: ">=3.0.0 <4.0.0"
+  mask_text_input_formatter: ^1.0.7
 
 
 dev_dependencies:
