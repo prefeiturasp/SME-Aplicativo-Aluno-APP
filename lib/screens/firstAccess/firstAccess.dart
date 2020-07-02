@@ -27,8 +27,8 @@ class _FirstAccessState extends State<FirstAccess> {
 
   final numeric = RegExp(r"[0-9]");
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-  final upperCaseChar = RegExp(r"[^a-z]");
-  final lowCaseChar = RegExp(r"[^A-Z]");
+  final upperCaseChar = RegExp(r"[A-Z]");
+  final lowCaseChar = RegExp(r"[a-z]");
   final accents = RegExp(r"[a-zà-ú]");
   final spaceNull = RegExp(r"[/\s/]");
 
