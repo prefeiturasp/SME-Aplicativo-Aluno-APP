@@ -9,6 +9,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -85,6 +86,10 @@ class _LoginState extends State<Login> {
                       isPhoneAndEmail: _authenticateController
                           .currentUser.data.informarCelularEmail,
                     )));
+      } else if (_authenticateController
+          .currentUser.data.informarCelularEmail) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ChangeEmailOrPhone()));
       } else {
         Navigator.push(
             context,

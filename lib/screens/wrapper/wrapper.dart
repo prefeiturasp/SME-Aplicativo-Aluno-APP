@@ -7,6 +7,7 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
@@ -28,7 +29,10 @@ class _WrapperState extends State<Wrapper> {
   String _cpf;
   String _token;
   String _password;
+  int _id;
   bool _loading = false;
+  bool _primeiroAcesso = false;
+  bool _informarCelularEmail = false;
 
   @override
   initState() {
@@ -83,12 +87,22 @@ class _WrapperState extends State<Wrapper> {
       String cpf = await storage.readValueStorage('current_cpf');
       String token = await storage.readValueStorage('token');
       String password = await storage.readValueStorage('current_password');
+      int id = await storage.readValueIntStorage('current_user_id');
+      bool primeiroAcesso =
+          await storage.readValueBoolStorage('current_primeiro_acesso');
+      bool informarCelularEmail =
+          await storage.readValueBoolStorage('current_informar_celular_email');
+
       setState(() {
         _cpf = cpf;
         _token = token;
         _password = password;
+        _primeiroAcesso = primeiroAcesso;
+        _informarCelularEmail = informarCelularEmail;
+        _id = id;
       });
     }
+
     setState(() {
       _loading = false;
     });
@@ -122,7 +136,16 @@ class _WrapperState extends State<Wrapper> {
                   )
                 : Login());
       } else {
-        return ListStudants(cpf: _cpf, token: _token, password: _password);
+        if (_primeiroAcesso) {
+          return FirstAccess(
+            id: _id,
+            isPhoneAndEmail: _informarCelularEmail,
+          );
+        } else if (_informarCelularEmail) {
+          return ChangeEmailOrPhone();
+        } else {
+          return ListStudants(cpf: _cpf, token: _token, password: _password);
+        }
       }
     }
   }

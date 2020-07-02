@@ -5,11 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
-import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -87,28 +85,6 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
-  }
-
-  _navigateToListStudents() async {
-    String cpf = await _storage.readValueStorage("current_cpf");
-    String token = await _storage.readValueStorage("token");
-    if (widget.isPhoneAndEmail) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChangeEmailOrPhone(),
-          ));
-    } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ListStudants(
-              cpf: cpf,
-              token: token,
-              password: _password,
-            ),
-          ));
-    }
   }
 
   @override
