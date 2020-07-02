@@ -123,7 +123,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                     Container(
                         margin: EdgeInsets.only(bottom: screenHeight * 3),
                         child: AutoSizeText(
-                          "Falta pouco! Cadastre agora um novo email ou um número de celular para que possamos nos comunicar!",
+                          "Informe um e-mail ou número de celular para ser utilizado para a recuperação da sua senha.",
                           maxFontSize: 18,
                           minFontSize: 16,
                           textAlign: TextAlign.center,
@@ -163,7 +163,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Email',
+                                  labelText: 'E-mail',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -193,23 +193,26 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 color: Color(0xff979797),
                               ),
                             ),
-                            Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(
-                                    top: screenHeight * 3,
-                                    bottom: screenHeight * 3),
-                                child: AutoSizeText(
-                                  "Ou se preferir, insira seu telefone",
-                                  maxFontSize: 18,
-                                  minFontSize: 16,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xff757575),
-                                  ),
-                                )),
+                            // Container(
+                            //     alignment: Alignment.center,
+                            //     margin: EdgeInsets.only(
+                            //         top: screenHeight * 3,
+                            //         bottom: screenHeight * 3),
+                            //     child: AutoSizeText(
+                            //       "Ou se preferir, insira seu telefone",
+                            //       maxFontSize: 18,
+                            //       minFontSize: 16,
+                            //       textAlign: TextAlign.center,
+                            //       style: TextStyle(
+                            //         fontWeight: FontWeight.bold,
+                            //         color: Color(0xff757575),
+                            //       ),
+                            //     )),
                             Container(
                               padding: EdgeInsets.only(left: screenHeight * 2),
+                              margin: EdgeInsets.only(
+                                top: screenHeight * 3,
+                              ),
                               decoration: BoxDecoration(
                                 color: Color(0xfff0f0f0),
                                 border: Border(
@@ -232,7 +235,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Telefone',
+                                  labelText: 'Número de Telefone',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:

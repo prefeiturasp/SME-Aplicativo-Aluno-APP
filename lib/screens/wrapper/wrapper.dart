@@ -102,7 +102,6 @@ class _WrapperState extends State<Wrapper> {
         _id = id;
       });
     }
-
     setState(() {
       _loading = false;
     });
@@ -136,7 +135,7 @@ class _WrapperState extends State<Wrapper> {
                   )
                 : Login());
       } else {
-        if (true) {
+        if (_primeiroAcesso) {
           return FirstAccess(
             id: _id,
             isPhoneAndEmail: _informarCelularEmail,
