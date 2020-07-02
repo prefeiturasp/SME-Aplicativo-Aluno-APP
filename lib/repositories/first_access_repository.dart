@@ -27,6 +27,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
+        storage.insertBool('current_primeiro_acesso', false);
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
@@ -40,43 +41,14 @@ class FirstAccessRepository implements IFirstAccessRepository {
   }
 
   @override
-  Future<Data> changeEmail(int id, String email) async {
-    String token = await storage.readValueStorage("token");
-    int _id = await storage.readValueIntStorage("current_user_id");
-    Map _data = {"id": _id, "email": email, "celular": ""};
-    var body = json.encode(_data);
-    try {
-      final response = await http.post(
-        "${Api.HOST}/Autenticacao/AlterarEmailCelular",
-        headers: {
-          "Authorization": "Bearer $token",
-          "Content-Type": "application/json",
-        },
-        body: body,
-      );
-      if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
-        return data;
-      } else {
-        var decodeError = jsonDecode(response.body);
-        var dataError = Data.fromJson(decodeError);
-        return dataError;
-      }
-    } catch (error, stacktrace) {
-      print("[changeEmail] Erro de requisição " + stacktrace.toString());
-      return null;
-    }
-  }
-
-  @override
-  Future<Data> changePhone(int id, String phone) async {
+  Future<Data> changeEmailAndPhone(String email, String phone) async {
     String token = await storage.readValueStorage("token");
     int _id = await storage.readValueIntStorage("current_user_id");
     Map _data = {
       "id": _id,
-      "email": "",
-      "celular": phone.replaceAll(new RegExp(r'[^\w\s]+'), '')
+      "email": email ?? "",
+      "celular":
+          phone != null ? phone.replaceAll(new RegExp(r'[^\w\s]+'), '') : ""
     };
     var body = json.encode(_data);
     try {
@@ -91,6 +63,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
+
         return data;
       } else {
         var decodeError = jsonDecode(response.body);

@@ -34,15 +34,16 @@ class AuthenticateRepository implements IAuthenticateRepository {
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
-            idDevice,
-            user.data.nome,
-            user.data.cpf,
-            user.data.email ?? "",
-            user.data.token,
-            userPassword,
-            user.data.id,
-            user.data.celular,
-          );
+              idDevice,
+              user.data.nome,
+              user.data.cpf,
+              user.data.email ?? "",
+              user.data.token,
+              userPassword,
+              user.data.id,
+              user.data.celular,
+              user.data.primeiroAcesso,
+              user.data.informarCelularEmail);
         }
         return user;
       } else {
@@ -65,6 +66,8 @@ class AuthenticateRepository implements IAuthenticateRepository {
     String password,
     int userId,
     String celular,
+    bool primeiroAcesso,
+    bool informarCelularEmail,
   ) async {
     storage.insertString('current_name', name);
     storage.insertString('current_cpf', cpf);
@@ -74,5 +77,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
     storage.insertString('dispositivo_id', dispositivoId);
     storage.insertInt('current_user_id', userId);
     storage.insertString('current_celular', celular);
+    storage.insertBool('current_primeiro_acesso', primeiroAcesso);
+    storage.insertBool('current_informar_celular_email', informarCelularEmail);
   }
 }
