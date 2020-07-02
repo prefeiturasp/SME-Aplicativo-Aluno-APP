@@ -31,16 +31,10 @@ abstract class _FirstAccessControllerBase with Store {
   }
 
   @action
-  changeEmail(int id, String email) async {
+  changeEmailAndPhone(String email, String phone) async {
     isLoading = true;
-    dataEmailOrPhone = await _firstAccessRepository.changeEmail(id, email);
-    isLoading = false;
-  }
-
-  @action
-  changePhone(int id, String phone) async {
-    isLoading = true;
-    dataEmailOrPhone = await _firstAccessRepository.changePhone(id, phone);
+    dataEmailOrPhone =
+        await _firstAccessRepository.changeEmailAndPhone(email, phone);
     isLoading = false;
   }
 }

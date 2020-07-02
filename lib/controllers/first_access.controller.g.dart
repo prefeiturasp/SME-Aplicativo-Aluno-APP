@@ -64,20 +64,13 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
         .run(() => super.changeNewPassword(id, password));
   }
 
-  final _$changeEmailAsyncAction =
-      AsyncAction('_FirstAccessControllerBase.changeEmail');
+  final _$changeEmailAndPhoneAsyncAction =
+      AsyncAction('_FirstAccessControllerBase.changeEmailAndPhone');
 
   @override
-  Future changeEmail(int id, String email) {
-    return _$changeEmailAsyncAction.run(() => super.changeEmail(id, email));
-  }
-
-  final _$changePhoneAsyncAction =
-      AsyncAction('_FirstAccessControllerBase.changePhone');
-
-  @override
-  Future changePhone(int id, String phone) {
-    return _$changePhoneAsyncAction.run(() => super.changePhone(id, phone));
+  Future changeEmailAndPhone(String email, String phone) {
+    return _$changeEmailAndPhoneAsyncAction
+        .run(() => super.changeEmailAndPhone(email, phone));
   }
 
   @override

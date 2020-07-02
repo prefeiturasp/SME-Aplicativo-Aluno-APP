@@ -118,6 +118,22 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
     });
   }
 
+  final _$firstAccessAtom =
+      Atom(name: '_AuthenticateControllerBase.firstAccess');
+
+  @override
+  bool get firstAccess {
+    _$firstAccessAtom.reportRead();
+    return super.firstAccess;
+  }
+
+  @override
+  set firstAccess(bool value) {
+    _$firstAccessAtom.reportWrite(value, super.firstAccess, () {
+      super.firstAccess = value;
+    });
+  }
+
   final _$authenticateUserAsyncAction =
       AsyncAction('_AuthenticateControllerBase.authenticateUser');
 
@@ -125,15 +141,6 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
   Future authenticateUser(String cpf, String password, bool onBackgroundFetch) {
     return _$authenticateUserAsyncAction
         .run(() => super.authenticateUser(cpf, password, onBackgroundFetch));
-  }
-
-  final _$fetchFirstAccessAsyncAction =
-      AsyncAction('_AuthenticateControllerBase.fetchFirstAccess');
-
-  @override
-  Future fetchFirstAccess(int id, String password) {
-    return _$fetchFirstAccessAsyncAction
-        .run(() => super.fetchFirstAccess(id, password));
   }
 
   final _$loadCurrentUserAsyncAction =
@@ -167,7 +174,8 @@ currentName: ${currentName},
 currentCPF: ${currentCPF},
 currentEmail: ${currentEmail},
 currentPassword: ${currentPassword},
-token: ${token}
+token: ${token},
+firstAccess: ${firstAccess}
     ''';
   }
 }
