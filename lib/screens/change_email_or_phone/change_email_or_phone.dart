@@ -174,7 +174,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 validator: (value) {
                                   if (_phone.isEmpty &&
                                       !EmailValidator.validate(_email)) {
-                                    return 'Email inválido';
+                                    return 'E-mail inválido';
                                   }
                                   return null;
                                 },
@@ -185,7 +185,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                               height: screenHeight * 1,
                             ),
                             AutoSizeText(
-                              "Digite o email cadastrado no sistema",
+                              "Digite o E-mail cadastrado no sistema",
                               maxFontSize: 14,
                               minFontSize: 12,
                               maxLines: 3,
