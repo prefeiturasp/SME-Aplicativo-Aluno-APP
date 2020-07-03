@@ -75,7 +75,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
 
   onError() {
     var snackbar = SnackBar(
-        content: _firstAccessController.data != null
+        content: _firstAccessController != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));
 

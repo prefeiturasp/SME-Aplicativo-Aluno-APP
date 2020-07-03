@@ -47,8 +47,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
     Map _data = {
       "id": _id,
       "email": email ?? "",
-      "celular":
-          phone != null ? phone.replaceAll(new RegExp(r'[^\w\s]+'), '') : ""
+      "celular": phone != null ? phone : ""
     };
     var body = json.encode(_data);
     try {
