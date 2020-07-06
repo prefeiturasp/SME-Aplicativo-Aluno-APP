@@ -29,7 +29,8 @@ class _FirstAccessState extends State<FirstAccess> {
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
   final upperCaseChar = RegExp(r"[A-Z]");
   final lowCaseChar = RegExp(r"[a-z]");
-  final accents = RegExp(r'[a-zà-ú]');
+  final accentLowcase = RegExp(r'[à-ú]');
+  final accentUppercase = RegExp(r'[À-Ú]');
   final spaceNull = RegExp(r"[/\s/]");
 
   FirstAccessController _firstAccessController;
@@ -260,8 +261,9 @@ class _FirstAccessState extends State<FirstAccess> {
                                   screenHeight: screenHeight,
                                   text:
                                       "Não pode permitir caracteres acentuados",
-                                  checked: _password.length > 0 &&
-                                      !accents.hasMatch(_password),
+                                  checked:
+                                      !accentUppercase.hasMatch(_password) &&
+                                          !accentLowcase.hasMatch(_password),
                                 ),
                                 CheckLine(
                                     screenHeight: screenHeight,
