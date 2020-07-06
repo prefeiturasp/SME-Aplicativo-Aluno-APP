@@ -28,6 +28,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         storage.insertBool('current_primeiro_acesso', false);
+        storage.insertString('password', password);
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
