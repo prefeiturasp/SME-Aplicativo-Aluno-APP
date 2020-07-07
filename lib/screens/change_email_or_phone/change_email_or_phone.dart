@@ -22,7 +22,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   final Storage _storage = Storage();
 
   final _formKey = GlobalKey<FormState>();
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _emailController;
   TextEditingController _phoneController;
@@ -32,15 +32,12 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
 
   bool _busy = false;
   String _email = '';
-  bool _emailError = false;
   String _phone = '';
-  bool _phoneError = false;
 
   @override
   void initState() {
     super.initState();
     _firstAccessController = FirstAccessController();
-    loadCurrentUser();
   }
 
   @override
@@ -75,11 +72,11 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
 
   onError() {
     var snackbar = SnackBar(
-        content: _firstAccessController != null
+        content: _firstAccessController.data != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+    _scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
   _navigateToListStudents() async {
@@ -103,7 +100,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Scaffold(
-      key: scaffoldKey,
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
@@ -145,9 +142,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 color: Color(0xfff0f0f0),
                                 border: Border(
                                     bottom: BorderSide(
-                                        color: _emailError
-                                            ? Colors.red
-                                            : Color(0xffD06D12),
+                                        color: Color(0xffD06D12),
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
@@ -217,9 +212,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 color: Color(0xfff0f0f0),
                                 border: Border(
                                     bottom: BorderSide(
-                                        color: _phoneError
-                                            ? Colors.red
-                                            : Color(0xffD06D12),
+                                        color: Color(0xffD06D12),
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
@@ -295,18 +288,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                     desabled: EmailValidator.validate(_email) ||
                                         _phone.length == 15,
                                     onPress: () {
-                                      if ((_phone.isEmpty &&
-                                              EmailValidator.validate(
-                                                  _email)) ||
-                                          (_email.isEmpty &&
-                                              _phone.length == 15)) {
-                                        fetchChangeEmailOrPhone(_email, _phone);
-                                      } else {
-                                        setState(() {
-                                          _emailError = true;
-                                          _phoneError = true;
-                                        });
-                                      }
+                                      fetchChangeEmailOrPhone(_email, _phone);
                                     },
                                   )
                                 : GFLoader(

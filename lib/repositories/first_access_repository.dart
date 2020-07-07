@@ -7,11 +7,11 @@ import 'package:sme_app_aluno/utils/api.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
-  final Storage storage = Storage();
+  final Storage _storage = Storage();
   @override
   Future<Data> changeNewPassword(int id, String password) async {
-    String token = await storage.readValueStorage("token");
-    int _id = await storage.readValueIntStorage("current_user_id");
+    String token = await _storage.readValueStorage("token");
+    int _id = await _storage.readValueIntStorage("current_user_id");
     Map _data = {"id": _id, "novaSenha": password};
 
     var body = json.encode(_data);
@@ -25,10 +25,11 @@ class FirstAccessRepository implements IFirstAccessRepository {
         body: body,
       );
       if (response.statusCode == 200) {
+        _storage.insertBool('current_primeiro_acesso', false);
+        _storage.removeKey('current_password');
+        _storage.insertString('current_password', password);
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
-        storage.insertBool('current_primeiro_acesso', false);
-        storage.insertString('password', password);
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
@@ -43,13 +44,9 @@ class FirstAccessRepository implements IFirstAccessRepository {
 
   @override
   Future<Data> changeEmailAndPhone(String email, String phone) async {
-    String token = await storage.readValueStorage("token");
-    int _id = await storage.readValueIntStorage("current_user_id");
-    Map _data = {
-      "id": _id,
-      "email": email ?? "",
-      "celular": phone != null ? phone : ""
-    };
+    String token = await _storage.readValueStorage("token");
+    int _id = await _storage.readValueIntStorage("current_user_id");
+    Map _data = {"id": _id, "email": email ?? "", "celular": phone ?? ""};
     var body = json.encode(_data);
     try {
       final response = await http.post(
@@ -63,7 +60,6 @@ class FirstAccessRepository implements IFirstAccessRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
-
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
@@ -71,7 +67,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("[changePhone] Erro de requisição " + stacktrace.toString());
+      print(
+          "[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
       return null;
     }
   }

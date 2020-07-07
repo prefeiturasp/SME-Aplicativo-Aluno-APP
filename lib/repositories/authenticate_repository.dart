@@ -7,14 +7,12 @@ import 'package:sme_app_aluno/utils/api.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
-  final Storage storage = Storage();
+  final Storage _storage = Storage();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
-    String userPassword = await storage.readValueStorage("current_password");
     String idDevice = await _firebaseMessaging.getToken();
-
     print("FIREBASE TOKEN: $idDevice");
 
     if (!onBackgroundFetch) {
@@ -39,7 +37,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
               user.data.cpf,
               user.data.email ?? "",
               user.data.token,
-              userPassword,
+              password,
               user.data.id,
               user.data.celular,
               user.data.primeiroAcesso,
@@ -69,15 +67,15 @@ class AuthenticateRepository implements IAuthenticateRepository {
     bool primeiroAcesso,
     bool informarCelularEmail,
   ) async {
-    storage.insertString('current_name', name);
-    storage.insertString('current_cpf', cpf);
-    storage.insertString('current_email', email);
-    storage.insertString('token', token);
-    storage.insertString('password', password);
-    storage.insertString('dispositivo_id', dispositivoId);
-    storage.insertInt('current_user_id', userId);
-    storage.insertString('current_celular', celular);
-    storage.insertBool('current_primeiro_acesso', primeiroAcesso);
-    storage.insertBool('current_informar_celular_email', informarCelularEmail);
+    _storage.insertString('current_name', name);
+    _storage.insertString('current_cpf', cpf);
+    _storage.insertString('current_email', email);
+    _storage.insertString('token', token);
+    _storage.insertString('current_password', password);
+    _storage.insertString('dispositivo_id', dispositivoId);
+    _storage.insertInt('current_user_id', userId);
+    _storage.insertString('current_celular', celular);
+    _storage.insertBool('current_primeiro_acesso', primeiroAcesso);
+    _storage.insertBool('current_informar_celular_email', informarCelularEmail);
   }
 }

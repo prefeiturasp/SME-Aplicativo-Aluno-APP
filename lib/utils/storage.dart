@@ -1,6 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
+  Future removeKey(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
+
   Future<bool> containsKey(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isKey = prefs.containsKey(key);

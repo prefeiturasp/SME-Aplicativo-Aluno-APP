@@ -141,7 +141,7 @@ class _ListStudantsState extends State<ListStudants> {
                   prefs.remove('current_cpf');
                   prefs.remove('current_email');
                   prefs.remove('token');
-                  prefs.remove('password');
+                  prefs.remove('current_password');
                   prefs.remove('dispositivo_id');
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Login()));
