@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
@@ -28,6 +29,8 @@ class AuthenticateRepository implements IAuthenticateRepository {
           "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
 
       if (response.statusCode == 200) {
+        Auth.removeCurrentUser();
+
         var decodeJson = jsonDecode(response.body);
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
@@ -37,9 +40,9 @@ class AuthenticateRepository implements IAuthenticateRepository {
               user.data.cpf,
               user.data.email ?? "",
               user.data.token,
-              password,
+              user.data.primeiroAcesso ? "" : password,
               user.data.id,
-              user.data.celular,
+              user.data.celular ?? "",
               user.data.primeiroAcesso,
               user.data.informarCelularEmail);
         }

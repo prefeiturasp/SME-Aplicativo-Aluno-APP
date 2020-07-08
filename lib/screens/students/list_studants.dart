@@ -132,17 +132,10 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
                   BackgroundFetch.stop().then((int status) {
                     print('[BackgroundFetch] stop success: $status');
                   });
-                  prefs.remove('current_name');
-                  prefs.remove('current_cpf');
-                  prefs.remove('current_email');
-                  prefs.remove('token');
-                  prefs.remove('current_password');
-                  prefs.remove('dispositivo_id');
+                  Auth.removeCurrentUser();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 },

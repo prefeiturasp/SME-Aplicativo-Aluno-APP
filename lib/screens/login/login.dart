@@ -49,13 +49,7 @@ class _LoginState extends State<Login> {
     String cpf,
     String password,
   ) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('current_name');
-    prefs.remove('current_cpf');
-    prefs.remove('current_email');
-    prefs.remove('token');
-    prefs.remove('current_password');
-    prefs.remove('dispositivo_id');
+    _storage.removeAllValues();
     _authenticateController.clearCurrentUser();
     setState(() {
       busy = true;
