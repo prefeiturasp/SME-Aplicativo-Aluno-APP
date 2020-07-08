@@ -139,9 +139,13 @@ class _WrapperState extends State<Wrapper> {
           return FirstAccess(
             id: _id,
             isPhoneAndEmail: _informarCelularEmail,
+            cpf: _cpf,
           );
         } else if (_informarCelularEmail) {
-          return ChangeEmailOrPhone();
+          return ChangeEmailOrPhone(
+            cpf: _cpf,
+            password: _password,
+          );
         } else {
           return ListStudants(cpf: _cpf, token: _token, password: _password);
         }

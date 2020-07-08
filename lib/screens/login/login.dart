@@ -78,11 +78,17 @@ class _LoginState extends State<Login> {
                       id: _authenticateController.currentUser.data.id,
                       isPhoneAndEmail: _authenticateController
                           .currentUser.data.informarCelularEmail,
+                      cpf: _authenticateController.currentUser.data.cpf,
                     )));
       } else if (_authenticateController
           .currentUser.data.informarCelularEmail) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ChangeEmailOrPhone()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChangeEmailOrPhone(
+                      cpf: _authenticateController.currentUser.data.cpf,
+                      password: password,
+                    )));
       } else {
         Navigator.push(
             context,

@@ -14,8 +14,10 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 class FirstAccess extends StatefulWidget {
   final int id;
   final bool isPhoneAndEmail;
+  final String cpf;
 
-  FirstAccess({@required this.id, @required this.isPhoneAndEmail});
+  FirstAccess(
+      {@required this.id, @required this.isPhoneAndEmail, @required this.cpf});
 
   @override
   _FirstAccessState createState() => _FirstAccessState();
@@ -49,31 +51,13 @@ class _FirstAccessState extends State<FirstAccess> {
     _firstAccessController = FirstAccessController();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   print("Passou aqui");
-  //   _disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
-  //     if (isOk) {
-  //       Navigator.of(context).pushReplacement(
-  //           CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
-  //     } else {
-  //       onError();
-  //     }
-  //   });
-
-  //   disposer =
-  //       reaction((_) => _firstAccessController.data.erros != null, (error) {
-  //     if (error) {
-  //       onError();
-  //     }
-  //   });
-  // }
-
   _navigateToScreen() {
     if (_firstAccessController.data.ok) {
-      Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
+      Navigator.of(context).pushReplacement(CupertinoPageRoute(
+          builder: (_) => ChangeEmailOrPhone(
+                cpf: widget.cpf,
+                password: _password,
+              )));
     } else {
       onError();
     }

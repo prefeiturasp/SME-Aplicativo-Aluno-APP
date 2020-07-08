@@ -14,6 +14,11 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class ChangeEmailOrPhone extends StatefulWidget {
+  final String cpf;
+  final String password;
+
+  ChangeEmailOrPhone({@required this.cpf, @required this.password});
+
   @override
   _ChangeEmailOrPhoneState createState() => _ChangeEmailOrPhoneState();
 }
@@ -53,12 +58,12 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     });
   }
 
-  loadCurrentUser() async {
-    String email = await _storage.readValueStorage('current_email') ?? "";
-    String celular = await _storage.readValueStorage('current_celular') ?? "";
-    _emailController = TextEditingController(text: email);
-    _phoneController = TextEditingController(text: celular);
-  }
+  // _loadEmailAndCelular() async {
+  //   String email = await _storage.readValueStorage('current_email') ?? "";
+  //   String celular = await _storage.readValueStorage('current_celular') ?? "";
+  //   _emailController = TextEditingController(text: email);
+  //   _phoneController = TextEditingController(text: celular);
+  // }
 
   fetchChangeEmailOrPhone(String email, String phone) async {
     setState(() {
@@ -80,16 +85,14 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   }
 
   _navigateToListStudents() async {
-    String _cpf = await _storage.readValueStorage("current_cpf");
     String _token = await _storage.readValueStorage("token");
-    String _password = await _storage.readValueStorage("password");
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ListStudants(
-            cpf: _cpf,
+            cpf: widget.cpf,
             token: _token,
-            password: _password,
+            password: widget.password,
           ),
         ));
   }
@@ -98,7 +101,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
+    // _loadEmailAndCelular();
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -156,6 +159,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                   setState(() {
                                     _email = value;
                                   });
+                                  _emailController.text = value;
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'E-mail',
