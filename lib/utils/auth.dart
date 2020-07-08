@@ -6,7 +6,6 @@ import 'package:sme_app_aluno/utils/storage.dart';
 class Auth {
   static logout(BuildContext context) async {
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-    final Storage _storage = Storage();
 
     var ids = new List<int>.generate(20, (i) => i + 1);
     ids.forEach((element) {

@@ -35,7 +35,7 @@ class _FirstAccessState extends State<FirstAccess> {
 
   FirstAccessController _firstAccessController;
 
-  ReactionDisposer disposer;
+  ReactionDisposer _disposer;
 
   bool _showPassword = true;
   bool _busy = false;
@@ -49,29 +49,47 @@ class _FirstAccessState extends State<FirstAccess> {
     _firstAccessController = FirstAccessController();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
-      if (isOk) {
-        Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
-      }
-    });
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   print("Passou aqui");
+  //   _disposer = reaction((_) => _firstAccessController.data.ok, (isOk) {
+  //     if (isOk) {
+  //       Navigator.of(context).pushReplacement(
+  //           CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
+  //     } else {
+  //       onError();
+  //     }
+  //   });
 
-    disposer =
-        reaction((_) => _firstAccessController.data.erros != null, (error) {
-      if (error) {
-        onError();
-      }
-    });
+  //   disposer =
+  //       reaction((_) => _firstAccessController.data.erros != null, (error) {
+  //     if (error) {
+  //       onError();
+  //     }
+  //   });
+  // }
+
+  _navigateToScreen() {
+    if (_firstAccessController.data.ok) {
+      Navigator.of(context).pushReplacement(
+          CupertinoPageRoute(builder: (_) => ChangeEmailOrPhone()));
+    } else {
+      onError();
+    }
   }
 
   _registerNewPassword(String password) async {
     setState(() {
       _busy = true;
     });
-    await _firstAccessController.changeNewPassword(widget.id, password);
+    await _firstAccessController
+        .changeNewPassword(widget.id, password)
+        .then((data) {
+      _navigateToScreen();
+    }).catchError((err) {
+      onError();
+    });
     setState(() {
       _busy = false;
     });
@@ -310,5 +328,11 @@ class _FirstAccessState extends State<FirstAccess> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _disposer();
+    super.dispose();
   }
 }
