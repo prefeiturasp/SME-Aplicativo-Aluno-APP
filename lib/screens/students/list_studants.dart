@@ -14,6 +14,7 @@ import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class ListStudants extends StatefulWidget {
   final String cpf;
@@ -30,6 +31,7 @@ class ListStudants extends StatefulWidget {
 class _ListStudantsState extends State<ListStudants> {
   AuthenticateController _authenticateController;
   StudentsController _studentsController;
+  final Storage _storage = Storage();
 
   @override
   void initState() {
@@ -71,8 +73,8 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    await _authenticateController.authenticateUser(
-        widget.cpf, widget.password, true);
+    String password = await _storage.readValueStorage("current_password");
+    await _authenticateController.authenticateUser(widget.cpf, password, true);
 
     print(
         "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
