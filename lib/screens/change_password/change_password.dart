@@ -67,13 +67,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         desc: 'Dados alterados com sucesso!',
         btnOkText: "CONTINUAR",
         btnOkOnPress: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Settings(
-                      email: email,
-                      currentCPF: widget.cpf,
-                      passwrdSUccess: true)));
+          Navigator.of(context).pop(true);
         },
       )..show();
     } else {
