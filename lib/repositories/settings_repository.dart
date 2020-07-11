@@ -17,7 +17,7 @@ class SettingsRepository implements ISettingsRepository {
 
     try {
       final response = await http.put(
-        "${Api.HOST}/Autenticacao/PrimeiroAcesso",
+        "${Api.HOST}/Autenticacao/Senha/Alterar",
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,11 +58,24 @@ class _ChangePasswordState extends State<ChangePassword> {
   _navigateToScreen() async {
     String email = await _storage.readValueStorage("current_email");
     if (_settingsController.data.ok) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Settings(
-                  email: email, currentCPF: widget.cpf, passwrdSUccess: true)));
+      AwesomeDialog(
+        context: context,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'PARABÉNS',
+        desc: 'Dados alterados com sucesso!',
+        btnOkText: "CONTINUAR",
+        btnOkOnPress: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Settings(
+                      email: email,
+                      currentCPF: widget.cpf,
+                      passwrdSUccess: true)));
+        },
+      )..show();
     } else {
       onError();
     }

@@ -53,13 +53,12 @@ class _LoginState extends State<Login> {
     setState(() {
       busy = true;
     });
-    _storage.insertString("current_password", password);
     _authenticateController.authenticateUser(cpf, password, false).then((data) {
+      _storage.insertString("current_password", password);
       onSuccess();
-    }).catchError((err) {
-      onError();
-    }).whenComplete(() {
-      onComplete();
+    });
+    setState(() {
+      busy = false;
     });
   }
 
@@ -116,12 +115,6 @@ class _LoginState extends State<Login> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
-  }
-
-  onComplete() {
-    setState(() {
-      busy = false;
-    });
   }
 
   @override

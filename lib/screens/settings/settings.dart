@@ -23,24 +23,6 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    onSuccess();
-  }
-
-  onSuccess() {
-    if (widget.passwrdSUccess) {
-      AwesomeDialog(
-        context: context,
-        headerAnimationLoop: false,
-        dialogType: DialogType.SUCCES,
-        animType: AnimType.BOTTOMSLIDE,
-        title: 'PARABÉNS',
-        desc: 'Dados alterados com sucesso!',
-        btnCancelOnPress: () {},
-        btnOkOnPress: () {},
-      )..show();
-    }
-
-    return null;
   }
 
   @override
