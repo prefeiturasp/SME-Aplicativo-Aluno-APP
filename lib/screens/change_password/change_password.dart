@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:sme_app_aluno/controllers/settings/settings.controller.dart';
-import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -56,7 +55,6 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   _navigateToScreen() async {
-    String email = await _storage.readValueStorage("current_email");
     if (_settingsController.data.ok) {
       AwesomeDialog(
         context: context,
@@ -64,7 +62,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         dialogType: DialogType.SUCCES,
         animType: AnimType.BOTTOMSLIDE,
         title: 'PARABÉNS',
-        desc: 'Dados alterados com sucesso!',
+        desc: 'Senha alterada com sucesso!',
         btnOkText: "CONTINUAR",
         btnOkOnPress: () {
           Navigator.of(context).pop(true);

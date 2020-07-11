@@ -12,7 +12,10 @@ class FirstAccessRepository implements IFirstAccessRepository {
   Future<Data> changeNewPassword(int id, String password) async {
     String token = await _storage.readValueStorage("token");
     int _id = await _storage.readValueIntStorage("current_user_id");
-    Map _data = {"id": _id, "novaSenha": password};
+    Map _data = {
+      "id": _id,
+      "novaSenha": password,
+    };
 
     var body = json.encode(_data);
     try {
@@ -44,10 +47,16 @@ class FirstAccessRepository implements IFirstAccessRepository {
   }
 
   @override
-  Future<Data> changeEmailAndPhone(String email, String phone) async {
+  Future<Data> changeEmailAndPhone(
+      String email, String phone, bool changePassword) async {
     String token = await _storage.readValueStorage("token");
     int _id = await _storage.readValueIntStorage("current_user_id");
-    Map _data = {"id": _id, "email": email ?? "", "celular": phone ?? ""};
+    Map _data = {
+      "id": _id,
+      "email": email ?? "",
+      "celular": phone ?? "",
+      "alterarSenha": changePassword
+    };
     var body = json.encode(_data);
     try {
       final response = await http.post(

@@ -31,10 +31,10 @@ abstract class _FirstAccessControllerBase with Store {
   }
 
   @action
-  changeEmailAndPhone(String email, String phone) async {
+  changeEmailAndPhone(String email, String phone, bool changePassword) async {
     isLoading = true;
-    dataEmailOrPhone =
-        await _firstAccessRepository.changeEmailAndPhone(email, phone);
+    dataEmailOrPhone = await _firstAccessRepository.changeEmailAndPhone(
+        email, phone, changePassword);
     isLoading = false;
   }
 }

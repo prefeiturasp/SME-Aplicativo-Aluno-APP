@@ -73,12 +73,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
   _navigateToSettings(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
     var _email = await storage.readValueStorage("current_email") ?? "";
+    var _phone = await storage.readValueStorage("current_celular") ?? "";
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => Settings(
                   currentCPF: _cpf,
                   email: _email,
+                  phone: _phone,
                 )));
   }
 

@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
+import 'package:sme_app_aluno/screens/change_email_or_phone/internal_change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/view_data/view.data.dart';
@@ -8,11 +10,13 @@ import 'package:sme_app_aluno/screens/widgets/view_data/view.data.dart';
 class Settings extends StatefulWidget {
   final String currentCPF;
   final String email;
-  final bool passwrdSUccess;
-  Settings(
-      {@required this.currentCPF,
-      @required this.email,
-      this.passwrdSUccess = false});
+  final String phone;
+
+  Settings({
+    @required this.currentCPF,
+    @required this.email,
+    @required this.phone,
+  });
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -62,6 +66,10 @@ class _SettingsState extends State<Settings> {
                     label: "Email",
                     text: widget.email ?? "",
                   ),
+                  ViewData(
+                    label: "Telefone",
+                    text: widget.phone ?? "",
+                  ),
                   SizedBox(
                     height: screenHeight * 3,
                   ),
@@ -69,9 +77,15 @@ class _SettingsState extends State<Settings> {
                     text: "ALTERAR DADOS",
                     icon: FontAwesomeIcons.chevronRight,
                     iconColor: Color(0xffffd037),
-                    btnColor: Color(0xffB53B0F),
+                    btnColor: Color(0xffd06d12),
                     desabled: true,
-                    onPress: () {},
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  InternalChangeEmailOrPhone()));
+                    },
                   )
                 ],
               )),
@@ -99,7 +113,7 @@ class _SettingsState extends State<Settings> {
                       text: "ALTERAR SENHA",
                       icon: FontAwesomeIcons.chevronRight,
                       iconColor: Color(0xffffd037),
-                      btnColor: Color(0xffB53B0F),
+                      btnColor: Color(0xffd06d12),
                       desabled: true,
                       onPress: () {
                         Navigator.push(

@@ -68,9 +68,9 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
       AsyncAction('_FirstAccessControllerBase.changeEmailAndPhone');
 
   @override
-  Future changeEmailAndPhone(String email, String phone) {
+  Future changeEmailAndPhone(String email, String phone, bool changePassword) {
     return _$changeEmailAndPhoneAsyncAction
-        .run(() => super.changeEmailAndPhone(email, phone));
+        .run(() => super.changeEmailAndPhone(email, phone, changePassword));
   }
 
   @override

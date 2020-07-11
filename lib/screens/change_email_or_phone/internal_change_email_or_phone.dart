@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,22 +9,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
-import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
-class ChangeEmailOrPhone extends StatefulWidget {
-  final String cpf;
-  final String password;
-
-  ChangeEmailOrPhone({@required this.cpf, @required this.password});
-
+class InternalChangeEmailOrPhone extends StatefulWidget {
   @override
-  _ChangeEmailOrPhoneState createState() => _ChangeEmailOrPhoneState();
+  _InternalChangeEmailOrPhoneState createState() =>
+      _InternalChangeEmailOrPhoneState();
 }
 
-class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
+class _InternalChangeEmailOrPhoneState
+    extends State<InternalChangeEmailOrPhone> {
   final Storage _storage = Storage();
 
   final _formKey = GlobalKey<FormState>();
@@ -51,27 +47,22 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     disposer =
         reaction((_) => _firstAccessController.dataEmailOrPhone.ok, (isOk) {
       if (isOk) {
-        _navigateToListStudents();
+        _navigateToScreen();
       } else {
         onError();
       }
     });
   }
 
-  // _loadEmailAndCelular() async {
-  //   String email = await _storage.readValueStorage('current_email') ?? "";
-  //   String celular = await _storage.readValueStorage('current_celular') ?? "";
-  //   _emailController = TextEditingController(text: email);
-  //   _phoneController = TextEditingController(text: celular);
-  // }
-
-  fetchChangeEmailOrPhone(
-      String email, String phone, bool changePassword) async {
+  fetchChangeEmailOrPhone(String email, String phone) async {
     setState(() {
       _busy = true;
     });
-    await _firstAccessController.changeEmailAndPhone(
-        email, phone, changePassword);
+    await _firstAccessController
+        .changeEmailAndPhone(email, phone, true)
+        .then((data) {
+      _navigateToScreen();
+    });
     setState(() {
       _busy = false;
     });
@@ -86,17 +77,23 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     _scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
-  _navigateToListStudents() async {
-    String _token = await _storage.readValueStorage("token");
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ListStudants(
-            cpf: widget.cpf,
-            token: _token,
-            password: widget.password,
-          ),
-        ));
+  _navigateToScreen() async {
+    if (_firstAccessController.data.ok) {
+      AwesomeDialog(
+        context: context,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'PARABÉNS',
+        desc: 'Dados alterados com sucesso!',
+        btnOkText: "CONTINUAR",
+        btnOkOnPress: () {
+          Navigator.of(context).pop(true);
+        },
+      )..show();
+    } else {
+      onError();
+    }
   }
 
   @override
@@ -107,6 +104,10 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Alterar Dados"),
+        backgroundColor: Color(0xffEEC25E),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(screenHeight * 2.5),
@@ -114,21 +115,15 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
             children: <Widget>[
               Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: screenHeight * 36,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(
-                          top: screenHeight * 8, bottom: screenHeight * 2),
-                      child: Image.asset("assets/images/Logo_escola_aqui.png"),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(bottom: screenHeight * 3),
+                        margin: EdgeInsets.only(
+                            bottom: screenHeight * 4, top: screenHeight * 3),
                         child: AutoSizeText(
-                          "Informe um e-mail ou número de celular para ser utilizado para a recuperação da sua senha.",
+                          "Alterar e-mail ou senha",
                           maxFontSize: 18,
                           minFontSize: 16,
-                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color(0xff757575),
@@ -194,21 +189,6 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 color: Color(0xff979797),
                               ),
                             ),
-                            // Container(
-                            //     alignment: Alignment.center,
-                            //     margin: EdgeInsets.only(
-                            //         top: screenHeight * 3,
-                            //         bottom: screenHeight * 3),
-                            //     child: AutoSizeText(
-                            //       "Ou se preferir, insira seu telefone",
-                            //       maxFontSize: 18,
-                            //       minFontSize: 16,
-                            //       textAlign: TextAlign.center,
-                            //       style: TextStyle(
-                            //         fontWeight: FontWeight.bold,
-                            //         color: Color(0xff757575),
-                            //       ),
-                            //     )),
                             Container(
                               padding: EdgeInsets.only(left: screenHeight * 2),
                               margin: EdgeInsets.only(
@@ -270,32 +250,18 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                               ),
                             ),
                             SizedBox(
-                              height: screenHeight * 1,
-                            ),
-                            InfoBox(
-                              icon: FontAwesomeIcons.exclamationTriangle,
-                              content: <Widget>[
-                                AutoSizeText(
-                                  "O fornecimento de um dos campos é obrigatório. Estes contatos serão usados para a recuperação da sua senha",
-                                  maxFontSize: 18,
-                                  minFontSize: 16,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xffff0000)),
-                                ),
-                              ],
+                              height: screenHeight * 4,
                             ),
                             !_busy
                                 ? EAButton(
-                                    text: "CADASTRAR",
+                                    text: "ATUALIZAR",
                                     icon: FontAwesomeIcons.chevronRight,
                                     iconColor: Color(0xffffd037),
                                     btnColor: Color(0xffd06d12),
                                     desabled: EmailValidator.validate(_email) ||
                                         _phone.length == 15,
                                     onPress: () {
-                                      fetchChangeEmailOrPhone(
-                                          _email, _phone, false);
+                                      fetchChangeEmailOrPhone(_email, _phone);
                                     },
                                   )
                                 : GFLoader(
@@ -309,12 +275,6 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                     ),
                   ],
                 ),
-              ),
-              Container(
-                height: screenHeight * 6,
-                margin: EdgeInsets.only(top: 70),
-                child: Image.asset("assets/images/logo_sme.png",
-                    fit: BoxFit.cover),
               ),
             ],
           ),
