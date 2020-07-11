@@ -8,6 +8,7 @@ import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
+import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
@@ -50,15 +51,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 ))).whenComplete(() => _loadingBackRecentMessage(_token));
   }
 
-  // Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => ViewMessage(
-  //             message: _messagesController
-  //                 .messagesNotDeleted.first,
-  //             token: widget.token)))
-  // .whenComplete(() => _loadingBackRecentMessage());
-
   navigateToListStudents(BuildContext context, Storage storage) async {
     var _cpf = await storage.readValueStorage("current_cpf") ?? "";
     var _token = await storage.readValueStorage("token") ?? "";
@@ -76,6 +68,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
+  }
+
+  _navigateToSettings(BuildContext context, Storage storage) async {
+    var _cpf = await storage.readValueStorage("current_cpf") ?? "";
+    var _email = await storage.readValueStorage("current_email") ?? "";
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Settings(
+                  currentCPF: _cpf,
+                  email: _email,
+                )));
   }
 
   @override
@@ -140,42 +144,42 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ListTile(
             title: Text('Estudantes'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
+              // radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.userAlt,
+                FontAwesomeIcons.user,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
               navigateToListStudents(context, _storage);
             },
           ),
+          Divider(),
           ListTile(
             title: Text('Mensagens'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.envelopeOpen,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
               navigateToListMessages(context, _storage);
             },
           ),
+          Divider(),
           ListTile(
             title: Text('Frequência / Boletim'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.copy,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
@@ -187,15 +191,30 @@ class _DrawerMenuState extends State<DrawerMenu> {
                           )));
             },
           ),
+          Divider(),
+          ListTile(
+            title: Text('Meus Dados'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.slidersH,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              _navigateToSettings(context, _storage);
+            },
+          ),
+          Divider(),
           ListTile(
             title: Text('Sair'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.signOutAlt,
                 color: Colors.white,
-                size: screenHeight * 2.5,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
