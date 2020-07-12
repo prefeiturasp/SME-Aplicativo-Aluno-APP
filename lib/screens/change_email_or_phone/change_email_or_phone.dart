@@ -36,13 +36,14 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   ReactionDisposer disposer;
 
   bool _busy = false;
-  String _email = '';
-  String _phone = '';
+  String _email;
+  String _phone;
 
   @override
   void initState() {
     super.initState();
     _firstAccessController = FirstAccessController();
+    loadInputs();
   }
 
   @override
@@ -58,12 +59,21 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     });
   }
 
-  // _loadEmailAndCelular() async {
-  //   String email = await _storage.readValueStorage('current_email') ?? "";
-  //   String celular = await _storage.readValueStorage('current_celular') ?? "";
-  //   _emailController = TextEditingController(text: email);
-  //   _phoneController = TextEditingController(text: celular);
-  // }
+  loadInputs() async {
+    String email = await _storage.readValueStorage('current_email') ?? "";
+    String phone = await _storage.readValueStorage('current_celular') ?? "";
+    var maskedPhone = phone.isNotEmpty
+        ? phone.replaceAllMapped(RegExp(r'(\d{2})(\d{5})(\d+)'),
+            (Match m) => "(${m[1]}) ${m[2]}-${m[3]}")
+        : phone;
+
+    setState(() {
+      _email = email;
+    });
+    setState(() {
+      _phone = maskedPhone;
+    });
+  }
 
   fetchChangeEmailOrPhone(
       String email, String phone, bool changePassword) async {
@@ -151,6 +161,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
+                                initialValue: _email,
                                 controller: _emailController,
                                 autovalidate:
                                     _phone.isEmpty && _email.isNotEmpty,
@@ -161,7 +172,6 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                   setState(() {
                                     _email = value;
                                   });
-                                  _emailController.text = value;
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'E-mail',
@@ -194,21 +204,6 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 color: Color(0xff979797),
                               ),
                             ),
-                            // Container(
-                            //     alignment: Alignment.center,
-                            //     margin: EdgeInsets.only(
-                            //         top: screenHeight * 3,
-                            //         bottom: screenHeight * 3),
-                            //     child: AutoSizeText(
-                            //       "Ou se preferir, insira seu telefone",
-                            //       maxFontSize: 18,
-                            //       minFontSize: 16,
-                            //       textAlign: TextAlign.center,
-                            //       style: TextStyle(
-                            //         fontWeight: FontWeight.bold,
-                            //         color: Color(0xff757575),
-                            //       ),
-                            //     )),
                             Container(
                               padding: EdgeInsets.only(left: screenHeight * 2),
                               margin: EdgeInsets.only(
@@ -222,6 +217,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                         width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
+                                initialValue: _phone,
                                 controller: _phoneController,
                                 autovalidate:
                                     _email.isEmpty && _phone.isNotEmpty,
@@ -243,8 +239,10 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  if (_email.isEmpty && value.length != 15) {
-                                    return 'Telefone inválido';
+                                  if (_email != null) {
+                                    if (_email.isEmpty && value.length != 15) {
+                                      return 'Telefone inválido';
+                                    }
                                   }
 
                                   return null;

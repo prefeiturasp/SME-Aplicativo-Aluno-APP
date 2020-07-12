@@ -9,7 +9,6 @@ import 'package:sme_app_aluno/controllers/settings/settings.controller.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class ChangePassword extends StatefulWidget {
   final String cpf;
@@ -21,8 +20,6 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final Storage _storage = Storage();
-
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -63,7 +60,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         animType: AnimType.BOTTOMSLIDE,
         title: 'PARABÉNS',
         desc: 'Senha alterada com sucesso!',
-        btnOkText: "CONTINUAR",
+        btnOkText: "OK",
         btnOkOnPress: () {
           Navigator.of(context).pop(true);
         },

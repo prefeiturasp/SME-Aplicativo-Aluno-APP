@@ -68,6 +68,16 @@ class FirstAccessRepository implements IFirstAccessRepository {
         body: body,
       );
       if (response.statusCode == 200) {
+        if (email.isNotEmpty) {
+          _storage.removeKey('current_email');
+          _storage.insertString('current_email', email);
+        }
+
+        if (phone.isNotEmpty) {
+          _storage.removeKey('current_telefone');
+          _storage.insertString('current_telefone', phone);
+        }
+
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;
