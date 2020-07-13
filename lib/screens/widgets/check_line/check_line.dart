@@ -14,11 +14,17 @@ class CheckLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Icon(
-          FontAwesomeIcons.check,
-          color: checked ? Color(0xff00AE6E) : Color(0xff757575),
-          size: screenHeight * 2,
-        ),
+        checked
+            ? Icon(
+                FontAwesomeIcons.check,
+                color: checked ? Color(0xff00AE6E) : Color(0xff757575),
+                size: screenHeight * 2,
+              )
+            : Icon(
+                FontAwesomeIcons.times,
+                color: Color(0xff757575),
+                size: screenHeight * 2,
+              ),
         SizedBox(
           width: screenHeight * 1,
         ),
