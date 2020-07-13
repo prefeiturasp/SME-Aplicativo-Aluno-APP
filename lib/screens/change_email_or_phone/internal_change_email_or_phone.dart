@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -182,6 +183,7 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                                 child: TextFormField(
                                   initialValue: _email,
+                                  autovalidate: _email.isNotEmpty,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -194,6 +196,15 @@ class _InternalChangeEmailOrPhoneState
                                     border: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.emailAddress,
+                                  validator: (value) {
+                                    if (value != null) {
+                                      if (!EmailValidator.validate(_email)) {
+                                        return 'E-mail inválido';
+                                      }
+                                    }
+
+                                    return null;
+                                  },
                                   onChanged: (value) {
                                     setState(() {
                                       _email = value;
@@ -228,6 +239,7 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                                 child: TextFormField(
                                   initialValue: _phone,
+                                  autovalidate: _phone.isNotEmpty,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -239,6 +251,15 @@ class _InternalChangeEmailOrPhoneState
                                         TextStyle(fontWeight: FontWeight.w700),
                                     border: InputBorder.none,
                                   ),
+                                  validator: (value) {
+                                    if (value != null) {
+                                      if (value.length != 15) {
+                                        return 'Telefone inválido';
+                                      }
+                                    }
+
+                                    return null;
+                                  },
                                   inputFormatters: [
                                     WhitelistingTextInputFormatter.digitsOnly,
                                     TelefoneInputFormatter(),
