@@ -70,7 +70,7 @@ class _SettingsState extends State<Settings> {
                     text: widget.phone ?? "",
                   ),
                   SizedBox(
-                    height: screenHeight * 3,
+                    height: screenHeight * 2.5,
                   ),
                   EAButton(
                     text: "ALTERAR DADOS",
@@ -89,7 +89,7 @@ class _SettingsState extends State<Settings> {
                 ],
               )),
           SizedBox(
-            height: screenHeight * 4,
+            height: screenHeight * 2.5,
           ),
           Divider(
             height: 0.5,

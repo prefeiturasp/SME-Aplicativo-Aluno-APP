@@ -239,7 +239,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                   minFontSize: 16,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xffff0000)),
+                                      color: Color(0xff717171)),
                                 ),
                                 SizedBox(
                                   height: screenHeight * 2,
