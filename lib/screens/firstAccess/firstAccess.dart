@@ -263,9 +263,9 @@ class _FirstAccessState extends State<FirstAccess> {
                                   screenHeight: screenHeight,
                                   text:
                                       "Não pode permitir caracteres acentuados",
-                                  checked:
+                                  checked: _password.length > 0 &&
                                       !accentUppercase.hasMatch(_password) &&
-                                          !accentLowcase.hasMatch(_password),
+                                      !accentLowcase.hasMatch(_password),
                                 ),
                                 CheckLine(
                                     screenHeight: screenHeight,
