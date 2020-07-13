@@ -9,9 +9,12 @@ import 'package:sme_app_aluno/utils/storage.dart';
 class SettingsRepository implements ISettingsRepository {
   final Storage _storage = Storage();
   @override
-  Future<Data> changePassword(String password) async {
+  Future<Data> changePassword(String password, String oldPassword) async {
     String token = await _storage.readValueStorage("token");
-    Map _data = {"senha": password};
+    Map _data = {
+      "novaSenha": password,
+      "senhaAntiga": oldPassword,
+    };
 
     var body = json.encode(_data);
 

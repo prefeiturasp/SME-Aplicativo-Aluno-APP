@@ -70,11 +70,13 @@ class _ChangePasswordState extends State<ChangePassword> {
     }
   }
 
-  _changePassword(String password) async {
+  _changePassword(String password, String oldPassword) async {
     setState(() {
       _busy = true;
     });
-    await _settingsController.changePassword(password).then((data) {
+    await _settingsController
+        .changePassword(password, oldPassword)
+        .then((data) {
       _navigateToScreen();
     });
     setState(() {
@@ -391,7 +393,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                                               !spaceNull.hasMatch(_password)) &&
                                           (_confirmPassword == _password),
                                       onPress: () {
-                                        _changePassword(_password);
+                                        _changePassword(
+                                            _password, _oldPassword);
                                       },
                                     )
                                   : GFLoader(

@@ -43,9 +43,9 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
       AsyncAction('_SettingsControllerBase.changePassword');
 
   @override
-  Future changePassword(String password) {
+  Future changePassword(String password, String oldPassword) {
     return _$changePasswordAsyncAction
-        .run(() => super.changePassword(password));
+        .run(() => super.changePassword(password, oldPassword));
   }
 
   @override
