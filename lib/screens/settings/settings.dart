@@ -5,6 +5,7 @@ import 'package:sme_app_aluno/screens/change_email_or_phone/internal_change_emai
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/view_data/view.data.dart';
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class Settings extends StatefulWidget {
   final String currentCPF;
@@ -67,7 +68,8 @@ class _SettingsState extends State<Settings> {
                   ),
                   ViewData(
                     label: "Telefone",
-                    text: widget.phone ?? "",
+                    text: StringSupport.formatStringPhoneNumber(widget.phone) ??
+                        "--",
                   ),
                   SizedBox(
                     height: screenHeight * 2.5,
