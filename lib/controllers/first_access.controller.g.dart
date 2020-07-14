@@ -40,18 +40,35 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
     });
   }
 
-  final _$isLoadingAtom = Atom(name: '_FirstAccessControllerBase.isLoading');
+  final _$currentEmailAtom =
+      Atom(name: '_FirstAccessControllerBase.currentEmail');
 
   @override
-  bool get isLoading {
-    _$isLoadingAtom.reportRead();
-    return super.isLoading;
+  String get currentEmail {
+    _$currentEmailAtom.reportRead();
+    return super.currentEmail;
   }
 
   @override
-  set isLoading(bool value) {
-    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
-      super.isLoading = value;
+  set currentEmail(String value) {
+    _$currentEmailAtom.reportWrite(value, super.currentEmail, () {
+      super.currentEmail = value;
+    });
+  }
+
+  final _$currentPhoneAtom =
+      Atom(name: '_FirstAccessControllerBase.currentPhone');
+
+  @override
+  String get currentPhone {
+    _$currentPhoneAtom.reportRead();
+    return super.currentPhone;
+  }
+
+  @override
+  set currentPhone(String value) {
+    _$currentPhoneAtom.reportWrite(value, super.currentPhone, () {
+      super.currentPhone = value;
     });
   }
 
@@ -73,12 +90,22 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
         .run(() => super.changeEmailAndPhone(email, phone, changePassword));
   }
 
+  final _$loadUserForStorageAsyncAction =
+      AsyncAction('_FirstAccessControllerBase.loadUserForStorage');
+
+  @override
+  Future loadUserForStorage() {
+    return _$loadUserForStorageAsyncAction
+        .run(() => super.loadUserForStorage());
+  }
+
   @override
   String toString() {
     return '''
 data: ${data},
 dataEmailOrPhone: ${dataEmailOrPhone},
-isLoading: ${isLoading}
+currentEmail: ${currentEmail},
+currentPhone: ${currentPhone}
     ''';
   }
 }

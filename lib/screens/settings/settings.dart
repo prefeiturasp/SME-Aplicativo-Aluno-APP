@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/controllers/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/internal_change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -23,9 +25,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  FirstAccessController _firstAccessController;
+
   @override
   void initState() {
     super.initState();
+    _firstAccessController = FirstAccessController();
+    _firstAccessController.loadUserForStorage();
   }
 
   @override
@@ -62,15 +68,21 @@ class _SettingsState extends State<Settings> {
                     label: "Usuário",
                     text: widget.currentCPF ?? "",
                   ),
-                  ViewData(
-                    label: "Email",
-                    text: widget.email ?? "",
-                  ),
-                  ViewData(
-                    label: "Telefone",
-                    text: StringSupport.formatStringPhoneNumber(widget.phone) ??
-                        "--",
-                  ),
+                  Observer(builder: (context) {
+                    return Column(
+                      children: <Widget>[
+                        ViewData(
+                          label: "Email",
+                          text: _firstAccessController.currentEmail,
+                        ),
+                        ViewData(
+                          label: "Telefone",
+                          text: StringSupport.formatStringPhoneNumber(
+                              _firstAccessController.currentPhone),
+                        ),
+                      ],
+                    );
+                  }),
                   SizedBox(
                     height: screenHeight * 2.5,
                   ),
@@ -85,7 +97,8 @@ class _SettingsState extends State<Settings> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  InternalChangeEmailOrPhone()));
+                                  InternalChangeEmailOrPhone())).whenComplete(
+                          () => _firstAccessController.loadUserForStorage());
                     },
                   )
                 ],
