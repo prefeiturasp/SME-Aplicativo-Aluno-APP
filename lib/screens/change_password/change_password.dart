@@ -131,7 +131,11 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: Color(0xffEEC25E),
       ),
       body: WillPopScope(
-        onWillPop: _onBackPress,
+        onWillPop: (_password.isNotEmpty ||
+                _oldPassword.isNotEmpty ||
+                _confirmPassword.isNotEmpty)
+            ? _onBackPress
+            : null,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
