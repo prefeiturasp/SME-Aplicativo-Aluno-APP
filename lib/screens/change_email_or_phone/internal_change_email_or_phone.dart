@@ -11,6 +11,7 @@ import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class InternalChangeEmailOrPhone extends StatefulWidget {
   @override
@@ -32,6 +33,8 @@ class _InternalChangeEmailOrPhoneState
   bool _busy = false;
   String _email;
   String _phone;
+  String _emailData = "";
+  String _phoneData = "";
 
   @override
   void initState() {
@@ -43,10 +46,8 @@ class _InternalChangeEmailOrPhoneState
   loadInputs() async {
     String email = await _storage.readValueStorage('current_email');
     String phone = await _storage.readValueStorage('current_celular');
-    var maskedPhone = phone.isNotEmpty
-        ? phone.replaceAllMapped(RegExp(r'(\d{2})(\d{5})(\d+)'),
-            (Match m) => "(${m[1]}) ${m[2]}-${m[3]}")
-        : phone;
+    var maskedPhone =
+        phone.isNotEmpty ? StringSupport.formatStringPhoneNumber(phone) : phone;
 
     setState(() {
       _email = email;
@@ -55,9 +56,6 @@ class _InternalChangeEmailOrPhoneState
     setState(() {
       _phone = maskedPhone;
     });
-
-    print("Email: ---> $_email");
-    print("Phone: ---> $_phone");
   }
 
   fetchChangeEmailOrPhone(String email, String phone) async {
@@ -136,7 +134,9 @@ class _InternalChangeEmailOrPhoneState
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return WillPopScope(
-      onWillPop: _onBackPress,
+      onWillPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty)
+          ? _onBackPress
+          : null,
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -183,7 +183,8 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                                 child: TextFormField(
                                   initialValue: _email,
-                                  autovalidate: _email.isNotEmpty,
+                                  autovalidate: _email.isNotEmpty ||
+                                      _emailData.isNotEmpty,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -198,7 +199,7 @@ class _InternalChangeEmailOrPhoneState
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
                                     if (value != null) {
-                                      if (!EmailValidator.validate(_email)) {
+                                      if (!EmailValidator.validate(value)) {
                                         return 'E-mail inválido';
                                       }
                                     }
@@ -207,7 +208,7 @@ class _InternalChangeEmailOrPhoneState
                                   },
                                   onChanged: (value) {
                                     setState(() {
-                                      _email = value;
+                                      _emailData = value;
                                     });
                                   },
                                 ),
@@ -239,7 +240,8 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                                 child: TextFormField(
                                   initialValue: _phone,
-                                  autovalidate: _phone.isNotEmpty,
+                                  autovalidate: _phone.isNotEmpty ||
+                                      _phoneData.isNotEmpty,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -268,7 +270,7 @@ class _InternalChangeEmailOrPhoneState
                                   keyboardType: TextInputType.number,
                                   onChanged: (value) {
                                     setState(() {
-                                      _phone = value;
+                                      _phoneData = value;
                                     });
                                   },
                                 ),
@@ -294,9 +296,21 @@ class _InternalChangeEmailOrPhoneState
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      desabled: true,
+                                      desabled: (_emailData.isNotEmpty &&
+                                              _emailData != _email &&
+                                              EmailValidator.validate(
+                                                  _emailData)) ||
+                                          (_phoneData.isNotEmpty &&
+                                              _phoneData != _phone &&
+                                              _phoneData.length == 15),
                                       onPress: () {
-                                        fetchChangeEmailOrPhone(_email, _phone);
+                                        fetchChangeEmailOrPhone(
+                                            _emailData.isEmpty
+                                                ? _email
+                                                : _emailData,
+                                            _phoneData.isEmpty
+                                                ? _phone
+                                                : _phoneData);
                                       },
                                     )
                                   : GFLoader(
