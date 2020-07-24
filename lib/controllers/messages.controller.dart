@@ -21,6 +21,9 @@ abstract class _MessagesControllerBase with Store {
   ObservableList<Message> messages;
 
   @observable
+  ObservableList<Message> recentMessages;
+
+  @observable
   Message message;
 
   @observable
@@ -34,6 +37,15 @@ abstract class _MessagesControllerBase with Store {
 
   @observable
   int countMessage;
+
+  @observable
+  int countMessageSME;
+
+  @observable
+  int countMessageUE;
+
+  @observable
+  int countMessageTurma;
 
   @action
   loadMessage(int id) {
@@ -60,6 +72,32 @@ abstract class _MessagesControllerBase with Store {
       messagesNotDeleted = ObservableList<Message>.of(
           groupmessages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
+    }
+  }
+
+  @action
+  loadRecentMessagesPorCategory() async {
+    if (messagesNotDeleted != null) {
+      var messagesUe = ObservableList<Message>.of(messagesNotDeleted
+          .where((e) => e.categoriaNotificacao == "UE")
+          .toList());
+      countMessageUE = messagesUe.length;
+
+      var messagesSME = ObservableList<Message>.of(messagesNotDeleted
+          .where((e) => e.categoriaNotificacao == "SME")
+          .toList());
+      countMessageSME = messagesSME.length;
+
+      var messagesTurma = ObservableList<Message>.of(messagesNotDeleted
+          .where((e) => e.categoriaNotificacao == "TURMA")
+          .toList());
+      countMessageTurma = messagesTurma.length;
+
+      recentMessages = ObservableList<Message>.of(
+          [messagesUe.first, messagesSME.first, messagesTurma.first]);
+      // recentMessages.add(messagesUe.first);
+      // recentMessages.add(messagesSME.first);
+      // recentMessages.add(messagesTurma.first);
     }
   }
 

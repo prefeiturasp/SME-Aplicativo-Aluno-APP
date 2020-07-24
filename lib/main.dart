@@ -17,11 +17,7 @@ void backgroundFetchHeadlessTask(String taskId) async {
 
 void main() async {
   final SentryClient sentry = new SentryClient(dsn: GlobalConfig.SENTRY_DSN);
-  try {
-    print("DEU CERTO");
-  } catch (error, stackTrace) {
-    print('SENTRY | error --->, $error');
-    print('SENTRY | stackTrace --->, $stackTrace');
+  try {} catch (error, stackTrace) {
     await sentry.captureException(
       exception: error,
       stackTrace: stackTrace,
