@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -48,17 +49,30 @@ class _WrapperState extends State<Wrapper> {
     _firebaseMessaging.subscribeToTopic("AppAluno");
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: ------>  $message");
+        _popUpNotification(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: ------>  $message");
         await _navigateToMessageView(message);
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: ------>  $message");
         await _navigateToMessageView(message);
       },
     );
+  }
+
+  _popUpNotification(Map<String, dynamic> message) {
+    AwesomeDialog(
+        context: context,
+        headerAnimationLoop: false,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'NOTIFICAÇÃO',
+        desc: "Você acaba de receber uma \n mensagem da SME",
+        btnOkOnPress: () {
+          _navigateToMessageView(message);
+        },
+        btnOkText: "VISUALIZAR")
+      ..show();
   }
 
   // teste
