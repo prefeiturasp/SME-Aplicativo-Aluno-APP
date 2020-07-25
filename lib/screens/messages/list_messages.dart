@@ -420,6 +420,138 @@ class _ListMessageState extends State<ListMessages> {
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
+              // Container(
+              //   height: screenHeight * 1000,
+              //   child: ListView.builder(
+              //       physics: NeverScrollableScrollPhysics(),
+              //       itemCount: _messagesController.messagesNotDeleted.length,
+              //       itemBuilder: (context, index) {
+              //         final dados = _messagesController.messagesNotDeleted;
+              //         return CardMessage(
+              //           headerTitle: dados[index].categoriaNotificacao,
+              //           headerIcon: true,
+              //           recentMessage: !dados[index].mensagemVisualizada,
+              //           categoriaNotificacao: dados[index].categoriaNotificacao,
+              //           content: <Widget>[
+              //             Container(
+              //               width: screenHeight * 40,
+              //               child: AutoSizeText(
+              //                 dados[index].titulo,
+              //                 maxFontSize: 16,
+              //                 minFontSize: 14,
+              //                 maxLines: 2,
+              //                 style: TextStyle(
+              //                     color: Color(0xff42474A),
+              //                     fontWeight: FontWeight.w700),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: screenHeight * 1.8,
+              //             ),
+              //             Container(
+              //               width: screenHeight * 41,
+              //               child: AutoSizeText(
+              //                 StringSupport.parseHtmlString(
+              //                     StringSupport.truncateEndString(
+              //                         dados[index].mensagem, 250)),
+              //                 maxFontSize: 16,
+              //                 minFontSize: 14,
+              //                 maxLines: 10,
+              //                 overflow: TextOverflow.ellipsis,
+              //                 style: TextStyle(
+              //                     color: Color(0xff929292),
+              //                     height: screenHeight * 0.240),
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               height: screenHeight * 3,
+              //             ),
+              //             AutoSizeText(
+              //               DateFormatSuport.formatStringDate(
+              //                   dados[index].criadoEm, 'dd/MM/yyyy'),
+              //               maxFontSize: 16,
+              //               minFontSize: 14,
+              //               maxLines: 2,
+              //               style: TextStyle(
+              //                   color: Color(0xff929292),
+              //                   fontWeight: FontWeight.w700),
+              //             ),
+              //           ],
+              //           footer: true,
+              //           footerContent: <Widget>[
+              //             Visibility(
+              //               visible: dados[index].mensagemVisualizada,
+              //               child: GestureDetector(
+              //                 onTap: () =>
+              //                     _confirmDeleteMessage(dados[index].id),
+              //                 child: Container(
+              //                   width: screenHeight * 6,
+              //                   height: screenHeight * 6,
+              //                   decoration: BoxDecoration(
+              //                     border: Border.all(
+              //                         color: Color(0xffC65D00), width: 1),
+              //                     borderRadius: BorderRadius.all(
+              //                       Radius.circular(screenHeight * 3),
+              //                     ),
+              //                   ),
+              //                   child: Icon(
+              //                     FontAwesomeIcons.trashAlt,
+              //                     color: Color(0xffC65D00),
+              //                     size: screenHeight * 2.5,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //             Container(
+              //               child: Container(
+              //                 height: screenHeight * 6,
+              //                 decoration: BoxDecoration(
+              //                   border: Border.all(
+              //                       color: Color(0xffC65D00), width: 1),
+              //                   borderRadius: BorderRadius.all(
+              //                     Radius.circular(screenHeight * 3),
+              //                   ),
+              //                 ),
+              //                 child: FlatButton(
+              //                   onPressed: () {
+              //                     Navigator.of(context)
+              //                         .push(MaterialPageRoute(
+              //                             builder: (BuildContext context) =>
+              //                                 ViewMessage(
+              //                                   message: dados[index],
+              //                                   token: widget.token,
+              //                                 )))
+              //                         .whenComplete(() => _loadingMessages());
+              //                   },
+              //                   child: Row(
+              //                     mainAxisAlignment: MainAxisAlignment.center,
+              //                     crossAxisAlignment: CrossAxisAlignment.center,
+              //                     children: <Widget>[
+              //                       AutoSizeText(
+              //                         "LER MENSAGEM",
+              //                         maxFontSize: 16,
+              //                         minFontSize: 14,
+              //                         style: TextStyle(
+              //                             color: Color(0xffC65D00),
+              //                             fontWeight: FontWeight.w700),
+              //                       ),
+              //                       SizedBox(
+              //                         width: screenHeight * 2,
+              //                       ),
+              //                       Icon(
+              //                         FontAwesomeIcons.envelopeOpen,
+              //                         color: Color(0xffffd037),
+              //                         size: 16,
+              //                       )
+              //                     ],
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         );
+              //       }),
+              // ),
               _listCardsMessages(_messagesController.messagesNotDeleted,
                   context, screenHeight, token)
             ],
