@@ -104,9 +104,10 @@ class _ListMessageState extends State<ListMessages> {
                     _navigateToMessage(context, widget.token, item);
                   },
                   child: CardMessage(
-                    headerTitle: "ASSUNTO",
-                    headerIcon: false,
+                    headerTitle: item.categoriaNotificacao,
+                    headerIcon: true,
                     recentMessage: !item.mensagemVisualizada,
+                    categoriaNotificacao: item.categoriaNotificacao,
                     content: <Widget>[
                       Container(
                         width: screenHeight * 40,
@@ -116,9 +117,7 @@ class _ListMessageState extends State<ListMessages> {
                           minFontSize: 14,
                           maxLines: 2,
                           style: TextStyle(
-                              color: !item.mensagemVisualizada
-                                  ? Colors.white
-                                  : Color(0xff666666),
+                              color: Color(0xff42474A),
                               fontWeight: FontWeight.w700),
                         ),
                       ),
@@ -136,9 +135,7 @@ class _ListMessageState extends State<ListMessages> {
                           maxLines: 10,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: !item.mensagemVisualizada
-                                  ? Colors.white
-                                  : Color(0xff666666),
+                              color: Color(0xff929292),
                               height: screenHeight * 0.240),
                         ),
                       ),
@@ -152,9 +149,7 @@ class _ListMessageState extends State<ListMessages> {
                         minFontSize: 14,
                         maxLines: 2,
                         style: TextStyle(
-                            color: !item.mensagemVisualizada
-                                ? Colors.white
-                                : Color(0xff666666),
+                            color: Color(0xff929292),
                             fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -177,6 +172,7 @@ class _ListMessageState extends State<ListMessages> {
                             child: Icon(
                               FontAwesomeIcons.trashAlt,
                               color: Color(0xffC65D00),
+                              size: screenHeight * 2.5,
                             ),
                           ),
                         ),
@@ -288,10 +284,13 @@ class _ListMessageState extends State<ListMessages> {
                       _messagesController.messagesNotDeleted.first);
                 },
                 child: CardMessage(
-                  headerTitle: "ASSUNTO",
+                  headerTitle: _messagesController
+                      .messagesNotDeleted.first.categoriaNotificacao,
                   headerIcon: true,
                   recentMessage: !_messagesController
                       .messagesNotDeleted.first.mensagemVisualizada,
+                  categoriaNotificacao: _messagesController
+                      .messagesNotDeleted.first.categoriaNotificacao,
                   content: <Widget>[
                     Container(
                       width: screenHeight * 40,
@@ -301,10 +300,7 @@ class _ListMessageState extends State<ListMessages> {
                         minFontSize: 14,
                         maxLines: 2,
                         style: TextStyle(
-                            color: !_messagesController.messagesNotDeleted.first
-                                    .mensagemVisualizada
-                                ? Colors.white
-                                : Color(0xff666666),
+                            color: Color(0xff42474A),
                             fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -321,10 +317,7 @@ class _ListMessageState extends State<ListMessages> {
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: !_messagesController
-                                  .messagesNotDeleted.first.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
+                          color: Color(0xff929292),
                           height: screenHeight * 0.240,
                         ),
                       ),
@@ -340,10 +333,7 @@ class _ListMessageState extends State<ListMessages> {
                       minFontSize: 14,
                       maxLines: 2,
                       style: TextStyle(
-                          color: !_messagesController
-                                  .messagesNotDeleted.first.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
+                          color: Color(0xff929292),
                           fontWeight: FontWeight.w700),
                     ),
                   ],

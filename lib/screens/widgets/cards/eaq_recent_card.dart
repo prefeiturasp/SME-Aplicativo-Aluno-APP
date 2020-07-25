@@ -94,6 +94,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(screenHeight * 2),
@@ -214,26 +215,25 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: screenHeight * 29.2,
+                height: screenHeight * 28.3,
                 padding: EdgeInsets.all(screenHeight * 2),
                 color: Colors.white,
                 child: Container(
-                  margin: EdgeInsets.only(top: screenHeight * 1.8),
                   child: widget.message != null
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            AutoSizeText(
-                              widget.message.titulo,
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: Color(0xff666666),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 1.8,
+                            Container(
+                              margin: EdgeInsets.only(bottom: screenHeight * 3),
+                              child: AutoSizeText(
+                                widget.message.titulo,
+                                maxFontSize: 16,
+                                minFontSize: 14,
+                                maxLines: 2,
+                                style: TextStyle(
+                                    color: Color(0xff666666),
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                             Container(
                               width: screenHeight * 36,
