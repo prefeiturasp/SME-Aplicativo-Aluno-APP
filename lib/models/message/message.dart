@@ -8,6 +8,7 @@ class Message {
   String dataEnvio;
   String criadoEm;
   bool mensagemVisualizada;
+  String categoriaNotificacao;
 
   Message(
       {this.id,
@@ -16,7 +17,8 @@ class Message {
       this.grupos,
       this.dataEnvio,
       this.criadoEm,
-      this.mensagemVisualizada});
+      this.mensagemVisualizada,
+      this.categoriaNotificacao});
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -31,6 +33,7 @@ class Message {
     dataEnvio = json['dataEnvio'];
     criadoEm = json['criadoEm'];
     mensagemVisualizada = json['mensagemVisualizada'];
+    categoriaNotificacao = json['categoriaNotificacao'];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +47,7 @@ class Message {
     data['dataEnvio'] = this.dataEnvio;
     data['criadoEm'] = this.criadoEm;
     data['mensagemVisualizada'] = this.mensagemVisualizada;
+    data['categoriaNotificacao'] = this.categoriaNotificacao;
     return data;
   }
 }

@@ -24,6 +24,22 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$recentMessagesAtom =
+      Atom(name: '_MessagesControllerBase.recentMessages');
+
+  @override
+  ObservableList<Message> get recentMessages {
+    _$recentMessagesAtom.reportRead();
+    return super.recentMessages;
+  }
+
+  @override
+  set recentMessages(ObservableList<Message> value) {
+    _$recentMessagesAtom.reportWrite(value, super.recentMessages, () {
+      super.recentMessages = value;
+    });
+  }
+
   final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
 
   @override
@@ -101,6 +117,54 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$countMessageSMEAtom =
+      Atom(name: '_MessagesControllerBase.countMessageSME');
+
+  @override
+  int get countMessageSME {
+    _$countMessageSMEAtom.reportRead();
+    return super.countMessageSME;
+  }
+
+  @override
+  set countMessageSME(int value) {
+    _$countMessageSMEAtom.reportWrite(value, super.countMessageSME, () {
+      super.countMessageSME = value;
+    });
+  }
+
+  final _$countMessageUEAtom =
+      Atom(name: '_MessagesControllerBase.countMessageUE');
+
+  @override
+  int get countMessageUE {
+    _$countMessageUEAtom.reportRead();
+    return super.countMessageUE;
+  }
+
+  @override
+  set countMessageUE(int value) {
+    _$countMessageUEAtom.reportWrite(value, super.countMessageUE, () {
+      super.countMessageUE = value;
+    });
+  }
+
+  final _$countMessageTurmaAtom =
+      Atom(name: '_MessagesControllerBase.countMessageTurma');
+
+  @override
+  int get countMessageTurma {
+    _$countMessageTurmaAtom.reportRead();
+    return super.countMessageTurma;
+  }
+
+  @override
+  set countMessageTurma(int value) {
+    _$countMessageTurmaAtom.reportWrite(value, super.countMessageTurma, () {
+      super.countMessageTurma = value;
+    });
+  }
+
   final _$loadMessagesNotDeletedsAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessagesNotDeleteds');
 
@@ -108,6 +172,15 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   Future loadMessagesNotDeleteds() {
     return _$loadMessagesNotDeletedsAsyncAction
         .run(() => super.loadMessagesNotDeleteds());
+  }
+
+  final _$loadRecentMessagesPorCategoryAsyncAction =
+      AsyncAction('_MessagesControllerBase.loadRecentMessagesPorCategory');
+
+  @override
+  Future loadRecentMessagesPorCategory() {
+    return _$loadRecentMessagesPorCategoryAsyncAction
+        .run(() => super.loadRecentMessagesPorCategory());
   }
 
   final _$loadMessagesAsyncAction =
@@ -159,11 +232,15 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   String toString() {
     return '''
 messages: ${messages},
+recentMessages: ${recentMessages},
 message: ${message},
 groupmessages: ${groupmessages},
 messagesNotDeleted: ${messagesNotDeleted},
 isLoading: ${isLoading},
-countMessage: ${countMessage}
+countMessage: ${countMessage},
+countMessageSME: ${countMessageSME},
+countMessageUE: ${countMessageUE},
+countMessageTurma: ${countMessageTurma}
     ''';
   }
 }

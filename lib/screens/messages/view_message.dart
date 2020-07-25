@@ -164,9 +164,10 @@ class _ViewMessageState extends State<ViewMessage> {
                       color: Color(0xffDE9524), fontWeight: FontWeight.w500),
                 ),
                 CardMessage(
-                  headerTitle: "ASSUNTO",
+                  headerTitle: widget.message.categoriaNotificacao,
                   headerIcon: false,
                   recentMessage: false,
+                  categoriaNotificacao: widget.message.categoriaNotificacao,
                   content: <Widget>[
                     Container(
                       width: screenHeight * 40,

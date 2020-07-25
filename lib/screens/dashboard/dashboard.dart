@@ -11,6 +11,7 @@ import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/eaq_recent_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
@@ -96,11 +97,13 @@ class _DashboardState extends State<Dashboard> {
                   } else {
                     _messagesController.messagesPerGroups(widget.codigoGrupo);
                     _messagesController.loadMessagesNotDeleteds();
+                    // _messagesController.loadRecentMessagesPorCategory();
                   }
 
                   if (_messagesController.messages != null) {
                     _messagesController.messagesPerGroups(widget.codigoGrupo);
                     _messagesController.loadMessagesNotDeleteds();
+                    _messagesController.loadRecentMessagesPorCategory();
 
                     if (_messagesController.messagesNotDeleted == null ||
                         _messagesController.messagesNotDeleted.isEmpty) {
@@ -117,36 +120,86 @@ class _DashboardState extends State<Dashboard> {
                       return Observer(builder: (_) {
                         _messagesController.loadMessage(
                             _messagesController.messagesNotDeleted.first.id);
-                        return CardRecentMessage(
-                          message: _messagesController.message,
-                          countMessages:
-                              _messagesController.messagesNotDeleted.length,
-                          token: widget.token,
-                          codigoGrupo: widget.codigoGrupo,
-                          deleteBtn: false,
-                          recent:
-                              !_messagesController.message.mensagemVisualizada,
-                          onPress: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewMessage(
-                                        message: _messagesController
-                                            .messagesNotDeleted.first,
-                                        token: widget.token))).whenComplete(
-                                () => _loadingBackRecentMessage());
-                          },
-                          outherRoutes: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ListMessages(
-                                          token: widget.token,
-                                          codigoGrupo: widget.codigoGrupo,
-                                        ))).whenComplete(
-                                () => _loadingBackRecentMessage());
-                          },
+                        return Container(
+                          height: screenHeight * 48,
+                          margin: EdgeInsets.only(top: screenHeight * 3),
+                          child: ListView.builder(
+                              itemCount:
+                                  _messagesController.recentMessages.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                final dados =
+                                    _messagesController.recentMessages;
+                                return EAQRecentCardMessage(
+                                  message: dados[index],
+                                  countMessages:
+                                      dados[index].categoriaNotificacao == "SME"
+                                          ? _messagesController.countMessageSME
+                                          : dados[index].categoriaNotificacao ==
+                                                  "UE"
+                                              ? _messagesController
+                                                  .countMessageUE
+                                              : _messagesController
+                                                  .countMessageTurma,
+                                  token: widget.token,
+                                  codigoGrupo: widget.codigoGrupo,
+                                  deleteBtn: false,
+                                  recent: !dados[index].mensagemVisualizada,
+                                  onPress: () {
+                                    Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewMessage(
+                                                        message: dados[index],
+                                                        token: widget.token)))
+                                        .whenComplete(
+                                            () => _loadingBackRecentMessage());
+                                  },
+                                  outherRoutes: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ListMessages(
+                                                  token: widget.token,
+                                                  codigoGrupo:
+                                                      widget.codigoGrupo,
+                                                ))).whenComplete(
+                                        () => _loadingBackRecentMessage());
+                                  },
+                                );
+                              }),
                         );
+                        // return CardRecentMessage(
+                        //   message: _messagesController.message,
+                        //   countMessages:
+                        //       _messagesController.messagesNotDeleted.length,
+                        //   token: widget.token,
+                        //   codigoGrupo: widget.codigoGrupo,
+                        //   deleteBtn: false,
+                        //   recent:
+                        //       !_messagesController.message.mensagemVisualizada,
+                        //   onPress: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => ViewMessage(
+                        //                 message: _messagesController
+                        //                     .messagesNotDeleted.first,
+                        //                 token: widget.token))).whenComplete(
+                        //         () => _loadingBackRecentMessage());
+                        //   },
+                        //   outherRoutes: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: (context) => ListMessages(
+                        //                   token: widget.token,
+                        //                   codigoGrupo: widget.codigoGrupo,
+                        //                 ))).whenComplete(
+                        //         () => _loadingBackRecentMessage());
+                        //   },
+                        // );
                       });
                     }
                   } else {
