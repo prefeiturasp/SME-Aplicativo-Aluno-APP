@@ -68,21 +68,24 @@ class _SettingsState extends State<Settings> {
                     label: "Usuário",
                     text: widget.currentCPF ?? "",
                   ),
-                  Observer(builder: (context) {
-                    return Column(
-                      children: <Widget>[
-                        ViewData(
-                          label: "Email",
-                          text: _firstAccessController.currentEmail,
-                        ),
-                        ViewData(
-                          label: "Telefone",
-                          text: StringSupport.formatStringPhoneNumber(
-                              _firstAccessController.currentPhone),
-                        ),
-                      ],
-                    );
-                  }),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Observer(builder: (context) {
+                      return Column(
+                        children: <Widget>[
+                          ViewData(
+                            label: "Email",
+                            text: _firstAccessController.currentEmail,
+                          ),
+                          ViewData(
+                            label: "Telefone",
+                            text: StringSupport.formatStringPhoneNumber(
+                                _firstAccessController.currentPhone),
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
                   SizedBox(
                     height: screenHeight * 2.5,
                   ),
