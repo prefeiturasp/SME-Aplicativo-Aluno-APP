@@ -102,6 +102,9 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
+  filterMessagesPorCategories(List<String> categories) {}
+
+  @action
   loadMessages() async {
     String token = await _storage.readValueStorage("token");
     isLoading = true;

@@ -24,9 +24,24 @@ abstract class _StudentsControllerBase with Store {
   @action
   subscribeGroupIdToFirebase() {
     if (dataEstudent.data != null) {
-      dataEstudent.data.forEach((element) {
-        print("Codigo: ---> ${element.codigoGrupo}");
-        _firebaseMessaging.subscribeToTopic(element.codigoGrupo.toString());
+      dataEstudent.data.asMap().forEach((index, element) {
+        _firebaseMessaging.subscribeToTopic("Grupo-${element.codigoGrupo}");
+        print("Grupo-${element.codigoGrupo}");
+        _firebaseMessaging
+            .subscribeToTopic("DRE-${element.students[index].codigoDre}");
+        print("DRE-${element.students[index].codigoDre}");
+        _firebaseMessaging
+            .subscribeToTopic("UE-${element.students[index].codigoEscola}");
+        print("UE-${element.students[index].codigoEscola}");
+        _firebaseMessaging.subscribeToTopic(
+            "UE-${element.students[index].codigoEscola}-MOD-${element.codigoGrupo}");
+        print(
+            "UE-${element.students[index].codigoEscola}-MOD-${element.codigoGrupo}");
+        _firebaseMessaging
+            .subscribeToTopic("TUR-${element.students[index].codigoTurma}");
+        _firebaseMessaging
+            .subscribeToTopic("ALU-${element.students[index].codigoEol}");
+        print("ALU-${element.students[index].codigoEol}");
       });
     }
   }

@@ -229,6 +229,17 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   }
 
   @override
+  dynamic filterMessagesPorCategories(List<String> categories) {
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.filterMessagesPorCategories');
+    try {
+      return super.filterMessagesPorCategories(categories);
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 messages: ${messages},
