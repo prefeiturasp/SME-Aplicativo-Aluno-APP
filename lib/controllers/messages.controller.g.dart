@@ -87,6 +87,21 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$auxListAtom = Atom(name: '_MessagesControllerBase.auxList');
+
+  @override
+  ObservableList<dynamic> get auxList {
+    _$auxListAtom.reportRead();
+    return super.auxList;
+  }
+
+  @override
+  set auxList(ObservableList<dynamic> value) {
+    _$auxListAtom.reportWrite(value, super.auxList, () {
+      super.auxList = value;
+    });
+  }
+
   final _$isLoadingAtom = Atom(name: '_MessagesControllerBase.isLoading');
 
   @override
@@ -183,6 +198,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadRecentMessagesPorCategory());
   }
 
+  final _$filterItemsAsyncAction =
+      AsyncAction('_MessagesControllerBase.filterItems');
+
+  @override
+  Future filterItems(String filter) {
+    return _$filterItemsAsyncAction.run(() => super.filterItems(filter));
+  }
+
   final _$loadMessagesAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessages');
 
@@ -196,10 +219,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 
   @override
   Future updateMessage(
-      {int notificacaoId, String cpfUsuario, bool mensagemVisualia}) {
+      {int notificacaoId,
+      int usuarioId,
+      int codigoAlunoEol,
+      bool mensagemVisualia}) {
     return _$updateMessageAsyncAction.run(() => super.updateMessage(
         notificacaoId: notificacaoId,
-        cpfUsuario: cpfUsuario,
+        usuarioId: usuarioId,
+        codigoAlunoEol: codigoAlunoEol,
         mensagemVisualia: mensagemVisualia));
   }
 
@@ -229,17 +256,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   }
 
   @override
-  dynamic filterMessagesPorCategories(List<String> categories) {
-    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
-        name: '_MessagesControllerBase.filterMessagesPorCategories');
-    try {
-      return super.filterMessagesPorCategories(categories);
-    } finally {
-      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 messages: ${messages},
@@ -247,6 +263,7 @@ recentMessages: ${recentMessages},
 message: ${message},
 groupmessages: ${groupmessages},
 messagesNotDeleted: ${messagesNotDeleted},
+auxList: ${auxList},
 isLoading: ${isLoading},
 countMessage: ${countMessage},
 countMessageSME: ${countMessageSME},

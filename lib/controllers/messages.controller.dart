@@ -33,6 +33,9 @@ abstract class _MessagesControllerBase with Store {
   ObservableList<Message> messagesNotDeleted;
 
   @observable
+  ObservableList<dynamic> auxList = ObservableList<dynamic>();
+
+  @observable
   bool isLoading = false;
 
   @observable
@@ -95,14 +98,19 @@ abstract class _MessagesControllerBase with Store {
 
       recentMessages = ObservableList<Message>.of(
           [messagesUe.first, messagesSME.first, messagesTurma.first]);
-      // recentMessages.add(messagesUe.first);
-      // recentMessages.add(messagesSME.first);
-      // recentMessages.add(messagesTurma.first);
     }
   }
 
   @action
-  filterMessagesPorCategories(List<String> categories) {}
+  filterItems(String filter) async {
+    if (messagesNotDeleted != null) {
+      auxList = ObservableList<Message>.of(messagesNotDeleted
+          .where((message) => message.categoriaNotificacao != filter)
+          .toList());
+      messagesNotDeleted.clear();
+      messagesNotDeleted = auxList;
+    }
+  }
 
   @action
   loadMessages() async {
@@ -116,11 +124,12 @@ abstract class _MessagesControllerBase with Store {
   @action
   updateMessage({
     int notificacaoId,
-    String cpfUsuario,
+    int usuarioId,
+    int codigoAlunoEol,
     bool mensagemVisualia,
   }) async {
     await _messagesRepository.readMessage(
-        notificacaoId, cpfUsuario, mensagemVisualia);
+        notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
     loadMessages();
   }
 }

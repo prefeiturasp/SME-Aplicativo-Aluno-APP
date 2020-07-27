@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/messages.controller.dart';
 
 class EAQFilterPage extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
   bool ueCheck = true;
   @override
   Widget build(BuildContext context) {
+    final _messagesController = Provider.of<MessagesController>(context);
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
@@ -41,6 +44,7 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
               setState(() {
                 tumarCheck = !tumarCheck;
               });
+              _messagesController.filterItems(tumarCheck ? "TURMA" : "--");
             },
             child: Chip(
               backgroundColor:

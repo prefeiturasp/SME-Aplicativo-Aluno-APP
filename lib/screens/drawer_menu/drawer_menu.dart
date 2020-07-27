@@ -48,6 +48,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             builder: (context) => ListMessages(
                   token: _token,
                   codigoGrupo: widget.codigoGrupo,
+                  codigoAlunoEol: widget.student.codigoEol,
                 ))).whenComplete(() => _loadingBackRecentMessage(_token));
   }
 

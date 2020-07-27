@@ -19,8 +19,12 @@ import 'package:url_launcher/url_launcher.dart';
 class ViewMessage extends StatefulWidget {
   final Message message;
   final String token;
+  final int codigoAlunoEol;
 
-  ViewMessage({@required this.message, @required this.token});
+  ViewMessage(
+      {@required this.message,
+      @required this.token,
+      @required this.codigoAlunoEol});
 
   @override
   _ViewMessageState createState() => _ViewMessageState();
@@ -42,10 +46,11 @@ class _ViewMessageState extends State<ViewMessage> {
 
   _viewMessageUpdate(bool isNotRead) async {
     if (!widget.message.mensagemVisualizada || isNotRead) {
-      String cpfUsuario = await storage.readValueStorage("current_cpf");
+      int usuarioId = await storage.readValueIntStorage("current_user_id");
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          cpfUsuario: cpfUsuario,
+          usuarioId: usuarioId,
+          codigoAlunoEol: widget.codigoAlunoEol,
           mensagemVisualia: !widget.message.mensagemVisualizada);
     }
     return null;

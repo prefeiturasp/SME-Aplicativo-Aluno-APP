@@ -147,14 +147,15 @@ class _DashboardState extends State<Dashboard> {
                                   recent: !dados[index].mensagemVisualizada,
                                   onPress: () {
                                     Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ViewMessage(
-                                                        message: dados[index],
-                                                        token: widget.token)))
-                                        .whenComplete(
-                                            () => _loadingBackRecentMessage());
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ViewMessage(
+                                                message: dados[index],
+                                                codigoAlunoEol:
+                                                    widget.student.codigoEol,
+                                                token: widget
+                                                    .token))).whenComplete(
+                                        () => _loadingBackRecentMessage());
                                   },
                                   outherRoutes: () {
                                     Navigator.push(
@@ -164,42 +165,14 @@ class _DashboardState extends State<Dashboard> {
                                                   token: widget.token,
                                                   codigoGrupo:
                                                       widget.codigoGrupo,
+                                                  codigoAlunoEol:
+                                                      widget.student.codigoEol,
                                                 ))).whenComplete(
                                         () => _loadingBackRecentMessage());
                                   },
                                 );
                               }),
                         );
-                        // return CardRecentMessage(
-                        //   message: _messagesController.message,
-                        //   countMessages:
-                        //       _messagesController.messagesNotDeleted.length,
-                        //   token: widget.token,
-                        //   codigoGrupo: widget.codigoGrupo,
-                        //   deleteBtn: false,
-                        //   recent:
-                        //       !_messagesController.message.mensagemVisualizada,
-                        //   onPress: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => ViewMessage(
-                        //                 message: _messagesController
-                        //                     .messagesNotDeleted.first,
-                        //                 token: widget.token))).whenComplete(
-                        //         () => _loadingBackRecentMessage());
-                        //   },
-                        //   outherRoutes: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) => ListMessages(
-                        //                   token: widget.token,
-                        //                   codigoGrupo: widget.codigoGrupo,
-                        //                 ))).whenComplete(
-                        //         () => _loadingBackRecentMessage());
-                        //   },
-                        // );
                       });
                     }
                   } else {

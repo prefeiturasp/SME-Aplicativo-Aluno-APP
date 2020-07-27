@@ -25,7 +25,12 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 class ListMessages extends StatefulWidget {
   final String token;
   final int codigoGrupo;
-  ListMessages({@required this.token, @required this.codigoGrupo});
+  final int codigoAlunoEol;
+
+  ListMessages(
+      {@required this.token,
+      @required this.codigoGrupo,
+      @required this.codigoAlunoEol});
   _ListMessageState createState() => _ListMessageState();
 }
 
@@ -86,12 +91,13 @@ class _ListMessageState extends State<ListMessages> {
 
   _navigateToMessage(BuildContext context, String token, Message message) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ViewMessage(
-                  token: token,
-                  message: message,
-                ))).whenComplete(() => _loadingMessages());
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewMessage(
+                    token: token,
+                    message: message,
+                    codigoAlunoEol: widget.codigoAlunoEol)))
+        .whenComplete(() => _loadingMessages());
   }
 
   Widget _listCardsMessages(List<Message> messages, BuildContext context,
@@ -196,6 +202,8 @@ class _ListMessageState extends State<ListMessages> {
                                           ViewMessage(
                                             message: item,
                                             token: widget.token,
+                                            codigoAlunoEol:
+                                                widget.codigoAlunoEol,
                                           )))
                                   .whenComplete(() => _loadingMessages());
                             },
