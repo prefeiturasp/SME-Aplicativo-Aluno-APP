@@ -160,8 +160,6 @@ class _ListStudantsState extends State<ListStudants> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    // _loadingAllStudents();
-
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(

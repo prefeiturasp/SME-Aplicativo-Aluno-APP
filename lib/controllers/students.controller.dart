@@ -26,22 +26,28 @@ abstract class _StudentsControllerBase with Store {
     if (dataEstudent.data != null) {
       dataEstudent.data.asMap().forEach((index, element) {
         _firebaseMessaging.subscribeToTopic("Grupo-${element.codigoGrupo}");
-        print("Grupo-${element.codigoGrupo}");
         _firebaseMessaging
             .subscribeToTopic("DRE-${element.students[index].codigoDre}");
-        print("DRE-${element.students[index].codigoDre}");
         _firebaseMessaging
             .subscribeToTopic("UE-${element.students[index].codigoEscola}");
-        print("UE-${element.students[index].codigoEscola}");
         _firebaseMessaging.subscribeToTopic(
-            "UE-${element.students[index].codigoEscola}-MOD-${element.codigoGrupo}");
-        print(
             "UE-${element.students[index].codigoEscola}-MOD-${element.codigoGrupo}");
         _firebaseMessaging
             .subscribeToTopic("TUR-${element.students[index].codigoTurma}");
         _firebaseMessaging
             .subscribeToTopic("ALU-${element.students[index].codigoEol}");
         print("ALU-${element.students[index].codigoEol}");
+
+        // I/flutter (10131): Grupo-2
+        // I/flutter (10131): DRE-109300
+        // I/flutter (10131): UE-400620
+        // I/flutter (10131): UE-null-MOD-2
+        // I/flutter (10131): ALU-7059160
+        // I/flutter (10131): Grupo-4
+        // I/flutter (10131): DRE-109300
+        // I/flutter (10131): UE-099139
+        // I/flutter (10131): UE-null-MOD-4
+        // I/flutter (10131): ALU-5670059
       });
     }
   }

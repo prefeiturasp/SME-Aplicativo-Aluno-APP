@@ -12,7 +12,7 @@ class Student {
   String dataSituacaoMatricula;
   String codigoDre;
   String codigoEscola;
-  String codigoTurma;
+  int codigoTurma;
 
   Student({
     this.codigoEol,
