@@ -95,45 +95,41 @@ class _DashboardState extends State<Dashboard> {
                       size: GFSize.LARGE,
                     );
                   } else {
-                    _messagesController.messagesPerGroups(widget.codigoGrupo);
-                    _messagesController.loadMessagesNotDeleteds();
-                    // _messagesController.loadRecentMessagesPorCategory();
-                  }
+                    if (_messagesController.messages != null) {
+                      _messagesController.loadMessagesNotDeleteds();
+                      _messagesController.loadRecentMessagesPorCategory();
 
-                  if (_messagesController.messages != null) {
-                    _messagesController.messagesPerGroups(widget.codigoGrupo);
-                    _messagesController.loadMessagesNotDeleteds();
-                    _messagesController.loadRecentMessagesPorCategory();
-
-                    if (_messagesController.messagesNotDeleted == null ||
-                        _messagesController.messagesNotDeleted.isEmpty) {
-                      return Container(
-                        child: Visibility(
-                            visible: _messagesController.messagesNotDeleted !=
-                                    null &&
-                                _messagesController.messagesNotDeleted.isEmpty,
-                            child: CardRecentMessage(
-                              recent: true,
-                            )),
-                      );
-                    } else {
-                      return Observer(builder: (_) {
-                        _messagesController.loadMessage(
-                            _messagesController.messagesNotDeleted.first.id);
+                      if (_messagesController.messagesNotDeleted == null ||
+                          _messagesController.messagesNotDeleted.isEmpty) {
                         return Container(
-                          height: screenHeight * 48,
-                          margin: EdgeInsets.only(top: screenHeight * 3),
-                          child: ListView.builder(
-                              itemCount:
-                                  _messagesController.recentMessages.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                final dados =
-                                    _messagesController.recentMessages;
-                                return EAQRecentCardMessage(
-                                  message: dados[index],
-                                  countMessages:
-                                      dados[index].categoriaNotificacao == "SME"
+                          child: Visibility(
+                              visible: _messagesController.messagesNotDeleted !=
+                                      null &&
+                                  _messagesController
+                                      .messagesNotDeleted.isEmpty,
+                              child: CardRecentMessage(
+                                recent: true,
+                              )),
+                        );
+                      } else {
+                        return Observer(builder: (_) {
+                          if (_messagesController.recentMessages != null) {
+                            return Container(
+                              height: screenHeight * 48,
+                              margin: EdgeInsets.only(top: screenHeight * 3),
+                              child: ListView.builder(
+                                  itemCount:
+                                      _messagesController.recentMessages.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    final dados =
+                                        _messagesController.recentMessages;
+                                    return EAQRecentCardMessage(
+                                      totalCateories: dados.length,
+                                      message: dados[index],
+                                      countMessages: dados[index]
+                                                  .categoriaNotificacao ==
+                                              "SME"
                                           ? _messagesController.countMessageSME
                                           : dados[index].categoriaNotificacao ==
                                                   "UE"
@@ -141,48 +137,53 @@ class _DashboardState extends State<Dashboard> {
                                                   .countMessageUE
                                               : _messagesController
                                                   .countMessageTurma,
-                                  token: widget.token,
-                                  codigoGrupo: widget.codigoGrupo,
-                                  deleteBtn: false,
-                                  recent: !dados[index].mensagemVisualizada,
-                                  onPress: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ViewMessage(
-                                                message: dados[index],
-                                                codigoAlunoEol:
-                                                    widget.student.codigoEol,
-                                                token: widget
-                                                    .token))).whenComplete(
-                                        () => _loadingBackRecentMessage());
-                                  },
-                                  outherRoutes: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ListMessages(
-                                                  token: widget.token,
-                                                  codigoGrupo:
-                                                      widget.codigoGrupo,
-                                                  codigoAlunoEol:
-                                                      widget.student.codigoEol,
-                                                ))).whenComplete(
-                                        () => _loadingBackRecentMessage());
-                                  },
-                                );
-                              }),
-                        );
-                      });
+                                      token: widget.token,
+                                      codigoGrupo: widget.codigoGrupo,
+                                      deleteBtn: false,
+                                      recent: !dados[index].mensagemVisualizada,
+                                      onPress: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => ViewMessage(
+                                                    message: dados[index],
+                                                    codigoAlunoEol: widget
+                                                        .student.codigoEol,
+                                                    token: widget
+                                                        .token))).whenComplete(
+                                            () => _loadingBackRecentMessage());
+                                      },
+                                      outherRoutes: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ListMessages(
+                                                      token: widget.token,
+                                                      codigoGrupo:
+                                                          widget.codigoGrupo,
+                                                      codigoAlunoEol: widget
+                                                          .student.codigoEol,
+                                                    ))).whenComplete(
+                                            () => _loadingBackRecentMessage());
+                                      },
+                                    );
+                                  }),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        });
+                      }
+                    } else {
+                      return GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      );
                     }
-                  } else {
-                    return GFLoader(
-                      type: GFLoaderType.square,
-                      loaderColorOne: Color(0xffDE9524),
-                      loaderColorTwo: Color(0xffC65D00),
-                      loaderColorThree: Color(0xffC65D00),
-                      size: GFSize.LARGE,
-                    );
                   }
                 }),
                 CardAlert(

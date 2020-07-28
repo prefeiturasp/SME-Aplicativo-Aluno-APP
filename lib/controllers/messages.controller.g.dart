@@ -9,6 +9,21 @@ part of 'messages.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$MessagesController on _MessagesControllerBase, Store {
+  final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
+
+  @override
+  Message get message {
+    _$messageAtom.reportRead();
+    return super.message;
+  }
+
+  @override
+  set message(Message value) {
+    _$messageAtom.reportWrite(value, super.message, () {
+      super.message = value;
+    });
+  }
+
   final _$messagesAtom = Atom(name: '_MessagesControllerBase.messages');
 
   @override
@@ -37,37 +52,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   set recentMessages(ObservableList<Message> value) {
     _$recentMessagesAtom.reportWrite(value, super.recentMessages, () {
       super.recentMessages = value;
-    });
-  }
-
-  final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
-
-  @override
-  Message get message {
-    _$messageAtom.reportRead();
-    return super.message;
-  }
-
-  @override
-  set message(Message value) {
-    _$messageAtom.reportWrite(value, super.message, () {
-      super.message = value;
-    });
-  }
-
-  final _$groupmessagesAtom =
-      Atom(name: '_MessagesControllerBase.groupmessages');
-
-  @override
-  ObservableList<Message> get groupmessages {
-    _$groupmessagesAtom.reportRead();
-    return super.groupmessages;
-  }
-
-  @override
-  set groupmessages(ObservableList<Message> value) {
-    _$groupmessagesAtom.reportWrite(value, super.groupmessages, () {
-      super.groupmessages = value;
     });
   }
 
@@ -180,6 +164,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$loadMessagesAsyncAction =
+      AsyncAction('_MessagesControllerBase.loadMessages');
+
+  @override
+  Future loadMessages() {
+    return _$loadMessagesAsyncAction.run(() => super.loadMessages());
+  }
+
   final _$loadMessagesNotDeletedsAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessagesNotDeleteds');
 
@@ -198,22 +190,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadRecentMessagesPorCategory());
   }
 
-  final _$filterItemsAsyncAction =
-      AsyncAction('_MessagesControllerBase.filterItems');
-
-  @override
-  Future filterItems(String filter) {
-    return _$filterItemsAsyncAction.run(() => super.filterItems(filter));
-  }
-
-  final _$loadMessagesAsyncAction =
-      AsyncAction('_MessagesControllerBase.loadMessages');
-
-  @override
-  Future loadMessages() {
-    return _$loadMessagesAsyncAction.run(() => super.loadMessages());
-  }
-
   final _$updateMessageAsyncAction =
       AsyncAction('_MessagesControllerBase.updateMessage');
 
@@ -230,38 +206,12 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         mensagemVisualia: mensagemVisualia));
   }
 
-  final _$_MessagesControllerBaseActionController =
-      ActionController(name: '_MessagesControllerBase');
-
-  @override
-  dynamic loadMessage(int id) {
-    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
-        name: '_MessagesControllerBase.loadMessage');
-    try {
-      return super.loadMessage(id);
-    } finally {
-      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic messagesPerGroups(dynamic codigoGrupo) {
-    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
-        name: '_MessagesControllerBase.messagesPerGroups');
-    try {
-      return super.messagesPerGroups(codigoGrupo);
-    } finally {
-      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
   @override
   String toString() {
     return '''
+message: ${message},
 messages: ${messages},
 recentMessages: ${recentMessages},
-message: ${message},
-groupmessages: ${groupmessages},
 messagesNotDeleted: ${messagesNotDeleted},
 auxList: ${auxList},
 isLoading: ${isLoading},

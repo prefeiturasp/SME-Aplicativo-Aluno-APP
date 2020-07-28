@@ -250,7 +250,6 @@ class _ListMessageState extends State<ListMessages> {
           size: GFSize.LARGE,
         );
       } else {
-        _messagesController.messagesPerGroups(widget.codigoGrupo);
         _messagesController.loadMessagesNotDeleteds();
 
         if (_messagesController.messagesNotDeleted == null ||

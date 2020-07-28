@@ -17,6 +17,7 @@ class EAQRecentCardMessage extends StatefulWidget {
   final bool recent;
   final Function onPress;
   final Function outherRoutes;
+  final int totalCateories;
 
   EAQRecentCardMessage(
       {this.message,
@@ -26,7 +27,8 @@ class EAQRecentCardMessage extends StatefulWidget {
       this.outherRoutes,
       this.deleteBtn = true,
       this.recent = false,
-      this.onPress});
+      this.onPress,
+      @required this.totalCateories});
 
   @override
   _EAQRecentCardMessageState createState() => _EAQRecentCardMessageState();
@@ -77,7 +79,8 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
     const colorUE = Color(0xff5151CF);
     const colorTURMA = Color(0xff599E00);
     return Container(
-      width: screenHeight * 40,
+      width:
+          widget.totalCateories == 1 ? screenHeight * 48.5 : screenHeight * 40,
       margin: EdgeInsets.only(top: screenHeight * 1, right: screenHeight * 1.5),
       decoration: BoxDecoration(
         color: widget.message == null ? Color(0xffC45C04) : Colors.white,

@@ -38,14 +38,14 @@ class Student {
     escola = json['escola'];
     codigoTipoEscola = json['codigoTipoEscola'];
     descricaoTipoEscola = json['descricaoTipoEscola'];
-    codigoDre = json['codigoDre'];
+    codigoDre = json['codigoDre'] ?? "";
     siglaDre = json['siglaDre'];
     turma = json['turma'];
     situacaoMatricula = json['situacaoMatricula'];
     dataNascimento = json['dataNascimento'];
     dataSituacaoMatricula = json['dataSituacaoMatricula'];
-    codigoEscola = json['codigoEscola'];
-    codigoTurma = json['codigoTurma'];
+    codigoEscola = json['codigoEscola'] ?? "";
+    codigoTurma = json['codigoTurma'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {

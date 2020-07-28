@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
@@ -18,16 +17,13 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @observable
+  Message message;
+
+  @observable
   ObservableList<Message> messages;
 
   @observable
   ObservableList<Message> recentMessages;
-
-  @observable
-  Message message;
-
-  @observable
-  ObservableList<Message> groupmessages;
 
   @observable
   ObservableList<Message> messagesNotDeleted;
@@ -51,29 +47,22 @@ abstract class _MessagesControllerBase with Store {
   int countMessageTurma;
 
   @action
-  loadMessage(int id) {
-    message = messages.where((element) => element.id == id).toList().first;
-  }
-
-  @action
-  messagesPerGroups(codigoGrupo) {
-    if (messages != null) {
-      groupmessages = ObservableList<Message>.of(messages
-          .where(
-            (m) => m.grupos.any((g) => g.codigo == codigoGrupo),
-          )
-          .toList());
-    }
+  loadMessages() async {
+    String token = await _storage.readValueStorage("token");
+    isLoading = true;
+    messages = ObservableList<Message>.of(
+        await _messagesRepository.fetchMessages(token));
+    isLoading = false;
   }
 
   @action
   loadMessagesNotDeleteds() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (groupmessages != null) {
-      String currentName = prefs.getString("current_name");
-      var _ids = prefs.getString("${currentName}_deleted_id") ?? "";
+    if (messages != null) {
+      String currentName = await _storage.readValueStorage("current_name");
+      var _ids =
+          await _storage.readValueStorage("${currentName}_deleted_id") ?? "";
       messagesNotDeleted = ObservableList<Message>.of(
-          groupmessages.where((e) => !_ids.contains(e.id.toString())).toList());
+          messages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
     }
   }
@@ -96,29 +85,26 @@ abstract class _MessagesControllerBase with Store {
           .toList());
       countMessageTurma = messagesTurma.length;
 
-      recentMessages = ObservableList<Message>.of(
-          [messagesUe.first, messagesSME.first, messagesTurma.first]);
-    }
-  }
+      var list = ObservableList<Message>();
 
-  @action
-  filterItems(String filter) async {
-    if (messagesNotDeleted != null) {
-      auxList = ObservableList<Message>.of(messagesNotDeleted
-          .where((message) => message.categoriaNotificacao != filter)
-          .toList());
-      messagesNotDeleted.clear();
-      messagesNotDeleted = auxList;
-    }
-  }
+      if (countMessageUE > 0) {
+        list.add(messagesUe.first);
+      }
 
-  @action
-  loadMessages() async {
-    String token = await _storage.readValueStorage("token");
-    isLoading = true;
-    messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(token));
-    isLoading = false;
+      if (countMessageSME > 0) {
+        list.add(messagesSME.first);
+      }
+
+      if (countMessageTurma > 0) {
+        list.add(messagesTurma.first);
+      }
+
+      recentMessages = ObservableList<Message>.of(list);
+
+      recentMessages.length;
+
+      print(recentMessages);
+    }
   }
 
   @action
