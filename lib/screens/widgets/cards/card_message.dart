@@ -74,7 +74,9 @@ class CardMessage extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: screenHeight * 2),
                           child: Icon(
-                            FontAwesomeIcons.envelopeOpen,
+                            recentMessage
+                                ? FontAwesomeIcons.envelope
+                                : FontAwesomeIcons.envelopeOpen,
                             color: recentMessage
                                 ? Color(0xffFFD869)
                                 : categoriaNotificacao == "SME"
