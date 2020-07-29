@@ -32,35 +32,23 @@ abstract class _StudentsControllerBase with Store {
         // _storage.insertString(
         //     "Grupo-${element.codigoGrupo}", "Grupo-${element.codigoGrupo}");
 
-        _firebaseMessaging
-            .subscribeToTopic("DRE-${element.students[index].codigoDre}");
+        element.students.asMap().forEach((index, student) {
+          _firebaseMessaging.subscribeToTopic("DRE-${student.codigoDre}");
+          print("DRE-${student.codigoDre}");
 
-        // _storage.insertString("DRE-${element.students[index].codigoDre}",
-        //     "DRE-${element.students[index].codigoDre}");
+          _firebaseMessaging.subscribeToTopic("UE-${student.codigoEscola}");
+          print("UE-${student.codigoEscola}");
 
-        _firebaseMessaging
-            .subscribeToTopic("UE-${element.students[index].codigoEscola}");
+          _firebaseMessaging.subscribeToTopic(
+              "UE-${student.codigoEscola}-MOD-${element.codigoGrupo}");
+          print("UE-${student.codigoEscola}-MOD-${element.codigoGrupo}");
 
-        // _storage.insertString("UE-${element.students[index].codigoEscola}",
-        //     "UE-${element.students[index].codigoEscola}");
+          _firebaseMessaging.subscribeToTopic("TUR-${student.codigoTurma}");
+          print("TUR-${student.codigoTurma}");
 
-        _firebaseMessaging.subscribeToTopic(
-            "UE-${element.students[index].codigoEscola}-MOD-${element.codigoGrupo}");
-
-        // _storage.insertString("UE-${element.students[index].codigoEscola}",
-        //     "UE-${element.students[index].codigoEscola}");
-
-        _firebaseMessaging
-            .subscribeToTopic("TUR-${element.students[index].codigoTurma}");
-
-        // _storage.insertString("TUR-${element.students[index].codigoTurma}",
-        //     "TUR-${element.students[index].codigoTurma}");
-
-        _firebaseMessaging
-            .subscribeToTopic("ALU-${element.students[index].codigoEol}");
-
-        // _storage.insertString("ALU-${element.students[index].codigoEol}",
-        //     "ALU-${element.students[index].codigoEol}");
+          _firebaseMessaging.subscribeToTopic("ALU-${student.codigoEol}");
+          print("ALU-${student.codigoEol}");
+        });
       });
     }
   }
