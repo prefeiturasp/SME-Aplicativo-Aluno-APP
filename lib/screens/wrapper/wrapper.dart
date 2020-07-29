@@ -72,8 +72,8 @@ class _WrapperState extends State<Wrapper> {
         headerAnimationLoop: false,
         dialogType: DialogType.SUCCES,
         animType: AnimType.BOTTOMSLIDE,
-        title: 'NOTIFICAÇÃO',
-        desc: "Você acaba de receber uma \n mensagem da SME",
+        title: "NOTIFICAÇÃO - ${message["data"]["categoriaNotificacao"]}",
+        desc: "Você acaba de receber uma \n mensagem.",
         btnOkOnPress: () {
           _navigateToMessageView(message);
         },
