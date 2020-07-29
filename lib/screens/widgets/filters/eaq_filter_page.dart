@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/messages.controller.dart';
 
 class EAQFilterPage extends StatefulWidget {
   @override
@@ -11,9 +13,12 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
   bool tumarCheck = true;
   bool smeCheck = true;
   bool ueCheck = true;
+
+  List<String> categoriesSelectd = [];
+
   @override
   Widget build(BuildContext context) {
-    // final _messagesController = Provider.of<MessagesController>(context);
+    final _messagesController = Provider.of<MessagesController>(context);
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
@@ -42,6 +47,7 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
               setState(() {
                 tumarCheck = !tumarCheck;
               });
+              _messagesController.filterItems("TURMA");
             },
             child: Chip(
               backgroundColor:
@@ -63,6 +69,7 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
               setState(() {
                 smeCheck = !smeCheck;
               });
+              _messagesController.filterItems("SME");
             },
             child: Chip(
               backgroundColor: smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
@@ -81,6 +88,7 @@ class _EAQFilterPageState extends State<EAQFilterPage> {
               setState(() {
                 ueCheck = !ueCheck;
               });
+              _messagesController.filterItems("UE");
             },
             child: Chip(
               backgroundColor: ueCheck ? Color(0xffC7C7FF) : Color(0xffDADADA),

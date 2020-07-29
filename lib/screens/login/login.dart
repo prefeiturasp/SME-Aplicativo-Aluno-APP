@@ -3,6 +3,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
@@ -30,7 +31,6 @@ class _LoginState extends State<Login> {
   final _passwordController = TextEditingController();
 
   bool _showPassword = true;
-  bool busy = false;
 
   bool _cpfIsError = false;
   bool _passwordIsError = false;
@@ -50,15 +50,9 @@ class _LoginState extends State<Login> {
   ) async {
     _storage.removeAllValues();
     _authenticateController.clearCurrentUser();
-    setState(() {
-      busy = true;
-    });
     _authenticateController.authenticateUser(cpf, password, false).then((data) {
       _storage.insertString("current_password", password);
       onSuccess();
-    });
-    setState(() {
-      busy = false;
     });
   }
 
@@ -279,33 +273,37 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: screenHeight * 7,
                               ),
-                              !busy
-                                  ? EAButton(
-                                      text: "ENTRAR",
-                                      icon: FontAwesomeIcons.chevronRight,
-                                      iconColor: Color(0xffffd037),
-                                      btnColor: Color(0xffd06d12),
-                                      desabled: CPFValidator.isValid(_cpf) &&
-                                          _dataNnascimentoAluno.length >= 7,
-                                      onPress: () {
-                                        if (_formKey.currentState.validate()) {
-                                          _handleSignIn(
-                                              _cpf, _dataNnascimentoAluno);
-                                        } else {
-                                          setState(() {
-                                            _cpfIsError = true;
-                                            _passwordIsError = true;
-                                          });
-                                        }
-                                      },
-                                    )
-                                  : GFLoader(
-                                      type: GFLoaderType.square,
-                                      loaderColorOne: Color(0xffDE9524),
-                                      loaderColorTwo: Color(0xffC65D00),
-                                      loaderColorThree: Color(0xffC65D00),
-                                      size: GFSize.LARGE,
-                                    ),
+                              Observer(builder: (context) {
+                                if (_authenticateController.isLoading) {
+                                  return GFLoader(
+                                    type: GFLoaderType.square,
+                                    loaderColorOne: Color(0xffDE9524),
+                                    loaderColorTwo: Color(0xffC65D00),
+                                    loaderColorThree: Color(0xffC65D00),
+                                    size: GFSize.LARGE,
+                                  );
+                                } else {
+                                  return EAButton(
+                                    text: "ENTRAR",
+                                    icon: FontAwesomeIcons.chevronRight,
+                                    iconColor: Color(0xffffd037),
+                                    btnColor: Color(0xffd06d12),
+                                    desabled: CPFValidator.isValid(_cpf) &&
+                                        _dataNnascimentoAluno.length >= 7,
+                                    onPress: () {
+                                      if (_formKey.currentState.validate()) {
+                                        _handleSignIn(
+                                            _cpf, _dataNnascimentoAluno);
+                                      } else {
+                                        setState(() {
+                                          _cpfIsError = true;
+                                          _passwordIsError = true;
+                                        });
+                                      }
+                                    },
+                                  );
+                                }
+                              }),
                             ]),
                       ),
                     ],

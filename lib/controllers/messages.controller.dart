@@ -29,7 +29,10 @@ abstract class _MessagesControllerBase with Store {
   ObservableList<Message> messagesNotDeleted;
 
   @observable
-  ObservableList<dynamic> auxList = ObservableList<dynamic>();
+  ObservableList<Message> auxList = ObservableList<Message>();
+
+  @observable
+  ObservableList<Message> filteredList = ObservableList<Message>();
 
   @observable
   bool isLoading = false;
@@ -45,6 +48,9 @@ abstract class _MessagesControllerBase with Store {
 
   @observable
   int countMessageTurma;
+
+  @observable
+  String filter = 'all';
 
   @action
   loadMessages() async {
@@ -100,11 +106,27 @@ abstract class _MessagesControllerBase with Store {
       }
 
       recentMessages = ObservableList<Message>.of(list);
-
-      recentMessages.length;
-
-      print(recentMessages);
     }
+  }
+
+  @action
+  filterItems(String filter) {
+    auxList = ObservableList.of([]);
+    this.filter = filter;
+    if (filter == "all") {
+      auxList = ObservableList.of(messagesNotDeleted);
+    } else {
+      messagesNotDeleted.forEach((element) {
+        if (element is String) {
+          if (element.categoriaNotificacao == filter) {
+            auxList.add(element);
+          }
+        } else if (element.categoriaNotificacao == filter) {
+          auxList.add(element);
+        }
+      });
+    }
+    filteredList = ObservableList.of(auxList);
   }
 
   @action

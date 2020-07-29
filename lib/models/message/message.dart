@@ -1,5 +1,3 @@
-import 'package:sme_app_aluno/models/message/grupo.dart';
-
 class Message {
   int id;
   String mensagem;

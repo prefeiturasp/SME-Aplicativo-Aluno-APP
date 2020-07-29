@@ -74,15 +74,30 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   final _$auxListAtom = Atom(name: '_MessagesControllerBase.auxList');
 
   @override
-  ObservableList<dynamic> get auxList {
+  ObservableList<Message> get auxList {
     _$auxListAtom.reportRead();
     return super.auxList;
   }
 
   @override
-  set auxList(ObservableList<dynamic> value) {
+  set auxList(ObservableList<Message> value) {
     _$auxListAtom.reportWrite(value, super.auxList, () {
       super.auxList = value;
+    });
+  }
+
+  final _$filteredListAtom = Atom(name: '_MessagesControllerBase.filteredList');
+
+  @override
+  ObservableList<Message> get filteredList {
+    _$filteredListAtom.reportRead();
+    return super.filteredList;
+  }
+
+  @override
+  set filteredList(ObservableList<Message> value) {
+    _$filteredListAtom.reportWrite(value, super.filteredList, () {
+      super.filteredList = value;
     });
   }
 
@@ -164,6 +179,21 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$filterAtom = Atom(name: '_MessagesControllerBase.filter');
+
+  @override
+  String get filter {
+    _$filterAtom.reportRead();
+    return super.filter;
+  }
+
+  @override
+  set filter(String value) {
+    _$filterAtom.reportWrite(value, super.filter, () {
+      super.filter = value;
+    });
+  }
+
   final _$loadMessagesAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessages');
 
@@ -206,6 +236,20 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         mensagemVisualia: mensagemVisualia));
   }
 
+  final _$_MessagesControllerBaseActionController =
+      ActionController(name: '_MessagesControllerBase');
+
+  @override
+  dynamic filterItems(String filter) {
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.filterItems');
+    try {
+      return super.filterItems(filter);
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
@@ -214,11 +258,13 @@ messages: ${messages},
 recentMessages: ${recentMessages},
 messagesNotDeleted: ${messagesNotDeleted},
 auxList: ${auxList},
+filteredList: ${filteredList},
 isLoading: ${isLoading},
 countMessage: ${countMessage},
 countMessageSME: ${countMessageSME},
 countMessageUE: ${countMessageUE},
-countMessageTurma: ${countMessageTurma}
+countMessageTurma: ${countMessageTurma},
+filter: ${filter}
     ''';
   }
 }

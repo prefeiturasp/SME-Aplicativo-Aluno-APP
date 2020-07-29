@@ -429,8 +429,13 @@ class _ListMessageState extends State<ListMessages> {
                           fontWeight: FontWeight.w500),
                     ),
               EAQFilterPage(),
-              _listCardsMessages(_messagesController.messagesNotDeleted,
-                  context, screenHeight, token)
+              Observer(builder: (context) {
+                return _listCardsMessages(
+                    _messagesController.messagesNotDeleted,
+                    context,
+                    screenHeight,
+                    token);
+              }),
             ],
           );
         }
