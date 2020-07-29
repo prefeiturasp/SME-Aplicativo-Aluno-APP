@@ -20,10 +20,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessageNotification extends StatefulWidget {
   final Message message;
-  final int codigoAlunoEol;
 
-  ViewMessageNotification(
-      {@required this.message, @required this.codigoAlunoEol});
+  ViewMessageNotification({@required this.message});
 
   @override
   _ViewMessageNotificationState createState() =>
@@ -48,7 +46,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     _messagesController.updateMessage(
         notificacaoId: widget.message.id,
         usuarioId: usuarioId,
-        codigoAlunoEol: widget.codigoAlunoEol,
+        codigoAlunoEol: 0,
         mensagemVisualia: true);
   }
 
