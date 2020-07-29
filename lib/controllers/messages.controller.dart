@@ -138,6 +138,5 @@ abstract class _MessagesControllerBase with Store {
   }) async {
     await _messagesRepository.readMessage(
         notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
-    loadMessages();
   }
 }

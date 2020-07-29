@@ -60,6 +60,8 @@ class MessageRepository implements IMessageRepository {
         body: body,
       );
       if (response.statusCode == 200) {
+        String currentName = await _storage.readValueStorage("current_name");
+        await _storage.removeKey("${currentName}_deleted_id");
         return jsonDecode(response.body);
       } else {
         print("[MessageRepository] Erro ao atualizar mensagem " +
