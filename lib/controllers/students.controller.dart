@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/repositories/student_repository.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 part 'students.controller.g.dart';
 
 class StudentsController = _StudentsControllerBase with _$StudentsController;
@@ -10,7 +9,6 @@ class StudentsController = _StudentsControllerBase with _$StudentsController;
 abstract class _StudentsControllerBase with Store {
   StudentRepository _studentRepository;
   FirebaseMessaging _firebaseMessaging;
-  final Storage _storage = Storage();
 
   _StudentsControllerBase() {
     _studentRepository = StudentRepository();

@@ -443,7 +443,6 @@ class _ListMessageState extends State<ListMessages> {
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
     if (connectionStatus == ConnectivityStatus.Offline) {
       BackgroundFetch.stop().then((int status) {
         print('[BackgroundFetch] stop success: $status');

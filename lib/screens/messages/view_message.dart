@@ -45,15 +45,25 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _viewMessageUpdate(bool isNotRead) async {
-    if (!widget.message.mensagemVisualizada || isNotRead) {
-      int usuarioId = await storage.readValueIntStorage("current_user_id");
+    int usuarioId = await storage.readValueIntStorage("current_user_id");
+
+    if (widget.message.mensagemVisualizada == false) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
           usuarioId: usuarioId,
           codigoAlunoEol: widget.codigoAlunoEol,
-          mensagemVisualia: !widget.message.mensagemVisualizada);
+          mensagemVisualia: true);
     }
-    return null;
+
+    if (widget.message.mensagemVisualizada) {
+      _messagesController.updateMessage(
+          notificacaoId: widget.message.id,
+          usuarioId: usuarioId,
+          codigoAlunoEol: widget.codigoAlunoEol,
+          mensagemVisualia: false);
+    } else {
+      return null;
+    }
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {

@@ -70,7 +70,7 @@ abstract class _MessagesControllerBase with Store {
       messagesNotDeleted = ObservableList<Message>.of(
           messages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
-      filterItems(filter);
+      filterItems(true, true, true);
     }
   }
 
@@ -111,25 +111,40 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  filterItems(String filter) {
-    auxList = ObservableList.of([]);
+  filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
+    auxList = ObservableList<Message>();
     this.filter = filter;
-    if (filter == "all") {
+    if (smeCheck && ueCheck && turmaCheck) {
       auxList = ObservableList.of(messagesNotDeleted);
-      filteredList = ObservableList.of(auxList);
-    } else {
-      if (filter == "SME") {
-        loadMessagesNotDeleteds();
-        var messagesNotSME = ObservableList.of(messagesNotDeleted)
-            .where((element) => element.categoriaNotificacao != filter)
-            .toList();
-        filteredList = ObservableList<Message>.of(messagesNotSME);
-      }
-
-      if (filter == "UE") {}
-
-      if (filter == "TURMA") {}
+    } else if (smeCheck && ueCheck && !turmaCheck) {
+      auxList = ObservableList<Message>.of(messagesNotDeleted
+          .where((e) => e.categoriaNotificacao != "TURMA")
+          .toList());
+    } else if (smeCheck && !ueCheck && turmaCheck) {
+      auxList = ObservableList.of(messagesNotDeleted)
+          .where((element) => element.categoriaNotificacao != "UE")
+          .toList();
+    } else if (smeCheck && !ueCheck && !turmaCheck) {
+      auxList = ObservableList.of(messagesNotDeleted)
+          .where((element) => element.categoriaNotificacao == "SME")
+          .toList();
+    } else if (!smeCheck && ueCheck && turmaCheck) {
+      auxList = ObservableList.of(messagesNotDeleted)
+          .where((element) => element.categoriaNotificacao != "SME")
+          .toList();
+    } else if (!smeCheck && ueCheck && !turmaCheck) {
+      auxList = ObservableList.of(messagesNotDeleted)
+          .where((element) => element.categoriaNotificacao == "UE")
+          .toList();
+    } else if (!smeCheck && !ueCheck && turmaCheck) {
+      auxList = ObservableList.of(messagesNotDeleted)
+          .where((element) => element.categoriaNotificacao == "TURMA")
+          .toList();
+    } else if (!smeCheck && !ueCheck && !turmaCheck) {
+      auxList = ObservableList.of([]);
     }
+
+    filteredList = ObservableList.of(auxList);
   }
 
   @action

@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
@@ -166,6 +167,21 @@ class _ListStudantsState extends State<ListStudants> {
         title: Text("Estudantes"),
         backgroundColor: Color(0xffEEC25E),
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              BackgroundFetch.stop().then((int status) {
+                print('[BackgroundFetch] stop success: $status');
+              });
+              Auth.logout(context);
+            },
+            icon: Icon(
+              FontAwesomeIcons.signOutAlt,
+              color: Colors.white,
+              size: screenHeight * 2,
+            ),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: _onBackPress,

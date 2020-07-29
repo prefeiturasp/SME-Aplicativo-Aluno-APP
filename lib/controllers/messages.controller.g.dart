@@ -240,11 +240,11 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       ActionController(name: '_MessagesControllerBase');
 
   @override
-  dynamic filterItems(String filter) {
+  dynamic filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
     final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
         name: '_MessagesControllerBase.filterItems');
     try {
-      return super.filterItems(filter);
+      return super.filterItems(turmaCheck, smeCheck, ueCheck);
     } finally {
       _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
     }
