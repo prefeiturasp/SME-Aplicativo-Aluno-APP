@@ -120,7 +120,9 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Icon(
-                      FontAwesomeIcons.envelopeOpen,
+                      widget.recent
+                          ? FontAwesomeIcons.envelope
+                          : FontAwesomeIcons.envelopeOpen,
                       color: widget.recent
                           ? Color(0xffFFD037)
                           : widget.message.categoriaNotificacao == "SME"
@@ -169,7 +171,9 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                         ),
                       ),
                       child: Icon(
-                        FontAwesomeIcons.envelopeOpen,
+                        widget.recent
+                            ? FontAwesomeIcons.envelope
+                            : FontAwesomeIcons.envelopeOpen,
                         color: !widget.recent
                             ? Color(0xffffffff)
                             : Color(0xffC65D00),

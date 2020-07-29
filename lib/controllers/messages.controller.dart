@@ -70,6 +70,7 @@ abstract class _MessagesControllerBase with Store {
       messagesNotDeleted = ObservableList<Message>.of(
           messages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
+      filterItems(filter);
     }
   }
 
@@ -115,18 +116,20 @@ abstract class _MessagesControllerBase with Store {
     this.filter = filter;
     if (filter == "all") {
       auxList = ObservableList.of(messagesNotDeleted);
+      filteredList = ObservableList.of(auxList);
     } else {
-      messagesNotDeleted.forEach((element) {
-        if (element is String) {
-          if (element.categoriaNotificacao == filter) {
-            auxList.add(element);
-          }
-        } else if (element.categoriaNotificacao == filter) {
-          auxList.add(element);
-        }
-      });
+      if (filter == "SME") {
+        loadMessagesNotDeleteds();
+        var messagesNotSME = ObservableList.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao != filter)
+            .toList();
+        filteredList = ObservableList<Message>.of(messagesNotSME);
+      }
+
+      if (filter == "UE") {}
+
+      if (filter == "TURMA") {}
     }
-    filteredList = ObservableList.of(auxList);
   }
 
   @action

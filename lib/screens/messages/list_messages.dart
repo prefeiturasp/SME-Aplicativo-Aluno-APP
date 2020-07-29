@@ -430,11 +430,8 @@ class _ListMessageState extends State<ListMessages> {
                     ),
               EAQFilterPage(),
               Observer(builder: (context) {
-                return _listCardsMessages(
-                    _messagesController.messagesNotDeleted,
-                    context,
-                    screenHeight,
-                    token);
+                return _listCardsMessages(_messagesController.filteredList,
+                    context, screenHeight, token);
               }),
             ],
           );
