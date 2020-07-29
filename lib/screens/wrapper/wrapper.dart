@@ -69,7 +69,7 @@ class _WrapperState extends State<Wrapper> {
   _popUpNotification(Map<String, dynamic> message) {
     AwesomeDialog(
         context: context,
-        headerAnimationLoop: false,
+        headerAnimationLoop: true,
         dialogType: DialogType.SUCCES,
         animType: AnimType.BOTTOMSLIDE,
         title: "NOTIFICAÇÃO - ${message["data"]["categoriaNotificacao"]}",
