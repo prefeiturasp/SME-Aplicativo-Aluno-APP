@@ -250,8 +250,8 @@ class _ListMessageState extends State<ListMessages> {
           size: GFSize.LARGE,
         );
       } else {
-        _messagesController.loadMessagesNotDeleteds();
-
+        // _messagesController.loadMessagesNotDeleteds();
+        _messagesController.filterItems(true, false, true);
         if (_messagesController.messagesNotDeleted == null ||
             _messagesController.messagesNotDeleted.isEmpty) {
           return Container(
@@ -430,8 +430,13 @@ class _ListMessageState extends State<ListMessages> {
                     ),
               EAQFilterPage(),
               Observer(builder: (context) {
-                return _listCardsMessages(_messagesController.filteredList,
-                    context, screenHeight, token);
+                if (_messagesController.filteredList != null &&
+                    _messagesController.filteredList.isNotEmpty) {
+                  return _listCardsMessages(_messagesController.filteredList,
+                      context, screenHeight, token);
+                } else {
+                  return Container();
+                }
               }),
             ],
           );

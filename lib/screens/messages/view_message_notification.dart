@@ -46,7 +46,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     _messagesController.updateMessage(
         notificacaoId: widget.message.id,
         usuarioId: usuarioId,
-        codigoAlunoEol: 0,
+        codigoAlunoEol: widget.message.codigoEOL,
         mensagemVisualia: true);
   }
 

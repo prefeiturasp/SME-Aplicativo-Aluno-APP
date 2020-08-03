@@ -6,6 +6,7 @@ class Message {
   String criadoEm;
   bool mensagemVisualizada;
   String categoriaNotificacao;
+  int codigoEOL;
 
   Message(
       {this.id,
@@ -14,7 +15,8 @@ class Message {
       this.dataEnvio,
       this.criadoEm,
       this.mensagemVisualizada,
-      this.categoriaNotificacao});
+      this.categoriaNotificacao,
+      this.codigoEOL});
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,6 +26,7 @@ class Message {
     criadoEm = json['criadoEm'];
     mensagemVisualizada = json['mensagemVisualizada'];
     categoriaNotificacao = json['categoriaNotificacao'];
+    codigoEOL = json['CodigoEOL'];
   }
 
   Map<String, dynamic> toJson() {

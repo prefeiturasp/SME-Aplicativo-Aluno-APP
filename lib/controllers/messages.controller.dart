@@ -49,9 +49,6 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessageTurma;
 
-  @observable
-  String filter = 'all';
-
   @action
   loadMessages() async {
     String token = await _storage.readValueStorage("token");
@@ -62,37 +59,42 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
+  loadMessageToFilters(bool turmaCheck, bool smeCheck, bool ueCheck) {
+    loadMessagesNotDeleteds();
+    filterItems(turmaCheck, smeCheck, ueCheck);
+  }
+
+  @action
   loadMessagesNotDeleteds() async {
     if (messages != null) {
-      String currentName = await _storage.readValueStorage("current_name");
-      var _ids =
+      final currentName = await _storage.readValueStorage("current_name");
+      final _ids =
           await _storage.readValueStorage("${currentName}_deleted_id") ?? "";
       messagesNotDeleted = ObservableList<Message>.of(
           messages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
-      filterItems(true, true, true);
     }
   }
 
   @action
-  loadRecentMessagesPorCategory() async {
+  void loadRecentMessagesPorCategory() {
     if (messagesNotDeleted != null) {
-      var messagesUe = ObservableList<Message>.of(messagesNotDeleted
+      final messagesUe = ObservableList<Message>.of(messagesNotDeleted
           .where((e) => e.categoriaNotificacao == "UE")
           .toList());
       countMessageUE = messagesUe.length;
 
-      var messagesSME = ObservableList<Message>.of(messagesNotDeleted
+      final messagesSME = ObservableList<Message>.of(messagesNotDeleted
           .where((e) => e.categoriaNotificacao == "SME")
           .toList());
       countMessageSME = messagesSME.length;
 
-      var messagesTurma = ObservableList<Message>.of(messagesNotDeleted
+      final messagesTurma = ObservableList<Message>.of(messagesNotDeleted
           .where((e) => e.categoriaNotificacao == "TURMA")
           .toList());
       countMessageTurma = messagesTurma.length;
 
-      var list = ObservableList<Message>();
+      final list = ObservableList<Message>();
 
       if (countMessageUE > 0) {
         list.add(messagesUe.first);
@@ -111,40 +113,52 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
-    auxList = ObservableList<Message>();
-    this.filter = filter;
-    if (smeCheck && ueCheck && turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted);
-    } else if (smeCheck && ueCheck && !turmaCheck) {
-      auxList = ObservableList<Message>.of(messagesNotDeleted
-          .where((e) => e.categoriaNotificacao != "TURMA")
-          .toList());
-    } else if (smeCheck && !ueCheck && turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted)
-          .where((element) => element.categoriaNotificacao != "UE")
-          .toList();
-    } else if (smeCheck && !ueCheck && !turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted)
-          .where((element) => element.categoriaNotificacao == "SME")
-          .toList();
-    } else if (!smeCheck && ueCheck && turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted)
-          .where((element) => element.categoriaNotificacao != "SME")
-          .toList();
-    } else if (!smeCheck && ueCheck && !turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted)
-          .where((element) => element.categoriaNotificacao == "UE")
-          .toList();
-    } else if (!smeCheck && !ueCheck && turmaCheck) {
-      auxList = ObservableList.of(messagesNotDeleted)
-          .where((element) => element.categoriaNotificacao == "TURMA")
-          .toList();
-    } else if (!smeCheck && !ueCheck && !turmaCheck) {
-      auxList = ObservableList.of([]);
-    }
+  void filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
+    if (messagesNotDeleted != null) {
+      var auxList = ObservableList<Message>();
+      if (smeCheck && ueCheck && turmaCheck) {
+        final condition1 = ObservableList<Message>.of(messagesNotDeleted);
+        auxList = ObservableList<Message>.of(condition1);
+      } else if (smeCheck && ueCheck && !turmaCheck) {
+        final condition2 = ObservableList<Message>.of(messagesNotDeleted
+            .where((e) => e.categoriaNotificacao != "TURMA")
+            .toList());
+        auxList = ObservableList<Message>.of(condition2);
+      } else if (smeCheck && !ueCheck && turmaCheck) {
+        final condition3 = ObservableList<Message>.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao != "UE")
+            .toList();
+        auxList = ObservableList<Message>.of(condition3);
+      } else if (smeCheck && !ueCheck && !turmaCheck) {
+        final condition4 = ObservableList<Message>.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao == "SME")
+            .toList();
+        auxList = ObservableList<Message>.of(condition4);
+      } else if (!smeCheck && ueCheck && turmaCheck) {
+        final condition5 = ObservableList<Message>.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao != "SME")
+            .toList();
+        auxList = ObservableList<Message>.of(condition5);
+      } else if (!smeCheck && ueCheck && !turmaCheck) {
+        final condition6 = ObservableList<Message>.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao == "UE")
+            .toList();
+        auxList = ObservableList<Message>.of(condition6);
+      } else if (!smeCheck && !ueCheck && turmaCheck) {
+        final condition7 = ObservableList<Message>.of(messagesNotDeleted)
+            .where((element) => element.categoriaNotificacao == "TURMA")
+            .toList();
+        auxList = ObservableList<Message>.of(condition7);
+      } else if (!smeCheck && !ueCheck && !turmaCheck) {
+        final condition8 = ObservableList<Message>.of([]);
+        auxList = ObservableList<Message>.of(condition8);
+      }
 
-    filteredList = ObservableList.of(auxList);
+      filteredList = ObservableList.of(auxList);
+      print("filteredList --->");
+      print(filteredList.length);
+      print("filteredList --->");
+    }
   }
 
   @action

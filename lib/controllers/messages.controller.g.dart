@@ -179,21 +179,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$filterAtom = Atom(name: '_MessagesControllerBase.filter');
-
-  @override
-  String get filter {
-    _$filterAtom.reportRead();
-    return super.filter;
-  }
-
-  @override
-  set filter(String value) {
-    _$filterAtom.reportWrite(value, super.filter, () {
-      super.filter = value;
-    });
-  }
-
   final _$loadMessagesAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessages');
 
@@ -209,15 +194,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   Future loadMessagesNotDeleteds() {
     return _$loadMessagesNotDeletedsAsyncAction
         .run(() => super.loadMessagesNotDeleteds());
-  }
-
-  final _$loadRecentMessagesPorCategoryAsyncAction =
-      AsyncAction('_MessagesControllerBase.loadRecentMessagesPorCategory');
-
-  @override
-  Future loadRecentMessagesPorCategory() {
-    return _$loadRecentMessagesPorCategoryAsyncAction
-        .run(() => super.loadRecentMessagesPorCategory());
   }
 
   final _$updateMessageAsyncAction =
@@ -240,7 +216,29 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       ActionController(name: '_MessagesControllerBase');
 
   @override
-  dynamic filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
+  dynamic loadMessageToFilters(bool turmaCheck, bool smeCheck, bool ueCheck) {
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.loadMessageToFilters');
+    try {
+      return super.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void loadRecentMessagesPorCategory() {
+    final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
+        name: '_MessagesControllerBase.loadRecentMessagesPorCategory');
+    try {
+      return super.loadRecentMessagesPorCategory();
+    } finally {
+      _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
     final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
         name: '_MessagesControllerBase.filterItems');
     try {
@@ -263,8 +261,7 @@ isLoading: ${isLoading},
 countMessage: ${countMessage},
 countMessageSME: ${countMessageSME},
 countMessageUE: ${countMessageUE},
-countMessageTurma: ${countMessageTurma},
-filter: ${filter}
+countMessageTurma: ${countMessageTurma}
     ''';
   }
 }

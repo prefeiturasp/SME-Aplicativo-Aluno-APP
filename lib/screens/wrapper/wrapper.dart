@@ -88,6 +88,7 @@ class _WrapperState extends State<Wrapper> {
         titulo: message["data"]["Titulo"],
         mensagem: message["data"]["Mensagem"],
         criadoEm: message["data"]["CriadoEm"],
+        codigoEOL: message["data"]["CodigoEOL"],
         categoriaNotificacao: message["data"]["categoriaNotificacao"]);
 
     Navigator.push(
