@@ -37,12 +37,13 @@ class MessageRepository implements IMessageRepository {
   }
 
   @override
-  Future<bool> readMessage(
-      int notificacaoId, String cpfUsuario, bool mensagemVisualia) async {
+  Future<bool> readMessage(int notificacaoId, int usuarioId, int codigoAlunoEol,
+      bool mensagemVisualia) async {
     String token = await _storage.readValueStorage("token");
     Map data = {
       "notificacaoId": notificacaoId,
-      "cpfUsuario": cpfUsuario,
+      "usuarioId": usuarioId,
+      "codigoAlunoEol": codigoAlunoEol,
       "mensagemVisualizada": mensagemVisualia
     };
 
@@ -51,7 +52,7 @@ class MessageRepository implements IMessageRepository {
 
     try {
       final response = await http.post(
-        "${Api.HOST}/UsuarioNotificacao",
+        "${Api.HOST}/UsuarioNotificacaoLeitura",
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
@@ -59,6 +60,8 @@ class MessageRepository implements IMessageRepository {
         body: body,
       );
       if (response.statusCode == 200) {
+        String currentName = await _storage.readValueStorage("current_name");
+        await _storage.removeKey("${currentName}_deleted_id");
         return jsonDecode(response.body);
       } else {
         print("[MessageRepository] Erro ao atualizar mensagem " +

@@ -38,6 +38,9 @@ abstract class _AuthenticateControllerBase with Store {
   @observable
   String token;
 
+  @observable
+  bool firstAccess;
+
   @action
   authenticateUser(String cpf, String password, bool onBackgroundFetch) async {
     isLoading = true;
@@ -58,5 +61,7 @@ abstract class _AuthenticateControllerBase with Store {
     currentEmail = await _storage.readValueStorage('current_email');
     currentPassword = await _storage.readValueStorage('current_password');
     token = await _storage.readValueStorage('token');
+    firstAccess =
+        await _storage.readValueBoolStorage('current_primeiro_acesso');
   }
 }

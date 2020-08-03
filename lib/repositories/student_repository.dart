@@ -15,7 +15,6 @@ class StudentRepository implements IStudentsRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         final dataEstudents = DataStudent.fromJson(decodeJson);
-
         return dataEstudents;
       } else {
         print("Erro ao carregar lista de Estudantes " +

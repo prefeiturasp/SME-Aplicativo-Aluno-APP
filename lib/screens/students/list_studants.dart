@@ -3,10 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
@@ -15,6 +15,7 @@ import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class ListStudants extends StatefulWidget {
   final String cpf;
@@ -31,6 +32,7 @@ class ListStudants extends StatefulWidget {
 class _ListStudantsState extends State<ListStudants> {
   AuthenticateController _authenticateController;
   StudentsController _studentsController;
+  final Storage _storage = Storage();
 
   @override
   void initState() {
@@ -72,8 +74,8 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    await _authenticateController.authenticateUser(
-        widget.cpf, widget.password, true);
+    String password = await _storage.readValueStorage("current_password");
+    await _authenticateController.authenticateUser(widget.cpf, password, true);
 
     print(
         "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
@@ -132,17 +134,10 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
                   BackgroundFetch.stop().then((int status) {
                     print('[BackgroundFetch] stop success: $status');
                   });
-                  prefs.remove('current_name');
-                  prefs.remove('current_cpf');
-                  prefs.remove('current_email');
-                  prefs.remove('token');
-                  prefs.remove('password');
-                  prefs.remove('dispositivo_id');
+                  Auth.removeCurrentUser();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Login()));
                 },
@@ -166,14 +161,27 @@ class _ListStudantsState extends State<ListStudants> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    // _loadingAllStudents();
-
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
         title: Text("Estudantes"),
         backgroundColor: Color(0xffEEC25E),
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              BackgroundFetch.stop().then((int status) {
+                print('[BackgroundFetch] stop success: $status');
+              });
+              Auth.logout(context);
+            },
+            icon: Icon(
+              FontAwesomeIcons.signOutAlt,
+              color: Colors.white,
+              size: screenHeight * 2,
+            ),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: _onBackPress,

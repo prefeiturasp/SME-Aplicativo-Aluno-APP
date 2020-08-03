@@ -7,6 +7,7 @@ class StudentInfo extends StatelessWidget {
   final String schoolName;
   final String schoolType;
   final String studentGrade;
+  final int studentEOL;
   final Widget avatar;
   final EdgeInsets padding;
 
@@ -14,6 +15,7 @@ class StudentInfo extends StatelessWidget {
       {@required this.studentName,
       @required this.schoolName,
       @required this.schoolType,
+      this.studentEOL,
       this.studentGrade,
       this.avatar,
       this.padding});
@@ -62,7 +64,7 @@ class StudentInfo extends StatelessWidget {
                     minFontSize: 10,
                     maxLines: 2,
                     style: TextStyle(
-                      color: Color(0xff666666),
+                      color: Color(0xffC4C4C4),
                     ),
                   ),
                 ),
@@ -74,6 +76,16 @@ class StudentInfo extends StatelessWidget {
                     minFontSize: 10,
                     style: TextStyle(
                         color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Visibility(
+                  visible: studentEOL != null,
+                  child: AutoSizeText(
+                    "COD. EOL: $studentEOL",
+                    maxFontSize: 12,
+                    minFontSize: 10,
+                    style: TextStyle(
+                        color: Color(0xff757575), fontWeight: FontWeight.w500),
                   ),
                 ),
               ],

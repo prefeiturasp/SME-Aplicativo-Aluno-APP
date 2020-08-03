@@ -107,7 +107,9 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Icon(
-                          FontAwesomeIcons.envelopeOpen,
+                          widget.recent
+                              ? FontAwesomeIcons.envelope
+                              : FontAwesomeIcons.envelopeOpen,
                           color: widget.recent
                               ? Color(0xffFFD037)
                               : Color(0xffE1771D),

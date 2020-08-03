@@ -1,18 +1,23 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
+import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/screens/widgets/filters/eaq_filter_page.dart';
+import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
@@ -20,15 +25,22 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 class ListMessages extends StatefulWidget {
   final String token;
   final int codigoGrupo;
-  ListMessages({@required this.token, @required this.codigoGrupo});
+  final int codigoAlunoEol;
+
+  ListMessages(
+      {@required this.token,
+      @required this.codigoGrupo,
+      @required this.codigoAlunoEol});
   _ListMessageState createState() => _ListMessageState();
 }
 
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
   Storage storage;
-
   List<Message> listOfmessages;
+  bool turmaCheck = true;
+  bool smeCheck = true;
+  bool ueCheck = true;
 
   @override
   void initState() {
@@ -81,12 +93,13 @@ class _ListMessageState extends State<ListMessages> {
 
   _navigateToMessage(BuildContext context, String token, Message message) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ViewMessage(
-                  token: token,
-                  message: message,
-                ))).whenComplete(() => _loadingMessages());
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewMessage(
+                    token: token,
+                    message: message,
+                    codigoAlunoEol: widget.codigoAlunoEol)))
+        .whenComplete(() => _loadingMessages());
   }
 
   Widget _listCardsMessages(List<Message> messages, BuildContext context,
@@ -100,9 +113,10 @@ class _ListMessageState extends State<ListMessages> {
                     _navigateToMessage(context, widget.token, item);
                   },
                   child: CardMessage(
-                    headerTitle: "ASSUNTO",
-                    headerIcon: false,
+                    headerTitle: item.categoriaNotificacao,
+                    headerIcon: true,
                     recentMessage: !item.mensagemVisualizada,
+                    categoriaNotificacao: item.categoriaNotificacao,
                     content: <Widget>[
                       Container(
                         width: screenHeight * 40,
@@ -112,9 +126,7 @@ class _ListMessageState extends State<ListMessages> {
                           minFontSize: 14,
                           maxLines: 2,
                           style: TextStyle(
-                              color: !item.mensagemVisualizada
-                                  ? Colors.white
-                                  : Color(0xff666666),
+                              color: Color(0xff42474A),
                               fontWeight: FontWeight.w700),
                         ),
                       ),
@@ -132,9 +144,7 @@ class _ListMessageState extends State<ListMessages> {
                           maxLines: 10,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              color: !item.mensagemVisualizada
-                                  ? Colors.white
-                                  : Color(0xff666666),
+                              color: Color(0xff929292),
                               height: screenHeight * 0.240),
                         ),
                       ),
@@ -148,9 +158,7 @@ class _ListMessageState extends State<ListMessages> {
                         minFontSize: 14,
                         maxLines: 2,
                         style: TextStyle(
-                            color: !item.mensagemVisualizada
-                                ? Colors.white
-                                : Color(0xff666666),
+                            color: Color(0xff929292),
                             fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -173,6 +181,7 @@ class _ListMessageState extends State<ListMessages> {
                             child: Icon(
                               FontAwesomeIcons.trashAlt,
                               color: Color(0xffC65D00),
+                              size: screenHeight * 2.5,
                             ),
                           ),
                         ),
@@ -195,6 +204,8 @@ class _ListMessageState extends State<ListMessages> {
                                           ViewMessage(
                                             message: item,
                                             token: widget.token,
+                                            codigoAlunoEol:
+                                                widget.codigoAlunoEol,
                                           )))
                                   .whenComplete(() => _loadingMessages());
                             },
@@ -241,9 +252,8 @@ class _ListMessageState extends State<ListMessages> {
           size: GFSize.LARGE,
         );
       } else {
-        _messagesController.messagesPerGroups(widget.codigoGrupo);
-        _messagesController.loadMessagesNotDeleteds();
-
+        // _messagesController.loadMessagesNotDeleteds();
+        _messagesController.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
         if (_messagesController.messagesNotDeleted == null ||
             _messagesController.messagesNotDeleted.isEmpty) {
           return Container(
@@ -284,10 +294,13 @@ class _ListMessageState extends State<ListMessages> {
                       _messagesController.messagesNotDeleted.first);
                 },
                 child: CardMessage(
-                  headerTitle: "ASSUNTO",
+                  headerTitle: _messagesController
+                      .messagesNotDeleted.first.categoriaNotificacao,
                   headerIcon: true,
                   recentMessage: !_messagesController
                       .messagesNotDeleted.first.mensagemVisualizada,
+                  categoriaNotificacao: _messagesController
+                      .messagesNotDeleted.first.categoriaNotificacao,
                   content: <Widget>[
                     Container(
                       width: screenHeight * 40,
@@ -297,10 +310,7 @@ class _ListMessageState extends State<ListMessages> {
                         minFontSize: 14,
                         maxLines: 2,
                         style: TextStyle(
-                            color: !_messagesController.messagesNotDeleted.first
-                                    .mensagemVisualizada
-                                ? Colors.white
-                                : Color(0xff666666),
+                            color: Color(0xff42474A),
                             fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -317,10 +327,7 @@ class _ListMessageState extends State<ListMessages> {
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: !_messagesController
-                                  .messagesNotDeleted.first.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
+                          color: Color(0xff929292),
                           height: screenHeight * 0.240,
                         ),
                       ),
@@ -336,10 +343,7 @@ class _ListMessageState extends State<ListMessages> {
                       minFontSize: 14,
                       maxLines: 2,
                       style: TextStyle(
-                          color: !_messagesController
-                                  .messagesNotDeleted.first.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
+                          color: Color(0xff929292),
                           fontWeight: FontWeight.w700),
                     ),
                   ],
@@ -426,8 +430,91 @@ class _ListMessageState extends State<ListMessages> {
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
-              _listCardsMessages(_messagesController.messagesNotDeleted,
-                  context, screenHeight, token)
+              EAQFilterPage(
+                items: <Widget>[
+                  AutoSizeText(
+                    "Filtro:",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xff666666)),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        turmaCheck = !turmaCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          turmaCheck ? Color(0xffC5DBA0) : Color(0xffDADADA),
+                      avatar: turmaCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText(
+                        "TURMA",
+                        style: TextStyle(color: Color(0xff42474A)),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        smeCheck = !smeCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
+                      avatar: smeCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("SME",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        ueCheck = !ueCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          ueCheck ? Color(0xffC7C7FF) : Color(0xffDADADA),
+                      avatar: ueCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("UE",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  )
+                ],
+              ),
+              Observer(builder: (context) {
+                if (_messagesController.filteredList != null &&
+                    _messagesController.filteredList.isNotEmpty) {
+                  return _listCardsMessages(_messagesController.filteredList,
+                      context, screenHeight, token);
+                } else {
+                  return Container();
+                }
+              }),
             ],
           );
         }
@@ -437,39 +524,47 @@ class _ListMessageState extends State<ListMessages> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
-    return Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      appBar: AppBar(
-        title: Text("Mensagens"),
-        backgroundColor: Color(0xffEEC25E),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop(true);
-          },
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    if (connectionStatus == ConnectivityStatus.Offline) {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
+      return NotInteernet();
+    } else {
+      var size = MediaQuery.of(context).size;
+      var screenHeight =
+          (size.height - MediaQuery.of(context).padding.top) / 100;
+      return Scaffold(
+        backgroundColor: Color(0xffE5E5E5),
+        appBar: AppBar(
+          title: Text("Mensagens"),
+          backgroundColor: Color(0xffEEC25E),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
         ),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await _messagesController.loadMessages();
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(
-                horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildListMessages(context, screenHeight, widget.token),
-              ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await _messagesController.loadMessages();
+          },
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildListMessages(context, screenHeight, widget.token),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

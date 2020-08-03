@@ -4,22 +4,22 @@ import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
-  final Storage storage = Storage();
+  final Storage _storage = Storage();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
-    String userPassword = await storage.readValueStorage("current_password");
     String idDevice = await _firebaseMessaging.getToken();
     print("FIREBASE TOKEN: $idDevice");
 
     if (!onBackgroundFetch) {
       var ids = new List<int>.generate(20, (i) => i + 1);
       ids.forEach((element) {
-        print("Ids: $element");
+        print("Remove ids: $element");
         _firebaseMessaging.unsubscribeFromTopic(element.toString());
       });
     }
@@ -29,23 +29,27 @@ class AuthenticateRepository implements IAuthenticateRepository {
           "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
 
       if (response.statusCode == 200) {
+        Auth.removeCurrentUser();
+
         var decodeJson = jsonDecode(response.body);
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
           addCurrentUserToStorage(
-            idDevice,
-            user.data.nome,
-            user.data.cpf,
-            user.data.email ?? "",
-            user.data.token,
-            userPassword,
-            user.data.id,
-          );
+              idDevice,
+              user.data.nome,
+              user.data.cpf,
+              user.data.email ?? "",
+              user.data.token,
+              user.data.primeiroAcesso ? "" : password,
+              user.data.id,
+              user.data.celular ?? "",
+              user.data.primeiroAcesso,
+              user.data.informarCelularEmail);
         }
         return user;
       } else {
-        Data dataError = Data();
-        dataError.erros = [response.body];
+        var decodeError = jsonDecode(response.body);
+        var dataError = Data.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
@@ -54,14 +58,27 @@ class AuthenticateRepository implements IAuthenticateRepository {
     }
   }
 
-  addCurrentUserToStorage(String dispositivoId, String name, String cpf,
-      String email, String token, String password, int userId) async {
-    storage.insertString('current_name', name);
-    storage.insertString('current_cpf', cpf);
-    storage.insertString('current_email', email);
-    storage.insertString('token', token);
-    storage.insertString('password', password);
-    storage.insertString('dispositivo_id', dispositivoId);
-    storage.insertInt('current_user_id', userId);
+  addCurrentUserToStorage(
+    String dispositivoId,
+    String name,
+    String cpf,
+    String email,
+    String token,
+    String password,
+    int userId,
+    String celular,
+    bool primeiroAcesso,
+    bool informarCelularEmail,
+  ) async {
+    _storage.insertString('current_name', name);
+    _storage.insertString('current_cpf', cpf);
+    _storage.insertString('current_email', email);
+    _storage.insertString('token', token);
+    _storage.insertString('current_password', password);
+    _storage.insertString('dispositivo_id', dispositivoId);
+    _storage.insertInt('current_user_id', userId);
+    _storage.insertString('current_celular', celular);
+    _storage.insertBool('current_primeiro_acesso', primeiroAcesso);
+    _storage.insertBool('current_informar_celular_email', informarCelularEmail);
   }
 }
