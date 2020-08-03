@@ -37,8 +37,10 @@ class ListMessages extends StatefulWidget {
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
   Storage storage;
-
   List<Message> listOfmessages;
+  bool turmaCheck = true;
+  bool smeCheck = true;
+  bool ueCheck = true;
 
   @override
   void initState() {
@@ -251,7 +253,7 @@ class _ListMessageState extends State<ListMessages> {
         );
       } else {
         // _messagesController.loadMessagesNotDeleteds();
-        _messagesController.filterItems(true, false, true);
+        _messagesController.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
         if (_messagesController.messagesNotDeleted == null ||
             _messagesController.messagesNotDeleted.isEmpty) {
           return Container(
@@ -428,7 +430,82 @@ class _ListMessageState extends State<ListMessages> {
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
-              EAQFilterPage(),
+              EAQFilterPage(
+                items: <Widget>[
+                  AutoSizeText(
+                    "Filtro:",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xff666666)),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        turmaCheck = !turmaCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          turmaCheck ? Color(0xffC5DBA0) : Color(0xffDADADA),
+                      avatar: turmaCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText(
+                        "TURMA",
+                        style: TextStyle(color: Color(0xff42474A)),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        smeCheck = !smeCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
+                      avatar: smeCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("SME",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        ueCheck = !ueCheck;
+                      });
+                      _messagesController.filterItems(
+                          turmaCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          ueCheck ? Color(0xffC7C7FF) : Color(0xffDADADA),
+                      avatar: ueCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("UE",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  )
+                ],
+              ),
               Observer(builder: (context) {
                 if (_messagesController.filteredList != null &&
                     _messagesController.filteredList.isNotEmpty) {

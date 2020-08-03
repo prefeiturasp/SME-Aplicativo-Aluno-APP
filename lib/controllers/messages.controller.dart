@@ -155,9 +155,6 @@ abstract class _MessagesControllerBase with Store {
       }
 
       filteredList = ObservableList.of(auxList);
-      print("filteredList --->");
-      print(filteredList.length);
-      print("filteredList --->");
     }
   }
 
