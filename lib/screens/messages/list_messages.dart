@@ -51,7 +51,7 @@ class _ListMessageState extends State<ListMessages> {
 
   _loadingMessages() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages();
+    _messagesController.loadMessages(widget.codigoAlunoEol);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -548,7 +548,7 @@ class _ListMessageState extends State<ListMessages> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await _messagesController.loadMessages();
+            await _messagesController.loadMessages(widget.codigoAlunoEol);
           },
           child: SingleChildScrollView(
             child: Container(

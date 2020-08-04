@@ -50,11 +50,11 @@ abstract class _MessagesControllerBase with Store {
   int countMessageTurma;
 
   @action
-  loadMessages() async {
+  loadMessages(int codigoAluno) async {
     String token = await _storage.readValueStorage("token");
     isLoading = true;
     messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(token));
+        await _messagesRepository.fetchMessages(token, codigoAluno));
     isLoading = false;
   }
 

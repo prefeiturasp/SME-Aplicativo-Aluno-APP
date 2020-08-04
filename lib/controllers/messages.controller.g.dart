@@ -183,8 +183,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       AsyncAction('_MessagesControllerBase.loadMessages');
 
   @override
-  Future loadMessages() {
-    return _$loadMessagesAsyncAction.run(() => super.loadMessages());
+  Future loadMessages(int codigoAluno) {
+    return _$loadMessagesAsyncAction.run(() => super.loadMessages(codigoAluno));
   }
 
   final _$loadMessagesNotDeletedsAsyncAction =

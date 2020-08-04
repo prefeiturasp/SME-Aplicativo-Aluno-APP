@@ -36,7 +36,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   _loadingBackRecentMessage(String token) {
     setState(() {});
     _messagesController = MessagesController();
-    _messagesController.loadMessages();
+    _messagesController.loadMessages(widget.student.codigoEol);
   }
 
   navigateToListMessages(BuildContext context, Storage storage) async {
