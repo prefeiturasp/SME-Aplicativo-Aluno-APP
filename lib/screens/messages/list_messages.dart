@@ -512,7 +512,20 @@ class _ListMessageState extends State<ListMessages> {
                   return _listCardsMessages(_messagesController.filteredList,
                       context, screenHeight, token);
                 } else {
-                  return Container();
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 2.5),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Selecione uma categoria para visualizar as mensagens.",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
                 }
               }),
             ],
