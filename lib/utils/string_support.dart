@@ -21,4 +21,10 @@ class StringSupport {
         (Match m) => "(${m[1]}) ${m[2]}-${m[3]}");
     return valueFormated;
   }
+
+  static String replaceEmailSecurity(String oldString, int startIndex) {
+    var end = oldString.indexOf(new RegExp(r'@'));
+
+    return oldString.replaceRange(startIndex, end, "*********");
+  }
 }
