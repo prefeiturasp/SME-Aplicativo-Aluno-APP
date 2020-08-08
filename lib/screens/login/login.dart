@@ -11,8 +11,10 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
+import 'package:sme_app_aluno/screens/recover_password/recover_password.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class Login extends StatefulWidget {
@@ -271,7 +273,28 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                               SizedBox(
-                                height: screenHeight * 7,
+                                height: screenHeight * 3,
+                              ),
+                              Container(
+                                alignment: Alignment.bottomRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Nav.push(
+                                        context, RecoverPassword(input: _cpf));
+                                  },
+                                  child: AutoSizeText(
+                                    "Esqueci minha senha",
+                                    maxFontSize: 14,
+                                    minFontSize: 12,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                        color: Color(0xff757575),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: screenHeight * 4,
                               ),
                               Observer(builder: (context) {
                                 if (_authenticateController.isLoading) {

@@ -1,0 +1,62 @@
+import 'dart:convert';
+
+import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
+import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/utils/api.dart';
+
+class RecoverPasswordRepository implements IRecoverPasswordRepository {
+  @override
+  Future<String> sendToken(String cpf) async {
+    var _cpfUnformat = cpf.replaceAll(RegExp(r'[^\w\s]+'), '');
+    Map _data = {
+      "cpf": _cpfUnformat,
+    };
+    var body = json.encode(_data);
+
+    try {
+      final response = await http.put(
+        "${Api.HOST}/Autenticacao/Senha/Token",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        var decodeJson = jsonDecode(response.body);
+        String email = decodeJson["data"];
+        return email;
+      } else {
+        var decodeJson = jsonDecode(response.body);
+        var errorMessage = decodeJson["erros"][0];
+        return errorMessage;
+      }
+    } catch (e) {
+      return "error2";
+    }
+  }
+
+  @override
+  Future<String> validateToken(String token) async {
+    Map _data = {
+      "token": token,
+    };
+    var body = json.encode(_data);
+    try {
+      final response = await http.put(
+        "${Api.HOST}/Autenticacao/Senha/Token/Validar",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+      if (response.statusCode == 200) {
+        return "OK";
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error";
+    }
+  }
+}
