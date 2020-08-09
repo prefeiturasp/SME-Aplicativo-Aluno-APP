@@ -38,6 +38,9 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   void initState() {
     super.initState();
     _recoverPasswordController = RecoverPasswordController();
+    setState(() {
+      _cpf = widget.input != null ? widget.input : "";
+    });
   }
 
   _onPressGetToken(String cpf, BuildContext context) async {

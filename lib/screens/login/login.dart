@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
   bool _passwordIsError = false;
 
   String _cpf = '';
+  String _cpfRaw = '';
   String _dataNnascimentoAluno = '';
 
   @override
@@ -174,6 +175,10 @@ class _LoginState extends State<Login> {
                                     setState(() {
                                       _cpf = CPFValidator.strip(value);
                                     });
+
+                                    setState(() {
+                                      _cpfRaw = value;
+                                    });
                                   },
                                   validator: (value) {
                                     if (value.isNotEmpty) {
@@ -279,8 +284,8 @@ class _LoginState extends State<Login> {
                                 alignment: Alignment.bottomRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Nav.push(
-                                        context, RecoverPassword(input: _cpf));
+                                    Nav.push(context,
+                                        RecoverPassword(input: _cpfRaw));
                                   },
                                   child: AutoSizeText(
                                     "Esqueci minha senha",
