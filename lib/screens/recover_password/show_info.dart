@@ -8,6 +8,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
+import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/redefine_password/redefine_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -72,7 +73,6 @@ class _ShowInfoState extends State<ShowInfo> {
       key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Resumo do Estudante"),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
@@ -80,7 +80,7 @@ class _ShowInfoState extends State<ShowInfo> {
             Icons.arrow_back_ios,
             color: Color(0xffF36621),
           ),
-          onPressed: () => Nav.pop(context),
+          onPressed: () => Nav.push(context, Login()),
         ),
       ),
       body: SingleChildScrollView(
