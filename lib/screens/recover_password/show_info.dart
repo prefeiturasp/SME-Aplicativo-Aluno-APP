@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
@@ -156,7 +157,10 @@ class _ShowInfoState extends State<ShowInfo> {
                                     _token = value;
                                   });
                                 },
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(8),
+                                ],
                               ),
                             ),
                             SizedBox(
