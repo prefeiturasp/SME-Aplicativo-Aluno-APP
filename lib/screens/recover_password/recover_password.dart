@@ -37,29 +37,29 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   ReactionDisposer disposer;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _recoverPasswordController =
-        Provider.of<RecoverPasswordController>(context);
+  @override
+  void initState() {
+    super.initState();
+    _recoverPasswordController = RecoverPasswordController();
+  }
 
-    disposer =
-        reaction((_) => _recoverPasswordController.email != null, (isOK) {
-      if (isOK) {
-        Nav.push(
-            context,
-            ShowInfo(
-              email: _recoverPasswordController.email,
-            ));
-      } else {
-        onError();
-      }
-    });
+  _onPressGetToken(String cpf, BuildContext context) async {
+    await _recoverPasswordController.sendToken(cpf);
+    if (_recoverPasswordController.data.email != null) {
+      Nav.push(
+          context,
+          ShowInfo(
+            email: _recoverPasswordController.data.email,
+          ));
+    } else {
+      onError();
+    }
   }
 
   onError() {
     var snackbar = SnackBar(
-        content: _recoverPasswordController == null
-            ? Text("erro")
+        content: _recoverPasswordController.data != null
+            ? Text(_recoverPasswordController.data.erros[0])
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
@@ -110,7 +110,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                             left: screenHeight * 6,
                             right: screenHeight * 6),
                         child: AutoSizeText(
-                          "Ao continuar será acionada a opção de recuperação de senha e você receberá um e-mail com as orientações",
+                          "Ao continuar será acionada a opção de recuperação de senha e você receberá um e-mail com as orientações.",
                           textAlign: TextAlign.center,
                           maxFontSize: 16,
                           minFontSize: 14,
@@ -224,8 +224,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     desabled: CPFValidator.isValid(_cpf),
                                     onPress: () {
                                       if (_formKey.currentState.validate()) {
-                                        _recoverPasswordController
-                                            .sendToken(_cpf);
+                                        _onPressGetToken(_cpf, context);
                                       } else {
                                         return null;
                                       }

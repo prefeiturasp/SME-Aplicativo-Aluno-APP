@@ -9,6 +9,21 @@ part of 'recover_password.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
+  final _$dataAtom = Atom(name: '_RecoverPasswordControllerBase.data');
+
+  @override
+  Data get data {
+    _$dataAtom.reportRead();
+    return super.data;
+  }
+
+  @override
+  set data(Data value) {
+    _$dataAtom.reportWrite(value, super.data, () {
+      super.data = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_RecoverPasswordControllerBase.email');
 
   @override
@@ -58,6 +73,7 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
   @override
   String toString() {
     return '''
+data: ${data},
 email: ${email},
 loading: ${loading}
     ''';

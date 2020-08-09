@@ -67,16 +67,27 @@ class _ShowInfoState extends State<ShowInfo> {
                             right: screenHeight * 6),
                         child: Column(
                           children: <Widget>[
-                            AutoSizeText(
-                              "As orientações para recuperação de \n senha foram enviados para",
-                              textAlign: TextAlign.center,
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              maxLines: 5,
-                              style: TextStyle(
-                                  color: Color(0xff757575),
-                                  fontWeight: FontWeight.bold),
-                            ),
+                            widget.hasToken
+                                ? AutoSizeText(
+                                    "As orientação já foram enviadas \n para o email cadastrado.",
+                                    textAlign: TextAlign.center,
+                                    maxFontSize: 16,
+                                    minFontSize: 14,
+                                    maxLines: 5,
+                                    style: TextStyle(
+                                        color: Color(0xff757575),
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : AutoSizeText(
+                                    "As orientações para recuperação de \n senha foram enviadas para",
+                                    textAlign: TextAlign.center,
+                                    maxFontSize: 16,
+                                    minFontSize: 14,
+                                    maxLines: 5,
+                                    style: TextStyle(
+                                        color: Color(0xff757575),
+                                        fontWeight: FontWeight.bold),
+                                  ),
                             widget.hasToken
                                 ? Container()
                                 : SizedBox(
@@ -99,7 +110,9 @@ class _ShowInfoState extends State<ShowInfo> {
                               height: screenHeight * 3,
                             ),
                             AutoSizeText(
-                              "verifique sua caixa de entrada!",
+                              widget.hasToken
+                                  ? "Verifique sua caixa de entrada!"
+                                  : "verifique sua caixa de entrada!",
                               textAlign: TextAlign.center,
                               maxFontSize: 16,
                               minFontSize: 14,

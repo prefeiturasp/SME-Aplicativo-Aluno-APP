@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   @override
-  Future<String> sendToken(String cpf) async {
+  Future<Data> sendToken(String cpf) async {
     var _cpfUnformat = cpf.replaceAll(RegExp(r'[^\w\s]+'), '');
     Map _data = {
       "cpf": _cpfUnformat,
@@ -24,15 +25,16 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        String email = decodeJson["data"];
-        return email;
+        var data = Data.fromJson(decodeJson);
+        return data;
       } else {
-        var decodeJson = jsonDecode(response.body);
-        var errorMessage = decodeJson["erros"][0];
-        return errorMessage;
+        var decodeError = jsonDecode(response.body);
+        var dataError = Data.fromJson(decodeError);
+        return dataError;
       }
-    } catch (e) {
-      return "error2";
+    } catch (e, stacktrace) {
+      print("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
+      return null;
     }
   }
 
