@@ -52,7 +52,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   }
 
   _navigateToScreen() async {
-    if (_recoverPasswordController.data.ok) {
+    if (_recoverPasswordController.dataUser.data.cpf.isNotEmpty) {
       Nav.push(
         context,
         ListStudants(
