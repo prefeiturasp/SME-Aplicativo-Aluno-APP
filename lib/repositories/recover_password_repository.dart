@@ -77,13 +77,13 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
 
   @override
   Future<DataUser> redefinePassword(String password, String token) async {
-    Map _data = {"token": token, "senha": password};
-    var body = json.encode(_data);
     String idDevice = await _firebaseMessaging.getToken();
+    Map _data = {"token": token, "senha": password, "dispositivoId": idDevice};
+    var body = json.encode(_data);
 
     try {
       final response = await http.put(
-        "${Api.HOST}/Autenticacao/Senha/Token/Validar",
+        "${Api.HOST}/Autenticacao/Senha/Redefinir",
         headers: {
           "Content-Type": "application/json",
         },

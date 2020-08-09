@@ -50,18 +50,12 @@ class _WrapperState extends State<Wrapper> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         _popUpNotification(message);
-        print("<------------");
-        print(message);
-        print("------------>");
       },
       onLaunch: (Map<String, dynamic> message) async {
         await _navigateToMessageView(message);
       },
       onResume: (Map<String, dynamic> message) async {
         await _navigateToMessageView(message);
-        print("<------------");
-        print(message);
-        print("------------>");
       },
     );
   }

@@ -43,7 +43,7 @@ class MessageRepository implements IMessageRepository {
     Map data = {
       "notificacaoId": notificacaoId,
       "usuarioId": usuarioId,
-      "codigoAlunoEol": codigoAlunoEol,
+      "codigoAlunoEol": codigoAlunoEol != null ? codigoAlunoEol : 0,
       "mensagemVisualizada": mensagemVisualia
     };
 
