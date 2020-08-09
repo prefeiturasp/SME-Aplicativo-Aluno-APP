@@ -8,15 +8,17 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
+import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ShowInfo extends StatefulWidget {
+  final String cpf;
   final String email;
   final bool hasToken;
 
-  ShowInfo({this.email, this.hasToken = false});
+  ShowInfo({this.email, this.hasToken = false, this.cpf});
 
   @override
   _ShowInfoState createState() => _ShowInfoState();
@@ -39,7 +41,11 @@ class _ShowInfoState extends State<ShowInfo> {
   _onPressValidateToken(String token, BuildContext context) async {
     await _recoverPasswordController.validateToken(token);
     if (_recoverPasswordController.data.ok) {
-      print("DEU CERTO!");
+      Nav.push(
+          context,
+          ChangePassword(
+            cpf: widget.cpf,
+          ));
     } else {
       onError();
     }
