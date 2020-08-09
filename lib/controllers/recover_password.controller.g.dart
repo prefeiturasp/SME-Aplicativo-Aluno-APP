@@ -24,6 +24,21 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     });
   }
 
+  final _$dataUserAtom = Atom(name: '_RecoverPasswordControllerBase.dataUser');
+
+  @override
+  DataUser get dataUser {
+    _$dataUserAtom.reportRead();
+    return super.dataUser;
+  }
+
+  @override
+  set dataUser(DataUser value) {
+    _$dataUserAtom.reportWrite(value, super.dataUser, () {
+      super.dataUser = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_RecoverPasswordControllerBase.email');
 
   @override
@@ -70,10 +85,20 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     return _$validateTokenAsyncAction.run(() => super.validateToken(token));
   }
 
+  final _$redefinePasswordAsyncAction =
+      AsyncAction('_RecoverPasswordControllerBase.redefinePassword');
+
+  @override
+  Future redefinePassword(String password, String token) {
+    return _$redefinePasswordAsyncAction
+        .run(() => super.redefinePassword(password, token));
+  }
+
   @override
   String toString() {
     return '''
 data: ${data},
+dataUser: ${dataUser},
 email: ${email},
 loading: ${loading}
     ''';

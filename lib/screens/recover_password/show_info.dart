@@ -8,7 +8,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
-import 'package:sme_app_aluno/screens/change_password/change_password.dart';
+import 'package:sme_app_aluno/screens/redefine_password/redefine_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
@@ -43,8 +43,9 @@ class _ShowInfoState extends State<ShowInfo> {
     if (_recoverPasswordController.data.ok) {
       Nav.push(
           context,
-          ChangePassword(
+          RedefinePassword(
             cpf: widget.cpf,
+            token: token,
           ));
     } else {
       onError();
