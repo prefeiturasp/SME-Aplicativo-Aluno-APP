@@ -33,13 +33,14 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      print("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
+      print("[RecoverPassword] sendToken - Erro de requisição " +
+          stacktrace.toString());
       return null;
     }
   }
 
   @override
-  Future<String> validateToken(String token) async {
+  Future<Data> validateToken(String token) async {
     Map _data = {
       "token": token,
     };
@@ -53,12 +54,18 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        return "OK";
+        var decodeJson = jsonDecode(response.body);
+        var data = Data.fromJson(decodeJson);
+        return data;
       } else {
-        return "error";
+        var decodeError = jsonDecode(response.body);
+        var dataError = Data.fromJson(decodeError);
+        return dataError;
       }
-    } catch (e) {
-      return "error";
+    } catch (e, stacktrace) {
+      print("[RecoverPassword] validateToken - Erro de requisição " +
+          stacktrace.toString());
+      return null;
     }
   }
 }
