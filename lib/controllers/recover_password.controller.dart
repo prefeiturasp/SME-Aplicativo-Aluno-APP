@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/repositories/recover_password_repository.dart';
 
 part 'recover_password.controller.g.dart';
@@ -14,6 +15,9 @@ abstract class _RecoverPasswordControllerBase with Store {
   }
 
   @observable
+  Data data;
+
+  @observable
   String email;
 
   @observable
@@ -22,7 +26,7 @@ abstract class _RecoverPasswordControllerBase with Store {
   @action
   sendToken(String cpf) async {
     loading = true;
-    email = await _recoverPasswordRepository.sendToken(cpf);
+    data = await _recoverPasswordRepository.sendToken(cpf);
     loading = false;
   }
 

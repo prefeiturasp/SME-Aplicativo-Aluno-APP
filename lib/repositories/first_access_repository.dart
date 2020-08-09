@@ -37,7 +37,6 @@ class FirstAccessRepository implements IFirstAccessRepository {
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
-        print("Validação ${dataError.erros}");
         return dataError;
       }
     } catch (error, stacktrace) {
