@@ -33,7 +33,7 @@ abstract class _RecoverPasswordControllerBase with Store {
   @action
   validateToken(String token) async {
     loading = true;
-    email = await _recoverPasswordRepository.validateToken(token);
+    data = await _recoverPasswordRepository.validateToken(token);
     loading = false;
   }
 }

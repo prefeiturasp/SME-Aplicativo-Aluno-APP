@@ -23,7 +23,36 @@ class ShowInfo extends StatefulWidget {
 }
 
 class _ShowInfoState extends State<ShowInfo> {
+  final _formKey = GlobalKey<FormState>();
+  final scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  RecoverPasswordController _recoverPasswordController;
+
   String _token = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _recoverPasswordController = RecoverPasswordController();
+  }
+
+  _onPressValidateToken(String token, BuildContext context) async {
+    await _recoverPasswordController.validateToken(token);
+    if (_recoverPasswordController.data.ok) {
+      print("DEU CERTO!");
+    } else {
+      onError();
+    }
+  }
+
+  onError() {
+    var snackbar = SnackBar(
+        content: _recoverPasswordController.data != null
+            ? Text(_recoverPasswordController.data.erros[0])
+            : Text("Erro de serviço"));
+
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +62,7 @@ class _ShowInfoState extends State<ShowInfo> {
         Provider.of<RecoverPasswordController>(context);
 
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Resumo do Estudante"),
@@ -126,6 +156,7 @@ class _ShowInfoState extends State<ShowInfo> {
                         )),
                     Form(
                       autovalidate: true,
+                      key: _formKey,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,8 +214,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                   btnColor: Color(0xffd06d12),
                                   desabled: _token.length == 8,
                                   onPress: () {
-                                    _recoverPasswordController
-                                        .validateToken(_token);
+                                    _onPressValidateToken(_token, context);
                                   },
                                 );
                               }

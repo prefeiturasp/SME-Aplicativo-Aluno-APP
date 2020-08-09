@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
 import 'package:sme_app_aluno/screens/recover_password/show_info.dart';
@@ -34,9 +33,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   String _cpf = '';
 
   RecoverPasswordController _recoverPasswordController;
-  ReactionDisposer disposer;
 
-  @override
   @override
   void initState() {
     super.initState();
