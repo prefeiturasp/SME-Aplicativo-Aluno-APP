@@ -41,28 +41,24 @@ class _ViewMessageState extends State<ViewMessage> {
   void initState() {
     super.initState();
     _messagesController = MessagesController();
-    _viewMessageUpdate(false);
+    _viewMessageUpdate(widget.message.mensagemVisualizada, false);
   }
 
-  _viewMessageUpdate(bool isNotRead) async {
+  _viewMessageUpdate(bool mensagemVisualizada, bool action) async {
     int usuarioId = await storage.readValueIntStorage("current_user_id");
 
-    if (widget.message.mensagemVisualizada == false) {
-      _messagesController.updateMessage(
-          notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
-          codigoAlunoEol: widget.codigoAlunoEol,
-          mensagemVisualia: true);
-    }
-
-    if (widget.message.mensagemVisualizada) {
+    if (!mensagemVisualizada && action) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
           usuarioId: usuarioId,
           codigoAlunoEol: widget.codigoAlunoEol,
           mensagemVisualia: false);
-    } else {
-      return null;
+    } else if (!mensagemVisualizada) {
+      _messagesController.updateMessage(
+          notificacaoId: widget.message.id,
+          usuarioId: usuarioId,
+          codigoAlunoEol: widget.codigoAlunoEol,
+          mensagemVisualia: true);
     }
   }
 
@@ -104,7 +100,7 @@ class _ViewMessageState extends State<ViewMessage> {
               FlatButton(
                   child: Text("SIM"),
                   onPressed: () {
-                    _viewMessageUpdate(true);
+                    _viewMessageUpdate(false, true);
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(
                         content: Text("Mensagem marcada como não lida"));

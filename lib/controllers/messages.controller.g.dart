@@ -179,6 +179,22 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
+  final _$messageIsReadAtom =
+      Atom(name: '_MessagesControllerBase.messageIsRead');
+
+  @override
+  bool get messageIsRead {
+    _$messageIsReadAtom.reportRead();
+    return super.messageIsRead;
+  }
+
+  @override
+  set messageIsRead(bool value) {
+    _$messageIsReadAtom.reportWrite(value, super.messageIsRead, () {
+      super.messageIsRead = value;
+    });
+  }
+
   final _$loadMessagesAsyncAction =
       AsyncAction('_MessagesControllerBase.loadMessages');
 
@@ -261,7 +277,8 @@ isLoading: ${isLoading},
 countMessage: ${countMessage},
 countMessageSME: ${countMessageSME},
 countMessageUE: ${countMessageUE},
-countMessageTurma: ${countMessageTurma}
+countMessageTurma: ${countMessageTurma},
+messageIsRead: ${messageIsRead}
     ''';
   }
 }

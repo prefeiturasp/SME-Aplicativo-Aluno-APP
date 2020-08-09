@@ -49,6 +49,9 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessageTurma;
 
+  @observable
+  bool messageIsRead = false;
+
   @action
   loadMessages(int codigoAluno) async {
     String token = await _storage.readValueStorage("token");
@@ -167,5 +170,6 @@ abstract class _MessagesControllerBase with Store {
   }) async {
     await _messagesRepository.readMessage(
         notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
+    loadMessages(codigoAlunoEol);
   }
 }
