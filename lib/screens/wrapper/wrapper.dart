@@ -81,7 +81,7 @@ class _WrapperState extends State<Wrapper> {
       titulo: message["data"]["Titulo"],
       mensagem: message["data"]["Mensagem"],
       criadoEm: message["data"]["CriadoEm"],
-      codigoEOL: int.parse(message["data"]["CodigoEOL"]),
+      codigoEOL: int.parse(message["data"]["CodigoEOL"]) ?? 0,
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
     );
 
