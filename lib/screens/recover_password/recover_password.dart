@@ -50,6 +50,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
           context,
           ShowInfo(
             email: _recoverPasswordController.data.email,
+            cpf: cpf,
           ));
     } else {
       onError();

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,7 @@ import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
+import 'package:sme_app_aluno/utils/storage.dart';
 
 class RedefinePassword extends StatefulWidget {
   final String cpf;
@@ -23,7 +25,10 @@ class RedefinePassword extends StatefulWidget {
 }
 
 class _RedefinePasswordState extends State<RedefinePassword> {
+  final Storage _storage = Storage();
+
   final _formKey = GlobalKey<FormState>();
+
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final numeric = RegExp(r"[0-9]");
@@ -52,12 +57,13 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   }
 
   _navigateToScreen() async {
-    if (_recoverPasswordController.dataUser.data.cpf.isNotEmpty) {
+    if (_recoverPasswordController.dataUser.ok) {
+      var _token = await _storage.readValueStorage('token');
       Nav.push(
         context,
         ListStudants(
-          cpf: widget.cpf,
-          token: "recoverPasswordController.data",
+          cpf: _recoverPasswordController.dataUser.data.cpf,
+          token: _token,
           password: _password,
         ),
       );
@@ -67,14 +73,15 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   }
 
   _changePassword(String password, String token) async {
+    _storage.removeAllValues();
     await _recoverPasswordController.redefinePassword(password, token);
     _navigateToScreen();
   }
 
   onError() {
     var snackbar = SnackBar(
-        content: _recoverPasswordController.data != null
-            ? Text(_recoverPasswordController.data.erros[0])
+        content: _recoverPasswordController.dataUser != null
+            ? Text(_recoverPasswordController.dataUser.erros[0])
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);

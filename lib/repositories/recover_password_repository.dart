@@ -102,8 +102,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
             user.data.primeiroAcesso ? "" : password,
             user.data.id,
             user.data.celular ?? "",
-            user.data.primeiroAcesso,
-            user.data.informarCelularEmail);
+            false,
+            false);
         return user;
       } else {
         var decodeError = jsonDecode(response.body);
