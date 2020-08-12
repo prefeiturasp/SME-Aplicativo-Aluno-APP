@@ -22,7 +22,7 @@ pipeline {
         steps {
           withCredentials([file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV')]) {
 	        sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-                sh 'cat $GOOGLEJSONDEV'
+                //sh 'cat $GOOGLEJSONDEV'
                 sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
 	  }
         }
