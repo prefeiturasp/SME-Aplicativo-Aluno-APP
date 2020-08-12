@@ -507,16 +507,32 @@ class _ListMessageState extends State<ListMessages> {
                 ],
               ),
               Observer(builder: (context) {
+                // !turmaCheck && !smeCheck && !ueCheck
                 if (_messagesController.filteredList != null &&
                     _messagesController.filteredList.isNotEmpty) {
                   return _listCardsMessages(_messagesController.filteredList,
                       context, screenHeight, token);
-                } else {
+                } else if (!turmaCheck && !smeCheck && !ueCheck) {
                   return Container(
                     padding: EdgeInsets.all(screenHeight * 2.5),
                     margin: EdgeInsets.only(top: screenHeight * 2.5),
                     child: AutoSizeText(
                       "Selecione uma categoria para visualizar as mensagens.",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 2.5),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Não existe notificações para as categorias selecioandas.",
                       textAlign: TextAlign.center,
                       minFontSize: 14,
                       maxFontSize: 16,
