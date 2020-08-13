@@ -529,10 +529,10 @@ class _ListMessageState extends State<ListMessages> {
                   );
                 } else {
                   return Container(
-                    padding: EdgeInsets.all(screenHeight * 2.5),
+                    padding: EdgeInsets.all(screenHeight * 4),
                     margin: EdgeInsets.only(top: screenHeight * 2.5),
                     child: AutoSizeText(
-                      "Não existe notificações para as categorias selecioandas.",
+                      "Não foi encontrada nenhuma mensagem para este filtro",
                       textAlign: TextAlign.center,
                       minFontSize: 14,
                       maxFontSize: 16,
