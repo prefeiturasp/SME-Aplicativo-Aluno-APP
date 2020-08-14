@@ -51,7 +51,7 @@ class _ListMessageState extends State<ListMessages> {
 
   _loadingMessages() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages();
+    _messagesController.loadMessages(widget.codigoAlunoEol);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -507,12 +507,41 @@ class _ListMessageState extends State<ListMessages> {
                 ],
               ),
               Observer(builder: (context) {
+                // !turmaCheck && !smeCheck && !ueCheck
                 if (_messagesController.filteredList != null &&
                     _messagesController.filteredList.isNotEmpty) {
                   return _listCardsMessages(_messagesController.filteredList,
                       context, screenHeight, token);
+                } else if (!turmaCheck && !smeCheck && !ueCheck) {
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 2.5),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Selecione uma categoria para visualizar as mensagens.",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
                 } else {
-                  return Container();
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 4),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Não foi encontrada nenhuma mensagem para este filtro",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
                 }
               }),
             ],
@@ -548,7 +577,7 @@ class _ListMessageState extends State<ListMessages> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await _messagesController.loadMessages();
+            await _messagesController.loadMessages(widget.codigoAlunoEol);
           },
           child: SingleChildScrollView(
             child: Container(

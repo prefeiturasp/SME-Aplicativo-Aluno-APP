@@ -75,7 +75,9 @@ class _ListStudantsState extends State<ListStudants> {
 
   void _onBackgroundFetch(String taskId) async {
     String password = await _storage.readValueStorage("current_password");
-    await _authenticateController.authenticateUser(widget.cpf, password, true);
+    String _cpf = await _storage.readValueStorage("current_cpf");
+    await _authenticateController.authenticateUser(
+        widget.cpf ?? _cpf, password, true);
 
     print(
         "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");

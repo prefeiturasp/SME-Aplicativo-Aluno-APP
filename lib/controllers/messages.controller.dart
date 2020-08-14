@@ -49,12 +49,15 @@ abstract class _MessagesControllerBase with Store {
   @observable
   int countMessageTurma;
 
+  @observable
+  bool messageIsRead = false;
+
   @action
-  loadMessages() async {
+  loadMessages(int codigoAluno) async {
     String token = await _storage.readValueStorage("token");
     isLoading = true;
     messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(token));
+        await _messagesRepository.fetchMessages(token, codigoAluno));
     isLoading = false;
   }
 
@@ -167,5 +170,6 @@ abstract class _MessagesControllerBase with Store {
   }) async {
     await _messagesRepository.readMessage(
         notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
+    loadMessages(codigoAlunoEol);
   }
 }

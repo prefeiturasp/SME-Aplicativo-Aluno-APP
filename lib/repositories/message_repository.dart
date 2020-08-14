@@ -13,9 +13,9 @@ class MessageRepository implements IMessageRepository {
   }
 
   @override
-  Future<List<Message>> fetchMessages(String token) async {
+  Future<List<Message>> fetchMessages(String token, int codigoAluno) async {
     try {
-      final response = await http.get("${Api.HOST}/Notificacao",
+      final response = await http.get("${Api.HOST}/Notificacao/$codigoAluno",
           headers: {"Authorization": "Bearer $token"});
 
       if (response.statusCode == 200) {
@@ -43,7 +43,7 @@ class MessageRepository implements IMessageRepository {
     Map data = {
       "notificacaoId": notificacaoId,
       "usuarioId": usuarioId,
-      "codigoAlunoEol": codigoAlunoEol,
+      "codigoAlunoEol": codigoAlunoEol != null ? codigoAlunoEol : 0,
       "mensagemVisualizada": mensagemVisualia
     };
 

@@ -50,18 +50,12 @@ class _WrapperState extends State<Wrapper> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         _popUpNotification(message);
-        print("<------------");
-        print(message);
-        print("------------>");
       },
       onLaunch: (Map<String, dynamic> message) async {
         await _navigateToMessageView(message);
       },
       onResume: (Map<String, dynamic> message) async {
         await _navigateToMessageView(message);
-        print("<------------");
-        print(message);
-        print("------------>");
       },
     );
   }
@@ -81,15 +75,17 @@ class _WrapperState extends State<Wrapper> {
       ..show();
   }
 
-  // teste
   _navigateToMessageView(Map<String, dynamic> message) async {
     Message _message = Message(
-        id: int.parse(message["data"]["Id"]),
-        titulo: message["data"]["Titulo"],
-        mensagem: message["data"]["Mensagem"],
-        criadoEm: message["data"]["CriadoEm"],
-        codigoEOL: message["data"]["CodigoEOL"],
-        categoriaNotificacao: message["data"]["categoriaNotificacao"]);
+      id: int.parse(message["data"]["Id"]),
+      titulo: message["data"]["Titulo"],
+      mensagem: message["data"]["Mensagem"],
+      criadoEm: message["data"]["CriadoEm"],
+      codigoEOL: message["data"]["CodigoEOL"] != null
+          ? int.parse(message["data"]["CodigoEOL"])
+          : 0,
+      categoriaNotificacao: message["data"]["categoriaNotificacao"],
+    );
 
     Navigator.push(
         context,

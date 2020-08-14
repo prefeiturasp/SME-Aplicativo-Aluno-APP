@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
 import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
@@ -43,6 +44,8 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticateController>.value(value: AuthenticateController()),
         Provider<StudentsController>.value(value: StudentsController()),
         Provider<MessagesController>.value(value: MessagesController()),
+        Provider<RecoverPasswordController>.value(
+            value: RecoverPasswordController()),
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         StreamProvider<ConnectivityStatus>(
             create: (context) =>
