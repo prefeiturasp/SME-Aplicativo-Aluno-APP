@@ -3,13 +3,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
   final Storage _storage = Storage();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final UserService _userService = UserService();
 
   @override
   Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
@@ -29,22 +30,10 @@ class AuthenticateRepository implements IAuthenticateRepository {
           "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
 
       if (response.statusCode == 200) {
-        Auth.removeCurrentUser();
-
         var decodeJson = jsonDecode(response.body);
         var user = Data.fromJson(decodeJson);
         if (user.data.cpf.isNotEmpty) {
-          addCurrentUserToStorage(
-              idDevice,
-              user.data.nome,
-              user.data.cpf,
-              user.data.email ?? "",
-              user.data.token,
-              user.data.primeiroAcesso ? "" : password,
-              user.data.id,
-              user.data.celular ?? "",
-              user.data.primeiroAcesso,
-              user.data.informarCelularEmail);
+          _userService.create(user.data);
         }
         return user;
       } else {
