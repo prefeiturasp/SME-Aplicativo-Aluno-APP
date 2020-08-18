@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
@@ -18,13 +18,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessage extends StatefulWidget {
   final Message message;
-  final String token;
   final int codigoAlunoEol;
 
-  ViewMessage(
-      {@required this.message,
-      @required this.token,
-      @required this.codigoAlunoEol});
+  ViewMessage({@required this.message, @required this.codigoAlunoEol});
 
   @override
   _ViewMessageState createState() => _ViewMessageState();

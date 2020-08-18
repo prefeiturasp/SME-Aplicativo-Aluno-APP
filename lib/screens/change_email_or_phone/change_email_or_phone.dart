@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/first_access.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -97,13 +97,11 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   }
 
   _navigateToListStudents() async {
-    String _token = await _storage.readValueStorage("token");
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ListStudants(
-            cpf: widget.cpf,
-            token: _token,
+            userId: 10,
             password: widget.password,
           ),
         ));

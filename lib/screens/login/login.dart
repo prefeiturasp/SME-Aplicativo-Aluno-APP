@@ -8,14 +8,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/recover_password/recover_password.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,22 +24,18 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   AuthenticateController _authenticateController;
-  final Storage _storage = Storage();
+  final UserService _userService = UserService();
 
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  final _cpfController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   bool _showPassword = true;
-
   bool _cpfIsError = false;
   bool _passwordIsError = false;
 
   String _cpf = '';
   String _cpfRaw = '';
-  String _dataNnascimentoAluno = '';
+  String _password = '';
 
   @override
   void initState() {
@@ -51,58 +47,43 @@ class _LoginState extends State<Login> {
     String cpf,
     String password,
   ) async {
-    _storage.removeAllValues();
-    _authenticateController.clearCurrentUser();
-    _authenticateController.authenticateUser(cpf, password, false).then((data) {
-      _storage.insertString("current_password", password);
-      onSuccess();
+    await _authenticateController
+        .authenticateUser(cpf, password, false)
+        .then((data) {
+      _navigateToScreen();
     });
   }
 
   _navigateToScreen() async {
-    bool isData = await _storage.containsKey('current_cpf');
-    String cpf = await _storage.readValueStorage("current_cpf");
-    String token = await _storage.readValueStorage("token");
-    String password = await _storage.readValueStorage("current_password");
-
-    if (isData) {
+    if (_authenticateController.currentUser != null) {
+      var user =
+          await _userService.find(_authenticateController.currentUser.data.id);
       if (_authenticateController.currentUser.data.primeiroAcesso) {
-        Navigator.push(
+        Nav.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => FirstAccess(
-                      id: _authenticateController.currentUser.data.id,
-                      isPhoneAndEmail: _authenticateController
-                          .currentUser.data.informarCelularEmail,
-                      cpf: _authenticateController.currentUser.data.cpf,
-                    )));
-      } else if (_authenticateController
-          .currentUser.data.informarCelularEmail) {
-        Navigator.push(
+            FirstAccess(
+              id: user.id,
+              isPhoneAndEmail: user.informarCelularEmail,
+              cpf: user.cpf,
+            ));
+      } else if (user.informarCelularEmail) {
+        Nav.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => ChangeEmailOrPhone(
-                      cpf: _authenticateController.currentUser.data.cpf,
-                      password: password,
-                    )));
+            ChangeEmailOrPhone(
+              cpf: user.cpf,
+              password: _password,
+            ));
       } else {
-        Navigator.push(
+        Nav.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ListStudants(
-                cpf: cpf,
-                token: token,
-                password: password,
-              ),
+            ListStudants(
+              userId: user.id,
+              password: _password,
             ));
       }
     } else {
       onError();
     }
-  }
-
-  onSuccess() async {
-    _navigateToScreen();
   }
 
   onError() {
@@ -159,7 +140,6 @@ class _LoginState extends State<Login> {
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
-                                  controller: _cpfController,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -219,17 +199,13 @@ class _LoginState extends State<Login> {
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
-                                  controller: _passwordController,
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
                                   obscureText: _showPassword,
                                   onChanged: (value) {
                                     setState(() {
-                                      _dataNnascimentoAluno =
-                                          _passwordController.text;
-                                      // _passwordController.text.replaceAll(
-                                      //     new RegExp(r'[^\w\s]+'), '');
+                                      _password = value;
                                     });
                                   },
                                   validator: (value) {
@@ -317,11 +293,10 @@ class _LoginState extends State<Login> {
                                     iconColor: Color(0xffffd037),
                                     btnColor: Color(0xffd06d12),
                                     desabled: CPFValidator.isValid(_cpf) &&
-                                        _dataNnascimentoAluno.length >= 7,
+                                        _password.length >= 7,
                                     onPress: () {
                                       if (_formKey.currentState.validate()) {
-                                        _handleSignIn(
-                                            _cpf, _dataNnascimentoAluno);
+                                        _handleSignIn(_cpf, _password);
                                       } else {
                                         setState(() {
                                           _cpfIsError = true;

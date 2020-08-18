@@ -6,15 +6,17 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
 class Wrapper extends StatefulWidget {
@@ -25,11 +27,10 @@ class Wrapper extends StatefulWidget {
 class _WrapperState extends State<Wrapper> {
   final Storage storage = Storage();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  AuthenticateController _authenticateController;
+  final UserService _userService = UserService();
 
-  String _cpf;
-  String _token;
-  String _password;
+  String _cpf = '';
+  String _password = '';
   int _id;
   bool _loading = false;
   bool _primeiroAcesso = false;
@@ -39,7 +40,6 @@ class _WrapperState extends State<Wrapper> {
   initState() {
     super.initState();
     loadCurrentUser();
-    _authenticateController = AuthenticateController();
     _initPushNotificationHandlers();
   }
 
@@ -86,42 +86,25 @@ class _WrapperState extends State<Wrapper> {
           : 0,
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
     );
-
-    Navigator.push(
+    Nav.push(
         context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => ViewMessageNotification(
-                  message: _message,
-                )));
+        ViewMessageNotification(
+          message: _message,
+          userId: _id,
+        ));
   }
 
   loadCurrentUser() async {
-    setState(() {
-      _loading = true;
-    });
-    bool isCurrentUser = await storage.containsKey("current_cpf");
-    if (isCurrentUser) {
-      String cpf = await storage.readValueStorage('current_cpf');
-      String token = await storage.readValueStorage('token');
-      String password = await storage.readValueStorage('current_password');
-      int id = await storage.readValueIntStorage('current_user_id');
-      bool primeiroAcesso =
-          await storage.readValueBoolStorage('current_primeiro_acesso');
-      bool informarCelularEmail =
-          await storage.readValueBoolStorage('current_informar_celular_email');
-
+    final List<User> users = await _userService.all();
+    final User user = await _userService.find(users[0].id);
+    if (user.cpf != null && user.cpf.isNotEmpty) {
       setState(() {
-        _cpf = cpf;
-        _token = token;
-        _password = password;
-        _primeiroAcesso = primeiroAcesso;
-        _informarCelularEmail = informarCelularEmail;
-        _id = id;
+        _cpf = user.cpf;
+        _id = user.id;
+        _primeiroAcesso = user.primeiroAcesso;
+        _informarCelularEmail = user.informarCelularEmail;
       });
     }
-    setState(() {
-      _loading = false;
-    });
   }
 
   @override
@@ -134,12 +117,7 @@ class _WrapperState extends State<Wrapper> {
       });
       return NotInteernet();
     } else {
-      bool isAuthenticated = _cpf != null && _token != null;
-
-      bool notErrorAuthenticate = _authenticateController.currentUser != null &&
-          _authenticateController.currentUser.erros[0].isNotEmpty;
-
-      if (!isAuthenticated || notErrorAuthenticate) {
+      if (_cpf == null) {
         return Scaffold(
             backgroundColor: Colors.white,
             body: _loading
@@ -164,7 +142,7 @@ class _WrapperState extends State<Wrapper> {
             password: _password,
           );
         } else {
-          return ListStudants(cpf: _cpf, token: _token, password: _password);
+          return ListStudants(userId: _id, password: _password);
         }
       }
     }

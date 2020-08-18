@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/controllers/first_access.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/internal_change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';

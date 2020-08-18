@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -7,120 +6,116 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/students.controller.dart';
+import 'package:sme_app_aluno/controllers/students/students.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
-  final String cpf;
-  final String token;
+  final int userId;
   final String password;
 
-  ListStudants(
-      {@required this.cpf, @required this.token, @required this.password});
+  ListStudants({@required this.userId, this.password});
 
   @override
   _ListStudantsState createState() => _ListStudantsState();
 }
 
 class _ListStudantsState extends State<ListStudants> {
-  AuthenticateController _authenticateController;
+  final UserService _userService = UserService();
+
   StudentsController _studentsController;
-  final Storage _storage = Storage();
 
   @override
   void initState() {
     super.initState();
-    _authenticateController = AuthenticateController();
     _studentsController = StudentsController();
     _loadingAllStudents();
-    initPlatformState();
+    // initPlatformState();
   }
 
-  Future<void> initPlatformState() async {
-    BackgroundFetch.configure(
-            BackgroundFetchConfig(
-              minimumFetchInterval: 2,
-              forceAlarmManager: false,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              enableHeadless: true,
-              requiresBatteryNotLow: false,
-              requiresCharging: false,
-              requiresStorageNotLow: false,
-              requiresDeviceIdle: false,
-              requiredNetworkType: NetworkType.NONE,
-            ),
-            _onBackgroundFetch)
-        .then((int status) {
-      print('[BackgroundFetch] configure success: $status');
-    }).catchError((e) {
-      print('[BackgroundFetch] configure ERROR: $e');
-    });
+  // Future<void> initPlatformState() async {
+  //   BackgroundFetch.configure(
+  //           BackgroundFetchConfig(
+  //             minimumFetchInterval: 2,
+  //             forceAlarmManager: false,
+  //             stopOnTerminate: false,
+  //             startOnBoot: true,
+  //             enableHeadless: true,
+  //             requiresBatteryNotLow: false,
+  //             requiresCharging: false,
+  //             requiresStorageNotLow: false,
+  //             requiresDeviceIdle: false,
+  //             requiredNetworkType: NetworkType.NONE,
+  //           ),
+  //           _onBackgroundFetch)
+  //       .then((int status) {
+  //     print('[BackgroundFetch] configure success: $status');
+  //   }).catchError((e) {
+  //     print('[BackgroundFetch] configure ERROR: $e');
+  //   });
 
-    BackgroundFetch.scheduleTask(TaskConfig(
-        taskId: "com.transistorsoft.customtask",
-        delay: 10000,
-        periodic: true,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true));
-  }
+  //   BackgroundFetch.scheduleTask(TaskConfig(
+  //       taskId: "com.transistorsoft.customtask",
+  //       delay: 10000,
+  //       periodic: true,
+  //       forceAlarmManager: true,
+  //       stopOnTerminate: false,
+  //       enableHeadless: true));
+  // }
 
-  void _onBackgroundFetch(String taskId) async {
-    String password = await _storage.readValueStorage("current_password");
-    String _cpf = await _storage.readValueStorage("current_cpf");
-    await _authenticateController.authenticateUser(
-        widget.cpf ?? _cpf, password, true);
+  // void _onBackgroundFetch(String taskId) async {
+  //   final User user = await _userService.find(widget.id);
+  //   await _authenticateController.authenticateUser(
+  //       user.cpf, widget.password, true);
 
-    print(
-        "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
+  //   print("--------------------------");
+  //   print(
+  //       "OnBackgroundFetch -> CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
+  //   print("--------------------------");
 
-    if (_authenticateController.currentUser.erros != null &&
-        _authenticateController.currentUser.erros.isNotEmpty &&
-        _authenticateController.currentUser.erros.length > 0 &&
-        _authenticateController.currentUser.erros[0] != null) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
-      Auth.logout(context);
-    }
+  //   if (_authenticateController.currentUser.erros != null &&
+  //       _authenticateController.currentUser.erros.isNotEmpty) {
+  //     BackgroundFetch.stop().then((int status) {
+  //       print('[BackgroundFetch] stop success: $status');
+  //     });
+  //     Auth.logout(context, widget.id);
+  //   }
 
-    BackgroundFetch.finish(taskId);
-  }
+  //   BackgroundFetch.finish(taskId);
+  // }
 
-  Widget _itemCardStudent(BuildContext context, Student model, String token,
-      String groupSchool, int codigoGrupo) {
+  Widget _itemCardStudent(BuildContext context, Student model,
+      String groupSchool, int codigoGrupo, int userId) {
     return CardStudent(
       name: model.nomeSocial != null ? model.nomeSocial : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
       schooType: model.descricaoTipoEscola,
       onPress: () {
-        Navigator.push(
+        Nav.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => Dashboard(
-                    student: model,
-                    groupSchool: groupSchool,
-                    token: token,
-                    codigoGrupo: codigoGrupo)));
+            Dashboard(
+                userId: widget.userId,
+                student: model,
+                groupSchool: groupSchool,
+                codigoGrupo: codigoGrupo));
       },
     );
   }
 
   Widget _listStudents(List<Student> students, BuildContext context,
-      String groupSchool, String token, int codigoGrupo) {
+      String groupSchool, int codigoGrupo, int userId) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
       list.add(_itemCardStudent(
-          context, students[i], token, groupSchool, codigoGrupo));
+          context, students[i], groupSchool, codigoGrupo, userId));
     }
     return new Column(children: list);
   }
@@ -135,13 +130,12 @@ class _ListStudantsState extends State<ListStudants> {
             actions: <Widget>[
               FlatButton(
                 child: Text("SIM"),
-                onPressed: () async {
+                onPressed: () {
                   BackgroundFetch.stop().then((int status) {
                     print('[BackgroundFetch] stop success: $status');
                   });
-                  Auth.removeCurrentUser();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Login()));
+                  Auth.logout(context, widget.userId);
+                  Nav.pushReplacement(context, Login());
                 },
               ),
               FlatButton(
@@ -156,7 +150,8 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   _loadingAllStudents() async {
-    await _studentsController.loadingStudents(widget.cpf, widget.token);
+    final User user = await _userService.find(widget.userId);
+    await _studentsController.loadingStudents(user.cpf, user.id);
   }
 
   @override
@@ -175,7 +170,7 @@ class _ListStudantsState extends State<ListStudants> {
               BackgroundFetch.stop().then((int status) {
                 print('[BackgroundFetch] stop success: $status');
               });
-              Auth.logout(context);
+              Auth.logout(context, widget.userId);
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
@@ -248,11 +243,12 @@ class _ListStudantsState extends State<ListStudants> {
                                       text: "${dados[index].grupo}",
                                       color: Color(0xffC65D00)),
                                   _listStudents(
-                                      dados[index].students,
-                                      context,
-                                      dados[index].grupo,
-                                      widget.token,
-                                      dados[index].codigoGrupo),
+                                    dados[index].students,
+                                    context,
+                                    dados[index].grupo,
+                                    dados[index].codigoGrupo,
+                                    widget.userId,
+                                  ),
                                 ],
                               );
                             },
