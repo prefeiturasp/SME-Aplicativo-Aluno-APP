@@ -2,7 +2,6 @@ import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 part 'messages.controller.g.dart';
 
@@ -10,7 +9,6 @@ class MessagesController = _MessagesControllerBase with _$MessagesController;
 
 abstract class _MessagesControllerBase with Store {
   MessageRepository _messagesRepository;
-  Storage _storage;
 
   _MessagesControllerBase() {
     _messagesRepository = MessageRepository();
