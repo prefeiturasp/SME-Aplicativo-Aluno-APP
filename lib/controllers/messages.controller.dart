@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 
@@ -13,7 +14,6 @@ abstract class _MessagesControllerBase with Store {
 
   _MessagesControllerBase() {
     _messagesRepository = MessageRepository();
-    _storage = Storage();
   }
 
   @observable
@@ -53,11 +53,10 @@ abstract class _MessagesControllerBase with Store {
   bool messageIsRead = false;
 
   @action
-  loadMessages(int codigoAluno) async {
-    String token = await _storage.readValueStorage("token");
+  loadMessages(int codigoAlunoEol, int userId) async {
     isLoading = true;
     messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(token, codigoAluno));
+        await _messagesRepository.fetchMessages(codigoAlunoEol, userId));
     isLoading = false;
   }
 
@@ -70,9 +69,7 @@ abstract class _MessagesControllerBase with Store {
   @action
   loadMessagesNotDeleteds() async {
     if (messages != null) {
-      final currentName = await _storage.readValueStorage("current_name");
-      final _ids =
-          await _storage.readValueStorage("${currentName}_deleted_id") ?? "";
+      final _ids = [1, 2, 3, 4];
       messagesNotDeleted = ObservableList<Message>.of(
           messages.where((e) => !_ids.contains(e.id.toString())).toList());
       countMessage = messagesNotDeleted.length;
@@ -167,9 +164,10 @@ abstract class _MessagesControllerBase with Store {
     int usuarioId,
     int codigoAlunoEol,
     bool mensagemVisualia,
+    Student student,
   }) async {
     await _messagesRepository.readMessage(
         notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
-    loadMessages(codigoAlunoEol);
+    loadMessages(codigoAlunoEol, usuarioId);
   }
 }
