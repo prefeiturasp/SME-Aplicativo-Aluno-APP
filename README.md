@@ -70,7 +70,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#personas)Personas
 ---
 
-##Responsável
+## Responsável
 
 ![responsavel.png](http://amcom.educacao.ws/images/responsavel.png)
 
@@ -98,7 +98,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Ter local onde posso conhecer os serviços disponibilizados pela SME e por outras SMs e instituições de maneira simples e em único local
 - Acessibilidade para que as mensagens sejam universais (áudio-descrição/visualização)
 
-##Gestor(a) Escolar
+## Gestor(a) Escolar
 
 ![gestor-escolar.png](http://amcom.educacao.ws/images/gestor-escolar.png)
 
