@@ -25,14 +25,14 @@
 ## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
 ---
 
-| Papel | Responsável | 
-|--|--|--|
-| Product Owner | Maria Camila Florêncio | 
-| Gerente de Projeto | Aline Freitas | 
-| Scrum Master | Allan Bravos | 
-| Analista de Negócio | Marlon Gonçalves | 
-| Analista UX/UI | Alexandre Costa | 
-| Arquiteto | Bruno Alevato | 
+| Papel | Responsável |
+|--|--|
+| Product Owner | Maria Camila Florêncio |
+| Gerente de Projeto | Aline Freitas |
+| Scrum Master | Allan Bravos |
+| Analista de Negócio | Marlon Gonçalves |
+| Analista UX/UI | Alexandre Costa |
+| Arquiteto | Bruno Alevato |
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-produto)Sobre o Produto
 ---
