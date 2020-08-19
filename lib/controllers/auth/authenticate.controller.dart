@@ -1,7 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/repositories/authenticate_repository.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 
 part 'authenticate.controller.g.dart';
 
@@ -9,13 +10,16 @@ class AuthenticateController = _AuthenticateControllerBase
     with _$AuthenticateController;
 
 abstract class _AuthenticateControllerBase with Store {
-  final Storage _storage = Storage();
+  final UserService _userService = UserService();
   AuthenticateRepository _authenticateRepository;
 
   _AuthenticateControllerBase() {
     _authenticateRepository = AuthenticateRepository();
     loadCurrentUser();
   }
+
+  @observable
+  User user;
 
   @observable
   Data currentUser;
@@ -56,12 +60,11 @@ abstract class _AuthenticateControllerBase with Store {
 
   @action
   Future<void> loadCurrentUser() async {
-    currentName = await _storage.readValueStorage('current_name');
-    currentCPF = await _storage.readValueStorage('current_cpf');
-    currentEmail = await _storage.readValueStorage('current_email');
-    currentPassword = await _storage.readValueStorage('current_password');
-    token = await _storage.readValueStorage('token');
-    firstAccess =
-        await _storage.readValueBoolStorage('current_primeiro_acesso');
+    isLoading = true;
+    List<User> users = await _userService.all();
+    if (users.isNotEmpty) {
+      user = users[0];
+    }
+    isLoading = false;
   }
 }
