@@ -7,16 +7,18 @@ class User {
   bool primeiroAcesso;
   bool informarCelularEmail;
   String celular;
+  String senha;
 
-  User(
-      {this.id,
-      this.nome,
-      this.cpf,
-      this.email,
-      this.token,
-      this.primeiroAcesso,
-      this.informarCelularEmail,
-      this.celular});
+  User({
+    this.id,
+    this.nome,
+    this.cpf,
+    this.email,
+    this.token,
+    this.primeiroAcesso,
+    this.informarCelularEmail,
+    this.celular,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -24,9 +26,22 @@ class User {
     cpf = json['cpf'];
     email = json['email'];
     token = json['token'];
-    primeiroAcesso = json['primeiroAcesso'];
-    informarCelularEmail = json['informarCelularEmail'];
+    primeiroAcesso = json['primeiroAcesso'] == 1 ? true : false;
+    informarCelularEmail = json['informarCelularEmail'] == 1 ? true : false;
     celular = json['celular'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+      'cpf': cpf,
+      'email': email,
+      'token': token,
+      'primeiroAcesso': primeiroAcesso,
+      'informarCelularEmail': informarCelularEmail,
+      'celular': celular,
+    };
   }
 
   Map<String, dynamic> toJson() {
