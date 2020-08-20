@@ -85,18 +85,19 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
       AsyncAction('_FirstAccessControllerBase.changeEmailAndPhone');
 
   @override
-  Future changeEmailAndPhone(String email, String phone, bool changePassword) {
-    return _$changeEmailAndPhoneAsyncAction
-        .run(() => super.changeEmailAndPhone(email, phone, changePassword));
+  Future changeEmailAndPhone(
+      String email, String phone, int userId, bool changePassword) {
+    return _$changeEmailAndPhoneAsyncAction.run(
+        () => super.changeEmailAndPhone(email, phone, userId, changePassword));
   }
 
   final _$loadUserForStorageAsyncAction =
       AsyncAction('_FirstAccessControllerBase.loadUserForStorage');
 
   @override
-  Future loadUserForStorage() {
+  Future loadUserForStorage(int userId) {
     return _$loadUserForStorageAsyncAction
-        .run(() => super.loadUserForStorage());
+        .run(() => super.loadUserForStorage(userId));
   }
 
   @override
