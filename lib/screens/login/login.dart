@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
   }
 
   _navigateToScreen() async {
-    if (_authenticateController.currentUser != null) {
+    if (_authenticateController.currentUser.data != null) {
       var user =
           await _userService.find(_authenticateController.currentUser.data.id);
       if (_authenticateController.currentUser.data.primeiroAcesso) {
@@ -72,6 +72,7 @@ class _LoginState extends State<Login> {
             ChangeEmailOrPhone(
               cpf: user.cpf,
               password: _password,
+              userId: user.id,
             ));
       } else {
         Nav.push(
@@ -88,6 +89,7 @@ class _LoginState extends State<Login> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _authenticateController.currentUser != null
             ? Text(_authenticateController.currentUser.erros[0])
             : Text("Erro de serviço"));

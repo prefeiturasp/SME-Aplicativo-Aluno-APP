@@ -47,17 +47,16 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _viewMessageUpdate(bool isNotRead, bool action) async {
-    int usuarioId = await storage.readValueIntStorage("current_user_id");
     if (action) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.message.codigoEOL ?? 0,
           mensagemVisualia: false);
     } else {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.message.codigoEOL ?? 0,
           mensagemVisualia: true);
     }

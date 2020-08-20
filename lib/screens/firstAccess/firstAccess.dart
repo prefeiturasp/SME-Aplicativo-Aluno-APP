@@ -57,6 +57,7 @@ class _FirstAccessState extends State<FirstAccess> {
           builder: (_) => ChangeEmailOrPhone(
                 cpf: widget.cpf,
                 password: _password,
+                userId: widget.id,
               )));
     } else {
       onError();
@@ -81,6 +82,7 @@ class _FirstAccessState extends State<FirstAccess> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _firstAccessController.data != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));

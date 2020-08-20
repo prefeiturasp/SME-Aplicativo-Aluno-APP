@@ -8,23 +8,30 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ChangeEmailOrPhone extends StatefulWidget {
   final String cpf;
   final String password;
+  final int userId;
 
-  ChangeEmailOrPhone({@required this.cpf, @required this.password});
+  ChangeEmailOrPhone({
+    @required this.cpf,
+    @required this.password,
+    @required this.userId,
+  });
 
   @override
   _ChangeEmailOrPhoneState createState() => _ChangeEmailOrPhoneState();
 }
 
 class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
-  final Storage _storage = Storage();
+  final UserService _userService = UserService();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -60,12 +67,12 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
   }
 
   loadInputs() async {
-    String email = await _storage.readValueStorage('current_email') ?? "";
-    String phone = await _storage.readValueStorage('current_celular') ?? "";
-    var maskedPhone = phone.isNotEmpty
-        ? phone.replaceAllMapped(RegExp(r'(\d{2})(\d{5})(\d+)'),
-            (Match m) => "(${m[1]}) ${m[2]}-${m[3]}")
-        : phone;
+    final User user = await _userService.find(widget.userId);
+    String email = user.email;
+    String phone = user.celular;
+
+    var maskedPhone =
+        phone.isNotEmpty ? StringSupport.formatStringPhoneNumber(phone) : phone;
 
     setState(() {
       _email = email;
@@ -81,7 +88,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
       _busy = true;
     });
     await _firstAccessController.changeEmailAndPhone(
-        email, phone, changePassword);
+        email, phone, widget.userId, changePassword);
     setState(() {
       _busy = false;
     });
@@ -89,6 +96,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _firstAccessController.data != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));

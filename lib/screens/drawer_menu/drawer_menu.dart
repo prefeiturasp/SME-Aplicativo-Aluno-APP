@@ -38,13 +38,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
   void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
+    _authenticateController.loadCurrentUser();
   }
 
   _loadingBackRecentMessage() {
     _messagesController = MessagesController();
     _messagesController.loadMessages(
       widget.student.codigoEol,
-      widget.userId,
+      _authenticateController.user.id,
     );
   }
 
@@ -52,20 +53,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
     Nav.push(
         context,
         ListMessages(
-          userId: widget.userId,
+          userId: _authenticateController.user.id,
           codigoGrupo: widget.codigoGrupo,
           codigoAlunoEol: widget.student.codigoEol,
         )).whenComplete(() => _loadingBackRecentMessage());
   }
 
   navigateToListStudents(BuildContext context) async {
-    final User user = await _userService.find(widget.userId);
-
-    if (user != null) {
+    if (_authenticateController.user != null) {
       Nav.push(
           context,
           ListStudants(
-            userId: user.id,
+            userId: _authenticateController.user.id,
             password: "_password",
           ));
     } else {
@@ -74,13 +73,13 @@ class _DrawerMenuState extends State<DrawerMenu> {
   }
 
   _navigateToSettings(BuildContext context) async {
-    final User user = await _userService.find(widget.userId);
     Nav.push(
         context,
         Settings(
-          currentCPF: user.cpf,
-          email: user.email,
-          phone: user.celular,
+          currentCPF: _authenticateController.user.cpf,
+          email: _authenticateController.user.email,
+          phone: _authenticateController.user.celular,
+          userId: _authenticateController.user.id,
         ));
   }
 
@@ -112,9 +111,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     ),
                   ),
                   Observer(builder: (context) {
-                    if (_authenticateController.currentName != null) {
+                    if (_authenticateController.user != null) {
                       return AutoSizeText(
-                        "${_authenticateController.currentName}",
+                        "${_authenticateController.user.nome}",
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
@@ -220,11 +219,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () async {
-              final User user = await _userService.find(2);
-              BackgroundFetch.stop().then((int status) {
-                print('[BackgroundFetch] stop success: $status');
-              });
-              Auth.logout(context, user.id);
+              // BackgroundFetch.stop().then((int status) {
+              //   print('[BackgroundFetch] stop success: $status');
+              // });
+              Auth.logout(context, _authenticateController.user.id);
             },
           ),
         ],

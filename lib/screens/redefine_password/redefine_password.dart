@@ -80,6 +80,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _recoverPasswordController.dataUser != null
             ? Text(_recoverPasswordController.dataUser.erros[0])
             : Text("Erro de serviço"));

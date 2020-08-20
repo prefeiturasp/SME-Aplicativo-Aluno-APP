@@ -54,6 +54,7 @@ class _ShowInfoState extends State<ShowInfo> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _recoverPasswordController.data != null
             ? Text(_recoverPasswordController.data.erros[0])
             : Text("Erro de serviço"));

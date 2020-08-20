@@ -86,6 +86,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _settingsController.data != null
             ? Text(_settingsController.data.erros[0])
             : Text("Erro de serviço"));

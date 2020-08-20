@@ -13,11 +13,13 @@ class Settings extends StatefulWidget {
   final String currentCPF;
   final String email;
   final String phone;
+  final int userId;
 
   Settings({
     @required this.currentCPF,
     @required this.email,
     @required this.phone,
+    @required this.userId,
   });
 
   @override
@@ -31,7 +33,7 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
     _firstAccessController = FirstAccessController();
-    _firstAccessController.loadUserForStorage();
+    _firstAccessController.loadUserForStorage(widget.userId);
   }
 
   @override
@@ -71,19 +73,23 @@ class _SettingsState extends State<Settings> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     child: Observer(builder: (context) {
-                      return Column(
-                        children: <Widget>[
-                          ViewData(
-                            label: "Email",
-                            text: _firstAccessController.currentEmail,
-                          ),
-                          ViewData(
-                            label: "Telefone",
-                            text: StringSupport.formatStringPhoneNumber(
-                                _firstAccessController.currentPhone),
-                          ),
-                        ],
-                      );
+                      if (_firstAccessController.currentPhone == null) {
+                        return Container();
+                      } else {
+                        return Column(
+                          children: <Widget>[
+                            ViewData(
+                              label: "Email",
+                              text: _firstAccessController.currentEmail,
+                            ),
+                            ViewData(
+                              label: "Telefone",
+                              text: StringSupport.formatStringPhoneNumber(
+                                  _firstAccessController.currentPhone),
+                            ),
+                          ],
+                        );
+                      }
                     }),
                   ),
                   SizedBox(
@@ -99,9 +105,10 @@ class _SettingsState extends State<Settings> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  InternalChangeEmailOrPhone())).whenComplete(
-                          () => _firstAccessController.loadUserForStorage());
+                              builder: (context) => InternalChangeEmailOrPhone(
+                                    userId: widget.userId,
+                                  ))).whenComplete(() => _firstAccessController
+                          .loadUserForStorage(widget.userId));
                     },
                   )
                 ],

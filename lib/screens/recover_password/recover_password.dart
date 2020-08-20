@@ -59,6 +59,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _recoverPasswordController.data != null
             ? Text(_recoverPasswordController.data.erros[0])
             : Text("Erro de serviço"));

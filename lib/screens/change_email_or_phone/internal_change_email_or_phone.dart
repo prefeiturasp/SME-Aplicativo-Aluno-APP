@@ -9,12 +9,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
-
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class InternalChangeEmailOrPhone extends StatefulWidget {
+  final int userId;
+
+  InternalChangeEmailOrPhone({@required this.userId});
+
   @override
   _InternalChangeEmailOrPhoneState createState() =>
       _InternalChangeEmailOrPhoneState();
@@ -22,7 +26,7 @@ class InternalChangeEmailOrPhone extends StatefulWidget {
 
 class _InternalChangeEmailOrPhoneState
     extends State<InternalChangeEmailOrPhone> {
-  final Storage _storage = Storage();
+  final UserService _userService = UserService();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -34,6 +38,7 @@ class _InternalChangeEmailOrPhoneState
   bool _busy = false;
   String _email;
   String _phone;
+
   String _emailData = "";
   String _phoneData = "";
 
@@ -45,27 +50,23 @@ class _InternalChangeEmailOrPhoneState
   }
 
   loadInputs() async {
-    String email = await _storage.readValueStorage('current_email');
-    String phone = await _storage.readValueStorage('current_celular');
+    final User user = await _userService.find(widget.userId);
+    String email = user.email;
+    String phone = user.celular;
     var maskedPhone =
-        phone.isNotEmpty ? StringSupport.formatStringPhoneNumber(phone) : phone;
+        phone != "" ? StringSupport.formatStringPhoneNumber(phone) : phone;
 
-    setState(() {
-      _email = email;
-    });
-
-    setState(() {
-      _phone = maskedPhone;
-    });
+    setState(() => _email = email);
+    setState(() => _phone = maskedPhone);
   }
 
-  fetchChangeEmailOrPhone(String email, String phone) async {
+  fetchChangeEmailOrPhone(String email, String phone, int userId) async {
     setState(() {
       _busy = true;
     });
 
     await _firstAccessController
-        .changeEmailAndPhone(email, phone, true)
+        .changeEmailAndPhone(email, phone, userId, true)
         .then((data) {
       _onSuccess();
     });
@@ -77,6 +78,7 @@ class _InternalChangeEmailOrPhoneState
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _firstAccessController.data != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));
@@ -89,9 +91,9 @@ class _InternalChangeEmailOrPhoneState
       AwesomeDialog(
         context: context,
         headerAnimationLoop: false,
-        dialogType: DialogType.SUCCES,
+        dialogType: DialogType.NO_HEADER,
         animType: AnimType.BOTTOMSLIDE,
-        title: 'PARABÉNS',
+        title: 'Parabéns',
         desc: 'Dados alterados com sucesso!',
         btnOkText: "OK",
         btnOkOnPress: () {
@@ -184,8 +186,8 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                                 child: TextFormField(
                                   initialValue: _email,
-                                  autovalidate: _email.isNotEmpty ||
-                                      _emailData.isNotEmpty,
+                                  autovalidate:
+                                      _email.isEmpty || _emailData != "",
                                   style: TextStyle(
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
@@ -311,7 +313,8 @@ class _InternalChangeEmailOrPhoneState
                                                 : _emailData,
                                             _phoneData.isEmpty
                                                 ? _phone
-                                                : _phoneData);
+                                                : _phoneData,
+                                            widget.userId);
                                       },
                                     )
                                   : GFLoader(
