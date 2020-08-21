@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Auth {
   static logout(BuildContext context, int id) async {
@@ -17,6 +17,6 @@ class Auth {
 
     await _userService.delete(id);
     // prefs.clear();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    Nav.push(context, Login());
   }
 }
