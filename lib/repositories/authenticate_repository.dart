@@ -5,10 +5,8 @@ import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart'
 import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
-  final Storage _storage = Storage();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final UserService _userService = UserService();
 
@@ -45,29 +43,5 @@ class AuthenticateRepository implements IAuthenticateRepository {
       print("Erro ao tentatar se autenticar " + stacktrace.toString());
       return null;
     }
-  }
-
-  addCurrentUserToStorage(
-    String dispositivoId,
-    String name,
-    String cpf,
-    String email,
-    String token,
-    String password,
-    int userId,
-    String celular,
-    bool primeiroAcesso,
-    bool informarCelularEmail,
-  ) async {
-    _storage.insertString('current_name', name);
-    _storage.insertString('current_cpf', cpf);
-    _storage.insertString('current_email', email);
-    _storage.insertString('token', token);
-    _storage.insertString('current_password', password);
-    _storage.insertString('dispositivo_id', dispositivoId);
-    _storage.insertInt('current_user_id', userId);
-    _storage.insertString('current_celular', celular);
-    _storage.insertBool('current_primeiro_acesso', primeiroAcesso);
-    _storage.insertBool('current_informar_celular_email', informarCelularEmail);
   }
 }
