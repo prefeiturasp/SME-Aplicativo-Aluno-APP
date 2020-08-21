@@ -206,6 +206,7 @@ class _ListMessageState extends State<ListMessages> {
                                             message: item,
                                             codigoAlunoEol:
                                                 widget.codigoAlunoEol,
+                                            userId: widget.userId,
                                           )))
                                   .whenComplete(() => _loadingMessages());
                             },

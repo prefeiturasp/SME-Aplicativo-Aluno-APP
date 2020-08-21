@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -13,21 +11,23 @@ import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessage extends StatefulWidget {
   final Message message;
   final int codigoAlunoEol;
+  final int userId;
 
-  ViewMessage({@required this.message, @required this.codigoAlunoEol});
+  ViewMessage(
+      {@required this.message,
+      @required this.codigoAlunoEol,
+      @required this.userId});
 
   @override
   _ViewMessageState createState() => _ViewMessageState();
 }
 
 class _ViewMessageState extends State<ViewMessage> {
-  final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -41,18 +41,16 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _viewMessageUpdate(bool mensagemVisualizada, bool action) async {
-    int usuarioId = await storage.readValueIntStorage("current_user_id");
-
     if (!mensagemVisualizada && action) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.codigoAlunoEol ?? 0,
           mensagemVisualia: false);
     } else if (!mensagemVisualizada) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.codigoAlunoEol ?? 0,
           mensagemVisualia: true);
     }
@@ -118,13 +116,13 @@ class _ViewMessageState extends State<ViewMessage> {
 
   _removeMesageToStorage(int id) async {
     List<String> ids = [];
-    String currentName = await storage.readValueStorage("current_name");
-    String json = await storage.readValueStorage("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    storage.insertString("${currentName}_deleted_id", jsonEncode(ids));
+    // String currentName = await storage.readValueStorage("current_name");
+    // String json = await storage.readValueStorage("${currentName}_deleted_id");
+    // if (json != null) {
+    //   ids = jsonDecode(json).cast<String>();
+    // }
+    // ids.add(id.toString());
+    // storage.insertString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
   _launchURL(url) async {
