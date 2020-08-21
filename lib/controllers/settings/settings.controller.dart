@@ -20,9 +20,10 @@ abstract class _SettingsControllerBase with Store {
   bool isLoading = false;
 
   @action
-  changePassword(String password, String oldPassword) async {
+  changePassword(String password, String oldPassword, int userId) async {
     isLoading = true;
-    data = await _settingsRepository.changePassword(password, oldPassword);
+    data =
+        await _settingsRepository.changePassword(password, oldPassword, userId);
     isLoading = false;
   }
 }
