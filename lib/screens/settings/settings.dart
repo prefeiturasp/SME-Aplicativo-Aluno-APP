@@ -143,8 +143,9 @@ class _SettingsState extends State<Settings> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ChangePassword(cpf: widget.currentCPF)));
+                                builder: (context) => ChangePassword(
+                                    cpf: widget.currentCPF,
+                                    id: widget.userId)));
                       },
                     )
                   ]))
