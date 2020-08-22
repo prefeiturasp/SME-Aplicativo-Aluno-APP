@@ -42,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   _loadingBackRecentMessage() async {
+    setState(() {});
     _messagesController = MessagesController();
     _messagesController.loadMessages(widget.student.codigoEol, widget.userId);
   }
@@ -143,6 +144,7 @@ class _DashboardState extends State<Dashboard> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ViewMessage(
+                                                      userId: widget.userId,
                                                       message: dados[index],
                                                       codigoAlunoEol: widget
                                                           .student.codigoEol,
