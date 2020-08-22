@@ -50,6 +50,7 @@ class _ListMessageState extends State<ListMessages> {
   }
 
   _loadingMessages() {
+    setState(() {});
     _messagesController = MessagesController();
     _messagesController.loadMessages(widget.codigoAlunoEol, widget.userId);
   }
@@ -96,7 +97,9 @@ class _ListMessageState extends State<ListMessages> {
             context,
             MaterialPageRoute(
                 builder: (context) => ViewMessage(
-                    message: message, codigoAlunoEol: widget.codigoAlunoEol)))
+                    userId: widget.userId,
+                    message: message,
+                    codigoAlunoEol: widget.codigoAlunoEol)))
         .whenComplete(() => _loadingMessages());
   }
 
