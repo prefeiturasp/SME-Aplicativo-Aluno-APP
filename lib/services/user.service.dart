@@ -18,7 +18,18 @@ class UserService {
       var users = List.generate(
         maps.length,
         (i) {
-          return User.fromJson(maps[i]);
+          return User(
+            id: maps[i]['id'],
+            nome: maps[i]['nome'],
+            cpf: maps[i]['cpf'],
+            email: maps[i]['email'],
+            token: maps[i]['token'],
+            primeiroAcesso: maps[i]['primeiroAcesso'] == 1 ? true : false,
+            informarCelularEmail:
+                maps[i]['informarCelularEmail'] == 1 ? true : false,
+            celular: maps[i]['celular'],
+          );
+          ;
         },
       );
       print("--------------------------");
@@ -40,7 +51,7 @@ class UserService {
       print("Usuário criado com sucesso: ${model.toMap()}");
       print("--------------------------");
     } catch (ex) {
-      print(ex);
+      print("Erro ao criar usuário: $ex");
       return;
     }
   }
@@ -50,12 +61,25 @@ class UserService {
     try {
       final List<Map<String, dynamic>> maps =
           await _db.query(TB_USER, where: "id = ?", whereArgs: [id]);
-      User user = User.fromJson(maps[0]);
+      User user = User(
+        id: maps[0]['id'],
+        nome: maps[0]['nome'],
+        cpf: maps[0]['cpf'],
+        email: maps[0]['email'],
+        token: maps[0]['token'],
+        primeiroAcesso: maps[0]['primeiroAcesso'] == 1 ? true : false,
+        informarCelularEmail:
+            maps[0]['informarCelularEmail'] == 1 ? true : false,
+        celular: maps[0]['celular'],
+      );
       print("--------------------------");
       print("Usuário encontrado com sucesso: ${user.toMap()}");
       print("--------------------------");
       return user;
-    } catch (e) {
+    } catch (ex) {
+      print("<--------------------------");
+      print("Erro ao encontrar usuário: $ex");
+      print("<--------------------------");
       return new User();
     }
   }
@@ -73,7 +97,9 @@ class UserService {
       print("Usuário atualizado com sucesso: ${model.toMap()}");
       print("--------------------------");
     } catch (ex) {
-      print(ex);
+      print("<--------------------------");
+      print("Erro ao atualizar usuário: $ex");
+      print("<--------------------------");
       return;
     }
   }
@@ -88,7 +114,9 @@ class UserService {
       );
       print("Usuário removido com sucesso: $id");
     } catch (ex) {
-      print(ex);
+      print("<--------------------------");
+      print("Erro ao deletar usuário: $ex");
+      print("<--------------------------");
       return;
     }
   }

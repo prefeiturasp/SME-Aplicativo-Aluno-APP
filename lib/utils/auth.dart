@@ -1,11 +1,10 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Auth {
-  static logout(BuildContext context, int id) async {
+  static logout(BuildContext context, int userId) async {
     // FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     final UserService _userService = UserService();
 
@@ -15,7 +14,7 @@ class Auth {
     //   _firebaseMessaging.unsubscribeFromTopic(element.toString());
     // });
 
-    await _userService.delete(id);
+    await _userService.delete(userId);
     // prefs.clear();
     Nav.push(context, Login());
   }
