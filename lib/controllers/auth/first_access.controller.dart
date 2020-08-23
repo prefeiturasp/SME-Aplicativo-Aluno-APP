@@ -49,7 +49,7 @@ abstract class _FirstAccessControllerBase with Store {
   @action
   loadUserForStorage(int userId) async {
     User user = await _userService.find(userId);
-    currentEmail = user.email ?? "";
-    currentPhone = user.celular ?? "";
+    currentEmail = user.email;
+    currentPhone = user.celular;
   }
 }

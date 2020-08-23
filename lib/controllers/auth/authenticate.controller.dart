@@ -61,7 +61,7 @@ abstract class _AuthenticateControllerBase with Store {
   @action
   Future<void> loadCurrentUser() async {
     isLoading = true;
-    List<User> users = await _userService.all();
+    final List<User> users = await _userService.all();
     if (users.isNotEmpty) {
       user = users[0];
     }
