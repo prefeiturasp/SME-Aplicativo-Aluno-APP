@@ -12,7 +12,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<Data> changeNewPassword(int id, String password) async {
     final User user = await _userService.find(id);
-    String token = user.token;
+
     int _id = user.id;
     Map _data = {
       "id": _id,
@@ -24,15 +24,12 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         "${Api.HOST}/Autenticacao/PrimeiroAcesso",
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${user.token}",
           "Content-Type": "application/json",
         },
         body: body,
       );
       if (response.statusCode == 200) {
-        // _storage.insertBool('current_primeiro_acesso', false);
-        // _storage.removeKey('current_password');
-        // _storage.insertString('current_password', password);
         await _userService.update(User(id: user.id, primeiroAcesso: false));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
@@ -79,7 +76,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
             celular: phone,
             token: user.token,
             primeiroAcesso: user.primeiroAcesso,
-            informarCelularEmail: user.informarCelularEmail));
+            informarCelularEmail: false));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;

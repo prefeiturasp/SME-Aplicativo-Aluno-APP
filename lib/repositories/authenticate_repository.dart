@@ -15,13 +15,13 @@ class AuthenticateRepository implements IAuthenticateRepository {
     String idDevice = await _firebaseMessaging.getToken();
     print("FIREBASE TOKEN: $idDevice");
 
-    if (!onBackgroundFetch) {
-      var ids = new List<int>.generate(20, (i) => i + 1);
-      ids.forEach((element) {
-        print("Remove ids: $element");
-        _firebaseMessaging.unsubscribeFromTopic(element.toString());
-      });
-    }
+    // if (!onBackgroundFetch) {
+    //   var ids = new List<int>.generate(20, (i) => i + 1);
+    //   ids.forEach((element) {
+    //     print("Remove ids: $element");
+    //     _firebaseMessaging.unsubscribeFromTopic(element.toString());
+    //   });
+    // }
 
     try {
       final response = await http.post(
