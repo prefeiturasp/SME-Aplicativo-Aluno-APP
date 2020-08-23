@@ -26,8 +26,8 @@ class User {
     cpf = json['cpf'];
     email = json['email'];
     token = json['token'];
-    primeiroAcesso = json['primeiroAcesso'] == 1 ? true : false;
-    informarCelularEmail = json['informarCelularEmail'] == 1 ? true : false;
+    primeiroAcesso = json['primeiroAcesso'];
+    informarCelularEmail = json['informarCelularEmail'];
     celular = json['celular'];
   }
 
@@ -38,8 +38,8 @@ class User {
       'cpf': cpf,
       'email': email,
       'token': token,
-      'primeiroAcesso': primeiroAcesso,
-      'informarCelularEmail': informarCelularEmail,
+      'primeiroAcesso': primeiroAcesso ? 1 : 0,
+      'informarCelularEmail': informarCelularEmail ? 1 : 0,
       'celular': celular,
     };
   }
