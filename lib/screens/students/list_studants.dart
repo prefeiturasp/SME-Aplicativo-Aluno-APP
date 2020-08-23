@@ -167,9 +167,9 @@ class _ListStudantsState extends State<ListStudants> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              BackgroundFetch.stop().then((int status) {
-                print('[BackgroundFetch] stop success: $status');
-              });
+              // BackgroundFetch.stop().then((int status) {
+              //   print('[BackgroundFetch] stop success: $status');
+              // });
               Auth.logout(context, widget.userId);
             },
             icon: Icon(

@@ -110,8 +110,6 @@ class _WrapperState extends State<Wrapper> {
           if (_authenticateController.user.primeiroAcesso) {
             return FirstAccess(
               id: _authenticateController.user.id,
-              isPhoneAndEmail:
-                  _authenticateController.user.informarCelularEmail,
               cpf: _authenticateController.user.cpf,
             );
           } else if (_authenticateController.user.informarCelularEmail) {

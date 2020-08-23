@@ -9,6 +9,7 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/recover_password/recover_password.dart';
@@ -47,32 +48,28 @@ class _LoginState extends State<Login> {
     String cpf,
     String password,
   ) async {
-    await _authenticateController
-        .authenticateUser(cpf, password, false)
-        .then((data) {
-      _navigateToScreen();
-    });
+    await _authenticateController.authenticateUser(cpf, password, false);
+    _navigateToScreen();
   }
 
   _navigateToScreen() async {
     if (_authenticateController.currentUser.data != null) {
-      var user =
+      User user =
           await _userService.find(_authenticateController.currentUser.data.id);
       if (_authenticateController.currentUser.data.primeiroAcesso) {
         Nav.push(
             context,
             FirstAccess(
-              id: user.id,
-              isPhoneAndEmail: user.informarCelularEmail,
-              cpf: user.cpf,
+              id: _authenticateController.currentUser.data.id,
+              cpf: _authenticateController.currentUser.data.cpf,
             ));
       } else if (user.informarCelularEmail) {
         Nav.push(
             context,
             ChangeEmailOrPhone(
-              cpf: user.cpf,
+              cpf: _authenticateController.currentUser.data.cpf,
               password: _password,
-              userId: user.id,
+              userId: _authenticateController.currentUser.data.id,
             ));
       } else {
         Nav.push(

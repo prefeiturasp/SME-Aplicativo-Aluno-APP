@@ -13,11 +13,9 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 
 class FirstAccess extends StatefulWidget {
   final int id;
-  final bool isPhoneAndEmail;
   final String cpf;
 
-  FirstAccess(
-      {@required this.id, @required this.isPhoneAndEmail, @required this.cpf});
+  FirstAccess({@required this.id, @required this.cpf});
 
   @override
   _FirstAccessState createState() => _FirstAccessState();
@@ -68,13 +66,8 @@ class _FirstAccessState extends State<FirstAccess> {
     setState(() {
       _busy = true;
     });
-    await _firstAccessController
-        .changeNewPassword(widget.id, password)
-        .then((data) {
-      _navigateToScreen();
-    }).catchError((err) {
-      onError();
-    });
+    await _firstAccessController.changeNewPassword(widget.id, password);
+    _navigateToScreen();
     setState(() {
       _busy = false;
     });
