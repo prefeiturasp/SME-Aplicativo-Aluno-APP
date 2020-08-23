@@ -7,21 +7,25 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessageNotification extends StatefulWidget {
   final Message message;
+  final int userId;
 
-  ViewMessageNotification({@required this.message});
+  ViewMessageNotification({@required this.message, @required this.userId});
 
   @override
   _ViewMessageNotificationState createState() =>
@@ -33,6 +37,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool messageIsRead = true;
+  final UserService _userService = UserService();
 
   @override
   void initState() {
@@ -42,17 +47,16 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _viewMessageUpdate(bool isNotRead, bool action) async {
-    int usuarioId = await storage.readValueIntStorage("current_user_id");
     if (action) {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.message.codigoEOL ?? 0,
           mensagemVisualia: false);
     } else {
       _messagesController.updateMessage(
           notificacaoId: widget.message.id,
-          usuarioId: usuarioId,
+          usuarioId: widget.userId,
           codigoAlunoEol: widget.message.codigoEOL ?? 0,
           mensagemVisualia: true);
     }
@@ -85,18 +89,14 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _navigateToListMessage() async {
-    String token = await storage.readValueStorage("token");
-    String cpf = await storage.readValueStorage("current_cpf");
-    String password = await storage.readValueStorage("current_cpf");
+    final User user = await _userService.find(2);
 
-    Navigator.push(
+    Nav.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => ListStudants(
-                  cpf: cpf,
-                  password: password,
-                  token: token,
-                )));
+        ListStudants(
+          userId: user.id,
+          password: "password",
+        ));
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {

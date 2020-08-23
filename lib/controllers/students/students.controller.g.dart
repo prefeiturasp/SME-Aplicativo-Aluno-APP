@@ -43,9 +43,9 @@ mixin _$StudentsController on _StudentsControllerBase, Store {
       AsyncAction('_StudentsControllerBase.loadingStudents');
 
   @override
-  Future loadingStudents(String cpf, String token) {
+  Future loadingStudents(String cpf, int id) {
     return _$loadingStudentsAsyncAction
-        .run(() => super.loadingStudents(cpf, token));
+        .run(() => super.loadingStudents(cpf, id));
   }
 
   final _$_StudentsControllerBaseActionController =

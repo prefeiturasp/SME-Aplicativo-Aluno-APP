@@ -1,4 +1,3 @@
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,7 +5,7 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
@@ -20,14 +19,14 @@ import 'package:sme_app_aluno/utils/conection.dart';
 class Dashboard extends StatefulWidget {
   final Student student;
   final String groupSchool;
-  final String token;
   final int codigoGrupo;
+  final int userId;
 
   Dashboard(
       {@required this.student,
       @required this.groupSchool,
-      @required this.token,
-      @required this.codigoGrupo});
+      @required this.codigoGrupo,
+      @required this.userId});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -42,10 +41,10 @@ class _DashboardState extends State<Dashboard> {
     _loadingBackRecentMessage();
   }
 
-  _loadingBackRecentMessage() {
-    _messagesController = MessagesController();
-    _messagesController.loadMessages(widget.student.codigoEol);
+  _loadingBackRecentMessage() async {
     setState(() {});
+    _messagesController = MessagesController();
+    _messagesController.loadMessages(widget.student.codigoEol, widget.userId);
   }
 
   @override
@@ -53,15 +52,14 @@ class _DashboardState extends State<Dashboard> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     if (connectionStatus == ConnectivityStatus.Offline) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
+      // BackgroundFetch.stop().then((int status) {
+      //   print('[BackgroundFetch] stop success: $status');
+      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
       var screenHeight =
           (size.height - MediaQuery.of(context).padding.top) / 100;
-
       return Scaffold(
         backgroundColor: Color(0xffE5E5E5),
         appBar: AppBar(
@@ -137,7 +135,6 @@ class _DashboardState extends State<Dashboard> {
                                                   .countMessageUE
                                               : _messagesController
                                                   .countMessageTurma,
-                                      token: widget.token,
                                       codigoGrupo: widget.codigoGrupo,
                                       deleteBtn: false,
                                       recent: !dados[index].mensagemVisualizada,
@@ -145,12 +142,13 @@ class _DashboardState extends State<Dashboard> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => ViewMessage(
-                                                    message: dados[index],
-                                                    codigoAlunoEol: widget
-                                                        .student.codigoEol,
-                                                    token: widget
-                                                        .token))).whenComplete(
+                                                builder: (context) =>
+                                                    ViewMessage(
+                                                      userId: widget.userId,
+                                                      message: dados[index],
+                                                      codigoAlunoEol: widget
+                                                          .student.codigoEol,
+                                                    ))).whenComplete(
                                             () => _loadingBackRecentMessage());
                                       },
                                       outherRoutes: () {
@@ -159,7 +157,7 @@ class _DashboardState extends State<Dashboard> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ListMessages(
-                                                      token: widget.token,
+                                                      userId: widget.userId,
                                                       codigoGrupo:
                                                           widget.codigoGrupo,
                                                       codigoAlunoEol: widget
@@ -211,7 +209,9 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         drawer: DrawerMenu(
-            student: widget.student, codigoGrupo: widget.codigoGrupo),
+            student: widget.student,
+            codigoGrupo: widget.codigoGrupo,
+            userId: widget.userId),
       );
     }
   }

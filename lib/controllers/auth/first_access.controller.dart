@@ -1,7 +1,8 @@
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/first_access/data.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/repositories/first_access_repository.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 
 part 'first_access.controller.g.dart';
 
@@ -10,8 +11,7 @@ class FirstAccessController = _FirstAccessControllerBase
 
 abstract class _FirstAccessControllerBase with Store {
   FirstAccessRepository _firstAccessRepository;
-  final Storage _storage = Storage();
-
+  final UserService _userService = UserService();
   _FirstAccessControllerBase() {
     _firstAccessRepository = FirstAccessRepository();
   }
@@ -38,16 +38,18 @@ abstract class _FirstAccessControllerBase with Store {
   }
 
   @action
-  changeEmailAndPhone(String email, String phone, bool changePassword) async {
+  changeEmailAndPhone(
+      String email, String phone, int userId, bool changePassword) async {
     isLoading = true;
     dataEmailOrPhone = await _firstAccessRepository.changeEmailAndPhone(
-        email, phone, changePassword);
+        email, phone, userId, changePassword);
     isLoading = false;
   }
 
   @action
-  loadUserForStorage() async {
-    currentEmail = await _storage.readValueStorage("current_email") ?? "";
-    currentPhone = await _storage.readValueStorage("current_telefone") ?? "";
+  loadUserForStorage(int userId) async {
+    User user = await _userService.find(userId);
+    currentEmail = user.email;
+    currentPhone = user.celular;
   }
 }

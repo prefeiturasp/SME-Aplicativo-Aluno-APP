@@ -1,10 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
@@ -12,77 +11,72 @@ import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class DrawerMenu extends StatefulWidget {
   final Student student;
   final int codigoGrupo;
-  DrawerMenu({@required this.student, @required this.codigoGrupo});
+  final int userId;
+
+  DrawerMenu(
+      {@required this.student,
+      @required this.codigoGrupo,
+      @required this.userId});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  final Storage _storage = Storage();
-
   AuthenticateController _authenticateController;
   MessagesController _messagesController;
+
   @override
   void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
+    _authenticateController.loadCurrentUser();
   }
 
-  _loadingBackRecentMessage(String token) {
-    setState(() {});
+  _loadingBackRecentMessage() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages(widget.student.codigoEol);
+    _messagesController.loadMessages(
+      widget.student.codigoEol,
+      _authenticateController.user.id,
+    );
   }
 
-  navigateToListMessages(BuildContext context, Storage storage) async {
-    var _token = await storage.readValueStorage("token") ?? "";
-
-    Navigator.push(
+  navigateToListMessages(BuildContext context) async {
+    Nav.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => ListMessages(
-                  token: _token,
-                  codigoGrupo: widget.codigoGrupo,
-                  codigoAlunoEol: widget.student.codigoEol,
-                ))).whenComplete(() => _loadingBackRecentMessage(_token));
+        ListMessages(
+          userId: _authenticateController.user.id,
+          codigoGrupo: widget.codigoGrupo,
+          codigoAlunoEol: widget.student.codigoEol,
+        )).whenComplete(() => _loadingBackRecentMessage());
   }
 
-  navigateToListStudents(BuildContext context, Storage storage) async {
-    var _cpf = await storage.readValueStorage("current_cpf") ?? "";
-    var _token = await storage.readValueStorage("token") ?? "";
-    var _password = await storage.readValueStorage("current_password") ?? "";
-    bool isCurrentUser = await storage.containsKey("current_cpf");
-    if (isCurrentUser) {
-      Navigator.push(
+  navigateToListStudents(BuildContext context) async {
+    if (_authenticateController.user != null) {
+      Nav.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => ListStudants(
-                    cpf: _cpf,
-                    token: _token,
-                    password: _password,
-                  )));
+          ListStudants(
+            userId: _authenticateController.user.id,
+            password: "_password",
+          ));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
 
-  _navigateToSettings(BuildContext context, Storage storage) async {
-    var _cpf = await storage.readValueStorage("current_cpf") ?? "";
-    var _email = await storage.readValueStorage("current_email") ?? "";
-    var _phone = await storage.readValueStorage("current_celular") ?? "";
-    Navigator.push(
+  _navigateToSettings(BuildContext context) async {
+    Nav.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => Settings(
-                  currentCPF: _cpf,
-                  email: _email,
-                  phone: _phone,
-                )));
+        Settings(
+          currentCPF: _authenticateController.user.cpf,
+          email: _authenticateController.user.email,
+          phone: _authenticateController.user.celular,
+          userId: _authenticateController.user.id,
+        ));
   }
 
   @override
@@ -113,9 +107,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     ),
                   ),
                   Observer(builder: (context) {
-                    if (_authenticateController.currentName != null) {
+                    if (_authenticateController.user != null) {
                       return AutoSizeText(
-                        "${_authenticateController.currentName}",
+                        "${_authenticateController.user.nome}",
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
@@ -156,7 +150,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              navigateToListStudents(context, _storage);
+              navigateToListStudents(context);
             },
           ),
           Divider(),
@@ -171,7 +165,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              navigateToListMessages(context, _storage);
+              navigateToListMessages(context);
             },
           ),
           Divider(),
@@ -206,7 +200,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () {
-              _navigateToSettings(context, _storage);
+              _navigateToSettings(context);
             },
           ),
           Divider(),
@@ -220,11 +214,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 size: screenHeight * 2,
               ),
             ),
-            onTap: () {
-              BackgroundFetch.stop().then((int status) {
-                print('[BackgroundFetch] stop success: $status');
-              });
-              Auth.logout(context);
+            onTap: () async {
+              // BackgroundFetch.stop().then((int status) {
+              //   print('[BackgroundFetch] stop success: $status');
+              // });
+              Auth.logout(context, _authenticateController.user.id);
             },
           ),
         ],
