@@ -199,8 +199,9 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       AsyncAction('_MessagesControllerBase.loadMessages');
 
   @override
-  Future loadMessages(int codigoAluno) {
-    return _$loadMessagesAsyncAction.run(() => super.loadMessages(codigoAluno));
+  Future loadMessages(int codigoAlunoEol, int userId) {
+    return _$loadMessagesAsyncAction
+        .run(() => super.loadMessages(codigoAlunoEol, userId));
   }
 
   final _$loadMessagesNotDeletedsAsyncAction =
@@ -220,12 +221,14 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       {int notificacaoId,
       int usuarioId,
       int codigoAlunoEol,
-      bool mensagemVisualia}) {
+      bool mensagemVisualia,
+      Student student}) {
     return _$updateMessageAsyncAction.run(() => super.updateMessage(
         notificacaoId: notificacaoId,
         usuarioId: usuarioId,
         codigoAlunoEol: codigoAlunoEol,
-        mensagemVisualia: mensagemVisualia));
+        mensagemVisualia: mensagemVisualia,
+        student: student));
   }
 
   final _$_MessagesControllerBaseActionController =

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/first_access.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
@@ -13,11 +13,9 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 
 class FirstAccess extends StatefulWidget {
   final int id;
-  final bool isPhoneAndEmail;
   final String cpf;
 
-  FirstAccess(
-      {@required this.id, @required this.isPhoneAndEmail, @required this.cpf});
+  FirstAccess({@required this.id, @required this.cpf});
 
   @override
   _FirstAccessState createState() => _FirstAccessState();
@@ -57,6 +55,7 @@ class _FirstAccessState extends State<FirstAccess> {
           builder: (_) => ChangeEmailOrPhone(
                 cpf: widget.cpf,
                 password: _password,
+                userId: widget.id,
               )));
     } else {
       onError();
@@ -67,13 +66,8 @@ class _FirstAccessState extends State<FirstAccess> {
     setState(() {
       _busy = true;
     });
-    await _firstAccessController
-        .changeNewPassword(widget.id, password)
-        .then((data) {
-      _navigateToScreen();
-    }).catchError((err) {
-      onError();
-    });
+    await _firstAccessController.changeNewPassword(widget.id, password);
+    _navigateToScreen();
     setState(() {
       _busy = false;
     });
@@ -81,6 +75,7 @@ class _FirstAccessState extends State<FirstAccess> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _firstAccessController.data != null
             ? Text(_firstAccessController.data.erros[0])
             : Text("Erro de serviço"));

@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -124,9 +123,9 @@ class _ResumeStudantsState extends State<ResumeStudants> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     if (connectionStatus == ConnectivityStatus.Offline) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
+      // BackgroundFetch.stop().then((int status) {
+      //   print('[BackgroundFetch] stop success: $status');
+      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;

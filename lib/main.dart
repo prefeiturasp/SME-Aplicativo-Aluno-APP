@@ -2,15 +2,16 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/first_access.controller.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
-import 'package:sme_app_aluno/controllers/recover_password.controller.dart';
-import 'package:sme_app_aluno/controllers/students.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sentry/sentry.dart';
+
+import 'controllers/auth/authenticate.controller.dart';
+import 'controllers/auth/first_access.controller.dart';
+import 'controllers/auth/recover_password.controller.dart';
+import 'controllers/messages/messages.controller.dart';
+import 'controllers/students/students.controller.dart';
 
 void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);

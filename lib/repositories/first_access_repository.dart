@@ -3,15 +3,17 @@ import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
 import 'package:sme_app_aluno/models/first_access/data.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
-  final Storage _storage = Storage();
+  final UserService _userService = UserService();
   @override
   Future<Data> changeNewPassword(int id, String password) async {
-    String token = await _storage.readValueStorage("token");
-    int _id = await _storage.readValueIntStorage("current_user_id");
+    final User user = await _userService.find(id);
+
+    int _id = user.id;
     Map _data = {
       "id": _id,
       "novaSenha": password,
@@ -22,15 +24,13 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         "${Api.HOST}/Autenticacao/PrimeiroAcesso",
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${user.token}",
           "Content-Type": "application/json",
         },
         body: body,
       );
       if (response.statusCode == 200) {
-        _storage.insertBool('current_primeiro_acesso', false);
-        _storage.removeKey('current_password');
-        _storage.insertString('current_password', password);
+        await _userService.update(User(id: user.id, primeiroAcesso: false));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;
@@ -47,11 +47,12 @@ class FirstAccessRepository implements IFirstAccessRepository {
 
   @override
   Future<Data> changeEmailAndPhone(
-      String email, String phone, bool changePassword) async {
-    String token = await _storage.readValueStorage("token");
-    int _id = await _storage.readValueIntStorage("current_user_id");
+      String email, String phone, int userId, bool changePassword) async {
+    final User user = await _userService.find(userId);
+    String token = user.token;
+
     Map _data = {
-      "id": _id,
+      "id": userId,
       "email": email ?? "",
       "celular": phone ?? "",
       "alterarSenha": changePassword
@@ -67,16 +68,15 @@ class FirstAccessRepository implements IFirstAccessRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        if (email.isNotEmpty) {
-          _storage.removeKey('current_email');
-          _storage.insertString('current_email', email);
-        }
-
-        if (phone.isNotEmpty) {
-          _storage.removeKey('current_telefone');
-          _storage.insertString('current_telefone', phone);
-        }
-
+        await _userService.update(User(
+            id: userId,
+            nome: user.nome,
+            cpf: user.cpf,
+            email: email,
+            celular: phone,
+            token: user.token,
+            primeiroAcesso: user.primeiroAcesso,
+            informarCelularEmail: false));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;

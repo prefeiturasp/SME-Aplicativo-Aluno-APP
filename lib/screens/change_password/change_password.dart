@@ -12,8 +12,9 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 
 class ChangePassword extends StatefulWidget {
   final String cpf;
+  final int id;
 
-  ChangePassword({@required this.cpf});
+  ChangePassword({@required this.cpf, @required this.id});
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -70,12 +71,12 @@ class _ChangePasswordState extends State<ChangePassword> {
     }
   }
 
-  _changePassword(String password, String oldPassword) async {
+  _changePassword(String password, String oldPassword, int userId) async {
     setState(() {
       _busy = true;
     });
     await _settingsController
-        .changePassword(password, oldPassword)
+        .changePassword(password, oldPassword, userId)
         .then((data) {
       _navigateToScreen();
     });
@@ -86,6 +87,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   onError() {
     var snackbar = SnackBar(
+        backgroundColor: Colors.red,
         content: _settingsController.data != null
             ? Text(_settingsController.data.erros[0])
             : Text("Erro de serviço"));
@@ -398,7 +400,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                           (_confirmPassword == _password),
                                       onPress: () {
                                         _changePassword(
-                                            _password, _oldPassword);
+                                            _password, _oldPassword, widget.id);
                                       },
                                     )
                                   : GFLoader(

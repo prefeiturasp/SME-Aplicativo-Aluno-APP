@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +9,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
@@ -23,14 +22,14 @@ import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ListMessages extends StatefulWidget {
-  final String token;
   final int codigoGrupo;
   final int codigoAlunoEol;
+  final int userId;
 
   ListMessages(
-      {@required this.token,
-      @required this.codigoGrupo,
-      @required this.codigoAlunoEol});
+      {@required this.codigoGrupo,
+      @required this.codigoAlunoEol,
+      @required this.userId});
   _ListMessageState createState() => _ListMessageState();
 }
 
@@ -50,8 +49,9 @@ class _ListMessageState extends State<ListMessages> {
   }
 
   _loadingMessages() {
+    setState(() {});
     _messagesController = MessagesController();
-    _messagesController.loadMessages(widget.codigoAlunoEol);
+    _messagesController.loadMessages(widget.codigoAlunoEol, widget.userId);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -91,26 +91,29 @@ class _ListMessageState extends State<ListMessages> {
     prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
-  _navigateToMessage(BuildContext context, String token, Message message) {
+  _navigateToMessage(BuildContext context, Message message) {
     Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ViewMessage(
-                    token: token,
+                    userId: widget.userId,
                     message: message,
                     codigoAlunoEol: widget.codigoAlunoEol)))
         .whenComplete(() => _loadingMessages());
   }
 
-  Widget _listCardsMessages(List<Message> messages, BuildContext context,
-      double screenHeight, String token) {
+  Widget _listCardsMessages(
+    List<Message> messages,
+    BuildContext context,
+    double screenHeight,
+  ) {
     return new Column(
         children: messages
             .where((e) => e.id != messages[0].id)
             .toList()
             .map((item) => GestureDetector(
                   onTap: () {
-                    _navigateToMessage(context, widget.token, item);
+                    _navigateToMessage(context, item);
                   },
                   child: CardMessage(
                     headerTitle: item.categoriaNotificacao,
@@ -203,9 +206,9 @@ class _ListMessageState extends State<ListMessages> {
                                       builder: (BuildContext context) =>
                                           ViewMessage(
                                             message: item,
-                                            token: widget.token,
                                             codigoAlunoEol:
                                                 widget.codigoAlunoEol,
+                                            userId: widget.userId,
                                           )))
                                   .whenComplete(() => _loadingMessages());
                             },
@@ -240,8 +243,7 @@ class _ListMessageState extends State<ListMessages> {
             .toList());
   }
 
-  Widget _buildListMessages(
-      BuildContext context, num screenHeight, String token) {
+  Widget _buildListMessages(BuildContext context, num screenHeight) {
     return Observer(builder: (context) {
       if (_messagesController.isLoading) {
         return GFLoader(
@@ -290,8 +292,8 @@ class _ListMessageState extends State<ListMessages> {
               ),
               GestureDetector(
                 onTap: () {
-                  _navigateToMessage(context, token,
-                      _messagesController.messagesNotDeleted.first);
+                  _navigateToMessage(
+                      context, _messagesController.messagesNotDeleted.first);
                 },
                 child: CardMessage(
                   headerTitle: _messagesController
@@ -386,7 +388,7 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            _navigateToMessage(context, token,
+                            _navigateToMessage(context,
                                 _messagesController.messagesNotDeleted.first);
                           },
                           child: Row(
@@ -510,8 +512,8 @@ class _ListMessageState extends State<ListMessages> {
                 // !turmaCheck && !smeCheck && !ueCheck
                 if (_messagesController.filteredList != null &&
                     _messagesController.filteredList.isNotEmpty) {
-                  return _listCardsMessages(_messagesController.filteredList,
-                      context, screenHeight, token);
+                  return _listCardsMessages(
+                      _messagesController.filteredList, context, screenHeight);
                 } else if (!turmaCheck && !smeCheck && !ueCheck) {
                   return Container(
                     padding: EdgeInsets.all(screenHeight * 2.5),
@@ -555,9 +557,9 @@ class _ListMessageState extends State<ListMessages> {
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.Offline) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
+      // BackgroundFetch.stop().then((int status) {
+      //   print('[BackgroundFetch] stop success: $status');
+      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
@@ -577,7 +579,8 @@ class _ListMessageState extends State<ListMessages> {
         ),
         body: RefreshIndicator(
           onRefresh: () async {
-            await _messagesController.loadMessages(widget.codigoAlunoEol);
+            await _messagesController.loadMessages(
+                widget.codigoAlunoEol, widget.userId);
           },
           child: SingleChildScrollView(
             child: Container(
@@ -587,7 +590,7 @@ class _ListMessageState extends State<ListMessages> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildListMessages(context, screenHeight, widget.token),
+                  _buildListMessages(context, screenHeight),
                 ],
               ),
             ),

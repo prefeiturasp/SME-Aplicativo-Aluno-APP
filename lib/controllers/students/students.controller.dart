@@ -27,9 +27,6 @@ abstract class _StudentsControllerBase with Store {
       dataEstudent.data.asMap().forEach((index, element) {
         _firebaseMessaging.subscribeToTopic("Grupo-${element.codigoGrupo}");
 
-        // _storage.insertString(
-        //     "Grupo-${element.codigoGrupo}", "Grupo-${element.codigoGrupo}");
-
         element.students.asMap().forEach((index, student) {
           _firebaseMessaging.subscribeToTopic("DRE-${student.codigoDre}");
           print("DRE-${student.codigoDre}");
@@ -52,9 +49,9 @@ abstract class _StudentsControllerBase with Store {
   }
 
   @action
-  loadingStudents(String cpf, String token) async {
+  loadingStudents(String cpf, int id) async {
     isLoading = true;
-    dataEstudent = await _studentRepository.fetchStudents(cpf, token);
+    dataEstudent = await _studentRepository.fetchStudents(cpf, id);
     subscribeGroupIdToFirebase();
     isLoading = false;
   }

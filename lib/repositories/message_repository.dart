@@ -2,21 +2,19 @@ import 'dart:convert';
 import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class MessageRepository implements IMessageRepository {
-  Storage _storage;
-
-  MessageRepository() {
-    _storage = Storage();
-  }
+  final UserService _userService = UserService();
 
   @override
-  Future<List<Message>> fetchMessages(String token, int codigoAluno) async {
+  Future<List<Message>> fetchMessages(int codigoEol, int userId) async {
+    final User user = await _userService.find(userId);
     try {
-      final response = await http.get("${Api.HOST}/Notificacao/$codigoAluno",
-          headers: {"Authorization": "Bearer $token"});
+      final response = await http.get("${Api.HOST}/Notificacao/$codigoEol",
+          headers: {"Authorization": "Bearer ${user.token}"});
 
       if (response.statusCode == 200) {
         List<dynamic> messages = jsonDecode(response.body);
@@ -39,7 +37,8 @@ class MessageRepository implements IMessageRepository {
   @override
   Future<bool> readMessage(int notificacaoId, int usuarioId, int codigoAlunoEol,
       bool mensagemVisualia) async {
-    String token = await _storage.readValueStorage("token");
+    final User user = await _userService.find(usuarioId);
+
     Map data = {
       "notificacaoId": notificacaoId,
       "usuarioId": usuarioId,
@@ -54,14 +53,12 @@ class MessageRepository implements IMessageRepository {
       final response = await http.post(
         "${Api.HOST}/UsuarioNotificacaoLeitura",
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${user.token}",
           "Content-Type": "application/json",
         },
         body: body,
       );
       if (response.statusCode == 200) {
-        String currentName = await _storage.readValueStorage("current_name");
-        await _storage.removeKey("${currentName}_deleted_id");
         return jsonDecode(response.body);
       } else {
         print("[MessageRepository] Erro ao atualizar mensagem " +
