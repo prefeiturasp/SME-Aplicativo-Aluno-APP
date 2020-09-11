@@ -30,7 +30,16 @@ class FirstAccessRepository implements IFirstAccessRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        await _userService.update(User(id: user.id, primeiroAcesso: false));
+        await _userService.update(User(
+          id: user.id,
+          nome: user.nome,
+          cpf: user.cpf,
+          email: user.email,
+          celular: user.celular,
+          token: user.token,
+          primeiroAcesso: false,
+          informarCelularEmail: true,
+        ));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;
@@ -75,7 +84,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
             email: email,
             celular: phone,
             token: user.token,
-            primeiroAcesso: user.primeiroAcesso,
+            primeiroAcesso: false,
             informarCelularEmail: false));
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
