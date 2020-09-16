@@ -8,9 +8,12 @@ class MessageService {
     return openDatabase(
       join(await getDatabasesPath(), DATABASE_NAME),
       version: 2,
+      onCreate: (db, version) {
+        return db.execute(CREATE_TABLE_USERS_SCRIPT);
+      },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
         if (oldVersion == 1) {
-          return db.execute(CREATE_TABLE_MESSAGES_SCRIPT);
+          return await db.execute(CREATE_TABLE_MESSAGES_SCRIPT);
         }
       },
     );
