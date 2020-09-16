@@ -5,10 +5,13 @@ import 'package:sqflite/sqflite.dart';
 
 class UserService {
   Future<Database> _initDatabase() async {
-    return openDatabase(join(await getDatabasesPath(), DATABASE_NAME),
-        onCreate: (db, version) {
-      return db.execute(CREATE_TABLE_SCRIPT);
-    }, version: 1);
+    return openDatabase(
+      join(await getDatabasesPath(), DATABASE_NAME),
+      onCreate: (db, version) {
+        return db.execute(CREATE_TABLE_USERS_SCRIPT);
+      },
+      version: 1,
+    );
   }
 
   Future<List<User>> all() async {
@@ -29,7 +32,6 @@ class UserService {
                 maps[i]['informarCelularEmail'] == 1 ? true : false,
             celular: maps[i]['celular'],
           );
-          ;
         },
       );
       print("--------------------------");

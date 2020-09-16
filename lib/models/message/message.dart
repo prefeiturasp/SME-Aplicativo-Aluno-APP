@@ -26,7 +26,19 @@ class Message {
     criadoEm = json['criadoEm'];
     mensagemVisualizada = json['mensagemVisualizada'];
     categoriaNotificacao = json['categoriaNotificacao'];
-    codigoEOL = json['CodigoEOL'];
+    codigoEOL = json['CodigoEOL'] ?? null;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'mensagem': mensagem,
+      'titulo': titulo,
+      'dataEnvio': dataEnvio,
+      'criadoEm': criadoEm,
+      'mensagemVisualizada': mensagemVisualizada ? 1 : 0,
+      'categoriaNotificacao': categoriaNotificacao,
+    };
   }
 
   Map<String, dynamic> toJson() {
