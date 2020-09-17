@@ -1,26 +1,13 @@
-import 'package:path/path.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MessageService {
-  Future<Database> _initDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), DATABASE_NAME),
-      version: 2,
-      onCreate: (db, version) {
-        return db.execute(CREATE_TABLE_USERS_SCRIPT);
-      },
-      onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        if (oldVersion == 1) {
-          return await db.execute(CREATE_TABLE_MESSAGES_SCRIPT);
-        }
-      },
-    );
-  }
+  final dbHelper = DBHelper();
 
   Future create(Message model) async {
-    final Database _db = await _initDatabase();
+    final Database _db = await dbHelper.initDatabase();
     try {
       await _db.insert(TB_MESSAGE, model.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
@@ -35,7 +22,7 @@ class MessageService {
 
   Future<List<Message>> all() async {
     try {
-      final Database _db = await _initDatabase();
+      final Database _db = await dbHelper.initDatabase();
       final List<Map<String, dynamic>> maps = await _db.query(TB_USER);
       var messages = List.generate(
         maps.length,
