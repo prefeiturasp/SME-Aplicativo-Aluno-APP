@@ -1,22 +1,15 @@
-import 'package:path/path.dart';
+import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
 
 class UserService {
-  Future<Database> _initDatabase() async {
-    return openDatabase(
-      join(await getDatabasesPath(), DATABASE_NAME),
-      onCreate: (db, version) {
-        return db.execute(CREATE_TABLE_USERS_SCRIPT);
-      },
-      version: 1,
-    );
-  }
+  final dbHelper = DBHelper();
 
   Future<List<User>> all() async {
     try {
-      final Database _db = await _initDatabase();
+      final Database _db = await dbHelper.initDatabase();
       final List<Map<String, dynamic>> maps = await _db.query(TB_USER);
       var users = List.generate(
         maps.length,
@@ -45,7 +38,7 @@ class UserService {
   }
 
   Future create(User model) async {
-    final Database _db = await _initDatabase();
+    final Database _db = await dbHelper.initDatabase();
     try {
       await _db.insert(TB_USER, model.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
@@ -59,7 +52,7 @@ class UserService {
   }
 
   Future<User> find(int id) async {
-    final Database _db = await _initDatabase();
+    final Database _db = await dbHelper.initDatabase();
     try {
       final List<Map<String, dynamic>> maps =
           await _db.query(TB_USER, where: "id = ?", whereArgs: [id]);
@@ -88,7 +81,7 @@ class UserService {
 
   Future update(User model) async {
     try {
-      final Database _db = await _initDatabase();
+      final Database _db = await dbHelper.initDatabase();
       await _db.update(
         TB_USER,
         model.toMap(),
@@ -107,7 +100,7 @@ class UserService {
   }
 
   Future delete(int id) async {
-    final Database _db = await _initDatabase();
+    final Database _db = await dbHelper.initDatabase();
     try {
       await _db.delete(
         TB_USER,
@@ -119,6 +112,20 @@ class UserService {
       print("<--------------------------");
       print("Erro ao deletar usuário: $ex");
       print("<--------------------------");
+      return;
+    }
+  }
+
+  Future createMessage(Message model) async {
+    final Database _db = await dbHelper.initDatabase();
+    try {
+      await _db.insert(TB_MESSAGE, model.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      print("--------------------------");
+      print("Mensagem criada com sucesso: ${model.toMap()}");
+      print("--------------------------");
+    } catch (ex) {
+      print("Erro ao criar mensagem: $ex");
       return;
     }
   }
