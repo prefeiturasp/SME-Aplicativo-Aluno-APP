@@ -26,7 +26,7 @@ class Message {
     criadoEm = json['criadoEm'];
     mensagemVisualizada = json['mensagemVisualizada'];
     categoriaNotificacao = json['categoriaNotificacao'];
-    codigoEOL = json['CodigoEOL'] ?? null;
+    codigoEOL = json['CodigoEOL'];
   }
 
   Map<String, dynamic> toMap() {
