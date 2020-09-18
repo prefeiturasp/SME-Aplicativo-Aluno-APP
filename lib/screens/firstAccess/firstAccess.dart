@@ -57,7 +57,7 @@ class _FirstAccessState extends State<FirstAccess> {
   String _confirmPassword = '';
   bool _statusTerm = false;
 
-  loading() async{
+  loading() async {
     _firstAccessController = FirstAccessController();
     _termsController = TermsController();
     _authenticateController = AuthenticateController();
@@ -104,14 +104,10 @@ class _FirstAccessState extends State<FirstAccess> {
     // print('Running on ${iosInfo.utsname.machine}');
 
     String deviceId = androidInfo.id;
-        // Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
+    // Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
 
-    await _termsController.registerTerms(
-        _termsController.term.id,
-        widget.cpf,
-        deviceId,
-        _ip,
-        _termsController.term.versao);
+    await _termsController.registerTerms(_termsController.term.id, widget.cpf,
+        deviceId, _ip, _termsController.term.versao);
   }
 
   _registerNewPassword(String password) async {
@@ -133,6 +129,25 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  howModalBottomSheetTerm() {
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(25), topLeft: Radius.circular(25)),
+              color: Colors.white),
+          height: MediaQuery.of(context).size.height - 100,
+          child: TermsView(
+            button: true,
+            changeStatusTerm: () => changeStatusTerm(),
+            cpf: widget.cpf,
+          )),
+    );
   }
 
   changeStatusTerm() {
@@ -330,83 +345,64 @@ class _FirstAccessState extends State<FirstAccess> {
                                         _password.length <= 12),
                               ],
                             ),
-                            Visibility(child: GestureDetector(
-                                child: InfoBox(
-                                  icon: FontAwesomeIcons.exclamationTriangle,
-                                  content: <Widget>[
-                                    AutoSizeText(
-                                      "Você precisa aceitar os Termos de Uso",
-                                      maxFontSize: 18,
-                                      minFontSize: 16,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff717171)),
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight * 2,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Wrap(
-                                          children: [
-                                            AutoSizeText(
-                                              "Ler termos de uso",
-                                              maxFontSize: 16,
-                                              minFontSize: 14,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
+                            Visibility(
+                              child: GestureDetector(
+                                  child: InfoBox(
+                                    icon: FontAwesomeIcons.exclamationTriangle,
+                                    content: <Widget>[
+                                      AutoSizeText(
+                                        "Você precisa aceitar os Termos de Uso",
+                                        maxFontSize: 18,
+                                        minFontSize: 16,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff717171)),
+                                      ),
+                                      SizedBox(
+                                        height: screenHeight * 2,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Wrap(
+                                            children: [
+                                              AutoSizeText(
+                                                "Ler termos de uso",
+                                                maxFontSize: 16,
+                                                minFontSize: 14,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color: Color(0xff717171)),
+                                              ),
+                                              SizedBox(width: 10),
+                                              Icon(FontAwesomeIcons.fileAlt,
+                                                  size: 16,
                                                   color: Color(0xff717171)),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Icon(FontAwesomeIcons.fileAlt,
-                                                size: 16,
-                                                color: Color(0xff717171)),
-                                          ],
-                                        ),
-                                        _statusTerm
-                                            ? Icon(
-                                          Icons.check_box,
-                                          color: Color(0xffd06d12),
-                                        )
-                                            : Icon(
-                                            Icons.check_box_outline_blank,
-                                            color: Color(0xff8e8e8e))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  return showModalBottomSheet(
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) => Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(25),
-                                                topLeft: Radius.circular(25)),
-                                            color: Colors.white),
-                                        height:
-                                        MediaQuery.of(context).size.height -
-                                            100,
-                                        child: TermsView(
-                                          button: true,
-                                          changeStatusTerm: () =>
-                                              changeStatusTerm(),
-                                          cpf: widget.cpf,
-                                        )),
-                                  );
-                                }),
-                            visible: !_termsController.isTerm,
-                            replacement: GFLoader(
-                              type: GFLoaderType.square,
-                              loaderColorOne: Color(0xffDE9524),
-                              loaderColorTwo: Color(0xffC65D00),
-                              loaderColorThree: Color(0xffC65D00),
-                              size: GFSize.LARGE,
-                            ),),
+                                            ],
+                                          ),
+                                          _statusTerm
+                                              ? Icon(
+                                                  Icons.check_box,
+                                                  color: Color(0xffd06d12),
+                                                )
+                                              : Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Color(0xff8e8e8e))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  onTap: () => howModalBottomSheetTerm()),
+                              visible: !_termsController.isTerm,
+                              replacement: GFLoader(
+                                type: GFLoaderType.square,
+                                loaderColorOne: Color(0xffDE9524),
+                                loaderColorTwo: Color(0xffC65D00),
+                                loaderColorThree: Color(0xffC65D00),
+                                size: GFSize.LARGE,
+                              ),
+                            ),
                             SizedBox(height: screenHeight * 3),
                             !_busy
                                 ? EAButton(
@@ -418,10 +414,10 @@ class _FirstAccessState extends State<FirstAccess> {
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
-                                        // && (_termsController.isTerm == false || _statusTerm == true),
+                                    // && (_termsController.isTerm == false || _statusTerm == true),
                                     onPress: () async {
-                                        await _registerNewPassword(_password);
-                                        await _register();
+                                      await _registerNewPassword(_password);
+                                      await _register();
                                     },
                                   )
                                 : GFLoader(
