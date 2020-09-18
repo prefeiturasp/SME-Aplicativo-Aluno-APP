@@ -1,12 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
+import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
+import 'package:sme_app_aluno/screens/terms/terms_view.dart';
+
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -35,6 +43,11 @@ class _FirstAccessState extends State<FirstAccess> {
 
   FirstAccessController _firstAccessController;
 
+  TermsController _termsController;
+  AuthenticateController _authenticateController;
+  String _ip = 'Unknown';
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
   ReactionDisposer _disposer;
 
   bool _showPassword = true;
@@ -42,11 +55,19 @@ class _FirstAccessState extends State<FirstAccess> {
   bool _passwordIsError = false;
   String _password = '';
   String _confirmPassword = '';
+  bool _statusTerm = false;
+
+  loading() async{
+    _firstAccessController = FirstAccessController();
+    _termsController = TermsController();
+    _authenticateController = AuthenticateController();
+    _termsController.fetchVerifyTerm(widget.cpf);
+  }
 
   @override
   void initState() {
     super.initState();
-    _firstAccessController = FirstAccessController();
+    loading();
   }
 
   _navigateToScreen() {
@@ -60,6 +81,37 @@ class _FirstAccessState extends State<FirstAccess> {
     } else {
       onError();
     }
+  }
+
+  Future<void> initPlatformState() async {
+    String ipAddress;
+    try {
+      ipAddress = await GetIp.ipAddress;
+    } on PlatformException {
+      ipAddress = 'Failed to get ipAddress.';
+    }
+    if (!mounted) return;
+    setState(() {
+      _ip = ipAddress;
+    });
+  }
+
+  _register() async {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo.id}');
+
+    // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    // print('Running on ${iosInfo.utsname.machine}');
+
+    String deviceId = androidInfo.id;
+        // Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
+
+    await _termsController.registerTerms(
+        _termsController.term.id,
+        widget.cpf,
+        deviceId,
+        _ip,
+        _termsController.term.versao);
   }
 
   _registerNewPassword(String password) async {
@@ -81,6 +133,14 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  changeStatusTerm() {
+    setState(() {
+      _statusTerm = true;
+      print(_statusTerm);
+    });
+    Navigator.pop(context);
   }
 
   @override
@@ -270,6 +330,84 @@ class _FirstAccessState extends State<FirstAccess> {
                                         _password.length <= 12),
                               ],
                             ),
+                            Visibility(child: GestureDetector(
+                                child: InfoBox(
+                                  icon: FontAwesomeIcons.exclamationTriangle,
+                                  content: <Widget>[
+                                    AutoSizeText(
+                                      "Você precisa aceitar os Termos de Uso",
+                                      maxFontSize: 18,
+                                      minFontSize: 16,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xff717171)),
+                                    ),
+                                    SizedBox(
+                                      height: screenHeight * 2,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Wrap(
+                                          children: [
+                                            AutoSizeText(
+                                              "Ler termos de uso",
+                                              maxFontSize: 16,
+                                              minFontSize: 14,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xff717171)),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Icon(FontAwesomeIcons.fileAlt,
+                                                size: 16,
+                                                color: Color(0xff717171)),
+                                          ],
+                                        ),
+                                        _statusTerm
+                                            ? Icon(
+                                          Icons.check_box,
+                                          color: Color(0xffd06d12),
+                                        )
+                                            : Icon(
+                                            Icons.check_box_outline_blank,
+                                            color: Color(0xff8e8e8e))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                  return showModalBottomSheet(
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (context) => Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(25),
+                                                topLeft: Radius.circular(25)),
+                                            color: Colors.white),
+                                        height:
+                                        MediaQuery.of(context).size.height -
+                                            100,
+                                        child: TermsView(
+                                          button: true,
+                                          changeStatusTerm: () =>
+                                              changeStatusTerm(),
+                                          cpf: widget.cpf,
+                                        )),
+                                  );
+                                }),
+                            visible: !_termsController.isTerm,
+                            replacement: GFLoader(
+                              type: GFLoaderType.square,
+                              loaderColorOne: Color(0xffDE9524),
+                              loaderColorTwo: Color(0xffC65D00),
+                              loaderColorThree: Color(0xffC65D00),
+                              size: GFSize.LARGE,
+                            ),),
+                            SizedBox(height: screenHeight * 3),
                             !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
@@ -280,8 +418,10 @@ class _FirstAccessState extends State<FirstAccess> {
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
-                                    onPress: () {
-                                      _registerNewPassword(_password);
+                                        // && (_termsController.isTerm == false || _statusTerm == true),
+                                    onPress: () async {
+                                        await _registerNewPassword(_password);
+                                        await _register();
                                     },
                                   )
                                 : GFLoader(
