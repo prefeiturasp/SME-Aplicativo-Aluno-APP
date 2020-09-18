@@ -3,12 +3,13 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
@@ -33,6 +34,9 @@ class _FirstAccessState extends State<FirstAccess> {
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  FirstAccessController _firstAccessController;
+  TermsController _termsController;
+
   final numeric = RegExp(r"[0-9]");
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
   final upperCaseChar = RegExp(r"[A-Z]");
@@ -41,10 +45,6 @@ class _FirstAccessState extends State<FirstAccess> {
   final accentUppercase = RegExp(r'[À-Ú]');
   final spaceNull = RegExp(r"[/\s/]");
 
-  FirstAccessController _firstAccessController;
-
-  TermsController _termsController;
-  AuthenticateController _authenticateController;
   String _ip = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -57,17 +57,16 @@ class _FirstAccessState extends State<FirstAccess> {
   String _confirmPassword = '';
   bool _statusTerm = false;
 
-  loading() async {
-    _firstAccessController = FirstAccessController();
-    _termsController = TermsController();
-    _authenticateController = AuthenticateController();
-    _termsController.fetchVerifyTerm(widget.cpf);
-  }
-
   @override
   void initState() {
     super.initState();
     loading();
+  }
+
+  loading() async {
+    _firstAccessController = FirstAccessController();
+    _termsController = TermsController();
+    _termsController.fetchVerifyTerm(widget.cpf);
   }
 
   _navigateToScreen() {
@@ -96,20 +95,6 @@ class _FirstAccessState extends State<FirstAccess> {
     });
   }
 
-  _register() async {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo.id}');
-
-    // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    // print('Running on ${iosInfo.utsname.machine}');
-
-    String deviceId = androidInfo.id;
-    // Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
-
-    await _termsController.registerTerms(_termsController.term.id, widget.cpf,
-        deviceId, _ip, _termsController.term.versao);
-  }
-
   _registerNewPassword(String password) async {
     setState(() {
       _busy = true;
@@ -119,6 +104,19 @@ class _FirstAccessState extends State<FirstAccess> {
     setState(() {
       _busy = false;
     });
+
+    await _registerTerm();
+  }
+
+  _registerTerm() async {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+
+    String deviceId =
+        Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
+
+    await _termsController.registerTerms(_termsController.term.id, widget.cpf,
+        deviceId, _ip, _termsController.term.versao);
   }
 
   onError() {
@@ -345,63 +343,65 @@ class _FirstAccessState extends State<FirstAccess> {
                                         _password.length <= 12),
                               ],
                             ),
-                            Visibility(
-                              child: GestureDetector(
-                                  child: InfoBox(
-                                    icon: FontAwesomeIcons.exclamationTriangle,
-                                    content: <Widget>[
-                                      AutoSizeText(
-                                        "Você precisa aceitar os Termos de Uso",
-                                        maxFontSize: 18,
-                                        minFontSize: 16,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff717171)),
-                                      ),
-                                      SizedBox(
-                                        height: screenHeight * 2,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Wrap(
-                                            children: [
-                                              AutoSizeText(
-                                                "Ler termos de uso",
-                                                maxFontSize: 16,
-                                                minFontSize: 14,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Color(0xff717171)),
-                                              ),
-                                              SizedBox(width: 10),
-                                              Icon(FontAwesomeIcons.fileAlt,
-                                                  size: 16,
-                                                  color: Color(0xff717171)),
-                                            ],
+                            Observer(
+                              builder: (context) {
+                                if (_termsController.isTerm) {
+                                  return GestureDetector(
+                                      child: InfoBox(
+                                        icon: FontAwesomeIcons
+                                            .exclamationTriangle,
+                                        content: <Widget>[
+                                          AutoSizeText(
+                                            "Você precisa aceitar os Termos de Uso",
+                                            maxFontSize: 18,
+                                            minFontSize: 16,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff717171)),
                                           ),
-                                          _statusTerm
-                                              ? Icon(
-                                                  Icons.check_box,
-                                                  color: Color(0xffd06d12),
-                                                )
-                                              : Icon(
-                                                  Icons.check_box_outline_blank,
-                                                  color: Color(0xff8e8e8e))
+                                          SizedBox(
+                                            height: screenHeight * 2,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  AutoSizeText(
+                                                    "Ler termos de uso",
+                                                    maxFontSize: 16,
+                                                    minFontSize: 14,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color:
+                                                            Color(0xff717171)),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                  Icon(FontAwesomeIcons.fileAlt,
+                                                      size: 16,
+                                                      color: Color(0xff717171)),
+                                                ],
+                                              ),
+                                              _statusTerm
+                                                  ? Icon(
+                                                      Icons.check_box,
+                                                      color: Color(0xffd06d12),
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .check_box_outline_blank,
+                                                      color: Color(0xff8e8e8e))
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                  onTap: () => howModalBottomSheetTerm()),
-                              visible: !_termsController.isTerm,
-                              replacement: GFLoader(
-                                type: GFLoaderType.square,
-                                loaderColorOne: Color(0xffDE9524),
-                                loaderColorTwo: Color(0xffC65D00),
-                                loaderColorThree: Color(0xffC65D00),
-                                size: GFSize.LARGE,
-                              ),
+                                      ),
+                                      onTap: () => howModalBottomSheetTerm());
+                                }
+
+                                return Container();
+                              },
                             ),
                             SizedBox(height: screenHeight * 3),
                             !_busy
@@ -415,9 +415,8 @@ class _FirstAccessState extends State<FirstAccess> {
                                             !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
                                     // && (_termsController.isTerm == false || _statusTerm == true),
-                                    onPress: () async {
-                                      await _registerNewPassword(_password);
-                                      await _register();
+                                    onPress: () {
+                                      _registerNewPassword(_password);
                                     },
                                   )
                                 : GFLoader(

@@ -25,27 +25,28 @@ abstract class _TermsControllerBase with Store {
   bool isTerm = false;
 
   @action
-  fetchTermo(String cpf) async{
+  fetchTermo(String cpf) async {
     loading = true;
     term = await _termsRepository.fetchTerms(cpf);
     loading = false;
   }
 
   @action
-  fetchVerifyTerm(String cpf) async{
+  fetchVerifyTerm(String cpf) async {
     loading = true;
-    isTerm = await _termsRepository.fetchTerms(cpf) ? true : false;
-    if(isTerm){
+    isTerm = await _termsRepository.fetchTerms(cpf);
+    if (isTerm) {
       fetchTermo(cpf);
     }
     loading = false;
   }
 
   @action
-  registerTerms(int termoDeUsoId, String usuario, String device, String ip, double versao) async{
+  registerTerms(int termoDeUsoId, String usuario, String device, String ip,
+      double versao) async {
     loading = true;
-    termAcceted = await _termsRepository.registerTerms(termoDeUsoId, usuario, device, ip, versao);
+    termAcceted = await _termsRepository.registerTerms(
+        termoDeUsoId, usuario, device, ip, versao);
     loading = false;
   }
-
 }
