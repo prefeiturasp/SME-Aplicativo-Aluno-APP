@@ -30,6 +30,7 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     _initPushNotificationHandlers();
     _authenticateController = AuthenticateController();
+    _authenticateController.loadCurrentUser();
   }
 
   _initPushNotificationHandlers() {
