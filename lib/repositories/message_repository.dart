@@ -3,11 +3,13 @@ import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/services/message.service.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 
 class MessageRepository implements IMessageRepository {
   final UserService _userService = UserService();
+  final MessageService _messageService = MessageService();
 
   @override
   Future<List<Message>> fetchMessages(int codigoEol, int userId) async {
@@ -22,6 +24,8 @@ class MessageRepository implements IMessageRepository {
         sortMessages
           ..sort((b, a) =>
               DateTime.parse(a.criadoEm).compareTo(DateTime.parse(b.criadoEm)));
+        var messagesdb = sortMessages.map((m) => _messageService.create(m));
+        print(messagesdb);
         return sortMessages;
       } else {
         print("[MessageRepository] Erro ao carregar lista de Mensagens " +
