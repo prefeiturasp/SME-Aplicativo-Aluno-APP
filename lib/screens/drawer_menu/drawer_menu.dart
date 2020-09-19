@@ -10,6 +10,7 @@ import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/screens/terms/terms_use.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -77,6 +78,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
           phone: _authenticateController.user.celular,
           userId: _authenticateController.user.id,
         ));
+  }
+
+  _navigateToTerms(BuildContext context){
+    Nav.push(context, TermsUse());
   }
 
   @override
@@ -201,6 +206,21 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               _navigateToSettings(context);
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Termos de Uso'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.fileAlt,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              _navigateToTerms(context);
             },
           ),
           Divider(),

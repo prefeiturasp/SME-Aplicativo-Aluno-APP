@@ -16,8 +16,9 @@ class InfoBox extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(screenHeight * 2),
-          margin:
-              EdgeInsets.only(top: screenHeight * 5, bottom: screenHeight * 4),
+          margin: EdgeInsets.only(
+            top: screenHeight * 5,
+          ),
           decoration: BoxDecoration(
             border: Border.all(
               color: Color(0xffFFC6C8),
@@ -32,7 +33,7 @@ class InfoBox extends StatelessWidget {
         Visibility(
           visible: icon != null,
           child: Positioned(
-              top: screenHeight * 2.4,
+              top: screenHeight * 2.5,
               right: screenHeight * 2.5,
               child: Container(
                 width: screenHeight * 5,

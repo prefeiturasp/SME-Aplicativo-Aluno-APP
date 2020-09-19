@@ -2,6 +2,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/global_config.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         Provider<RecoverPasswordController>.value(
             value: RecoverPasswordController()),
         Provider<FirstAccessController>.value(value: FirstAccessController()),
+        Provider<TermsController>.value(value: TermsController()),
         StreamProvider<ConnectivityStatus>(
             create: (context) =>
                 ConnectivityService().connectionStatusController.stream),
