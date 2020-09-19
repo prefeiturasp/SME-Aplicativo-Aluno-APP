@@ -58,6 +58,22 @@ abstract class _StudentsControllerBase with Store {
           _groupMessageService
               .create(Group(codigo: "ALU-${student.codigoEol}"));
           print("ALU-${student.codigoEol}");
+
+          _firebaseMessaging.subscribeToTopic(
+              "SERIERESUMIDA-${student.serieResumida}-MOD-${element.codigoGrupo}");
+          _groupMessageService.create(Group(
+              codigo:
+                  "SERIERESUMIDA-${student.serieResumida}-MOD-${element.codigoGrupo}"));
+          print(
+              "SERIERESUMIDA-${student.serieResumida}-MOD-${element.codigoGrupo}");
+
+          _firebaseMessaging.subscribeToTopic(
+              "SERIERESUMIDA-${student.serieResumida}-DRE-${student.codigoDre}");
+          _groupMessageService.create(Group(
+              codigo:
+                  "SERIERESUMIDA-${student.serieResumida}-DRE-${student.codigoDre}"));
+          print(
+              "SERIERESUMIDA-${student.serieResumida}-DRE-${student.codigoDre}");
         });
       });
     }

@@ -89,7 +89,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _navigateToListMessage() async {
-    final User user = await _userService.find(2);
+    final User user = await _userService.find(widget.userId);
 
     Nav.push(
         context,
@@ -131,17 +131,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
         });
   }
 
-  _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
-  }
+  _removeMesageToStorage(int id) async {}
 
   _launchURL(url) async {
     if (await canLaunch(url)) {
