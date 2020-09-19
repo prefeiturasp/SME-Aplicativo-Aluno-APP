@@ -68,8 +68,8 @@ class _TermsViewState extends State<TermsView> {
               children: [
                 AutoSizeText(
                   'Termos e condições de uso',
-                  minFontSize: 14,
-                  maxFontSize: 16,
+                  minFontSize: 16,
+                  maxFontSize: 18,
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
                 Html(data: widget.term.termosDeUso),

@@ -130,6 +130,8 @@ class _FirstAccessState extends State<FirstAccess> {
   }
 
   howModalBottomSheetTerm(Term term) {
+    var size = MediaQuery.of(context).size;
+    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -137,11 +139,11 @@ class _FirstAccessState extends State<FirstAccess> {
       builder: (context) => Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50),
-                topLeft: Radius.circular(50),
+                topRight: Radius.circular(screenHeight * 8),
+                topLeft: Radius.circular(screenHeight * 8),
               ),
               color: Colors.white),
-          height: MediaQuery.of(context).size.height - 150,
+          height: screenHeight * 90,
           child: TermsView(
             term: term,
             changeStatusTerm: () => changeStatusTerm(),
@@ -376,10 +378,12 @@ class _FirstAccessState extends State<FirstAccess> {
                                                     maxFontSize: 16,
                                                     minFontSize: 14,
                                                     style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color:
-                                                            Color(0xff717171)),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(0xff076397),
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
                                                   ),
                                                   SizedBox(width: 10),
                                                   Icon(FontAwesomeIcons.fileAlt,
