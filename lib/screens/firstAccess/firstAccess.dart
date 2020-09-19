@@ -10,9 +10,9 @@ import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 
-import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
+import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/terms/terms_view.dart';
 
@@ -60,13 +60,9 @@ class _FirstAccessState extends State<FirstAccess> {
   @override
   void initState() {
     super.initState();
-    loading();
-  }
-
-  loading() async {
     _firstAccessController = FirstAccessController();
     _termsController = TermsController();
-    _termsController.fetchVerifyTerm(widget.cpf);
+    _termsController.fetchTermo(widget.cpf);
   }
 
   _navigateToScreen() {
@@ -100,20 +96,24 @@ class _FirstAccessState extends State<FirstAccess> {
       _busy = true;
     });
     await _firstAccessController.changeNewPassword(widget.id, password);
+    if (_statusTerm) {
+      await _registerTerm();
+    }
     _navigateToScreen();
     setState(() {
       _busy = false;
     });
-
-    await _registerTerm();
   }
 
   _registerTerm() async {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-
-    String deviceId =
-        Platform.isAndroid ? androidInfo.id : iosInfo.utsname.machine;
+    String deviceId;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceId = androidInfo.id;
+    } else {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceId = iosInfo.utsname.machine;
+    }
 
     await _termsController.registerTerms(_termsController.term.id, widget.cpf,
         deviceId, _ip, _termsController.term.versao);
@@ -129,7 +129,7 @@ class _FirstAccessState extends State<FirstAccess> {
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
 
-  howModalBottomSheetTerm() {
+  howModalBottomSheetTerm(Term term) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: context,
@@ -137,11 +137,13 @@ class _FirstAccessState extends State<FirstAccess> {
       builder: (context) => Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(25), topLeft: Radius.circular(25)),
+                topRight: Radius.circular(50),
+                topLeft: Radius.circular(50),
+              ),
               color: Colors.white),
-          height: MediaQuery.of(context).size.height - 100,
+          height: MediaQuery.of(context).size.height - 150,
           child: TermsView(
-            button: true,
+            term: term,
             changeStatusTerm: () => changeStatusTerm(),
             cpf: widget.cpf,
           )),
@@ -345,7 +347,8 @@ class _FirstAccessState extends State<FirstAccess> {
                             ),
                             Observer(
                               builder: (context) {
-                                if (_termsController.isTerm) {
+                                if (_termsController.term != null &&
+                                    _termsController.term.termosDeUso != null) {
                                   return GestureDetector(
                                       child: InfoBox(
                                         icon: FontAwesomeIcons
@@ -397,13 +400,14 @@ class _FirstAccessState extends State<FirstAccess> {
                                           )
                                         ],
                                       ),
-                                      onTap: () => howModalBottomSheetTerm());
+                                      onTap: () => howModalBottomSheetTerm(
+                                          _termsController.term));
+                                } else {
+                                  return SizedBox.shrink();
                                 }
-
-                                return Container();
                               },
                             ),
-                            SizedBox(height: screenHeight * 3),
+                            SizedBox(height: screenHeight * 5),
                             !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
@@ -413,11 +417,12 @@ class _FirstAccessState extends State<FirstAccess> {
                                     desabled: (_password.isNotEmpty &&
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
-                                        (_confirmPassword == _password),
-                                    // && (_termsController.isTerm == false || _statusTerm == true),
-                                    onPress: () {
-                                      _registerNewPassword(_password);
-                                    },
+                                        (_confirmPassword == _password) &&
+                                        (_statusTerm ||
+                                            _termsController.term.termosDeUso ==
+                                                null),
+                                    onPress: () =>
+                                        _registerNewPassword(_password),
                                   )
                                 : GFLoader(
                                     type: GFLoaderType.square,

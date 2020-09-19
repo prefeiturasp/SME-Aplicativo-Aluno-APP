@@ -14,11 +14,8 @@ class TermsRepository extends ITermsRepository {
         final termo = Term.fromJson(decodeJson);
         return termo;
       } else if (response.statusCode == 204) {
-        return true;
+        return Term();
       } else {
-        // var decodeError = jsonDecode(response.body);
-        // var termoError = Termo.fromJson(decodeError);
-        // return termoError;
         print('Erro ao obter dados');
         return null;
       }
@@ -29,11 +26,31 @@ class TermsRepository extends ITermsRepository {
   }
 
   @override
-  Future<bool> registerTerms(int termoDeUsoId, String usuario, String device,
+  Future<dynamic> fetchTermsCurrentUser() async {
+    try {
+      var response = await http.get("${Api.HOST}/TermosDeUso/logado");
+      if (response.statusCode == 200) {
+        var decodeJson = jsonDecode(response.body);
+        final termo = Term.fromJson(decodeJson);
+        return termo;
+      } else if (response.statusCode == 204) {
+        return true;
+      } else {
+        print('Erro ao obter dados');
+        return null;
+      }
+    } catch (e) {
+      print('$e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> registerTerms(int termoDeUsoId, String cpf, String device,
       String ip, double versao) async {
     Map data = {
       "termoDeUsoId": termoDeUsoId,
-      "usuario": usuario,
+      "cpfUsuario": cpf,
       "device": device,
       "ip": ip,
       "versao": versao,
@@ -43,13 +60,13 @@ class TermsRepository extends ITermsRepository {
 
     try {
       var response = await http.post("${Api.HOST}/TermosDeUso/registrar-aceite",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: body);
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
       } else {
-        // var decodeError = jsonDecode(response.body);
-        // var termoError = Termo.fromJson(decodeError);
-        // return termoError;
         print('Erro ao obter dados');
         return null;
       }

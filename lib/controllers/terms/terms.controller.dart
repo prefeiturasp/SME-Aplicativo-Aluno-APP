@@ -19,9 +19,6 @@ abstract class _TermsControllerBase with Store {
   bool loading = false;
 
   @observable
-  bool termAcceted = false;
-
-  @observable
   bool isTerm = false;
 
   @action
@@ -32,21 +29,17 @@ abstract class _TermsControllerBase with Store {
   }
 
   @action
-  fetchVerifyTerm(String cpf) async {
+  fetchTermoCurrentUser() async {
     loading = true;
-    isTerm = await _termsRepository.fetchTerms(cpf);
-    if (isTerm) {
-      fetchTermo(cpf);
-    }
+    term = await _termsRepository.fetchTermsCurrentUser();
     loading = false;
   }
 
   @action
-  registerTerms(int termoDeUsoId, String usuario, String device, String ip,
+  registerTerms(int termoDeUsoId, String cpf, String device, String ip,
       double versao) async {
     loading = true;
-    termAcceted = await _termsRepository.registerTerms(
-        termoDeUsoId, usuario, device, ip, versao);
+    await _termsRepository.registerTerms(termoDeUsoId, cpf, device, ip, versao);
     loading = false;
   }
 }

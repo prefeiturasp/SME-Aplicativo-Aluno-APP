@@ -39,21 +39,6 @@ mixin _$TermsController on _TermsControllerBase, Store {
     });
   }
 
-  final _$termAccetedAtom = Atom(name: '_TermsControllerBase.termAcceted');
-
-  @override
-  bool get termAcceted {
-    _$termAccetedAtom.reportRead();
-    return super.termAcceted;
-  }
-
-  @override
-  set termAcceted(bool value) {
-    _$termAccetedAtom.reportWrite(value, super.termAcceted, () {
-      super.termAcceted = value;
-    });
-  }
-
   final _$isTermAtom = Atom(name: '_TermsControllerBase.isTerm');
 
   @override
@@ -77,22 +62,23 @@ mixin _$TermsController on _TermsControllerBase, Store {
     return _$fetchTermoAsyncAction.run(() => super.fetchTermo(cpf));
   }
 
-  final _$fetchVerifyTermAsyncAction =
-      AsyncAction('_TermsControllerBase.fetchVerifyTerm');
+  final _$fetchTermoCurrentUserAsyncAction =
+      AsyncAction('_TermsControllerBase.fetchTermoCurrentUser');
 
   @override
-  Future fetchVerifyTerm(String cpf) {
-    return _$fetchVerifyTermAsyncAction.run(() => super.fetchVerifyTerm(cpf));
+  Future fetchTermoCurrentUser() {
+    return _$fetchTermoCurrentUserAsyncAction
+        .run(() => super.fetchTermoCurrentUser());
   }
 
   final _$registerTermsAsyncAction =
       AsyncAction('_TermsControllerBase.registerTerms');
 
   @override
-  Future registerTerms(int termoDeUsoId, String usuario, String device,
-      String ip, double versao) {
-    return _$registerTermsAsyncAction.run(
-        () => super.registerTerms(termoDeUsoId, usuario, device, ip, versao));
+  Future registerTerms(
+      int termoDeUsoId, String cpf, String device, String ip, double versao) {
+    return _$registerTermsAsyncAction
+        .run(() => super.registerTerms(termoDeUsoId, cpf, device, ip, versao));
   }
 
   @override
@@ -100,7 +86,6 @@ mixin _$TermsController on _TermsControllerBase, Store {
     return '''
 term: ${term},
 loading: ${loading},
-termAcceted: ${termAcceted},
 isTerm: ${isTerm}
     ''';
   }
