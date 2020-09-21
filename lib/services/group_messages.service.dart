@@ -51,7 +51,7 @@ class GroupMessageService {
         where: "id = ?",
         whereArgs: [id],
       );
-      print("Usuário removido com sucesso: $id");
+      print("Grupo de Mensagem removida com sucesso: $id");
     } catch (ex) {
       print("<--------------------------");
       print("Erro ao deletar usuário: $ex");

@@ -72,6 +72,9 @@ class _TermsViewState extends State<TermsView> {
                   maxFontSize: 18,
                   style: TextStyle(fontWeight: FontWeight.w700),
                 ),
+                SizedBox(
+                  height: screenHeight * 4,
+                ),
                 Html(data: widget.term.termosDeUso),
                 AutoSizeText(
                   'Política de privacidade',

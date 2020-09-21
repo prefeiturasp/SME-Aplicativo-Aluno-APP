@@ -59,32 +59,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     }
   }
 
-  Future<bool> _confirmDeleteMessage(int id) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Atenção"),
-            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text("SIM"),
-                  onPressed: () {
-                    _removeMesageToStorage(id);
-                    Navigator.of(context).pop(false);
-                    Navigator.pop(context);
-                  }),
-              FlatButton(
-                child: Text("NÃO"),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              )
-            ],
-          );
-        });
-  }
-
   _navigateToListMessage() async {
     final User user = await _userService.find(widget.userId);
 
@@ -127,8 +101,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
           );
         });
   }
-
-  _removeMesageToStorage(int id) async {}
 
   _launchURL(url) async {
     if (await canLaunch(url)) {
@@ -225,15 +197,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     Container(
                       child: Row(
                         children: <Widget>[
-                          EAIconButton(
-                            iconBtn: Icon(
-                              FontAwesomeIcons.trashAlt,
-                              color: Color(0xffC65D00),
-                            ),
-                            screenHeight: screenHeight,
-                            onPress: () =>
-                                _confirmDeleteMessage(widget.message.id),
-                          ),
                           SizedBox(
                             width: screenHeight * 2,
                           ),
