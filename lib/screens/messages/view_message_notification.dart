@@ -102,8 +102,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
         });
   }
 
-  _removeMesageToStorage(int id) async {}
-
   _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);

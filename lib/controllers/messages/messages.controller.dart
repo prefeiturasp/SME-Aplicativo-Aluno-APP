@@ -75,6 +75,13 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
+  deleteMessage(int codigoEol, int idNotificacao, int userId) async {
+    isLoading = true;
+    _messagesRepository.deleteMessage(codigoEol, idNotificacao, userId);
+    isLoading = false;
+  }
+
+  @action
   void loadRecentMessagesPorCategory() {
     if (messagesNotDeleted != null) {
       final messagesUe = ObservableList<Message>.of(messagesNotDeleted

@@ -12,7 +12,7 @@ class MessageService {
       await _db.insert(TB_MESSAGE, model.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
       print("--------------------------");
-      print("Mensagem criada com sucesso: ${model.toMap()}");
+      print("DB LOCAL -> Mensagem criada com sucesso: ${model.toMap()}");
       print("--------------------------");
     } catch (ex) {
       print("Erro ao criar mensagem: $ex");
@@ -21,9 +21,9 @@ class MessageService {
   }
 
   Future<List<Message>> all() async {
+    final Database _db = await dbHelper.initDatabase();
     try {
-      final Database _db = await dbHelper.initDatabase();
-      final List<Map<String, dynamic>> maps = await _db.query(TB_USER);
+      final List<Map<String, dynamic>> maps = await _db.query(TB_MESSAGE);
       var messages = List.generate(
         maps.length,
         (i) {
@@ -41,12 +41,29 @@ class MessageService {
         },
       );
       print("--------------------------");
-      print("Lista de mensagens carregada: $messages}");
+      print("DB LOCAL -> Lista de mensagens carregada: $messages}");
       print("--------------------------");
       return messages;
     } catch (ex) {
       print(ex);
       return new List<Message>();
+    }
+  }
+
+  Future delete(int id) async {
+    final Database _db = await dbHelper.initDatabase();
+    try {
+      await _db.delete(
+        TB_MESSAGE,
+        where: "id = ?",
+        whereArgs: [id],
+      );
+      print("DB LOCAL -> Usuário removido com sucesso: $id");
+    } catch (ex) {
+      print("<--------------------------");
+      print("Erro ao deletar usuário: $ex");
+      print("<--------------------------");
+      return;
     }
   }
 }

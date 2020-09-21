@@ -213,6 +213,15 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessagesNotDeleteds());
   }
 
+  final _$deleteMessageAsyncAction =
+      AsyncAction('_MessagesControllerBase.deleteMessage');
+
+  @override
+  Future deleteMessage(int codigoEol, int idNotificacao, int userId) {
+    return _$deleteMessageAsyncAction
+        .run(() => super.deleteMessage(codigoEol, idNotificacao, userId));
+  }
+
   final _$updateMessageAsyncAction =
       AsyncAction('_MessagesControllerBase.updateMessage');
 

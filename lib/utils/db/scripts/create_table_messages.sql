@@ -5,6 +5,7 @@ CREATE TABLE messages
     titulo TEXT,
     dataEnvio TEXT,
     criadoEm TEXT,
+    alteradoEm TEXT,
     mensagemVisualizada INTEGER,
     categoriaNotificacao TEXT,
     codigoEOL INTEGER

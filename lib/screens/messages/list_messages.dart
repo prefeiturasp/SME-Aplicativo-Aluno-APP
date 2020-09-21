@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -8,7 +6,6 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
@@ -65,7 +62,12 @@ class _ListMessageState extends State<ListMessages> {
               FlatButton(
                   child: Text("SIM"),
                   onPressed: () {
-                    _removeMesageToStorage(id);
+                    _removeMesageToStorage(
+                      widget.codigoAlunoEol,
+                      id,
+                      widget.userId,
+                    );
+
                     Navigator.of(context).pop(true);
                   }),
               FlatButton(
@@ -79,16 +81,8 @@ class _ListMessageState extends State<ListMessages> {
         });
   }
 
-  _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
+  _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
+    await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
   _navigateToMessage(BuildContext context, Message message) {
@@ -170,7 +164,9 @@ class _ListMessageState extends State<ListMessages> {
                       Visibility(
                         visible: item.mensagemVisualizada,
                         child: GestureDetector(
-                          onTap: () => _confirmDeleteMessage(item.id),
+                          onTap: () async {
+                            await _confirmDeleteMessage(item.id);
+                          },
                           child: Container(
                             width: screenHeight * 6,
                             height: screenHeight * 6,
@@ -355,8 +351,8 @@ class _ListMessageState extends State<ListMessages> {
                       visible: _messagesController
                           .messagesNotDeleted.first.mensagemVisualizada,
                       child: GestureDetector(
-                        onTap: () {
-                          _confirmDeleteMessage(
+                        onTap: () async {
+                          await _confirmDeleteMessage(
                               _messagesController.messagesNotDeleted.first.id);
                         },
                         child: Container(
