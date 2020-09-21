@@ -94,17 +94,14 @@ class _DashboardState extends State<Dashboard> {
                     );
                   } else {
                     if (_messagesController.messages != null) {
-                      _messagesController.loadMessagesNotDeleteds();
                       _messagesController.loadRecentMessagesPorCategory();
 
-                      if (_messagesController.messagesNotDeleted == null ||
-                          _messagesController.messagesNotDeleted.isEmpty) {
+                      if (_messagesController.messages == null ||
+                          _messagesController.messages.isEmpty) {
                         return Container(
                           child: Visibility(
-                              visible: _messagesController.messagesNotDeleted !=
-                                      null &&
-                                  _messagesController
-                                      .messagesNotDeleted.isEmpty,
+                              visible: _messagesController.messages != null &&
+                                  _messagesController.messages.isEmpty,
                               child: CardRecentMessage(
                                 recent: true,
                               )),

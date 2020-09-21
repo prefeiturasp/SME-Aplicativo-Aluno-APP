@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
@@ -62,34 +59,8 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     }
   }
 
-  Future<bool> _confirmDeleteMessage(int id) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Atenção"),
-            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text("SIM"),
-                  onPressed: () {
-                    _removeMesageToStorage(id);
-                    Navigator.of(context).pop(false);
-                    Navigator.pop(context);
-                  }),
-              FlatButton(
-                child: Text("NÃO"),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              )
-            ],
-          );
-        });
-  }
-
   _navigateToListMessage() async {
-    final User user = await _userService.find(2);
+    final User user = await _userService.find(widget.userId);
 
     Nav.push(
         context,
@@ -129,18 +100,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
             ],
           );
         });
-  }
-
-  _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
   }
 
   _launchURL(url) async {
@@ -238,15 +197,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     Container(
                       child: Row(
                         children: <Widget>[
-                          EAIconButton(
-                            iconBtn: Icon(
-                              FontAwesomeIcons.trashAlt,
-                              color: Color(0xffC65D00),
-                            ),
-                            screenHeight: screenHeight,
-                            onPress: () =>
-                                _confirmDeleteMessage(widget.message.id),
-                          ),
                           SizedBox(
                             width: screenHeight * 2,
                           ),

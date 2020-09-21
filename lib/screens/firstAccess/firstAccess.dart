@@ -1,12 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
+
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
+import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
+import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
+import 'package:sme_app_aluno/screens/terms/terms_view.dart';
+
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -25,6 +34,9 @@ class _FirstAccessState extends State<FirstAccess> {
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  FirstAccessController _firstAccessController;
+  TermsController _termsController;
+
   final numeric = RegExp(r"[0-9]");
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
   final upperCaseChar = RegExp(r"[A-Z]");
@@ -33,7 +45,8 @@ class _FirstAccessState extends State<FirstAccess> {
   final accentUppercase = RegExp(r'[À-Ú]');
   final spaceNull = RegExp(r"[/\s/]");
 
-  FirstAccessController _firstAccessController;
+  String _ip = 'Unknown';
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   ReactionDisposer _disposer;
 
@@ -42,11 +55,14 @@ class _FirstAccessState extends State<FirstAccess> {
   bool _passwordIsError = false;
   String _password = '';
   String _confirmPassword = '';
+  bool _statusTerm = false;
 
   @override
   void initState() {
     super.initState();
     _firstAccessController = FirstAccessController();
+    _termsController = TermsController();
+    _termsController.fetchTermo(widget.cpf);
   }
 
   _navigateToScreen() {
@@ -62,15 +78,45 @@ class _FirstAccessState extends State<FirstAccess> {
     }
   }
 
+  Future<void> initPlatformState() async {
+    String ipAddress;
+    try {
+      ipAddress = await GetIp.ipAddress;
+    } on PlatformException {
+      ipAddress = 'Failed to get ipAddress.';
+    }
+    if (!mounted) return;
+    setState(() {
+      _ip = ipAddress;
+    });
+  }
+
   _registerNewPassword(String password) async {
     setState(() {
       _busy = true;
     });
     await _firstAccessController.changeNewPassword(widget.id, password);
+    if (_statusTerm) {
+      await _registerTerm();
+    }
     _navigateToScreen();
     setState(() {
       _busy = false;
     });
+  }
+
+  _registerTerm() async {
+    String deviceId;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      deviceId = androidInfo.id;
+    } else {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      deviceId = iosInfo.utsname.machine;
+    }
+
+    await _termsController.registerTerms(_termsController.term.id, widget.cpf,
+        deviceId, _ip, _termsController.term.versao);
   }
 
   onError() {
@@ -81,6 +127,37 @@ class _FirstAccessState extends State<FirstAccess> {
             : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  howModalBottomSheetTerm(Term term) {
+    var size = MediaQuery.of(context).size;
+    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(screenHeight * 8),
+                topLeft: Radius.circular(screenHeight * 8),
+              ),
+              color: Colors.white),
+          height: screenHeight * 90,
+          child: TermsView(
+            term: term,
+            changeStatusTerm: () => changeStatusTerm(),
+            cpf: widget.cpf,
+          )),
+    );
+  }
+
+  changeStatusTerm() {
+    setState(() {
+      _statusTerm = true;
+      print(_statusTerm);
+    });
+    Navigator.pop(context);
   }
 
   @override
@@ -270,6 +347,71 @@ class _FirstAccessState extends State<FirstAccess> {
                                         _password.length <= 12),
                               ],
                             ),
+                            Observer(
+                              builder: (context) {
+                                if (_termsController.term != null &&
+                                    _termsController.term.termosDeUso != null) {
+                                  return GestureDetector(
+                                      child: InfoBox(
+                                        icon: FontAwesomeIcons
+                                            .exclamationTriangle,
+                                        content: <Widget>[
+                                          AutoSizeText(
+                                            "Você precisa aceitar os Termos de Uso",
+                                            maxFontSize: 18,
+                                            minFontSize: 16,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xff717171)),
+                                          ),
+                                          SizedBox(
+                                            height: screenHeight * 2,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  AutoSizeText(
+                                                    "Ler termos de uso",
+                                                    maxFontSize: 16,
+                                                    minFontSize: 14,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Color(0xff076397),
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                  Icon(FontAwesomeIcons.fileAlt,
+                                                      size: 16,
+                                                      color: Color(0xff717171)),
+                                                ],
+                                              ),
+                                              _statusTerm
+                                                  ? Icon(
+                                                      Icons.check_box,
+                                                      color: Color(0xffd06d12),
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .check_box_outline_blank,
+                                                      color: Color(0xff8e8e8e))
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      onTap: () => howModalBottomSheetTerm(
+                                          _termsController.term));
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              },
+                            ),
+                            SizedBox(height: screenHeight * 5),
                             !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
@@ -279,10 +421,12 @@ class _FirstAccessState extends State<FirstAccess> {
                                     desabled: (_password.isNotEmpty &&
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
-                                        (_confirmPassword == _password),
-                                    onPress: () {
-                                      _registerNewPassword(_password);
-                                    },
+                                        (_confirmPassword == _password) &&
+                                        (_statusTerm ||
+                                            _termsController.term.termosDeUso ==
+                                                null),
+                                    onPress: () =>
+                                        _registerNewPassword(_password),
                                   )
                                 : GFLoader(
                                     type: GFLoaderType.square,

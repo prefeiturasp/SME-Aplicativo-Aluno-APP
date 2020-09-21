@@ -66,8 +66,12 @@ class _ViewMessageState extends State<ViewMessage> {
             actions: <Widget>[
               FlatButton(
                   child: Text("SIM"),
-                  onPressed: () {
-                    _removeMesageToStorage(id);
+                  onPressed: () async {
+                    await _removeMesageToStorage(
+                      widget.codigoAlunoEol,
+                      id,
+                      widget.userId,
+                    );
                     Navigator.of(context).pop(false);
                     Navigator.pop(context);
                   }),
@@ -114,15 +118,8 @@ class _ViewMessageState extends State<ViewMessage> {
         });
   }
 
-  _removeMesageToStorage(int id) async {
-    List<String> ids = [];
-    // String currentName = await storage.readValueStorage("current_name");
-    // String json = await storage.readValueStorage("${currentName}_deleted_id");
-    // if (json != null) {
-    //   ids = jsonDecode(json).cast<String>();
-    // }
-    // ids.add(id.toString());
-    // storage.insertString("${currentName}_deleted_id", jsonEncode(ids));
+  _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
+    await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
   _launchURL(url) async {

@@ -289,6 +289,9 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: screenHeight * 5,
+                            ),
                             !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
