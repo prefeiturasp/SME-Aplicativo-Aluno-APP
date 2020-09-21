@@ -39,15 +39,12 @@ class _WrapperState extends State<Wrapper> {
     _firebaseMessaging.subscribeToTopic("AppAluno");
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage ---> Push Notification: $message");
         _popUpNotification(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch ---> Push Notification: $message");
         await _navigateToMessageView(message);
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume ---> Push Notification: $message");
         await _navigateToMessageView(message);
       },
     );
