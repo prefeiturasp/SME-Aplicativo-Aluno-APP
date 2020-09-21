@@ -18,15 +18,15 @@ class Auth {
     List<Group> groups = await _groupMessageService.all();
     List<Message> messages = await _messageService.all();
 
-    groups.forEach((element) {
+    groups.forEach((element) async {
       print("Grupo removido: ${element.toMap()}");
-      _firebaseMessaging.unsubscribeFromTopic(element.codigo);
-      _groupMessageService.delete(element.id);
+      await _firebaseMessaging.unsubscribeFromTopic(element.codigo);
+      await _groupMessageService.delete(element.id);
     });
 
-    messages.forEach((message) {
+    messages.forEach((message) async {
       print("Mensagem removida: ${message.toMap()}");
-      _messageService.delete(message.id);
+      await _messageService.delete(message.id);
     });
 
     await _userService.delete(userId);
