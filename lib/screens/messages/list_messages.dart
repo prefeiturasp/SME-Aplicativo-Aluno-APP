@@ -103,7 +103,7 @@ class _ListMessageState extends State<ListMessages> {
   ) {
     return new Column(
         children: messages
-            .where((e) => e.id != messages[0].id)
+            .where((e) => e.id != _messagesController.messages[0].id)
             .toList()
             .map((item) => GestureDetector(
                   onTap: () {
@@ -252,13 +252,13 @@ class _ListMessageState extends State<ListMessages> {
       } else {
         // _messagesController.loadMessagesNotDeleteds();
         _messagesController.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
-        if (_messagesController.messagesNotDeleted == null ||
-            _messagesController.messagesNotDeleted.isEmpty) {
+        if (_messagesController.messages == null ||
+            _messagesController.messages.isEmpty) {
           return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Visibility(
-                visible: _messagesController.messagesNotDeleted != null &&
-                    _messagesController.messagesNotDeleted.isEmpty,
+                visible: _messagesController.messages != null &&
+                    _messagesController.messages.isEmpty,
                 child: Column(
                   children: <Widget>[
                     AutoSizeText(
@@ -289,21 +289,21 @@ class _ListMessageState extends State<ListMessages> {
               GestureDetector(
                 onTap: () {
                   _navigateToMessage(
-                      context, _messagesController.messagesNotDeleted.first);
+                      context, _messagesController.messages.first);
                 },
                 child: CardMessage(
-                  headerTitle: _messagesController
-                      .messagesNotDeleted.first.categoriaNotificacao,
+                  headerTitle:
+                      _messagesController.messages.first.categoriaNotificacao,
                   headerIcon: true,
-                  recentMessage: !_messagesController
-                      .messagesNotDeleted.first.mensagemVisualizada,
-                  categoriaNotificacao: _messagesController
-                      .messagesNotDeleted.first.categoriaNotificacao,
+                  recentMessage:
+                      !_messagesController.messages.first.mensagemVisualizada,
+                  categoriaNotificacao:
+                      _messagesController.messages.first.categoriaNotificacao,
                   content: <Widget>[
                     Container(
                       width: screenHeight * 40,
                       child: AutoSizeText(
-                        _messagesController.messagesNotDeleted.first.titulo,
+                        _messagesController.messages.first.titulo,
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 2,
@@ -318,8 +318,8 @@ class _ListMessageState extends State<ListMessages> {
                     Container(
                       width: screenHeight * 41,
                       child: AutoSizeText(
-                        StringSupport.parseHtmlString(_messagesController
-                            .messagesNotDeleted.first.mensagem),
+                        StringSupport.parseHtmlString(
+                            _messagesController.messages.first.mensagem),
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 5,
@@ -335,7 +335,7 @@ class _ListMessageState extends State<ListMessages> {
                     ),
                     AutoSizeText(
                       DateFormatSuport.formatStringDate(
-                          _messagesController.messagesNotDeleted.first.criadoEm,
+                          _messagesController.messages.first.criadoEm,
                           'dd/MM/yyyy'),
                       maxFontSize: 16,
                       minFontSize: 14,
@@ -349,11 +349,12 @@ class _ListMessageState extends State<ListMessages> {
                   footerContent: <Widget>[
                     Visibility(
                       visible: _messagesController
-                          .messagesNotDeleted.first.mensagemVisualizada,
+                          .messages.first.mensagemVisualizada,
                       child: GestureDetector(
                         onTap: () async {
                           await _confirmDeleteMessage(
-                              _messagesController.messagesNotDeleted.first.id);
+                                  _messagesController.messages.first.id)
+                              .whenComplete(() => _loadingMessages());
                         },
                         child: Container(
                           width: screenHeight * 6,
@@ -384,8 +385,8 @@ class _ListMessageState extends State<ListMessages> {
                         ),
                         child: FlatButton(
                           onPressed: () {
-                            _navigateToMessage(context,
-                                _messagesController.messagesNotDeleted.first);
+                            _navigateToMessage(
+                                context, _messagesController.messages.first);
                           },
                           child: Row(
                             children: <Widget>[
@@ -416,12 +417,12 @@ class _ListMessageState extends State<ListMessages> {
               SizedBox(
                 height: screenHeight * 5,
               ),
-              _messagesController.messagesNotDeleted.length == 1
+              _messagesController.messages.length == 1
                   ? Container()
                   : AutoSizeText(
-                      (_messagesController.messagesNotDeleted.length - 1) == 1
-                          ? "${_messagesController.messagesNotDeleted.length - 1} MENSAGEM ANTIGA"
-                          : "${_messagesController.messagesNotDeleted.length - 1} MENSAGENS ANTIGAS",
+                      (_messagesController.messages.length - 1) == 1
+                          ? "${_messagesController.messages.length - 1} MENSAGEM ANTIGA"
+                          : "${_messagesController.messages.length - 1} MENSAGENS ANTIGAS",
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
