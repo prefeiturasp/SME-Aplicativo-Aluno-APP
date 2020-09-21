@@ -55,22 +55,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$messagesNotDeletedAtom =
-      Atom(name: '_MessagesControllerBase.messagesNotDeleted');
-
-  @override
-  ObservableList<Message> get messagesNotDeleted {
-    _$messagesNotDeletedAtom.reportRead();
-    return super.messagesNotDeleted;
-  }
-
-  @override
-  set messagesNotDeleted(ObservableList<Message> value) {
-    _$messagesNotDeletedAtom.reportWrite(value, super.messagesNotDeleted, () {
-      super.messagesNotDeleted = value;
-    });
-  }
-
   final _$auxListAtom = Atom(name: '_MessagesControllerBase.auxList');
 
   @override
@@ -204,15 +188,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessages(codigoAlunoEol, userId));
   }
 
-  final _$loadMessagesNotDeletedsAsyncAction =
-      AsyncAction('_MessagesControllerBase.loadMessagesNotDeleteds');
-
-  @override
-  Future loadMessagesNotDeleteds() {
-    return _$loadMessagesNotDeletedsAsyncAction
-        .run(() => super.loadMessagesNotDeleteds());
-  }
-
   final _$deleteMessageAsyncAction =
       AsyncAction('_MessagesControllerBase.deleteMessage');
 
@@ -282,7 +257,6 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
 message: ${message},
 messages: ${messages},
 recentMessages: ${recentMessages},
-messagesNotDeleted: ${messagesNotDeleted},
 auxList: ${auxList},
 filteredList: ${filteredList},
 isLoading: ${isLoading},
