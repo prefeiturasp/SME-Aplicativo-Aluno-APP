@@ -6,12 +6,14 @@ import 'package:getflutter/getflutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -21,6 +23,7 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
+  final UserService _userService = UserService();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   AuthenticateController _authenticateController;
@@ -30,7 +33,11 @@ class _WrapperState extends State<Wrapper> {
     super.initState();
     _initPushNotificationHandlers();
     _authenticateController = AuthenticateController();
-    _authenticateController.loadCurrentUser();
+    loadUsers();
+  }
+
+  loadUsers() async {
+    await _authenticateController.loadCurrentUser();
   }
 
   _initPushNotificationHandlers() {
@@ -66,6 +73,10 @@ class _WrapperState extends State<Wrapper> {
   }
 
   _navigateToMessageView(Map<String, dynamic> message) async {
+    final List<User> users = await _userService.all();
+
+    var user = users[0];
+
     Message _message = Message(
       id: int.parse(message["data"]["Id"]),
       titulo: message["data"]["Titulo"],
@@ -80,7 +91,7 @@ class _WrapperState extends State<Wrapper> {
         context,
         ViewMessageNotification(
           message: _message,
-          userId: _authenticateController.user.id,
+          userId: user.id,
         ));
   }
 
