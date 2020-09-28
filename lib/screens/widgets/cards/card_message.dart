@@ -10,6 +10,7 @@ class CardMessage extends StatelessWidget {
   final bool firstMessage;
   final bool footer;
   final List<Widget> footerContent;
+  final String categoriaNotificacao;
 
   CardMessage(
       {this.headerTitle,
@@ -18,12 +19,16 @@ class CardMessage extends StatelessWidget {
       this.recentMessage,
       this.firstMessage,
       this.footer,
-      this.footerContent});
+      this.footerContent,
+      this.categoriaNotificacao});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    const colorSME = Color(0xff9C33AD);
+    const colorUE = Color(0xff5151CF);
+    const colorTURMA = Color(0xff599E00);
     return Container(
       margin: EdgeInsets.only(top: screenHeight * 4),
       decoration: BoxDecoration(
@@ -45,40 +50,86 @@ class CardMessage extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
             decoration: BoxDecoration(
-                color: recentMessage ? Color(0xffE1771D) : Color(0xffF8E8C2),
+                color: recentMessage
+                    ? categoriaNotificacao == "SME"
+                        ? colorSME
+                        : categoriaNotificacao == "UE" ? colorUE : colorTURMA
+                    : categoriaNotificacao == "SME"
+                        ? colorSME.withOpacity(0.4)
+                        : categoriaNotificacao == "UE"
+                            ? colorUE.withOpacity(0.4)
+                            : colorTURMA.withOpacity(0.4),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Visibility(
-                  visible: headerIcon ? headerIcon : false,
-                  child: Container(
-                    margin: EdgeInsets.only(right: screenHeight * 2),
-                    child: Icon(
-                      FontAwesomeIcons.envelopeOpen,
-                      color: !recentMessage
-                          ? Color(0xffE1771D)
-                          : Color(0xffFFD037),
-                      size: screenHeight * 2.7,
-                    ),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Visibility(
+                        visible: headerIcon ? headerIcon : false,
+                        child: Container(
+                          margin: EdgeInsets.only(right: screenHeight * 2),
+                          child: Icon(
+                            recentMessage
+                                ? FontAwesomeIcons.envelope
+                                : FontAwesomeIcons.envelopeOpen,
+                            color: recentMessage
+                                ? Color(0xffFFD869)
+                                : categoriaNotificacao == "SME"
+                                    ? colorSME
+                                    : categoriaNotificacao == "UE"
+                                        ? colorUE
+                                        : colorTURMA,
+                            size: screenHeight * 2.7,
+                          ),
+                        ),
+                      ),
+                      AutoSizeText(
+                        headerTitle,
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: TextStyle(
+                            color: recentMessage
+                                ? Colors.white
+                                : categoriaNotificacao == "SME"
+                                    ? colorSME
+                                    : categoriaNotificacao == "UE"
+                                        ? colorUE
+                                        : colorTURMA,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
                 ),
-                AutoSizeText(
-                  headerTitle,
-                  maxFontSize: 18,
-                  minFontSize: 16,
-                  style: TextStyle(
-                      color: recentMessage ? Colors.white : Color(0xffC65D00),
-                      fontWeight: FontWeight.w700),
-                )
+                Visibility(
+                  visible: !recentMessage,
+                  child: Container(
+                      width: screenHeight * 3.5,
+                      height: screenHeight * 3.5,
+                      child: ClipOval(
+                          child: Container(
+                        color: categoriaNotificacao == "SME"
+                            ? colorSME
+                            : categoriaNotificacao == "UE"
+                                ? colorUE
+                                : colorTURMA,
+                        child: Icon(
+                          FontAwesomeIcons.check,
+                          color: Color(0xffFFFFFF),
+                          size: screenHeight * 2,
+                        ),
+                      ))),
+                ),
               ],
             ),
           ),
           Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
-            color: recentMessage ? Color(0xffC45C04) : Colors.white,
+            color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +148,7 @@ class CardMessage extends StatelessWidget {
             visible: footer,
             child: Container(
               decoration: BoxDecoration(
-                color: recentMessage ? Colors.white : Color(0xffF3F3F3),
+                color: Color(0xffF3F3F3),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(screenHeight * 2),
                     bottomRight: Radius.circular(screenHeight * 2)),

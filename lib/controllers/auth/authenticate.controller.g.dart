@@ -6,42 +6,53 @@ part of 'authenticate.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
+  final _$userAtom = Atom(name: '_AuthenticateControllerBase.user');
+
+  @override
+  User get user {
+    _$userAtom.reportRead();
+    return super.user;
+  }
+
+  @override
+  set user(User value) {
+    _$userAtom.reportWrite(value, super.user, () {
+      super.user = value;
+    });
+  }
+
   final _$currentUserAtom =
       Atom(name: '_AuthenticateControllerBase.currentUser');
 
   @override
   Data get currentUser {
-    _$currentUserAtom.context.enforceReadPolicy(_$currentUserAtom);
-    _$currentUserAtom.reportObserved();
+    _$currentUserAtom.reportRead();
     return super.currentUser;
   }
 
   @override
   set currentUser(Data value) {
-    _$currentUserAtom.context.conditionallyRunInAction(() {
+    _$currentUserAtom.reportWrite(value, super.currentUser, () {
       super.currentUser = value;
-      _$currentUserAtom.reportChanged();
-    }, _$currentUserAtom, name: '${_$currentUserAtom.name}_set');
+    });
   }
 
   final _$isLoadingAtom = Atom(name: '_AuthenticateControllerBase.isLoading');
 
   @override
   bool get isLoading {
-    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
-    _$isLoadingAtom.reportObserved();
+    _$isLoadingAtom.reportRead();
     return super.isLoading;
   }
 
   @override
   set isLoading(bool value) {
-    _$isLoadingAtom.context.conditionallyRunInAction(() {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
       super.isLoading = value;
-      _$isLoadingAtom.reportChanged();
-    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+    });
   }
 
   final _$currentNameAtom =
@@ -49,34 +60,30 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
 
   @override
   String get currentName {
-    _$currentNameAtom.context.enforceReadPolicy(_$currentNameAtom);
-    _$currentNameAtom.reportObserved();
+    _$currentNameAtom.reportRead();
     return super.currentName;
   }
 
   @override
   set currentName(String value) {
-    _$currentNameAtom.context.conditionallyRunInAction(() {
+    _$currentNameAtom.reportWrite(value, super.currentName, () {
       super.currentName = value;
-      _$currentNameAtom.reportChanged();
-    }, _$currentNameAtom, name: '${_$currentNameAtom.name}_set');
+    });
   }
 
   final _$currentCPFAtom = Atom(name: '_AuthenticateControllerBase.currentCPF');
 
   @override
   String get currentCPF {
-    _$currentCPFAtom.context.enforceReadPolicy(_$currentCPFAtom);
-    _$currentCPFAtom.reportObserved();
+    _$currentCPFAtom.reportRead();
     return super.currentCPF;
   }
 
   @override
   set currentCPF(String value) {
-    _$currentCPFAtom.context.conditionallyRunInAction(() {
+    _$currentCPFAtom.reportWrite(value, super.currentCPF, () {
       super.currentCPF = value;
-      _$currentCPFAtom.reportChanged();
-    }, _$currentCPFAtom, name: '${_$currentCPFAtom.name}_set');
+    });
   }
 
   final _$currentEmailAtom =
@@ -84,17 +91,15 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
 
   @override
   String get currentEmail {
-    _$currentEmailAtom.context.enforceReadPolicy(_$currentEmailAtom);
-    _$currentEmailAtom.reportObserved();
+    _$currentEmailAtom.reportRead();
     return super.currentEmail;
   }
 
   @override
   set currentEmail(String value) {
-    _$currentEmailAtom.context.conditionallyRunInAction(() {
+    _$currentEmailAtom.reportWrite(value, super.currentEmail, () {
       super.currentEmail = value;
-      _$currentEmailAtom.reportChanged();
-    }, _$currentEmailAtom, name: '${_$currentEmailAtom.name}_set');
+    });
   }
 
   final _$currentPasswordAtom =
@@ -102,37 +107,50 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
 
   @override
   String get currentPassword {
-    _$currentPasswordAtom.context.enforceReadPolicy(_$currentPasswordAtom);
-    _$currentPasswordAtom.reportObserved();
+    _$currentPasswordAtom.reportRead();
     return super.currentPassword;
   }
 
   @override
   set currentPassword(String value) {
-    _$currentPasswordAtom.context.conditionallyRunInAction(() {
+    _$currentPasswordAtom.reportWrite(value, super.currentPassword, () {
       super.currentPassword = value;
-      _$currentPasswordAtom.reportChanged();
-    }, _$currentPasswordAtom, name: '${_$currentPasswordAtom.name}_set');
+    });
   }
 
   final _$tokenAtom = Atom(name: '_AuthenticateControllerBase.token');
 
   @override
   String get token {
-    _$tokenAtom.context.enforceReadPolicy(_$tokenAtom);
-    _$tokenAtom.reportObserved();
+    _$tokenAtom.reportRead();
     return super.token;
   }
 
   @override
   set token(String value) {
-    _$tokenAtom.context.conditionallyRunInAction(() {
+    _$tokenAtom.reportWrite(value, super.token, () {
       super.token = value;
-      _$tokenAtom.reportChanged();
-    }, _$tokenAtom, name: '${_$tokenAtom.name}_set');
+    });
   }
 
-  final _$authenticateUserAsyncAction = AsyncAction('authenticateUser');
+  final _$firstAccessAtom =
+      Atom(name: '_AuthenticateControllerBase.firstAccess');
+
+  @override
+  bool get firstAccess {
+    _$firstAccessAtom.reportRead();
+    return super.firstAccess;
+  }
+
+  @override
+  set firstAccess(bool value) {
+    _$firstAccessAtom.reportWrite(value, super.firstAccess, () {
+      super.firstAccess = value;
+    });
+  }
+
+  final _$authenticateUserAsyncAction =
+      AsyncAction('_AuthenticateControllerBase.authenticateUser');
 
   @override
   Future authenticateUser(String cpf, String password, bool onBackgroundFetch) {
@@ -140,7 +158,8 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
         .run(() => super.authenticateUser(cpf, password, onBackgroundFetch));
   }
 
-  final _$loadCurrentUserAsyncAction = AsyncAction('loadCurrentUser');
+  final _$loadCurrentUserAsyncAction =
+      AsyncAction('_AuthenticateControllerBase.loadCurrentUser');
 
   @override
   Future<void> loadCurrentUser() {
@@ -152,8 +171,8 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
 
   @override
   dynamic clearCurrentUser() {
-    final _$actionInfo =
-        _$_AuthenticateControllerBaseActionController.startAction();
+    final _$actionInfo = _$_AuthenticateControllerBaseActionController
+        .startAction(name: '_AuthenticateControllerBase.clearCurrentUser');
     try {
       return super.clearCurrentUser();
     } finally {
@@ -163,8 +182,16 @@ mixin _$AuthenticateController on _AuthenticateControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'currentUser: ${currentUser.toString()},isLoading: ${isLoading.toString()},currentName: ${currentName.toString()},currentCPF: ${currentCPF.toString()},currentEmail: ${currentEmail.toString()},currentPassword: ${currentPassword.toString()},token: ${token.toString()}';
-    return '{$string}';
+    return '''
+user: ${user},
+currentUser: ${currentUser},
+isLoading: ${isLoading},
+currentName: ${currentName},
+currentCPF: ${currentCPF},
+currentEmail: ${currentEmail},
+currentPassword: ${currentPassword},
+token: ${token},
+firstAccess: ${firstAccess}
+    ''';
   }
 }

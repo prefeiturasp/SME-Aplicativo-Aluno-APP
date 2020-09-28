@@ -1,6 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
+  Future removeKey(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
+
   Future<bool> containsKey(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isKey = prefs.containsKey(key);
@@ -17,6 +22,11 @@ class Storage {
     prefs.setInt(key, value);
   }
 
+  void insertBool(String key, bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(key, value);
+  }
+
   void removeAllValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
@@ -31,6 +41,12 @@ class Storage {
   Future<int> readValueIntStorage(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int newValue = prefs.getInt(value);
+    return newValue;
+  }
+
+  Future<bool> readValueBoolStorage(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool newValue = prefs.getBool(value);
     return newValue;
   }
 }
