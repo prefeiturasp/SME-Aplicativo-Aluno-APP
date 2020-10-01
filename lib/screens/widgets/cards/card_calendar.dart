@@ -78,9 +78,9 @@ class CardCalendar extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
-            padding: EdgeInsets.all(10),
-            width: size.width - 100,
+            margin: EdgeInsets.only(top: screenHeight * 3),
+            padding: EdgeInsets.all(screenHeight * 1.5),
+            width: screenHeight * 50,
             child: AutoSizeText(
               month,
               maxFontSize: 18,

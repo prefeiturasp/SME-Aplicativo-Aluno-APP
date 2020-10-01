@@ -58,8 +58,8 @@ class _ListEventsState extends State<ListEvents> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
-                width: size.width - 100,
+                margin: EdgeInsets.only(top: screenHeight * 2),
+                width: screenHeight * 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
