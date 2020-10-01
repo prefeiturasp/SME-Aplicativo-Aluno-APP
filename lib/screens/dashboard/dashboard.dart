@@ -7,9 +7,11 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/card_calendar.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/eaq_recent_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
@@ -181,6 +183,19 @@ class _DashboardState extends State<Dashboard> {
                     }
                   }
                 }),
+                CardCalendar(
+                  title: "AGENDA",
+                  month: 'Setembro',
+                  text: "Construção do calendario",
+                  onPress: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListEvents(
+                                  student: widget.student,
+                                )));
+                  },
+                ),
                 CardAlert(
                   title: "ALERTA DE NOTAS",
                   icon: Icon(
