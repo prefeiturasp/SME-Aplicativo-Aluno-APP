@@ -52,42 +52,45 @@ class Event extends StatelessWidget {
             bottom: screenHeight * 1.5, top: screenHeight * 1.5),
         child: Container(
           height: screenHeight * 6,
-          child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: screenHeight * 30,
-                  child: Wrap(
-                    children: [
-                      AutoSizeText(
-                        diaSemana + " - " + nome,
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                      )
-                    ],
+          child: InkWell(
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: screenHeight * 30,
+                    child: Wrap(
+                      children: [
+                        AutoSizeText(
+                          diaSemana + " - " + nome,
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                desc == true
-                    ? IconButton(
-                        icon: Icon(FontAwesomeIcons.stickyNote),
-                        onPressed: () {
-                          viewEvent();
-                        })
-                    : SizedBox.shrink()
-              ],
+                  desc == true
+                      ? Icon(
+                          FontAwesomeIcons.stickyNote,
+                        )
+                      : SizedBox.shrink()
+                ],
+              ),
+              leading: CircleAvatar(
+                  backgroundColor: tipoEvento == "avaliacao"
+                      ? colorAvaliacao
+                      : tipoEvento == "reuniao"
+                          ? colorReuniao
+                          : colorOutros,
+                  child: Text(
+                    dia,
+                    style: TextStyle(
+                        fontSize: screenHeight * 2, color: Colors.white),
+                  )),
             ),
-            leading: CircleAvatar(
-                backgroundColor: tipoEvento == "avaliacao"
-                    ? colorAvaliacao
-                    : tipoEvento == "reuniao"
-                        ? colorReuniao
-                        : colorOutros,
-                child: Text(
-                  dia,
-                  style: TextStyle(
-                      fontSize: screenHeight * 2, color: Colors.white),
-                )),
+            onTap: () {
+              desc == true ? viewEvent() : null;
+            },
           ),
         ));
   }

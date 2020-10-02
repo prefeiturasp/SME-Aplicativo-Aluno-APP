@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
 
@@ -23,9 +24,22 @@ class AuthenticateRepository implements IAuthenticateRepository {
     //   });
     // }
 
+    Map _data = {
+      "cpf": cpf,
+      "senha": password,
+      "dispositivoId": idDevice,
+    };
+
+    var body = json.encode(_data);
+
     try {
       final response = await http.post(
-          "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
+        "${Api.HOST}/Autenticacao",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
