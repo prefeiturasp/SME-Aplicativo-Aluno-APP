@@ -210,9 +210,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ListEvents(
-                            student: widget.student,
-                            userId: widget.userId,
-                          )));
+                          student: widget.student, userId: widget.userId)));
             },
           ),
           Divider(),

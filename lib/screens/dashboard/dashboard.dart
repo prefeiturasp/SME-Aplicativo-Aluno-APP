@@ -184,18 +184,17 @@ class _DashboardState extends State<Dashboard> {
                   }
                 }),
                 CardCalendar(
-                  title: "AGENDA",
-                  month: 'Setembro',
-                  text: "Construção do calendario",
-                  onPress: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListEvents(
-                                student: widget.student,
-                                userId: widget.userId)));
-                  },
-                ),
+                    title: "AGENDA",
+                    month: 'Setembro',
+                    text: "Construção do calendario",
+                    onPress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListEvents(
+                                  student: widget.student,
+                                  userId: widget.userId)));
+                    }),
                 CardAlert(
                   title: "ALERTA DE NOTAS",
                   icon: Icon(

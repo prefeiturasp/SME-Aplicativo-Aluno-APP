@@ -86,11 +86,9 @@ class Event extends StatelessWidget {
                               : tipoEvento == 19
                                   ? colorReuniao
                                   : colorOutros,
-                  child: Text(
-                    dia,
-                    style: TextStyle(
-                        fontSize: screenHeight * 2, color: Colors.white),
-                  )),
+                  child: Text(dia,
+                      style: TextStyle(
+                          fontSize: screenHeight * 2, color: Colors.white))),
             ),
             onTap: () {
               desc == true ? viewEvent() : null;

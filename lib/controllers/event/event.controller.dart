@@ -24,8 +24,12 @@ abstract class _EventControllerBase with Store {
   @action
   fetchEvento(int codigoAluno, int mes, int ano, int userId) async {
     loading = true;
-    events = ObservableList<Event>.of(
-        await _eventRepository.fetchEvent(codigoAluno, mes, ano, userId));
+    events = ObservableList<Event>.of(await _eventRepository.fetchEvent(
+      codigoAluno,
+      mes,
+      ano,
+      userId,
+    ));
     loading = false;
   }
 }

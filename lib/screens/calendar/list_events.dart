@@ -126,22 +126,21 @@ class _ListEventsState extends State<ListEvents> {
                   child: Observer(builder: (_) {
                     if (_eventController.events != null) {
                       return Container(
-                        height: screenHeight * 48,
-                        margin: EdgeInsets.only(top: screenHeight * 3),
-                        child: ListView.builder(
-                            itemCount: _eventController.events.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              final dados = _eventController.event;
-                              return Event(
-                                nome: dados.nome,
-                                desc: dados.descricao != null ? true : false,
-                                eventDesc: dados.descricao,
-                                dia: dados.dataInicio,
-                                tipoEvento: dados.tipoEvento,
-                              );
-                            }),
-                      );
+                          height: screenHeight * 48,
+                          margin: EdgeInsets.only(top: screenHeight * 3),
+                          child: ListView.builder(
+                              itemCount: _eventController.events.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                final dados = _eventController.event;
+                                return Event(
+                                  nome: dados.nome,
+                                  desc: dados.descricao != null ? true : false,
+                                  eventDesc: dados.descricao,
+                                  dia: dados.dataInicio,
+                                  tipoEvento: dados.tipoEvento,
+                                );
+                              }));
                     } else {
                       return Container();
                     }
