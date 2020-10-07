@@ -1,15 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/calendar/event.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class ListEvents extends StatefulWidget {
   final Student student;
+  final int userId;
 
   ListEvents({
     @required this.student,
+    @required this.userId,
   });
   @override
   _ListEventsState createState() => _ListEventsState();
@@ -17,6 +21,15 @@ class ListEvents extends StatefulWidget {
 
 class _ListEventsState extends State<ListEvents> {
   String month = "Setembro";
+  EventController _eventController;
+
+  @override
+  void initState() {
+    super.initState();
+    _eventController = EventController();
+    _eventController.fetchEvento(
+        widget.student.codigoEol, 9, 2020, widget.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,32 +123,29 @@ class _ListEventsState extends State<ListEvents> {
                     ],
                   ),
                   padding: EdgeInsets.all(screenHeight * 1.5),
-                  child: Column(
-                    children: [
-                      Event(
-                        dia: "1",
-                        nome: "Reunião de Pais",
-                        tipoEvento: "reuniao",
-                        diaSemana: "Qui",
-                        desc: false,
-                      ),
-                      Event(
-                        dia: "5",
-                        nome: "Avaliaçao Língua Portuguesa",
-                        tipoEvento: "avaliacao",
-                        diaSemana: "Seg",
-                        desc: true,
-                        eventDesc: "Capítulos 1 e 2 do livro.",
-                      ),
-                      Event(
-                        dia: "9",
-                        nome: "Conselho de Classe",
-                        tipoEvento: "outros",
-                        diaSemana: "Sex",
-                        desc: false,
-                      ),
-                    ],
-                  )),
+                  child: Observer(builder: (_) {
+                    if (_eventController.events != null) {
+                      return Container(
+                        height: screenHeight * 48,
+                        margin: EdgeInsets.only(top: screenHeight * 3),
+                        child: ListView.builder(
+                            itemCount: _eventController.events.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final dados = _eventController.event;
+                              return Event(
+                                nome: dados.nome,
+                                desc: dados.descricao != null ? true : false,
+                                eventDesc: dados.descricao,
+                                dia: dados.dataInicio,
+                                tipoEvento: dados.tipoEvento,
+                              );
+                            }),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  })),
             ],
           ),
         ),

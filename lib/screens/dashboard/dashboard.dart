@@ -192,8 +192,8 @@ class _DashboardState extends State<Dashboard> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => ListEvents(
-                                  student: widget.student,
-                                )));
+                                student: widget.student,
+                                userId: widget.userId)));
                   },
                 ),
                 CardAlert(

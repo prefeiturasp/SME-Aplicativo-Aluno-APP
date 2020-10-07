@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/screens/calendar/event.dart';
-import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 
 class CardCalendar extends StatelessWidget {
   final String title;
@@ -102,14 +101,14 @@ class CardCalendar extends StatelessWidget {
                   Event(
                     dia: "1",
                     nome: "Reunião de Pais",
-                    tipoEvento: "reuniao",
+                    tipoEvento: 17,
                     diaSemana: "Qui",
                     desc: false,
                   ),
                   Event(
                     dia: "5",
                     nome: "Avaliaçao Língua Portuguesa",
-                    tipoEvento: "avaliacao",
+                    tipoEvento: 0,
                     diaSemana: "Seg",
                     desc: true,
                     eventDesc: "Capítulos 1 e 2 do livro. 2hs de Duração",
@@ -117,7 +116,7 @@ class CardCalendar extends StatelessWidget {
                   Event(
                     dia: "9",
                     nome: "Conselho de Classe",
-                    tipoEvento: "outros",
+                    tipoEvento: 15,
                     diaSemana: "Sex",
                     desc: false,
                   ),

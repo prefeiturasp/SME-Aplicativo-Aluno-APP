@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Event extends StatelessWidget {
-  final String tipoEvento;
+  final int tipoEvento;
   final String nome;
   final bool desc;
   final String dia;
@@ -77,11 +77,15 @@ class Event extends StatelessWidget {
                 ],
               ),
               leading: CircleAvatar(
-                  backgroundColor: tipoEvento == "avaliacao"
+                  backgroundColor: tipoEvento == 0
                       ? colorAvaliacao
-                      : tipoEvento == "reuniao"
+                      : tipoEvento == 16
                           ? colorReuniao
-                          : colorOutros,
+                          : tipoEvento == 17
+                              ? colorReuniao
+                              : tipoEvento == 19
+                                  ? colorReuniao
+                                  : colorOutros,
                   child: Text(
                     dia,
                     style: TextStyle(
