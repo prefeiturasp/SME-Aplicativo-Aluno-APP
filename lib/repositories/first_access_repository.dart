@@ -29,6 +29,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         },
         body: body,
       );
+      var decodeJson = jsonDecode(response.body);
+      var data = Data.fromJson(decodeJson);
       if (response.statusCode == 200) {
         await _userService.update(User(
           id: user.id,
@@ -36,12 +38,11 @@ class FirstAccessRepository implements IFirstAccessRepository {
           cpf: user.cpf,
           email: user.email,
           celular: user.celular,
-          token: user.token,
+          token: user.token != data.token ? data.token : user.token,
           primeiroAcesso: false,
           informarCelularEmail: true,
         ));
-        var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
+
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
@@ -77,17 +78,17 @@ class FirstAccessRepository implements IFirstAccessRepository {
         body: body,
       );
       if (response.statusCode == 200) {
+        var decodeJson = jsonDecode(response.body);
+        var data = Data.fromJson(decodeJson);
         await _userService.update(User(
             id: userId,
             nome: user.nome,
             cpf: user.cpf,
             email: email,
             celular: phone,
-            token: user.token,
+            token: data.token,
             primeiroAcesso: false,
             informarCelularEmail: false));
-        var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
