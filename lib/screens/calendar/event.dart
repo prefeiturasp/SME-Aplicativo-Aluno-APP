@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Event extends StatelessWidget {
@@ -7,7 +8,6 @@ class Event extends StatelessWidget {
   final String nome;
   final bool desc;
   final String dia;
-  final String diaSemana;
   final String eventDesc;
 
   Event({
@@ -15,7 +15,6 @@ class Event extends StatelessWidget {
     this.nome,
     this.desc,
     this.dia,
-    this.diaSemana,
     this.eventDesc,
   });
 
@@ -27,13 +26,22 @@ class Event extends StatelessWidget {
     const colorReuniao = Color(0xFFE1771D);
     const colorOutros = Color(0xFFC4C4C4);
 
+    DateTime date = DateTime.parse(dia);
+
     viewEvent() {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(nome),
-            content: new Text(eventDesc),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Html(
+                  data: eventDesc,
+                )
+              ],
+            ),
             actions: <Widget>[
               new FlatButton(
                 child: new Text("Voltar"),
@@ -62,7 +70,7 @@ class Event extends StatelessWidget {
                     child: Wrap(
                       children: [
                         AutoSizeText(
-                          diaSemana + " - " + nome,
+                          nome,
                           maxFontSize: 16,
                           minFontSize: 14,
                         )
@@ -86,7 +94,7 @@ class Event extends StatelessWidget {
                               : tipoEvento == 19
                                   ? colorReuniao
                                   : colorOutros,
-                  child: Text(dia,
+                  child: Text(date.day.toString(),
                       style: TextStyle(
                           fontSize: screenHeight * 2, color: Colors.white))),
             ),

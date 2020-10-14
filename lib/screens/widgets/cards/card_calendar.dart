@@ -10,6 +10,8 @@ class CardCalendar extends StatelessWidget {
   final double textSize;
   final bool isHeader;
   final Function onPress;
+  final Widget widget;
+  final String totalEventos;
 
   CardCalendar({
     this.title,
@@ -18,12 +20,15 @@ class CardCalendar extends StatelessWidget {
     this.isHeader = true,
     this.textSize,
     this.onPress,
+    this.widget,
+    this.totalEventos,
   });
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
     return Container(
       margin: EdgeInsets.only(top: screenHeight * 3),
       decoration: BoxDecoration(
@@ -96,32 +101,7 @@ class CardCalendar extends StatelessWidget {
           Container(
               padding: EdgeInsets.all(screenHeight * 1.5),
               color: Colors.white,
-              child: Column(
-                children: [
-                  Event(
-                    dia: "1",
-                    nome: "Reunião de Pais",
-                    tipoEvento: 17,
-                    diaSemana: "Qui",
-                    desc: false,
-                  ),
-                  Event(
-                    dia: "5",
-                    nome: "Avaliaçao Língua Portuguesa",
-                    tipoEvento: 0,
-                    diaSemana: "Seg",
-                    desc: true,
-                    eventDesc: "Capítulos 1 e 2 do livro. 2hs de Duração",
-                  ),
-                  Event(
-                    dia: "9",
-                    nome: "Conselho de Classe",
-                    tipoEvento: 15,
-                    diaSemana: "Sex",
-                    desc: false,
-                  ),
-                ],
-              )),
+              child: widget),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -139,7 +119,7 @@ class CardCalendar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   AutoSizeText(
-                    "+ 10 eventos no mês",
+                    totalEventos,
                     maxFontSize: 18,
                     minFontSize: 16,
                   ),
