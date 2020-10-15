@@ -38,7 +38,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
           cpf: user.cpf,
           email: user.email,
           celular: user.celular,
-          token: user.token != data.token ? data.token : user.token,
+          token: user.token,
           primeiroAcesso: false,
           informarCelularEmail: true,
         ));
