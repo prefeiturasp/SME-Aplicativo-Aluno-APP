@@ -28,6 +28,8 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  bool loading = false;
+
   bool _cpfIsError = false;
 
   String _cpf = '';
@@ -44,7 +46,13 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   }
 
   _onPressGetToken(String cpf, BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
     await _recoverPasswordController.sendToken(cpf);
+    setState(() {
+      loading = false;
+    });
     if (_recoverPasswordController.data.email != null) {
       Nav.push(
           context,
@@ -208,32 +216,28 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                               SizedBox(
                                 height: screenHeight * 4,
                               ),
-                              Observer(builder: (context) {
-                                if (_recoverPasswordController.loading) {
-                                  return GFLoader(
-                                    type: GFLoaderType.square,
-                                    loaderColorOne: Color(0xffDE9524),
-                                    loaderColorTwo: Color(0xffC65D00),
-                                    loaderColorThree: Color(0xffC65D00),
-                                    size: GFSize.LARGE,
-                                  );
-                                } else {
-                                  return EAButton(
-                                    text: "CONTINUAR",
-                                    icon: FontAwesomeIcons.chevronRight,
-                                    iconColor: Color(0xffffd037),
-                                    btnColor: Color(0xffd06d12),
-                                    desabled: CPFValidator.isValid(_cpf),
-                                    onPress: () {
-                                      if (_formKey.currentState.validate()) {
-                                        _onPressGetToken(_cpf, context);
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  );
-                                }
-                              }),
+                              loading
+                                  ? GFLoader(
+                                      type: GFLoaderType.square,
+                                      loaderColorOne: Color(0xffDE9524),
+                                      loaderColorTwo: Color(0xffC65D00),
+                                      loaderColorThree: Color(0xffC65D00),
+                                      size: GFSize.LARGE,
+                                    )
+                                  : EAButton(
+                                      text: "CONTINUAR",
+                                      icon: FontAwesomeIcons.chevronRight,
+                                      iconColor: Color(0xffffd037),
+                                      btnColor: Color(0xffd06d12),
+                                      desabled: CPFValidator.isValid(_cpf),
+                                      onPress: () {
+                                        if (_formKey.currentState.validate()) {
+                                          _onPressGetToken(_cpf, context);
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
                             ]),
                       ),
                     ],

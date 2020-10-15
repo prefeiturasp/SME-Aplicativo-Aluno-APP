@@ -34,6 +34,16 @@ class SettingsRepository implements ISettingsRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
+        await _userService.update(User(
+          id: user.id,
+          nome: user.nome,
+          cpf: user.cpf,
+          email: user.email,
+          celular: user.celular,
+          token: data.token,
+          primeiroAcesso: user.primeiroAcesso,
+          informarCelularEmail: user.informarCelularEmail,
+        ));
         return data;
       } else {
         var decodeError = jsonDecode(response.body);

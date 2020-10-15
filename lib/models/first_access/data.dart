@@ -2,6 +2,7 @@ class Data {
   bool ok;
   List<String> erros;
   ValidacaoErros validacaoErros;
+  String token;
 
   Data({this.ok, this.erros, this.validacaoErros});
 
@@ -11,6 +12,7 @@ class Data {
     validacaoErros = json['validacaoErros'] != null
         ? new ValidacaoErros.fromJson(json['validacaoErros'])
         : null;
+    token = json['data']['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class Data {
     if (this.validacaoErros != null) {
       data['validacaoErros'] = this.validacaoErros.toJson();
     }
+    data['data']['token'] = this.token;
     return data;
   }
 }
