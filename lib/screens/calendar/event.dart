@@ -77,7 +77,7 @@ class Event extends StatelessWidget {
                       ],
                     ),
                   ),
-                  desc == true
+                  desc
                       ? Icon(
                           FontAwesomeIcons.stickyNote,
                         )
@@ -91,15 +91,17 @@ class Event extends StatelessWidget {
                           ? colorReuniao
                           : tipoEvento == 17
                               ? colorReuniao
-                              : tipoEvento == 19
-                                  ? colorReuniao
-                                  : colorOutros,
+                              : tipoEvento == 19 ? colorReuniao : colorOutros,
                   child: Text(date.day.toString(),
                       style: TextStyle(
                           fontSize: screenHeight * 2, color: Colors.white))),
             ),
             onTap: () {
-              desc == true ? viewEvent() : null;
+              desc
+                  ? viewEvent()
+                  : () {
+                      return false;
+                    };
             },
           ),
         ));

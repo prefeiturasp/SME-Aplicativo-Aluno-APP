@@ -9,8 +9,6 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:carousel_slider/carousel_options.dart';
 
 class ListEvents extends StatefulWidget {
   final Student student;

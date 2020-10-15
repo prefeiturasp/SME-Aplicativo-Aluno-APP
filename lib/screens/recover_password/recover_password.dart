@@ -3,12 +3,10 @@ import 'package:brasil_fields/formatter/cpf_input_formatter.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
 import 'package:sme_app_aluno/screens/recover_password/show_info.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -77,8 +75,6 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   @override
   Widget build(BuildContext context) {
-    final _recoverPasswordController =
-        Provider.of<RecoverPasswordController>(context);
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
