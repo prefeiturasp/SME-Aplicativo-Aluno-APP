@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/screens/calendar/event.dart';
 
 class CardCalendar extends StatelessWidget {
   final String title;
@@ -12,6 +11,7 @@ class CardCalendar extends StatelessWidget {
   final Function onPress;
   final Widget widget;
   final String totalEventos;
+  final int lenght;
 
   CardCalendar({
     this.title,
@@ -22,6 +22,7 @@ class CardCalendar extends StatelessWidget {
     this.onPress,
     this.widget,
     this.totalEventos,
+    this.lenght,
   });
 
   @override
@@ -84,7 +85,7 @@ class CardCalendar extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: screenHeight * 3),
             padding: EdgeInsets.all(screenHeight * 1.5),
-            width: screenHeight * 40,
+            width: screenHeight * 48,
             child: AutoSizeText(
               month,
               maxFontSize: 18,
@@ -101,6 +102,13 @@ class CardCalendar extends StatelessWidget {
           Container(
               padding: EdgeInsets.all(screenHeight * 1.5),
               color: Colors.white,
+              height: lenght == 3
+                  ? screenHeight * 30
+                  : lenght == 2
+                      ? screenHeight * 22
+                      : lenght == 1
+                          ? screenHeight * 13
+                          : screenHeight * 40,
               child: widget),
           Container(
             decoration: BoxDecoration(

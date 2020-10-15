@@ -252,6 +252,7 @@ class _DashboardState extends State<Dashboard> {
                       return CardCalendar(
                           title: "AGENDA",
                           month: _mesAtual,
+                          lenght: _eventController.events.length,
                           totalEventos:
                               "+ ${_eventController.events.length.toString()} eventos esse mês",
                           widget: Observer(builder: (_) {
@@ -294,6 +295,7 @@ class _DashboardState extends State<Dashboard> {
                       return CardCalendar(
                           title: "AGENDA",
                           month: _mesAtual,
+                          lenght: 1,
                           totalEventos:
                               "+ ${_eventController.events.length.toString()} eventos esse mês",
                           widget: Observer(builder: (_) {

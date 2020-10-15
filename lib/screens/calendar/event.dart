@@ -44,7 +44,7 @@ class Event extends StatelessWidget {
             ),
             actions: <Widget>[
               new FlatButton(
-                child: new Text("Voltar"),
+                child: new Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -78,9 +78,8 @@ class Event extends StatelessWidget {
                     ),
                   ),
                   desc == true
-                      ? Icon(
-                          FontAwesomeIcons.stickyNote,
-                        )
+                      ? Icon(FontAwesomeIcons.stickyNote,
+                          color: Color(0xFFE1771D))
                       : SizedBox.shrink()
                 ],
               ),
