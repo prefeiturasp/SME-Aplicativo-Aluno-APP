@@ -6,6 +6,9 @@ import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/calendar/event.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
+import 'package:getflutter/components/loader/gf_loader.dart';
+import 'package:getflutter/size/gf_size.dart';
+import 'package:getflutter/types/gf_loader_type.dart';
 
 class ListEvents extends StatefulWidget {
   final Student student;
@@ -20,21 +23,63 @@ class ListEvents extends StatefulWidget {
 }
 
 class _ListEventsState extends State<ListEvents> {
-  String month = "Setembro";
   EventController _eventController;
+  DateTime _dateTime = DateTime.now();
+  String _mesAtual;
+  int _month;
 
   @override
   void initState() {
     super.initState();
+    _month = _dateTime.month;
     _eventController = EventController();
     _eventController.fetchEvento(
-        widget.student.codigoEol, 9, 2020, widget.userId);
+        widget.student.codigoEol, _month, _dateTime.year, widget.userId);
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
+    switch (_month) {
+      case 1:
+        _mesAtual = "Janeiro";
+        break;
+      case 2:
+        _mesAtual = "Fevereiro";
+        break;
+      case 3:
+        _mesAtual = "Março";
+        break;
+      case 4:
+        _mesAtual = "Abril";
+        break;
+      case 5:
+        _mesAtual = "Maio";
+        break;
+      case 6:
+        _mesAtual = "Junho";
+        break;
+      case 7:
+        _mesAtual = "Julho";
+        break;
+      case 8:
+        _mesAtual = "Agosto";
+        break;
+      case 9:
+        _mesAtual = "Setembro";
+        break;
+      case 10:
+        _mesAtual = "Outubro";
+        break;
+      case 11:
+        _mesAtual = "Novembro";
+        break;
+      case 12:
+        _mesAtual = "Dezembro";
+        break;
+    }
 
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
@@ -71,20 +116,36 @@ class _ListEventsState extends State<ListEvents> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: screenHeight * 2),
-                width: screenHeight * 40,
+                margin: EdgeInsets.only(
+                    top: screenHeight * 2,
+                    left: screenHeight * 2,
+                    right: screenHeight * 2),
+                // width: screenHeight * 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleLeft,
-                          color: Color(0xffC45C04),
+                          color: _month > 1
+                              ? Color(0xffC45C04)
+                              : Colors.transparent,
                           size: screenHeight * 3,
                         ),
-                        onPressed: () {}),
+                        onPressed: () async {
+                          if (_month > 1) {
+                            setState(() {
+                              _month--;
+                            });
+                            await _eventController.fetchEvento(
+                                widget.student.codigoEol,
+                                _month,
+                                _dateTime.year,
+                                widget.userId);
+                          }
+                        }),
                     AutoSizeText(
-                      month,
+                      _mesAtual,
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
@@ -95,10 +156,23 @@ class _ListEventsState extends State<ListEvents> {
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleRight,
-                          color: Color(0xffC45C04),
+                          color: _month < 12
+                              ? Color(0xffC45C04)
+                              : Colors.transparent,
                           size: screenHeight * 3,
                         ),
-                        onPressed: () {}),
+                        onPressed: () async {
+                          if (_month < 12) {
+                            setState(() {
+                              _month++;
+                            });
+                            await _eventController.fetchEvento(
+                                widget.student.codigoEol,
+                                _month,
+                                _dateTime.year,
+                                widget.userId);
+                          }
+                        }),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -107,45 +181,80 @@ class _ListEventsState extends State<ListEvents> {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.all(screenHeight * 2),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(screenHeight * 2),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(1, 2),
-                        blurRadius: 2,
-                        spreadRadius: 0,
-                      )
-                    ],
+                margin: EdgeInsets.all(screenHeight * 2),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(screenHeight * 2),
                   ),
-                  padding: EdgeInsets.all(screenHeight * 1.5),
-                  child: Observer(builder: (_) {
-                    if (_eventController.events != null) {
-                      return Container(
-                        height: screenHeight * 48,
-                        margin: EdgeInsets.only(top: screenHeight * 3),
-                        child: ListView.builder(
-                            itemCount: _eventController.events.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              final dados = _eventController.event;
-                              return Event(
-                                nome: dados.nome,
-                                desc: dados.descricao != null ? true : false,
-                                eventDesc: dados.descricao,
-                                dia: dados.dataInicio,
-                                tipoEvento: dados.tipoEvento,
-                              );
-                            }),
-                      );
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(1, 2),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                padding: EdgeInsets.all(screenHeight * 1.5),
+                child: Observer(builder: (context) {
+                  if (_eventController.loading) {
+                    return Container(
+                      child: GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      ),
+                      margin: EdgeInsets.all(screenHeight * 1.5),
+                    );
+                  } else {
+                    if (_eventController.events.isNotEmpty) {
+                      return Observer(builder: (_) {
+                        if (_eventController.events != null) {
+                          return Container(
+                              height: screenHeight * 60,
+                              child: ListView.builder(
+                                  itemCount: _eventController.events.length,
+                                  itemBuilder: (context, index) {
+                                    final dados = _eventController.events;
+                                    dados.sort((a, b) =>
+                                        a.dataInicio.compareTo(b.dataInicio));
+                                    return Event(
+                                      nome: dados[index].nome,
+                                      desc: dados[index].descricao.length > 3
+                                          ? true
+                                          : false,
+                                      eventDesc: dados[index].descricao,
+                                      dia: dados[index].dataInicio,
+                                      tipoEvento: dados[index].tipoEvento,
+                                    );
+                                  }));
+                        } else {
+                          return Container();
+                        }
+                      });
                     } else {
-                      return Container();
+                      return Container(
+                          height: screenHeight * 60,
+                          child: Center(
+                            child: AutoSizeText(
+                              "Este estudante não possui eventos vinculados para este mês!",
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              maxLines: 10,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                          ));
                     }
-                  })),
+                  }
+                }),
+              ),
             ],
           ),
         ),

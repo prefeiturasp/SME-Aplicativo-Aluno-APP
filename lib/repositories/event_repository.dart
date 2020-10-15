@@ -20,7 +20,7 @@ class EventRepository extends IEventRepository {
         "${Api.HOST}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}",
         headers: {
           "Authorization": "Bearer ${user.token}",
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
       );
       if (response.statusCode == 200) {

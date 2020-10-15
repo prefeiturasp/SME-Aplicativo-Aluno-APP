@@ -17,6 +17,9 @@ import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
+import 'package:sme_app_aluno/controllers/event/event.controller.dart';
+import 'package:sme_app_aluno/screens/calendar/event.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Dashboard extends StatefulWidget {
   final Student student;
@@ -36,11 +39,15 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   MessagesController _messagesController;
+  EventController _eventController;
+  DateTime _dateTime = DateTime.now();
+  String _mesAtual;
 
   @override
   void initState() {
     super.initState();
     _loadingBackRecentMessage();
+    _loadingCalendar();
   }
 
   _loadingBackRecentMessage() async {
@@ -49,9 +56,54 @@ class _DashboardState extends State<Dashboard> {
     _messagesController.loadMessages(widget.student.codigoEol, widget.userId);
   }
 
+  _loadingCalendar() async {
+    _eventController = EventController();
+    _eventController.fetchEvento(widget.student.codigoEol, _dateTime.month,
+        _dateTime.year, widget.userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
+
+    switch (_dateTime.month) {
+      case 1:
+        _mesAtual = "Janeiro";
+        break;
+      case 2:
+        _mesAtual = "Fevereiro";
+        break;
+      case 3:
+        _mesAtual = "Março";
+        break;
+      case 4:
+        _mesAtual = "Abril";
+        break;
+      case 5:
+        _mesAtual = "Maio";
+        break;
+      case 6:
+        _mesAtual = "Junho";
+        break;
+      case 7:
+        _mesAtual = "Julho";
+        break;
+      case 8:
+        _mesAtual = "Agosto";
+        break;
+      case 9:
+        _mesAtual = "Setembro";
+        break;
+      case 10:
+        _mesAtual = "Outubro";
+        break;
+      case 11:
+        _mesAtual = "Novembro";
+        break;
+      case 12:
+        _mesAtual = "Dezembro";
+        break;
+    }
 
     if (connectionStatus == ConnectivityStatus.Offline) {
       // BackgroundFetch.stop().then((int status) {
@@ -183,19 +235,102 @@ class _DashboardState extends State<Dashboard> {
                     }
                   }
                 }),
-                CardCalendar(
-                  title: "AGENDA",
-                  month: 'Setembro',
-                  text: "Construção do calendario",
-                  onPress: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListEvents(
-                                student: widget.student,
-                                userId: widget.userId)));
-                  },
-                ),
+                Observer(builder: (context) {
+                  if (_eventController.loading) {
+                    return Container(
+                      child: GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      ),
+                      margin: EdgeInsets.all(screenHeight * 1.5),
+                    );
+                  } else {
+                    if (_eventController.events.isNotEmpty) {
+                      return CardCalendar(
+                          title: "AGENDA",
+                          month: _mesAtual,
+                          lenght: _eventController.events.length,
+                          totalEventos:
+                              "+ ${_eventController.events.length.toString()} eventos esse mês",
+                          widget: Observer(builder: (_) {
+                            if (_eventController.events != null) {
+                              return Container(
+                                  height: screenHeight * 38,
+                                  child: ListView.builder(
+                                      itemCount:
+                                          _eventController.events.length <= 4
+                                              ? _eventController.events.length
+                                              : 4,
+                                      itemBuilder: (context, index) {
+                                        final dados = _eventController.events;
+                                        dados.sort((a, b) => a.dataInicio
+                                            .compareTo(b.dataInicio));
+                                        return Event(
+                                          nome: dados[index].nome,
+                                          desc:
+                                              dados[index].descricao.length > 3
+                                                  ? true
+                                                  : false,
+                                          eventDesc: dados[index].descricao,
+                                          dia: dados[index].dataInicio,
+                                          tipoEvento: dados[index].tipoEvento,
+                                        );
+                                      }));
+                            } else {
+                              return Container();
+                            }
+                          }),
+                          onPress: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ListEvents(
+                                        student: widget.student,
+                                        userId: widget.userId)));
+                          });
+                    } else {
+                      return CardCalendar(
+                          title: "AGENDA",
+                          month: _mesAtual,
+                          lenght: 1,
+                          totalEventos:
+                              "+ ${_eventController.events.length.toString()} eventos esse mês",
+                          widget: Observer(builder: (_) {
+                            if (_eventController.events != null) {
+                              return Container(
+                                  height: screenHeight * 15,
+                                  width: screenHeight * 41,
+                                  child: Center(
+                                    child: AutoSizeText(
+                                      'Este estudante não possui eventos vinculados para este mês!',
+                                      maxFontSize: 16,
+                                      minFontSize: 14,
+                                      maxLines: 10,
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ));
+                            } else {
+                              return Container();
+                            }
+                          }),
+                          onPress: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ListEvents(
+                                        student: widget.student,
+                                        userId: widget.userId)));
+                          });
+                    }
+                  }
+                }),
                 CardAlert(
                   title: "ALERTA DE NOTAS",
                   icon: Icon(
