@@ -77,16 +77,9 @@ class Event extends StatelessWidget {
                       ],
                     ),
                   ),
-<<<<<<< HEAD
                   desc == true
                       ? Icon(FontAwesomeIcons.stickyNote,
                           color: Color(0xFFE1771D))
-=======
-                  desc
-                      ? Icon(
-                          FontAwesomeIcons.stickyNote,
-                        )
->>>>>>> e99fa3c6ab863d591444dddaa99d78dda1a7c571
                       : SizedBox.shrink()
                 ],
               ),
@@ -97,7 +90,9 @@ class Event extends StatelessWidget {
                           ? colorReuniao
                           : tipoEvento == 17
                               ? colorReuniao
-                              : tipoEvento == 19 ? colorReuniao : colorOutros,
+                              : tipoEvento == 19
+                                  ? colorReuniao
+                                  : colorOutros,
                   child: Text(date.day.toString(),
                       style: TextStyle(
                           fontSize: screenHeight * 2, color: Colors.white))),
