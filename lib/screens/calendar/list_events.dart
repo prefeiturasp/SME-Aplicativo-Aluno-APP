@@ -42,6 +42,9 @@ class _ListEventsState extends State<ListEvents> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
+    const colorAvaliacao = Color(0xFF9C33AD);
+    const colorDemaisEventos = Color(0xFFE1771D);
+    const colorDiasSemAula = Color(0xFFC4C4C4);
     switch (_month) {
       case 1:
         _mesAtual = "Janeiro";
@@ -214,7 +217,7 @@ class _ListEventsState extends State<ListEvents> {
                       return Observer(builder: (_) {
                         if (_eventController.events != null) {
                           return Container(
-                              height: screenHeight * 60,
+                              height: screenHeight * 50,
                               child: ListView.builder(
                                   itemCount: _eventController.events.length,
                                   itemBuilder: (context, index) {
@@ -255,9 +258,49 @@ class _ListEventsState extends State<ListEvents> {
                   }
                 }),
               ),
+              legenda("Avaliação", colorAvaliacao),
+              legenda("Dias sem aula", colorDiasSemAula),
+              legenda("Demais eventos", colorDemaisEventos),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget legenda(String nomeLegenda, Color corLegenda) {
+    var size = MediaQuery.of(context).size;
+    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    return Container(
+      margin:
+          EdgeInsets.only(left: screenHeight * 20, right: screenHeight * 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: corLegenda,
+                borderRadius: BorderRadius.all(Radius.circular(45)),
+                border: Border.all(width: 1, color: Colors.black45)),
+            width: screenHeight * 2.5,
+            height: screenHeight * 2.5,
+            margin: EdgeInsets.only(
+                bottom: screenHeight * 0.5, top: screenHeight * 0.5),
+          ),
+          SizedBox(
+            width: screenHeight * 1,
+          ),
+          AutoSizeText(
+            nomeLegenda,
+            maxFontSize: 18,
+            minFontSize: 16,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
     );
   }

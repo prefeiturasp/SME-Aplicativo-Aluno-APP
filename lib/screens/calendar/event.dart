@@ -65,17 +65,14 @@ class Event extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: screenHeight * 30,
-                    child: Wrap(
-                      children: [
-                        AutoSizeText(
-                          nome,
-                          maxFontSize: 16,
-                          minFontSize: 14,
-                        )
-                      ],
-                    ),
+                  Wrap(
+                    children: [
+                      AutoSizeText(
+                        nome,
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                      )
+                    ],
                   ),
                   desc == true
                       ? Icon(FontAwesomeIcons.stickyNote,
