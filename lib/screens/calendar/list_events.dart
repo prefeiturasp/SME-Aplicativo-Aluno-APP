@@ -108,7 +108,8 @@ class _ListEventsState extends State<ListEvents> {
                             bottom: BorderSide(
                                 color: Color(0xffC5C5C5), width: 0.5))),
                     child: StudentInfo(
-                      studentName: widget.student.nomeSocial != null
+                      studentName: widget.student.nomeSocial != null &&
+                              widget.student.nomeSocial.isNotEmpty
                           ? widget.student.nomeSocial
                           : widget.student.nome,
                       schoolName: widget.student.escola,
