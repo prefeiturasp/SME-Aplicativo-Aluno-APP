@@ -254,7 +254,7 @@ class _DashboardState extends State<Dashboard> {
                           month: _mesAtual,
                           lenght: _eventController.events.length,
                           totalEventos:
-                              "+ ${_eventController.events.length.toString()} eventos esse mês",
+                              "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
                           widget: Observer(builder: (_) {
                             if (_eventController.events != null) {
                               return Container(
@@ -268,8 +268,16 @@ class _DashboardState extends State<Dashboard> {
                                         final dados = _eventController.events;
                                         dados.sort((a, b) => a.dataInicio
                                             .compareTo(b.dataInicio));
+                                        String diaSemana =
+                                            (dados[index].diaSemana)
+                                                    .substring(0, 1)
+                                                    .toUpperCase() +
+                                                (dados[index].diaSemana)
+                                                    .substring(1);
+                                        String nomeEvento =
+                                            " ${diaSemana} - ${dados[index].nome}";
                                         return Event(
-                                          nome: dados[index].nome,
+                                          nome: nomeEvento,
                                           desc:
                                               dados[index].descricao.length > 3
                                                   ? true
