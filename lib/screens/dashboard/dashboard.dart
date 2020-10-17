@@ -6,8 +6,11 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
+import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
+import 'package:sme_app_aluno/screens/calendar/title_event.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
@@ -18,8 +21,7 @@ import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/controllers/event/event.controller.dart';
-import 'package:sme_app_aluno/screens/calendar/event.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Dashboard extends StatefulWidget {
   final Student student;
@@ -40,8 +42,6 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   MessagesController _messagesController;
   EventController _eventController;
-  DateTime _dateTime = DateTime.now();
-  String _mesAtual;
 
   @override
   void initState() {
@@ -58,57 +58,51 @@ class _DashboardState extends State<Dashboard> {
 
   _loadingCalendar() async {
     _eventController = EventController();
-    _eventController.fetchEvento(widget.student.codigoEol, _dateTime.month,
-        _dateTime.year, widget.userId);
+    _eventController.fetchEvento(
+      widget.student.codigoEol,
+      _eventController.currentDate.month,
+      _eventController.currentDate.year,
+      widget.userId,
+    );
+  }
+
+  Widget _listEvents(
+    List<Event> events,
+    BuildContext context,
+  ) {
+    List<Widget> list = new List<Widget>();
+    for (int i = 0; i < events.length; i++) {
+      String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() +
+          (events[i].diaSemana).substring(1);
+
+      String nameWithDayOfWeek = " $diaSemana - ${events[i].nome}";
+
+      list.add(Column(
+        children: [
+          EventItem(
+            customTitle: TitleEvent(
+              dayOfWeek: diaSemana,
+              title: events[i].nome,
+            ),
+            titleEvent: nameWithDayOfWeek,
+            desc: events[i].descricao.length > 3 ? true : false,
+            eventDesc: events[i].descricao,
+            dia: events[i].dataInicio,
+            tipoEvento: events[i].tipoEvento,
+          ),
+          Divider(
+            color: Color(0xffCDCDCD),
+          )
+        ],
+      ));
+    }
+    return new Column(children: list);
   }
 
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
-    switch (_dateTime.month) {
-      case 1:
-        _mesAtual = "Janeiro";
-        break;
-      case 2:
-        _mesAtual = "Fevereiro";
-        break;
-      case 3:
-        _mesAtual = "Março";
-        break;
-      case 4:
-        _mesAtual = "Abril";
-        break;
-      case 5:
-        _mesAtual = "Maio";
-        break;
-      case 6:
-        _mesAtual = "Junho";
-        break;
-      case 7:
-        _mesAtual = "Julho";
-        break;
-      case 8:
-        _mesAtual = "Agosto";
-        break;
-      case 9:
-        _mesAtual = "Setembro";
-        break;
-      case 10:
-        _mesAtual = "Outubro";
-        break;
-      case 11:
-        _mesAtual = "Novembro";
-        break;
-      case 12:
-        _mesAtual = "Dezembro";
-        break;
-    }
-
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
@@ -250,92 +244,33 @@ class _DashboardState extends State<Dashboard> {
                   } else {
                     if (_eventController.events.isNotEmpty) {
                       return CardCalendar(
+                          heightContainer: screenHeight * 48,
                           title: "AGENDA",
-                          month: _mesAtual,
+                          month: _eventController.currentMonth,
                           lenght: _eventController.events.length,
                           totalEventos:
                               "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
                           widget: Observer(builder: (_) {
                             if (_eventController.events != null) {
-                              return Container(
-                                  height: screenHeight * 38,
-                                  child: ListView.builder(
-                                      itemCount:
-                                          _eventController.events.length <= 4
-                                              ? _eventController.events.length
-                                              : 4,
-                                      itemBuilder: (context, index) {
-                                        final dados = _eventController.events;
-                                        dados.sort((a, b) => a.dataInicio
-                                            .compareTo(b.dataInicio));
-                                        String diaSemana =
-                                            (dados[index].diaSemana)
-                                                    .substring(0, 1)
-                                                    .toUpperCase() +
-                                                (dados[index].diaSemana)
-                                                    .substring(1);
-                                        String nomeEvento =
-                                            " ${diaSemana} - ${dados[index].nome}";
-                                        return Event(
-                                          nome: nomeEvento,
-                                          desc:
-                                              dados[index].descricao.length > 3
-                                                  ? true
-                                                  : false,
-                                          eventDesc: dados[index].descricao,
-                                          dia: dados[index].dataInicio,
-                                          tipoEvento: dados[index].tipoEvento,
-                                        );
-                                      }));
+                              return _listEvents(
+                                _eventController.priorityEvents,
+                                context,
+                              );
                             } else {
                               return Container();
                             }
                           }),
                           onPress: () {
-                            Navigator.push(
+                            Nav.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => ListEvents(
-                                        student: widget.student,
-                                        userId: widget.userId)));
+                                ListEvents(
+                                    student: widget.student,
+                                    userId: widget.userId));
                           });
                     } else {
-                      return CardCalendar(
-                          title: "AGENDA",
-                          month: _mesAtual,
-                          lenght: 1,
-                          totalEventos:
-                              "+ ${_eventController.events.length.toString()} eventos esse mês",
-                          widget: Observer(builder: (_) {
-                            if (_eventController.events != null) {
-                              return Container(
-                                  height: screenHeight * 15,
-                                  width: screenHeight * 41,
-                                  child: Center(
-                                    child: AutoSizeText(
-                                      'Este estudante não possui eventos vinculados para este mês!',
-                                      maxFontSize: 16,
-                                      minFontSize: 14,
-                                      maxLines: 10,
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ));
-                            } else {
-                              return Container();
-                            }
-                          }),
-                          onPress: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ListEvents(
-                                        student: widget.student,
-                                        userId: widget.userId)));
-                          });
+                      return Container(
+                        child: Text("Hi"),
+                      );
                     }
                   }
                 }),

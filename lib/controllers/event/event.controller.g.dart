@@ -39,6 +39,22 @@ mixin _$EventController on _EventControllerBase, Store {
     });
   }
 
+  final _$priorityEventsAtom =
+      Atom(name: '_EventControllerBase.priorityEvents');
+
+  @override
+  ObservableList<Event> get priorityEvents {
+    _$priorityEventsAtom.reportRead();
+    return super.priorityEvents;
+  }
+
+  @override
+  set priorityEvents(ObservableList<Event> value) {
+    _$priorityEventsAtom.reportWrite(value, super.priorityEvents, () {
+      super.priorityEvents = value;
+    });
+  }
+
   final _$loadingAtom = Atom(name: '_EventControllerBase.loading');
 
   @override
@@ -54,6 +70,36 @@ mixin _$EventController on _EventControllerBase, Store {
     });
   }
 
+  final _$currentDateAtom = Atom(name: '_EventControllerBase.currentDate');
+
+  @override
+  DateTime get currentDate {
+    _$currentDateAtom.reportRead();
+    return super.currentDate;
+  }
+
+  @override
+  set currentDate(DateTime value) {
+    _$currentDateAtom.reportWrite(value, super.currentDate, () {
+      super.currentDate = value;
+    });
+  }
+
+  final _$currentMonthAtom = Atom(name: '_EventControllerBase.currentMonth');
+
+  @override
+  String get currentMonth {
+    _$currentMonthAtom.reportRead();
+    return super.currentMonth;
+  }
+
+  @override
+  set currentMonth(String value) {
+    _$currentMonthAtom.reportWrite(value, super.currentMonth, () {
+      super.currentMonth = value;
+    });
+  }
+
   final _$fetchEventoAsyncAction =
       AsyncAction('_EventControllerBase.fetchEvento');
 
@@ -63,12 +109,40 @@ mixin _$EventController on _EventControllerBase, Store {
         .run(() => super.fetchEvento(codigoAluno, mes, ano, userId));
   }
 
+  final _$_EventControllerBaseActionController =
+      ActionController(name: '_EventControllerBase');
+
+  @override
+  dynamic loadingCurrentMonth(dynamic month) {
+    final _$actionInfo = _$_EventControllerBaseActionController.startAction(
+        name: '_EventControllerBase.loadingCurrentMonth');
+    try {
+      return super.loadingCurrentMonth(month);
+    } finally {
+      _$_EventControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic listPriorityEvents(dynamic eventsList) {
+    final _$actionInfo = _$_EventControllerBaseActionController.startAction(
+        name: '_EventControllerBase.listPriorityEvents');
+    try {
+      return super.listPriorityEvents(eventsList);
+    } finally {
+      _$_EventControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 event: ${event},
 events: ${events},
-loading: ${loading}
+priorityEvents: ${priorityEvents},
+loading: ${loading},
+currentDate: ${currentDate},
+currentMonth: ${currentMonth}
     ''';
   }
 }

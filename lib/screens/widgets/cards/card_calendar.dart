@@ -12,6 +12,7 @@ class CardCalendar extends StatelessWidget {
   final Widget widget;
   final String totalEventos;
   final int lenght;
+  final double heightContainer;
 
   CardCalendar({
     this.title,
@@ -23,6 +24,7 @@ class CardCalendar extends StatelessWidget {
     this.widget,
     this.totalEventos,
     this.lenght,
+    @required this.heightContainer,
   });
 
   @override
@@ -83,106 +85,113 @@ class CardCalendar extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: screenHeight * 3),
             padding: EdgeInsets.all(screenHeight * 1.5),
-            width: screenHeight * 42,
-            child: AutoSizeText(
-              month,
-              maxFontSize: 18,
-              minFontSize: 16,
-              style: TextStyle(
-                  color: Color(0xffC45C04), fontWeight: FontWeight.w700),
-              textAlign: TextAlign.center,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(45)),
-              color: Color(0xFFF3F3F3),
-            ),
-          ),
-          Container(
-              padding: EdgeInsets.all(screenHeight * 1.5),
-              color: Colors.white,
-              height: lenght == 3
-                  ? screenHeight * 30
-                  : lenght == 2
-                      ? screenHeight * 22
-                      : lenght == 1
-                          ? screenHeight * 13
-                          : screenHeight * 40,
-              child: widget),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(screenHeight * 2),
-                  bottomRight: Radius.circular(screenHeight * 2)),
-            ),
-            padding: EdgeInsets.only(
-                left: screenHeight * 2.5,
-                right: screenHeight * 2.5,
-                top: screenHeight * 1.5,
-                bottom: screenHeight * 1.5),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  AutoSizeText(
-                    totalEventos,
+            child: Column(
+              children: [
+                Container(
+                  width: screenHeight * 35,
+                  height: screenHeight * 5,
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    month.toString(),
                     maxFontSize: 18,
                     minFontSize: 16,
+                    style: TextStyle(
+                        color: Color(0xffC45C04), fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(screenHeight * 2),
-                  bottomRight: Radius.circular(screenHeight * 2)),
-            ),
-            padding: EdgeInsets.only(
-                left: screenHeight * 2.5,
-                right: screenHeight * 2.5,
-                top: screenHeight * 1.5,
-                bottom: screenHeight * 1.5),
-            child: Container(
-              child: Container(
-                height: screenHeight * 6,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffC65D00), width: 1),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(screenHeight * 3),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(screenHeight * 5)),
+                    color: Color(0xFFF3F3F3),
                   ),
                 ),
-                child: FlatButton(
-                  onPressed: onPress,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      AutoSizeText(
-                        "VER AGENDA COMPLETA",
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        style: TextStyle(
-                            color: Color(0xffC65D00),
-                            fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(
-                        width: screenHeight * 2,
-                      ),
-                      Icon(
-                        FontAwesomeIcons.angleRight,
-                        color: Color(0xffffd037),
-                        size: screenHeight * 3,
-                      )
-                    ],
+                SizedBox(
+                  height: screenHeight * 2,
+                ),
+                Container(
+                    color: Colors.white,
+                    height: heightContainer,
+                    child: widget),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(screenHeight * 2),
+                        bottomRight: Radius.circular(screenHeight * 2)),
+                  ),
+                  padding: EdgeInsets.only(
+                      left: screenHeight * 2.5,
+                      right: screenHeight * 2.5,
+                      top: screenHeight * 1.5,
+                      bottom: screenHeight * 1.5),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        AutoSizeText(
+                          totalEventos,
+                          maxFontSize: 18,
+                          minFontSize: 16,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xffCDCDCD)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(screenHeight * 2),
+                        bottomRight: Radius.circular(screenHeight * 2)),
+                  ),
+                  padding: EdgeInsets.only(
+                      left: screenHeight * 2.5,
+                      right: screenHeight * 2.5,
+                      top: screenHeight * 1.5,
+                      bottom: screenHeight * 1.5),
+                  child: Container(
+                    child: Container(
+                      height: screenHeight * 6,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xffC65D00), width: 1),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenHeight * 3),
+                        ),
+                      ),
+                      child: FlatButton(
+                        onPressed: onPress,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              "VER AGENDA COMPLETA",
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              style: TextStyle(
+                                  color: Color(0xffC65D00),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              width: screenHeight * 2,
+                            ),
+                            Icon(
+                              FontAwesomeIcons.angleRight,
+                              color: Color(0xffffd037),
+                              size: screenHeight * 3,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
