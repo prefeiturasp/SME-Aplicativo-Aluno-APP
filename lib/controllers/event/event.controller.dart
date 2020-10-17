@@ -10,6 +10,7 @@ abstract class _EventControllerBase with Store {
 
   _EventControllerBase() {
     _eventRepository = EventRepository();
+    loadingCurrentMonth(currentDate.month);
   }
 
   @observable
@@ -19,7 +20,58 @@ abstract class _EventControllerBase with Store {
   ObservableList<Event> events;
 
   @observable
+  ObservableList<Event> priorityEvents;
+
+  @observable
   bool loading = false;
+
+  @observable
+  DateTime currentDate = DateTime.now();
+
+  @observable
+  String currentMonth;
+
+  @action
+  loadingCurrentMonth(month) {
+    switch (month) {
+      case 1:
+        currentMonth = "Janeiro";
+        break;
+      case 2:
+        currentMonth = "Fevereiro";
+        break;
+      case 3:
+        currentMonth = "Março";
+        break;
+      case 4:
+        currentMonth = "Abril";
+        break;
+      case 5:
+        currentMonth = "Maio";
+        break;
+      case 6:
+        currentMonth = "Junho";
+        break;
+      case 7:
+        currentMonth = "Julho";
+        break;
+      case 8:
+        currentMonth = "Agosto";
+        break;
+      case 9:
+        currentMonth = "Setembro";
+        break;
+      case 10:
+        currentMonth = "Outubro";
+        break;
+      case 11:
+        currentMonth = "Novembro";
+        break;
+      case 12:
+        currentMonth = "Dezembro";
+        break;
+    }
+  }
 
   @action
   fetchEvento(int codigoAluno, int mes, int ano, int userId) async {
@@ -30,6 +82,20 @@ abstract class _EventControllerBase with Store {
       ano,
       userId,
     ));
+    if (events.isNotEmpty) {
+      listPriorityEvents(events);
+    }
     loading = false;
+  }
+
+  @action
+  listPriorityEvents(eventsList) {
+    var auxList = eventsList
+      ..sort((a, b) =>
+          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+
+    var newList = auxList.take(4).toList();
+
+    priorityEvents = ObservableList<Event>.of(newList);
   }
 }

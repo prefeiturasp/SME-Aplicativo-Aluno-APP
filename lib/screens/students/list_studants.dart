@@ -227,8 +227,9 @@ class _ListStudantsState extends State<ListStudants> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TagCustom(
-                                    text: "${dados[index].grupo}",
-                                    color: Color(0xffC65D00)),
+                                  text: "${dados[index].grupo}",
+                                  color: Color(0xffC65D00),
+                                ),
                                 _listStudents(
                                   dados[index].students,
                                   context,

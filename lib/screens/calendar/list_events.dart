@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/controllers/event/event.controller.dart';
+import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
-import 'package:sme_app_aluno/screens/calendar/event.dart';
+import 'package:sme_app_aluno/screens/calendar/event_item.dart';
+import 'package:sme_app_aluno/screens/calendar/label_event.dart';
+import 'package:sme_app_aluno/screens/calendar/title_event.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
@@ -25,7 +28,6 @@ class ListEvents extends StatefulWidget {
 class _ListEventsState extends State<ListEvents> {
   EventController _eventController;
   DateTime _dateTime = DateTime.now();
-  String _mesAtual;
   int _month;
 
   @override
@@ -34,56 +36,49 @@ class _ListEventsState extends State<ListEvents> {
     _month = _dateTime.month;
     _eventController = EventController();
     _eventController.fetchEvento(
-        widget.student.codigoEol, _month, _dateTime.year, widget.userId);
+      widget.student.codigoEol,
+      _eventController.currentDate.month,
+      _eventController.currentDate.year,
+      widget.userId,
+    );
+  }
+
+  Widget _eventItemBuild(
+    Event event,
+    BuildContext context,
+  ) {
+    String diaSemana = (event.diaSemana).substring(0, 1).toUpperCase() +
+        (event.diaSemana).substring(1);
+
+    String nameWithDayOfWeek = " $diaSemana - ${event.nome}";
+
+    return Column(
+      children: [
+        EventItem(
+          customTitle: TitleEvent(
+            dayOfWeek: diaSemana,
+            title: event.nome,
+          ),
+          titleEvent: nameWithDayOfWeek,
+          desc: event.descricao.length > 3 ? true : false,
+          eventDesc: event.descricao,
+          dia: event.dataInicio,
+          tipoEvento: event.tipoEvento,
+        ),
+        Divider(
+          color: Color(0xffCDCDCD),
+        )
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
     const colorAvaliacao = Color(0xFF9C33AD);
     const colorDemaisEventos = Color(0xFFE1771D);
     const colorDiasSemAula = Color(0xFFC4C4C4);
-    switch (_month) {
-      case 1:
-        _mesAtual = "Janeiro";
-        break;
-      case 2:
-        _mesAtual = "Fevereiro";
-        break;
-      case 3:
-        _mesAtual = "Março";
-        break;
-      case 4:
-        _mesAtual = "Abril";
-        break;
-      case 5:
-        _mesAtual = "Maio";
-        break;
-      case 6:
-        _mesAtual = "Junho";
-        break;
-      case 7:
-        _mesAtual = "Julho";
-        break;
-      case 8:
-        _mesAtual = "Agosto";
-        break;
-      case 9:
-        _mesAtual = "Setembro";
-        break;
-      case 10:
-        _mesAtual = "Outubro";
-        break;
-      case 11:
-        _mesAtual = "Novembro";
-        break;
-      case 12:
-        _mesAtual = "Dezembro";
-        break;
-    }
-
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
       appBar: AppBar(
@@ -96,7 +91,6 @@ class _ListEventsState extends State<ListEvents> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Column(
                 children: <Widget>[
@@ -148,7 +142,7 @@ class _ListEventsState extends State<ListEvents> {
                           }
                         }),
                     AutoSizeText(
-                      _mesAtual,
+                      _eventController.currentMonth.toUpperCase(),
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
@@ -221,18 +215,9 @@ class _ListEventsState extends State<ListEvents> {
                               child: ListView.builder(
                                   itemCount: _eventController.events.length,
                                   itemBuilder: (context, index) {
-                                    final dados = _eventController.events;
-                                    dados.sort((a, b) =>
-                                        a.dataInicio.compareTo(b.dataInicio));
-                                    return Event(
-                                      nome: dados[index].nome,
-                                      desc: dados[index].descricao.length > 3
-                                          ? true
-                                          : false,
-                                      eventDesc: dados[index].descricao,
-                                      dia: dados[index].dataInicio,
-                                      tipoEvento: dados[index].tipoEvento,
-                                    );
+                                    return _eventItemBuild(
+                                        _eventController.events[index],
+                                        context);
                                   }));
                         } else {
                           return Container();
@@ -258,9 +243,24 @@ class _ListEventsState extends State<ListEvents> {
                   }
                 }),
               ),
-              legenda("Avaliação", colorAvaliacao),
-              legenda("Dias sem aula", colorDiasSemAula),
-              legenda("Demais eventos", colorDemaisEventos),
+              Container(
+                padding: EdgeInsets.only(
+                  left: screenHeight * 7,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LabelEvent(
+                        labelName: "Avaliação", labelColor: colorAvaliacao),
+                    LabelEvent(
+                        labelName: "Dias sem aula",
+                        labelColor: colorDiasSemAula),
+                    LabelEvent(
+                        labelName: "Demais eventos",
+                        labelColor: colorDemaisEventos),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -272,16 +272,16 @@ class _ListEventsState extends State<ListEvents> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
-      margin:
-          EdgeInsets.only(left: screenHeight * 20, right: screenHeight * 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
-                color: corLegenda,
-                borderRadius: BorderRadius.all(Radius.circular(45)),
-                border: Border.all(width: 1, color: Colors.black45)),
+              color: corLegenda,
+              borderRadius: BorderRadius.all(
+                Radius.circular(screenHeight * 2),
+              ),
+            ),
             width: screenHeight * 2.5,
             height: screenHeight * 2.5,
             margin: EdgeInsets.only(
