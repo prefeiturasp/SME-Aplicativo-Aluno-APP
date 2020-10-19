@@ -4,6 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
+import 'package:sme_app_aluno/screens/notes/navigation_bottom.dart';
+import 'package:sme_app_aluno/screens/notes/notes_view.dart';
+import 'package:sme_app_aluno/screens/notes/observation.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
@@ -85,19 +88,25 @@ class _ResumeStudantsState extends State<ResumeStudants> {
 
     if (abaBoletim) {
       return Container(
-        padding: EdgeInsets.all(screenHeight * 2.5),
-        child: CardAlert(
-          isHeader: false,
-          icon: Icon(
-            FontAwesomeIcons.envelopeOpen,
-            color: Color(0xffFFD037),
-            size: screenHeight * 8,
-          ),
-          text:
-              "Em breve você terá acesso ao boletim do estudante neste espaço. Aguarde as próximas atualizações do aplicativo.",
-          textSize: 20,
-        ),
-      );
+          width: MediaQuery.of(context).size.width,
+          height: screenHeight * 82,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                NotesView(),
+                SizedBox(
+                  height: screenHeight * 1.5,
+                ),
+                NavigationBottom(),
+                SizedBox(
+                  height: screenHeight * 1.5,
+                ),
+                Observation(),
+              ],
+            ),
+          ));
     }
 
     if (abaFrequencia) {
@@ -141,7 +150,6 @@ class _ResumeStudantsState extends State<ResumeStudants> {
           child: Container(
             color: Color(0xffE5E5E5),
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
