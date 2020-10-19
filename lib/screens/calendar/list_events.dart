@@ -224,7 +224,7 @@ class _ListEventsState extends State<ListEvents> {
                           height: screenHeight * 60,
                           child: Center(
                             child: AutoSizeText(
-                              "Este estudante não possui eventos vinculados para este mês!",
+                              "Não foi encontrado nenhum evento para este estudante.",
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 10,
