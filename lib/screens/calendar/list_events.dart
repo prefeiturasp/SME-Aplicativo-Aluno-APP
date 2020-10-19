@@ -27,13 +27,12 @@ class ListEvents extends StatefulWidget {
 
 class _ListEventsState extends State<ListEvents> {
   EventController _eventController;
-  DateTime _dateTime = DateTime.now();
-  int _month;
+
+  int _currentMonth;
 
   @override
   void initState() {
     super.initState();
-    _month = _dateTime.month;
     _eventController = EventController();
     _eventController.fetchEvento(
       widget.student.codigoEol,
@@ -41,6 +40,7 @@ class _ListEventsState extends State<ListEvents> {
       _eventController.currentDate.year,
       widget.userId,
     );
+    _currentMonth = _eventController.currentDate.month;
   }
 
   Widget _eventItemBuild(
@@ -124,49 +124,45 @@ class _ListEventsState extends State<ListEvents> {
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleLeft,
-                          color: _month > 1
+                          color: _currentMonth > 1
                               ? Color(0xffC45C04)
                               : Colors.transparent,
                           size: screenHeight * 3,
                         ),
                         onPressed: () async {
-                          if (_month > 1) {
-                            setState(() {
-                              _month--;
-                            });
-                            await _eventController.fetchEvento(
+                          setState(() => _currentMonth--);
+                          if (_currentMonth > 1) {
+                            await _eventController.changeCurrentMonth(
+                                _currentMonth,
                                 widget.student.codigoEol,
-                                _month,
-                                _dateTime.year,
                                 widget.userId);
                           }
                         }),
-                    AutoSizeText(
-                      _eventController.currentMonth.toUpperCase(),
-                      maxFontSize: 18,
-                      minFontSize: 16,
-                      style: TextStyle(
-                          color: Color(0xffC45C04),
-                          fontWeight: FontWeight.w700),
-                      textAlign: TextAlign.center,
-                    ),
+                    Observer(builder: (_) {
+                      return AutoSizeText(
+                        _eventController.currentMonth.toUpperCase(),
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: TextStyle(
+                            color: Color(0xffC45C04),
+                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.center,
+                      );
+                    }),
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleRight,
-                          color: _month < 12
+                          color: _currentMonth < 12
                               ? Color(0xffC45C04)
                               : Colors.transparent,
                           size: screenHeight * 3,
                         ),
                         onPressed: () async {
-                          if (_month < 12) {
-                            setState(() {
-                              _month++;
-                            });
-                            await _eventController.fetchEvento(
+                          setState(() => _currentMonth++);
+                          if (_currentMonth < 12) {
+                            await _eventController.changeCurrentMonth(
+                                _currentMonth,
                                 widget.student.codigoEol,
-                                _month,
-                                _dateTime.year,
                                 widget.userId);
                           }
                         }),

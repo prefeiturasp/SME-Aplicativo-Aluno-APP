@@ -93,7 +93,7 @@ class CardCalendar extends StatelessWidget {
                   height: screenHeight * 5,
                   alignment: Alignment.center,
                   child: AutoSizeText(
-                    month.toString(),
+                    month.toString().toUpperCase(),
                     maxFontSize: 18,
                     minFontSize: 16,
                     style: TextStyle(
