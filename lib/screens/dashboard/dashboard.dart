@@ -251,14 +251,10 @@ class _DashboardState extends State<Dashboard> {
                           totalEventos:
                               "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
                           widget: Observer(builder: (_) {
-                            if (_eventController.events != null) {
-                              return _listEvents(
-                                _eventController.priorityEvents,
-                                context,
-                              );
-                            } else {
-                              return Container();
-                            }
+                            return _listEvents(
+                              _eventController.priorityEvents,
+                              context,
+                            );
                           }),
                           onPress: () {
                             Nav.push(

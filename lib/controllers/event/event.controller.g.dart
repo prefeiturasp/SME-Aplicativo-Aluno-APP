@@ -109,6 +109,15 @@ mixin _$EventController on _EventControllerBase, Store {
         .run(() => super.fetchEvento(codigoAluno, mes, ano, userId));
   }
 
+  final _$changeCurrentMonthAsyncAction =
+      AsyncAction('_EventControllerBase.changeCurrentMonth');
+
+  @override
+  Future changeCurrentMonth(int month, int codigoEol, int userId) {
+    return _$changeCurrentMonthAsyncAction
+        .run(() => super.changeCurrentMonth(month, codigoEol, userId));
+  }
+
   final _$_EventControllerBaseActionController =
       ActionController(name: '_EventControllerBase');
 
