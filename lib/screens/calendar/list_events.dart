@@ -208,13 +208,15 @@ class _ListEventsState extends State<ListEvents> {
                         if (_eventController.events != null) {
                           return Container(
                               height: screenHeight * 50,
-                              child: ListView.builder(
-                                  itemCount: _eventController.events.length,
-                                  itemBuilder: (context, index) {
-                                    return _eventItemBuild(
-                                        _eventController.events[index],
-                                        context);
-                                  }));
+                              child: Scrollbar(
+                                child: ListView.builder(
+                                    itemCount: _eventController.events.length,
+                                    itemBuilder: (context, index) {
+                                      return _eventItemBuild(
+                                          _eventController.events[index],
+                                          context);
+                                    }),
+                              ));
                         } else {
                           return Container();
                         }
