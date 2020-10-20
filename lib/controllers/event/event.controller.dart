@@ -20,6 +20,9 @@ abstract class _EventControllerBase with Store {
   ObservableList<Event> events;
 
   @observable
+  ObservableList<Event> eventsSortDate;
+
+  @observable
   ObservableList<Event> priorityEvents;
 
   @observable
@@ -82,6 +85,13 @@ abstract class _EventControllerBase with Store {
       ano,
       userId,
     ));
+
+    var auxList = events
+      ..sort((a, b) =>
+          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+
+    eventsSortDate = ObservableList<Event>.of(auxList);
+
     if (events.isNotEmpty) {
       listPriorityEvents(events);
     }
@@ -90,6 +100,7 @@ abstract class _EventControllerBase with Store {
 
   @action
   changeCurrentMonth(int month, int codigoEol, int userId) async {
+    print("$month");
     loadingCurrentMonth(month);
     await fetchEvento(codigoEol, month, currentDate.year, userId);
   }

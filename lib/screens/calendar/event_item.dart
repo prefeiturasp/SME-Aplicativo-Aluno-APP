@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class EventItem extends StatelessWidget {
   final int tipoEvento;
@@ -29,58 +30,103 @@ class EventItem extends StatelessWidget {
     const colorOutros = Color(0xFFC4C4C4);
 
     DateTime dataInicio = DateTime.parse(dia);
+    final formatDate = DateFormat('dd/MM/yyyy');
 
     viewEvent() {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Icon(
-                        FontAwesomeIcons.calendarDay,
-                        color: tipoEvento == 0
-                            ? colorAvaliacao
-                            : tipoEvento == 16
-                                ? colorReuniao
-                                : tipoEvento == 17
-                                    ? colorReuniao
-                                    : tipoEvento == 19
-                                        ? colorReuniao
-                                        : colorOutros,
-                        size: screenHeight * 2,
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Icon(
+                          FontAwesomeIcons.calendarDay,
+                          color: tipoEvento == 0
+                              ? colorAvaliacao
+                              : tipoEvento == 16
+                                  ? colorReuniao
+                                  : tipoEvento == 17
+                                      ? colorReuniao
+                                      : tipoEvento == 19
+                                          ? colorReuniao
+                                          : colorOutros,
+                          size: screenHeight * 2,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 8,
-                      child: Text(
-                        titleEvent,
-                        overflow: TextOverflow.clip,
-                        maxLines: 4,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600),
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          "Avaliação: ${formatDate.format(dataInicio)}",
+                          overflow: TextOverflow.clip,
+                          maxLines: 4,
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Divider(
-                  color: Color(0xffCDCDCD),
-                ),
-                Html(
-                  data: eventDesc,
-                ),
-                Divider(
-                  color: Color(0xffCDCDCD),
-                ),
-              ],
+                    ],
+                  ),
+                  Divider(
+                    color: Color(0xffCDCDCD),
+                  ),
+                  Text(
+                    "Componente Curricular",
+                    overflow: TextOverflow.clip,
+                    maxLines: 4,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Divider(
+                    color: Color(0xffCDCDCD),
+                  ),
+                  Text(
+                    "Nome da Avaliação",
+                    overflow: TextOverflow.clip,
+                    maxLines: 4,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    titleEvent,
+                    overflow: TextOverflow.clip,
+                    maxLines: 4,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Divider(
+                    color: Color(0xffCDCDCD),
+                  ),
+                  Text(
+                    "Conteúdo",
+                    overflow: TextOverflow.clip,
+                    maxLines: 4,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Html(
+                    data: eventDesc,
+                  ),
+                  Divider(
+                    color: Color(0xffCDCDCD),
+                  ),
+                ],
+              ),
             ),
             actions: <Widget>[
               new FlatButton(
@@ -113,7 +159,7 @@ class EventItem extends StatelessWidget {
                       )
                     ],
                   ),
-                  desc == true
+                  tipoEvento == 0
                       ? Icon(
                           FontAwesomeIcons.solidStickyNote,
                           color: Color(0xFF086397),
@@ -141,7 +187,7 @@ class EventItem extends StatelessWidget {
                   )),
             ),
             onTap: () {
-              if (desc) {
+              if (tipoEvento == 0) {
                 viewEvent();
               }
             },

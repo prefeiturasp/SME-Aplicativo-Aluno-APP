@@ -17,10 +17,10 @@ class TitleEvent extends StatelessWidget {
         Expanded(
           flex: 2,
           child: AutoSizeText(
-            "$dayOfWeek -  ",
+            "$dayOfWeek",
             maxFontSize: 14,
             minFontSize: 12,
-            maxLines: 2,
+            maxLines: 1,
             style: TextStyle(
                 color: dayOfWeek == "Sab" || dayOfWeek == "Dom"
                     ? Colors.red

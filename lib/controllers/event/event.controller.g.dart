@@ -39,6 +39,22 @@ mixin _$EventController on _EventControllerBase, Store {
     });
   }
 
+  final _$eventsSortDateAtom =
+      Atom(name: '_EventControllerBase.eventsSortDate');
+
+  @override
+  ObservableList<Event> get eventsSortDate {
+    _$eventsSortDateAtom.reportRead();
+    return super.eventsSortDate;
+  }
+
+  @override
+  set eventsSortDate(ObservableList<Event> value) {
+    _$eventsSortDateAtom.reportWrite(value, super.eventsSortDate, () {
+      super.eventsSortDate = value;
+    });
+  }
+
   final _$priorityEventsAtom =
       Atom(name: '_EventControllerBase.priorityEvents');
 
@@ -148,6 +164,7 @@ mixin _$EventController on _EventControllerBase, Store {
     return '''
 event: ${event},
 events: ${events},
+eventsSortDate: ${eventsSortDate},
 priorityEvents: ${priorityEvents},
 loading: ${loading},
 currentDate: ${currentDate},
