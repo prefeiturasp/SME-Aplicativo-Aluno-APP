@@ -263,21 +263,16 @@ class _DashboardState extends State<Dashboard> {
                                     userId: widget.userId));
                           });
                     } else {
-                      return Container(
-                          height: screenHeight * 60,
-                          child: Center(
-                            child: AutoSizeText(
-                              "Não foi encontrado nenhum evento para este estudante.",
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              maxLines: 10,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ));
+                      return CardAlert(
+                        title: "AGENDA",
+                        icon: Icon(
+                          FontAwesomeIcons.calendarAlt,
+                          color: Color(0xffFFD037),
+                          size: screenHeight * 6,
+                        ),
+                        text:
+                            "Não foi encontrado nenhum evento para este estudante.",
+                      );
                     }
                   }
                 }),
