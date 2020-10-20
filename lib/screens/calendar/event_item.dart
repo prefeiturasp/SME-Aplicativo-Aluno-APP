@@ -78,6 +78,7 @@ class EventItem extends StatelessWidget {
                   ),
                   componenteCurricular != null
                       ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Divider(
                               color: Color(0xffCDCDCD),
@@ -91,7 +92,15 @@ class EventItem extends StatelessWidget {
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 12,
+                            ),
+                            Text(
+                              componenteCurricular,
+                              overflow: TextOverflow.clip,
+                              maxLines: 4,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
                             ),
                             Divider(
                               color: Color(0xffCDCDCD),
@@ -109,7 +118,7 @@ class EventItem extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 12,
                   ),
                   Text(
                     titleEvent,
@@ -128,7 +137,7 @@ class EventItem extends StatelessWidget {
                         color: Colors.black, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 12,
                   ),
                   Html(
                     data: eventDesc,
