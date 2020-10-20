@@ -50,8 +50,6 @@ class _ListEventsState extends State<ListEvents> {
     String diaSemana = (event.diaSemana).substring(0, 1).toUpperCase() +
         (event.diaSemana).substring(1);
 
-    String nameWithDayOfWeek = " $diaSemana - ${event.nome}";
-
     return Column(
       children: [
         EventItem(
@@ -59,7 +57,7 @@ class _ListEventsState extends State<ListEvents> {
             dayOfWeek: diaSemana,
             title: event.nome,
           ),
-          titleEvent: nameWithDayOfWeek,
+          titleEvent: event.nome,
           desc: event.descricao.length > 3 ? true : false,
           eventDesc: event.descricao,
           dia: event.dataInicio,
@@ -131,7 +129,7 @@ class _ListEventsState extends State<ListEvents> {
                         ),
                         onPressed: () async {
                           setState(() => _currentMonth--);
-                          if (_currentMonth > 1) {
+                          if (_currentMonth >= 1) {
                             await _eventController.changeCurrentMonth(
                                 _currentMonth,
                                 widget.student.codigoEol,
@@ -159,7 +157,7 @@ class _ListEventsState extends State<ListEvents> {
                         ),
                         onPressed: () async {
                           setState(() => _currentMonth++);
-                          if (_currentMonth < 12) {
+                          if (_currentMonth <= 12) {
                             await _eventController.changeCurrentMonth(
                                 _currentMonth,
                                 widget.student.codigoEol,
@@ -203,17 +201,19 @@ class _ListEventsState extends State<ListEvents> {
                       margin: EdgeInsets.all(screenHeight * 1.5),
                     );
                   } else {
-                    if (_eventController.events.isNotEmpty) {
+                    if (_eventController.eventsSortDate.isNotEmpty) {
                       return Observer(builder: (_) {
                         if (_eventController.events != null) {
                           return Container(
                               height: screenHeight * 50,
                               child: Scrollbar(
                                 child: ListView.builder(
-                                    itemCount: _eventController.events.length,
+                                    itemCount:
+                                        _eventController.eventsSortDate.length,
                                     itemBuilder: (context, index) {
                                       return _eventItemBuild(
-                                          _eventController.events[index],
+                                          _eventController
+                                              .eventsSortDate[index],
                                           context);
                                     }),
                               ));

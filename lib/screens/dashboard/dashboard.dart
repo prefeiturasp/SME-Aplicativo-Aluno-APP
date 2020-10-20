@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -75,8 +76,6 @@ class _DashboardState extends State<Dashboard> {
       String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() +
           (events[i].diaSemana).substring(1);
 
-      String nameWithDayOfWeek = " $diaSemana - ${events[i].nome}";
-
       list.add(Column(
         children: [
           EventItem(
@@ -84,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
               dayOfWeek: diaSemana,
               title: events[i].nome,
             ),
-            titleEvent: nameWithDayOfWeek,
+            titleEvent: events[i].nome,
             desc: events[i].descricao.length > 3 ? true : false,
             eventDesc: events[i].descricao,
             dia: events[i].dataInicio,
@@ -264,8 +263,15 @@ class _DashboardState extends State<Dashboard> {
                                     userId: widget.userId));
                           });
                     } else {
-                      return Container(
-                        child: Text("Hi"),
+                      return CardAlert(
+                        title: "AGENDA",
+                        icon: Icon(
+                          FontAwesomeIcons.calendarAlt,
+                          color: Color(0xffFFD037),
+                          size: screenHeight * 6,
+                        ),
+                        text:
+                            "Não foi encontrado nenhum evento para este estudante.",
                       );
                     }
                   }
