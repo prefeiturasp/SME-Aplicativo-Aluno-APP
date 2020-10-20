@@ -11,6 +11,7 @@ class EventItem extends StatelessWidget {
   final bool desc;
   final String dia;
   final String eventDesc;
+  final String componenteCurricular;
 
   EventItem({
     this.tipoEvento,
@@ -19,6 +20,7 @@ class EventItem extends StatelessWidget {
     this.desc,
     this.dia,
     this.eventDesc,
+    this.componenteCurricular,
   });
 
   @override
@@ -74,22 +76,31 @@ class EventItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Divider(
-                    color: Color(0xffCDCDCD),
-                  ),
-                  Text(
-                    "Componente Curricular",
-                    overflow: TextOverflow.clip,
-                    maxLines: 4,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Divider(
-                    color: Color(0xffCDCDCD),
-                  ),
+                  componenteCurricular != null
+                      ? Column(
+                          children: [
+                            Divider(
+                              color: Color(0xffCDCDCD),
+                            ),
+                            Text(
+                              "Componente Curricular",
+                              overflow: TextOverflow.clip,
+                              maxLines: 4,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              color: Color(0xffCDCDCD),
+                            ),
+                          ],
+                        )
+                      : Divider(
+                          color: Color(0xffCDCDCD),
+                        ),
                   Text(
                     "Nome da Avaliação",
                     overflow: TextOverflow.clip,

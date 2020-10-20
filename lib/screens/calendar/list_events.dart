@@ -53,16 +53,16 @@ class _ListEventsState extends State<ListEvents> {
     return Column(
       children: [
         EventItem(
-          customTitle: TitleEvent(
-            dayOfWeek: diaSemana,
-            title: event.nome,
-          ),
-          titleEvent: event.nome,
-          desc: event.descricao.length > 3 ? true : false,
-          eventDesc: event.descricao,
-          dia: event.dataInicio,
-          tipoEvento: event.tipoEvento,
-        ),
+            customTitle: TitleEvent(
+              dayOfWeek: diaSemana,
+              title: event.nome,
+            ),
+            titleEvent: event.nome,
+            desc: event.descricao.length > 3 ? true : false,
+            eventDesc: event.descricao,
+            dia: event.dataInicio,
+            tipoEvento: event.tipoEvento,
+            componenteCurricular: event.componenteCurricular),
         Divider(
           color: Color(0xffCDCDCD),
         )

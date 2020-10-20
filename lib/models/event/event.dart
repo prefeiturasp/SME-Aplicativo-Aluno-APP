@@ -6,15 +6,18 @@ class Event {
   String dataFim;
   int tipoEvento;
   int anoLetivo;
+  String componenteCurricular;
 
-  Event(
-      {this.nome,
-      this.descricao,
-      this.diaSemana,
-      this.dataInicio,
-      this.dataFim,
-      this.tipoEvento,
-      this.anoLetivo});
+  Event({
+    this.nome,
+    this.descricao,
+    this.diaSemana,
+    this.dataInicio,
+    this.dataFim,
+    this.tipoEvento,
+    this.anoLetivo,
+    this.componenteCurricular,
+  });
 
   Event.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -24,6 +27,7 @@ class Event {
     dataFim = json['dataFim'];
     tipoEvento = json['tipoEvento'];
     anoLetivo = json['anoLetivo'];
+    componenteCurricular = json['componenteCurricular'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +39,7 @@ class Event {
     data['dataFim'] = this.dataFim;
     data['tipoEvento'] = this.tipoEvento;
     data['anoLetivo'] = this.anoLetivo;
+    data['componenteCurricular'] = this.componenteCurricular;
     return data;
   }
 }

@@ -79,16 +79,16 @@ class _DashboardState extends State<Dashboard> {
       list.add(Column(
         children: [
           EventItem(
-            customTitle: TitleEvent(
-              dayOfWeek: diaSemana,
-              title: events[i].nome,
-            ),
-            titleEvent: events[i].nome,
-            desc: events[i].descricao.length > 3 ? true : false,
-            eventDesc: events[i].descricao,
-            dia: events[i].dataInicio,
-            tipoEvento: events[i].tipoEvento,
-          ),
+              customTitle: TitleEvent(
+                dayOfWeek: diaSemana,
+                title: events[i].nome,
+              ),
+              titleEvent: events[i].nome,
+              desc: events[i].descricao.length > 3 ? true : false,
+              eventDesc: events[i].descricao,
+              dia: events[i].dataInicio,
+              tipoEvento: events[i].tipoEvento,
+              componenteCurricular: events[i].componenteCurricular),
           Divider(
             color: Color(0xffCDCDCD),
           )
