@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,15 +7,22 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
+import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/calendar/event_item.dart';
+import 'package:sme_app_aluno/screens/calendar/list_events.dart';
+import 'package:sme_app_aluno/screens/calendar/title_event.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/card_calendar.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/eaq_recent_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
+import 'package:sme_app_aluno/controllers/event/event.controller.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Dashboard extends StatefulWidget {
   final Student student;
@@ -34,11 +42,13 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   MessagesController _messagesController;
+  EventController _eventController;
 
   @override
   void initState() {
     super.initState();
     _loadingBackRecentMessage();
+    _loadingCalendar();
   }
 
   _loadingBackRecentMessage() async {
@@ -47,14 +57,51 @@ class _DashboardState extends State<Dashboard> {
     _messagesController.loadMessages(widget.student.codigoEol, widget.userId);
   }
 
+  _loadingCalendar() async {
+    _eventController = EventController();
+    _eventController.fetchEvento(
+      widget.student.codigoEol,
+      _eventController.currentDate.month,
+      _eventController.currentDate.year,
+      widget.userId,
+    );
+  }
+
+  Widget _listEvents(
+    List<Event> events,
+    BuildContext context,
+  ) {
+    List<Widget> list = new List<Widget>();
+    for (int i = 0; i < events.length; i++) {
+      String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() +
+          (events[i].diaSemana).substring(1);
+
+      list.add(Column(
+        children: [
+          EventItem(
+              customTitle: TitleEvent(
+                dayOfWeek: diaSemana,
+                title: events[i].nome,
+              ),
+              titleEvent: events[i].nome,
+              desc: events[i].descricao.length > 3 ? true : false,
+              eventDesc: events[i].descricao,
+              dia: events[i].dataInicio,
+              tipoEvento: events[i].tipoEvento,
+              componenteCurricular: events[i].componenteCurricular),
+          Divider(
+            color: Color(0xffCDCDCD),
+          )
+        ],
+      ));
+    }
+    return new Column(children: list);
+  }
+
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
@@ -177,6 +224,54 @@ class _DashboardState extends State<Dashboard> {
                         loaderColorTwo: Color(0xffC65D00),
                         loaderColorThree: Color(0xffC65D00),
                         size: GFSize.LARGE,
+                      );
+                    }
+                  }
+                }),
+                Observer(builder: (context) {
+                  if (_eventController.loading) {
+                    return Container(
+                      child: GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      ),
+                      margin: EdgeInsets.all(screenHeight * 1.5),
+                    );
+                  } else {
+                    if (_eventController.events.isNotEmpty) {
+                      return CardCalendar(
+                          heightContainer: screenHeight * 48,
+                          title: "AGENDA",
+                          month: _eventController.currentMonth,
+                          lenght: _eventController.events.length,
+                          totalEventos:
+                              "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
+                          widget: Observer(builder: (_) {
+                            return _listEvents(
+                              _eventController.priorityEvents,
+                              context,
+                            );
+                          }),
+                          onPress: () {
+                            Nav.push(
+                                context,
+                                ListEvents(
+                                    student: widget.student,
+                                    userId: widget.userId));
+                          });
+                    } else {
+                      return CardAlert(
+                        title: "AGENDA",
+                        icon: Icon(
+                          FontAwesomeIcons.calendarAlt,
+                          color: Color(0xffFFD037),
+                          size: screenHeight * 6,
+                        ),
+                        text:
+                            "Não foi encontrado nenhum evento para este estudante.",
                       );
                     }
                   }

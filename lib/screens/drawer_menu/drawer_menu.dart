@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/settings/settings.dart';
@@ -80,7 +81,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
         ));
   }
 
-  _navigateToTerms(BuildContext context){
+  _navigateToTerms(BuildContext context) {
     Nav.push(context, TermsUse());
   }
 
@@ -191,6 +192,25 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       builder: (context) => ResumeStudants(
                             student: widget.student,
                           )));
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Agenda'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.calendarAlt,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListEvents(
+                          student: widget.student, userId: widget.userId)));
             },
           ),
           Divider(),

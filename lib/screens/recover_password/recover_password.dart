@@ -3,12 +3,10 @@ import 'package:brasil_fields/formatter/cpf_input_formatter.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
 import 'package:sme_app_aluno/screens/recover_password/show_info.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -28,6 +26,8 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  bool loading = false;
+
   bool _cpfIsError = false;
 
   String _cpf = '';
@@ -44,7 +44,13 @@ class _RecoverPasswordState extends State<RecoverPassword> {
   }
 
   _onPressGetToken(String cpf, BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
     await _recoverPasswordController.sendToken(cpf);
+    setState(() {
+      loading = false;
+    });
     if (_recoverPasswordController.data.email != null) {
       Nav.push(
           context,
@@ -69,8 +75,6 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   @override
   Widget build(BuildContext context) {
-    final _recoverPasswordController =
-        Provider.of<RecoverPasswordController>(context);
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
@@ -208,32 +212,28 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                               SizedBox(
                                 height: screenHeight * 4,
                               ),
-                              Observer(builder: (context) {
-                                if (_recoverPasswordController.loading) {
-                                  return GFLoader(
-                                    type: GFLoaderType.square,
-                                    loaderColorOne: Color(0xffDE9524),
-                                    loaderColorTwo: Color(0xffC65D00),
-                                    loaderColorThree: Color(0xffC65D00),
-                                    size: GFSize.LARGE,
-                                  );
-                                } else {
-                                  return EAButton(
-                                    text: "CONTINUAR",
-                                    icon: FontAwesomeIcons.chevronRight,
-                                    iconColor: Color(0xffffd037),
-                                    btnColor: Color(0xffd06d12),
-                                    desabled: CPFValidator.isValid(_cpf),
-                                    onPress: () {
-                                      if (_formKey.currentState.validate()) {
-                                        _onPressGetToken(_cpf, context);
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                  );
-                                }
-                              }),
+                              loading
+                                  ? GFLoader(
+                                      type: GFLoaderType.square,
+                                      loaderColorOne: Color(0xffDE9524),
+                                      loaderColorTwo: Color(0xffC65D00),
+                                      loaderColorThree: Color(0xffC65D00),
+                                      size: GFSize.LARGE,
+                                    )
+                                  : EAButton(
+                                      text: "CONTINUAR",
+                                      icon: FontAwesomeIcons.chevronRight,
+                                      iconColor: Color(0xffffd037),
+                                      btnColor: Color(0xffd06d12),
+                                      desabled: CPFValidator.isValid(_cpf),
+                                      onPress: () {
+                                        if (_formKey.currentState.validate()) {
+                                          _onPressGetToken(_cpf, context);
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
                             ]),
                       ),
                     ],

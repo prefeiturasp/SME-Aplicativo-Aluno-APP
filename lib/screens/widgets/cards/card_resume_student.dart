@@ -75,7 +75,9 @@ class CardResumeStudent extends StatelessWidget {
           ),
           StudentInfo(
             studentName:
-                student.nomeSocial != null ? student.nomeSocial : student.nome,
+                student.nomeSocial != null && student.nomeSocial.isNotEmpty
+                    ? student.nomeSocial
+                    : student.nome,
             schoolName: student.escola,
             schoolType: student.descricaoTipoEscola,
             studentEOL: student.codigoEol,

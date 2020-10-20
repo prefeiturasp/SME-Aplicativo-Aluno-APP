@@ -61,31 +61,33 @@ class _TermsViewState extends State<TermsView> {
       Container(
         padding: EdgeInsets.all(screenHeight * 4),
         height: widget.showBtn ? screenHeight * 70 : screenHeight * 88,
-        child: ListView(
-          controller: _controller,
-          children: <Widget>[
-            Column(
-              children: [
-                AutoSizeText(
-                  'Termos e condições de uso',
-                  minFontSize: 16,
-                  maxFontSize: 18,
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                SizedBox(
-                  height: screenHeight * 4,
-                ),
-                Html(data: widget.term.termosDeUso),
-                AutoSizeText(
-                  'Política de privacidade',
-                  minFontSize: 14,
-                  maxFontSize: 16,
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                Html(data: widget.term.politicaDePrivacidade),
-              ],
-            ),
-          ],
+        child: Scrollbar(
+          child: ListView(
+            controller: _controller,
+            children: <Widget>[
+              Column(
+                children: [
+                  AutoSizeText(
+                    'Termos e condições de uso',
+                    minFontSize: 16,
+                    maxFontSize: 18,
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 4,
+                  ),
+                  Html(data: widget.term.termosDeUso),
+                  AutoSizeText(
+                    'Política de privacidade',
+                    minFontSize: 14,
+                    maxFontSize: 16,
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Html(data: widget.term.politicaDePrivacidade),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       widget.showBtn

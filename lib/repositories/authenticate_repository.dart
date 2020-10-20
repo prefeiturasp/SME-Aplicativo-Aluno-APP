@@ -23,9 +23,22 @@ class AuthenticateRepository implements IAuthenticateRepository {
     //   });
     // }
 
+    Map _data = {
+      "cpf": cpf,
+      "senha": password,
+      "dispositivoId": idDevice,
+    };
+
+    var body = json.encode(_data);
+
     try {
       final response = await http.post(
-          "${Api.HOST}/Autenticacao?cpf=$cpf&senha=$password&dispositivoId=$idDevice");
+        "${Api.HOST}/Autenticacao",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);

@@ -325,6 +325,9 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                           _password.length <= 12),
                                 ],
                               ),
+                              SizedBox(
+                                height: screenHeight * 3,
+                              ),
                               Observer(builder: (context) {
                                 if (_recoverPasswordController.loading) {
                                   return GFLoader(

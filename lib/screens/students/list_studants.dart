@@ -94,7 +94,9 @@ class _ListStudantsState extends State<ListStudants> {
   Widget _itemCardStudent(BuildContext context, Student model,
       String groupSchool, int codigoGrupo, int userId) {
     return CardStudent(
-      name: model.nomeSocial != null ? model.nomeSocial : model.nome,
+      name: model.nomeSocial != null && model.nomeSocial.isNotEmpty
+          ? model.nomeSocial
+          : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
       schooType: model.descricaoTipoEscola,
@@ -225,8 +227,9 @@ class _ListStudantsState extends State<ListStudants> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 TagCustom(
-                                    text: "${dados[index].grupo}",
-                                    color: Color(0xffC65D00)),
+                                  text: "${dados[index].grupo}",
+                                  color: Color(0xffC65D00),
+                                ),
                                 _listStudents(
                                   dados[index].students,
                                   context,
