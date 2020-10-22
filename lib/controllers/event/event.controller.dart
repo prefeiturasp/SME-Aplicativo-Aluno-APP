@@ -108,11 +108,15 @@ abstract class _EventControllerBase with Store {
   @action
   listPriorityEvents(eventsList) {
     var auxList = eventsList
-      ..sort((a, b) =>
-          (a.tipoEvento.toString()).compareTo(b.tipoEvento.toString()));
+        .where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day);
 
     var newList = auxList.take(4).toList();
 
-    priorityEvents = ObservableList<Event>.of(newList);
+    var listPriority = newList
+      ..sort((a, b) =>
+          (a.tipoEvento.toString()).compareTo(b.tipoEvento.toString()));
+
+    priorityEvents = ObservableList<Event>.of(
+        newList.isNotEmpty ? listPriority : eventsList.take(4));
   }
 }
