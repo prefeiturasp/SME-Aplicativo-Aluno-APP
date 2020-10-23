@@ -115,7 +115,7 @@ abstract class _EventControllerBase with Store {
     var reversedList = eventsList.reversed.take(4).toList();
 
     filterList = ObservableList<Event>.of(eventsList
-        .where((i) => DateTime.parse(i.dataInicio).day >= 12)
+        .where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day)
         .toList());
 
     provaList =
