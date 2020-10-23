@@ -241,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                       margin: EdgeInsets.all(screenHeight * 1.5),
                     );
                   } else {
-                    if (_eventController.events.isNotEmpty) {
+                    if (_eventController.priorityEvents.isNotEmpty) {
                       return CardCalendar(
                           heightContainer: screenHeight * 48,
                           title: "AGENDA",
