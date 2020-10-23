@@ -106,36 +106,32 @@ abstract class _EventControllerBase with Store {
 
   @action
   listPriorityEvents(eventsList) {
-<<<<<<< HEAD
-    var auxList = eventsList
-        .where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day);
-=======
     var filterList = ObservableList<Event>.of([]);
     var sortList = ObservableList<Event>.of([]);
     var takeList = ObservableList<Event>.of([]);
+    var provaList = ObservableList<Event>.of([]);
+    var othersList = ObservableList<Event>.of([]);
+
+    var reversedList = eventsList.reversed.take(4).toList();
 
     filterList = ObservableList<Event>.of(eventsList
-        .where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day)
+        .where((i) => DateTime.parse(i.dataInicio).day >= 12)
         .toList());
 
-    sortList = ObservableList<Event>.of(filterList
-      ..sort((a, b) =>
-          (a.tipoEvento.toString()).compareTo(b.tipoEvento.toString())));
->>>>>>> ed0c238dd4c92a487568568857794b60cd66d342
+    provaList =
+        ObservableList<Event>.of(filterList.where((i) => i.tipoEvento == 0));
+
+    othersList =
+        ObservableList<Event>.of(filterList.where((i) => i.tipoEvento != 0));
+
+    sortList = ObservableList<Event>.of(provaList + othersList);
 
     takeList = sortList.length > 4
         ? ObservableList<Event>.of(sortList.take(4).toList())
-        : ObservableList<Event>.of(sortList);
+        : sortList.length == 4
+            ? ObservableList<Event>.of(sortList)
+            : ObservableList<Event>.of(reversedList);
 
-<<<<<<< HEAD
-    var listPriority = newList
-      ..sort((a, b) =>
-          (a.tipoEvento.toString()).compareTo(b.tipoEvento.toString()));
-
-    priorityEvents = ObservableList<Event>.of(
-        newList.isNotEmpty ? listPriority : eventsList.take(4));
-=======
     priorityEvents = takeList;
->>>>>>> ed0c238dd4c92a487568568857794b60cd66d342
   }
 }
