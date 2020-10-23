@@ -79,9 +79,13 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
     const colorUE = Color(0xff5151CF);
     const colorTURMA = Color(0xff599E00);
     return Container(
-      width:
-          widget.totalCateories == 1 ? screenHeight * 48.5 : screenHeight * 40,
-      margin: EdgeInsets.only(top: screenHeight * 1, right: screenHeight * 1.5),
+      width: widget.totalCateories == 1
+          ? MediaQuery.of(context).size.width
+          : screenHeight * 40,
+      margin: EdgeInsets.only(
+        top: screenHeight * 1,
+        right: widget.totalCateories == 1 ? 0.0 : screenHeight * 1.5,
+      ),
       decoration: BoxDecoration(
         color: widget.message == null ? Color(0xffC45C04) : Colors.white,
         borderRadius: BorderRadius.all(
@@ -103,9 +107,13 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
             padding: EdgeInsets.all(screenHeight * 2),
             decoration: BoxDecoration(
                 color: widget.message.categoriaNotificacao == "SME"
-                    ? widget.recent ? colorSME : colorSME.withOpacity(0.4)
+                    ? widget.recent
+                        ? colorSME
+                        : colorSME.withOpacity(0.4)
                     : widget.message.categoriaNotificacao == "UE"
-                        ? widget.recent ? colorUE : colorUE.withOpacity(0.4)
+                        ? widget.recent
+                            ? colorUE
+                            : colorUE.withOpacity(0.4)
                         : widget.recent
                             ? colorTURMA
                             : colorTURMA.withOpacity(0.4),

@@ -8,6 +8,7 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
+import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
@@ -64,6 +65,42 @@ class _DashboardState extends State<Dashboard> {
       _eventController.currentDate.month,
       _eventController.currentDate.year,
       widget.userId,
+    );
+  }
+
+  Widget _buildItemMEssage(
+      Message message, int totalCategories, BuildContext context) {
+    return EAQRecentCardMessage(
+      totalCateories: totalCategories,
+      message: message,
+      countMessages: message.categoriaNotificacao == "SME"
+          ? _messagesController.countMessageSME
+          : message.categoriaNotificacao == "UE"
+              ? _messagesController.countMessageUE
+              : _messagesController.countMessageTurma,
+      codigoGrupo: widget.codigoGrupo,
+      deleteBtn: false,
+      recent: !message.mensagemVisualizada,
+      onPress: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewMessage(
+                      userId: widget.userId,
+                      message: message,
+                      codigoAlunoEol: widget.student.codigoEol,
+                    ))).whenComplete(() => _loadingBackRecentMessage());
+      },
+      outherRoutes: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ListMessages(
+                      userId: widget.userId,
+                      codigoGrupo: widget.codigoGrupo,
+                      codigoAlunoEol: widget.student.codigoEol,
+                    ))).whenComplete(() => _loadingBackRecentMessage());
+      },
     );
   }
 
@@ -159,58 +196,25 @@ class _DashboardState extends State<Dashboard> {
                             return Container(
                               height: screenHeight * 48,
                               margin: EdgeInsets.only(top: screenHeight * 3),
-                              child: ListView.builder(
-                                  itemCount:
-                                      _messagesController.recentMessages.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    final dados =
-                                        _messagesController.recentMessages;
-                                    return EAQRecentCardMessage(
-                                      totalCateories: dados.length,
-                                      message: dados[index],
-                                      countMessages: dados[index]
-                                                  .categoriaNotificacao ==
-                                              "SME"
-                                          ? _messagesController.countMessageSME
-                                          : dados[index].categoriaNotificacao ==
-                                                  "UE"
-                                              ? _messagesController
-                                                  .countMessageUE
-                                              : _messagesController
-                                                  .countMessageTurma,
-                                      codigoGrupo: widget.codigoGrupo,
-                                      deleteBtn: false,
-                                      recent: !dados[index].mensagemVisualizada,
-                                      onPress: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ViewMessage(
-                                                      userId: widget.userId,
-                                                      message: dados[index],
-                                                      codigoAlunoEol: widget
-                                                          .student.codigoEol,
-                                                    ))).whenComplete(
-                                            () => _loadingBackRecentMessage());
-                                      },
-                                      outherRoutes: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ListMessages(
-                                                      userId: widget.userId,
-                                                      codigoGrupo:
-                                                          widget.codigoGrupo,
-                                                      codigoAlunoEol: widget
-                                                          .student.codigoEol,
-                                                    ))).whenComplete(
-                                            () => _loadingBackRecentMessage());
-                                      },
-                                    );
-                                  }),
+                              child: Visibility(
+                                visible:
+                                    _messagesController.recentMessages.length >
+                                        1,
+                                replacement: _buildItemMEssage(
+                                    _messagesController.recentMessages[0],
+                                    _messagesController.recentMessages.length,
+                                    context),
+                                child: ListView.builder(
+                                    itemCount: _messagesController
+                                        .recentMessages.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      final dados =
+                                          _messagesController.recentMessages;
+                                      return _buildItemMEssage(
+                                          dados[index], dados.length, context);
+                                    }),
+                              ),
                             );
                           } else {
                             return Container();
@@ -241,7 +245,8 @@ class _DashboardState extends State<Dashboard> {
                       margin: EdgeInsets.all(screenHeight * 1.5),
                     );
                   } else {
-                    if (_eventController.events.isNotEmpty) {
+                    if (_eventController.priorityEvents != null &&
+                        _eventController.priorityEvents.isNotEmpty) {
                       return CardCalendar(
                           heightContainer: screenHeight * 48,
                           title: "AGENDA",
