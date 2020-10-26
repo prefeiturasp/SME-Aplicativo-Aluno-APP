@@ -28,13 +28,13 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
       Atom(name: '_FirstAccessControllerBase.dataEmailOrPhone');
 
   @override
-  Data get dataEmailOrPhone {
+  DataChangeEmailAndPhone get dataEmailOrPhone {
     _$dataEmailOrPhoneAtom.reportRead();
     return super.dataEmailOrPhone;
   }
 
   @override
-  set dataEmailOrPhone(Data value) {
+  set dataEmailOrPhone(DataChangeEmailAndPhone value) {
     _$dataEmailOrPhoneAtom.reportWrite(value, super.dataEmailOrPhone, () {
       super.dataEmailOrPhone = value;
     });
