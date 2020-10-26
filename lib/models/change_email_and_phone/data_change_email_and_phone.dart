@@ -1,16 +1,18 @@
-class Data {
+class DataChangeEmailAndPhone {
   bool ok;
   List<String> erros;
   ValidacaoErros validacaoErros;
+  String token;
 
-  Data({this.ok, this.erros, this.validacaoErros});
+  DataChangeEmailAndPhone({this.ok, this.erros, this.validacaoErros});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataChangeEmailAndPhone.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     erros = json['erros'] != null ? json['erros'].cast<String>() : null;
     validacaoErros = json['validacaoErros'] != null
         ? new ValidacaoErros.fromJson(json['validacaoErros'])
         : null;
+    token = json['data']['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class Data {
     if (this.validacaoErros != null) {
       data['validacaoErros'] = this.validacaoErros.toJson();
     }
+    data['data']['token'] = this.token;
     return data;
   }
 }
