@@ -9,16 +9,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/terms/terms_view.dart';
+import 'package:sme_app_aluno/screens/widgets/buttons/eaback_button.dart';
 
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
+import 'package:sme_app_aluno/utils/auth.dart';
 
 class FirstAccess extends StatefulWidget {
   final int id;
@@ -36,6 +39,7 @@ class _FirstAccessState extends State<FirstAccess> {
 
   FirstAccessController _firstAccessController;
   TermsController _termsController;
+  AuthenticateController _authenticateController;
 
   final numeric = RegExp(r"[0-9]");
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
@@ -63,6 +67,7 @@ class _FirstAccessState extends State<FirstAccess> {
     _firstAccessController = FirstAccessController();
     _termsController = TermsController();
     _termsController.fetchTermo(widget.cpf);
+    _authenticateController = AuthenticateController();
   }
 
   _navigateToScreen() {
@@ -160,6 +165,31 @@ class _FirstAccessState extends State<FirstAccess> {
     Navigator.pop(context);
   }
 
+  viewLogout() {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: Text('Deseja sair do aplicativo?'),
+              content: Text(
+                "Ao confirmar você será desconectado do aplicado. Para voltar para esta etapa você deverá realizar o login novamente. Deseja realmente sair do aplicativo?",
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('NÃO'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('SIM'),
+                  onPressed: () async {
+                    Auth.logout(context, widget.id);
+                  },
+                )
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -185,7 +215,7 @@ class _FirstAccessState extends State<FirstAccess> {
                     Container(
                         margin: EdgeInsets.only(bottom: screenHeight * 3),
                         child: AutoSizeText(
-                          "Primeiro Acesso! Cadastre uma nova senha",
+                          "Primeiro Acesso! Cadastre uma nova senha para o CPF: ${widget.cpf}",
                           maxFontSize: 18,
                           minFontSize: 16,
                           style: TextStyle(
@@ -412,6 +442,16 @@ class _FirstAccessState extends State<FirstAccess> {
                               },
                             ),
                             SizedBox(height: screenHeight * 5),
+                            EABackButton(
+                                text: "CADASTRAR MAIS TARDE",
+                                btnColor: Color(0xffd06d12),
+                                icon: FontAwesomeIcons.chevronLeft,
+                                iconColor: Color(0xffffd037),
+                                onPress: () {
+                                  viewLogout();
+                                },
+                                desabled: true),
+                            SizedBox(height: screenHeight * 3),
                             !_busy
                                 ? EAButton(
                                     text: "CADASTRAR",
