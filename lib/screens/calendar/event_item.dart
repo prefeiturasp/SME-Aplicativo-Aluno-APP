@@ -162,8 +162,8 @@ class EventItem extends StatelessWidget {
     }
 
     return Container(
-        padding: EdgeInsets.only(
-            bottom: screenHeight * 1.5, top: screenHeight * 1.5),
+        padding:
+            EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
         child: Container(
           height: screenHeight * 6,
           child: InkWell(
@@ -195,7 +195,9 @@ class EventItem extends StatelessWidget {
                           ? colorReuniao
                           : tipoEvento == 17
                               ? colorReuniao
-                              : tipoEvento == 19 ? colorReuniao : colorOutros,
+                              : tipoEvento == 19
+                                  ? colorReuniao
+                                  : colorOutros,
                   child: AutoSizeText(
                     dataInicio.day.toString(),
                     maxFontSize: 16,
