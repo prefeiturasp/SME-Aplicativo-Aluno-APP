@@ -15,14 +15,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
     String idDevice = await _firebaseMessaging.getToken();
     print("FIREBASE TOKEN: $idDevice");
 
-    // if (!onBackgroundFetch) {
-    //   var ids = new List<int>.generate(20, (i) => i + 1);
-    //   ids.forEach((element) {
-    //     print("Remove ids: $element");
-    //     _firebaseMessaging.unsubscribeFromTopic(element.toString());
-    //   });
-    // }
-
     Map _data = {
       "cpf": cpf,
       "senha": password,
@@ -39,6 +31,8 @@ class AuthenticateRepository implements IAuthenticateRepository {
         },
         body: body,
       );
+
+      print("RESPONSE --> $response.statusCode");
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
