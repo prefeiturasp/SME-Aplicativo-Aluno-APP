@@ -29,7 +29,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp() {
-    GlobalConfig.Environment = "prod";
+    GlobalConfig.Environment = "developer";
   }
 
   // This widget is the root of your application.
