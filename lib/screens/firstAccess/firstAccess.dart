@@ -165,31 +165,6 @@ class _FirstAccessState extends State<FirstAccess> {
     Navigator.pop(context);
   }
 
-  viewLogout() {
-    showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: Text('Deseja sair do aplicativo?'),
-              content: Text(
-                "Ao confirmar você será desconectado do aplicado. Para voltar para esta etapa você deverá realizar o login novamente. Deseja realmente sair do aplicativo?",
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('NÃO'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                FlatButton(
-                  child: Text('SIM'),
-                  onPressed: () async {
-                    Auth.logout(context, widget.id);
-                  },
-                )
-              ],
-            ));
-  }
-
   Future<bool> _onBackPress() {
     return showDialog(
         context: context,
@@ -250,7 +225,7 @@ class _FirstAccessState extends State<FirstAccess> {
                               alignment: Alignment.topRight,
                               child: IconButton(
                                 onPressed: () {
-                                  viewLogout();
+                                  _onBackPress();
                                 },
                                 icon: Icon(
                                   FontAwesomeIcons.signOutAlt,
@@ -512,7 +487,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                     icon: FontAwesomeIcons.chevronLeft,
                                     iconColor: Color(0xffffd037),
                                     onPress: () {
-                                      viewLogout();
+                                      _onBackPress();
                                     },
                                     desabled: true),
                                 SizedBox(height: screenHeight * 3),
