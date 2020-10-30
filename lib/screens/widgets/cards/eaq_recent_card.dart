@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
@@ -59,17 +58,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
         });
   }
 
-  _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
-  }
+  _removeMesageToStorage(int id) async {}
 
   @override
   Widget build(BuildContext context) {

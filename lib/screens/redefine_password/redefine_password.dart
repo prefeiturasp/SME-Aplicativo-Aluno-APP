@@ -13,7 +13,6 @@ import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 
 class RedefinePassword extends StatefulWidget {
   final String cpf;
@@ -26,7 +25,6 @@ class RedefinePassword extends StatefulWidget {
 }
 
 class _RedefinePasswordState extends State<RedefinePassword> {
-  final Storage _storage = Storage();
   final UserService _userService = UserService();
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -73,7 +71,6 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   }
 
   _changePassword(String password, String token) async {
-    _storage.removeAllValues();
     await _recoverPasswordController.redefinePassword(password, token);
     _navigateToScreen();
   }
