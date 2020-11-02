@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
@@ -11,8 +12,14 @@ class AuthenticateRepository implements IAuthenticateRepository {
   final UserService _userService = UserService();
 
   @override
-  Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
-    String idDevice = await _firebaseMessaging.getToken();
+  Future<Data> loginUser(String cpf, String password) async {
+    String idDevice;
+    if (Platform.isAndroid) {
+      idDevice = await _firebaseMessaging.getToken();
+    } else if (Platform.isIOS) {
+      idDevice = 'noToken';
+    }
+
     print("FIREBASE TOKEN: $idDevice");
 
     Map _data = {
@@ -31,8 +38,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
         },
         body: body,
       );
-
-      print("RESPONSE --> $response.statusCode");
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);

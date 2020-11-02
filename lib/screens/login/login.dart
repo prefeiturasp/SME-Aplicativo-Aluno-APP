@@ -48,7 +48,7 @@ class _LoginState extends State<Login> {
     String cpf,
     String password,
   ) async {
-    await _authenticateController.authenticateUser(cpf, password, false);
+    await _authenticateController.authenticateUser(cpf, password);
     _navigateToScreen();
   }
 
