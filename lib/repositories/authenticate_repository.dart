@@ -52,7 +52,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("Erro ao tentatar se autenticar " + stacktrace.toString());
+      print("Erro ao tentar se autenticar " + stacktrace.toString());
       return null;
     }
   }
