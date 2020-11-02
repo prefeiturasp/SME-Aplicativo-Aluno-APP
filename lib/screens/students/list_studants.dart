@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,57 +38,6 @@ class _ListStudantsState extends State<ListStudants> {
     _loadingAllStudents();
     // initPlatformState();
   }
-
-  // Future<void> initPlatformState() async {
-  //   BackgroundFetch.configure(
-  //           BackgroundFetchConfig(
-  //             minimumFetchInterval: 2,
-  //             forceAlarmManager: false,
-  //             stopOnTerminate: false,
-  //             startOnBoot: true,
-  //             enableHeadless: true,
-  //             requiresBatteryNotLow: false,
-  //             requiresCharging: false,
-  //             requiresStorageNotLow: false,
-  //             requiresDeviceIdle: false,
-  //             requiredNetworkType: NetworkType.NONE,
-  //           ),
-  //           _onBackgroundFetch)
-  //       .then((int status) {
-  //     print('[BackgroundFetch] configure success: $status');
-  //   }).catchError((e) {
-  //     print('[BackgroundFetch] configure ERROR: $e');
-  //   });
-
-  //   BackgroundFetch.scheduleTask(TaskConfig(
-  //       taskId: "com.transistorsoft.customtask",
-  //       delay: 10000,
-  //       periodic: true,
-  //       forceAlarmManager: true,
-  //       stopOnTerminate: false,
-  //       enableHeadless: true));
-  // }
-
-  // void _onBackgroundFetch(String taskId) async {
-  //   final User user = await _userService.find(widget.id);
-  //   await _authenticateController.authenticateUser(
-  //       user.cpf, widget.password, true);
-
-  //   print("--------------------------");
-  //   print(
-  //       "OnBackgroundFetch -> CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
-  //   print("--------------------------");
-
-  //   if (_authenticateController.currentUser.erros != null &&
-  //       _authenticateController.currentUser.erros.isNotEmpty) {
-  //     BackgroundFetch.stop().then((int status) {
-  //       print('[BackgroundFetch] stop success: $status');
-  //     });
-  //     Auth.logout(context, widget.id);
-  //   }
-
-  //   BackgroundFetch.finish(taskId);
-  // }
 
   Widget _itemCardStudent(BuildContext context, Student model,
       String groupSchool, int codigoGrupo, int userId) {
@@ -133,9 +81,6 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
-                  BackgroundFetch.stop().then((int status) {
-                    print('[BackgroundFetch] stop success: $status');
-                  });
                   Auth.logout(context, widget.userId);
                   Nav.pushReplacement(context, Login());
                 },
@@ -169,9 +114,6 @@ class _ListStudantsState extends State<ListStudants> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              // BackgroundFetch.stop().then((int status) {
-              //   print('[BackgroundFetch] stop success: $status');
-              // });
               Auth.logout(context, widget.userId);
             },
             icon: Icon(

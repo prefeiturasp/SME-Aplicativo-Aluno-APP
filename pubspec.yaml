@@ -10,22 +10,22 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  provider: ^4.0.4
-  http: ^0.12.0+4
+  provider: ^4.3.2+2
+  http: ^0.12.2
   auto_size_text: ^2.1.0
-  shared_preferences: ^0.5.6+3
   font_awesome_flutter: ^8.8.1
   package_info: ^0.4.0+16
   connectivity: ^0.4.8+6
-  mobx: ^1.1.1
+  mobx: ^1.2.1+4
   flutter_mobx: ^1.1.0
   brasil_fields: ^0.2.0
   cpf_cnpj_validator: ^1.0.5
   json_serializable: ^3.3.0
   json_annotation: ^3.0.1
   getflutter: ^1.0.11
-  background_fetch: '^0.5.1'
-  firebase_messaging: ^6.0.13
+  firebase_messaging: ^7.0.3
+  firebase_core: ^0.5.1
+  firebase_analytics: ^6.1.0
   intl: ^0.16.1
   flutter_html: ^0.11.1
   device_info: ^0.4.2+2
@@ -35,7 +35,7 @@ dependencies:
   sentry: ">=3.0.0 <4.0.0"
   mockito: ^4.1.1
   awesome_dialog: ^1.1.3
-  sqflite:
+  sqflite: ^1.3.2+1
   path: 
   local_auth: ^0.6.2+3
   get_ip: ^0.4.0
