@@ -53,7 +53,9 @@ class CardMessage extends StatelessWidget {
                 color: recentMessage
                     ? categoriaNotificacao == "SME"
                         ? colorSME
-                        : categoriaNotificacao == "UE" ? colorUE : colorTURMA
+                        : categoriaNotificacao == "UE"
+                            ? colorUE
+                            : colorTURMA
                     : categoriaNotificacao == "SME"
                         ? colorSME.withOpacity(0.4)
                         : categoriaNotificacao == "UE"
@@ -128,7 +130,7 @@ class CardMessage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
+            padding: EdgeInsets.all(screenHeight * 1.3),
             color: Colors.white,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

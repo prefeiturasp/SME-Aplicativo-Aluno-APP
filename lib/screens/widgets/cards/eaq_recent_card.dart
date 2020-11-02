@@ -93,7 +93,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(screenHeight * 2),
+            padding: EdgeInsets.all(screenHeight * 1.9),
             decoration: BoxDecoration(
                 color: widget.message.categoriaNotificacao == "SME"
                     ? widget.recent
