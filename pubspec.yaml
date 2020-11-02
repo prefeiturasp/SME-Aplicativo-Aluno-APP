@@ -16,7 +16,7 @@ dependencies:
   font_awesome_flutter: ^8.8.1
   package_info: ^0.4.0+16
   connectivity: ^0.4.8+6
-  mobx: ^1.1.1
+  mobx: ^1.2.1+4
   flutter_mobx: ^1.1.0
   brasil_fields: ^0.2.0
   cpf_cnpj_validator: ^1.0.5
