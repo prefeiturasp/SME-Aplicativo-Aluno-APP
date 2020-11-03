@@ -48,13 +48,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
   }
 
   navigateToListMessages(BuildContext context) async {
-    Nav.push(
-        context,
-        ListMessages(
-          userId: _authenticateController.user.id,
-          codigoGrupo: widget.codigoGrupo,
-          codigoAlunoEol: widget.student.codigoEol,
-        )).whenComplete(() => _loadingBackRecentMessage());
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListMessages(
+                userId: _authenticateController.user.id,
+                codigoGrupo: widget.codigoGrupo,
+                codigoAlunoEol: widget.student.codigoEol,
+              )),
+    ).whenComplete(() => _loadingBackRecentMessage());
   }
 
   navigateToListStudents(BuildContext context) async {

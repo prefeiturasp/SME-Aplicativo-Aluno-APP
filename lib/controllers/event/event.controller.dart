@@ -111,6 +111,9 @@ abstract class _EventControllerBase with Store {
     var takeList = ObservableList<Event>.of([]);
     var provaList = ObservableList<Event>.of([]);
     var othersList = ObservableList<Event>.of([]);
+    var auxList = ObservableList<Event>.of([]);
+    var completeList = ObservableList<Event>.of([]);
+    var takeAuxReversedList = ObservableList<Event>.of([]);
 
     var reversedList = eventsList.reversed.take(4).toList();
     var reversedListOrganized = reversedList
@@ -129,11 +132,34 @@ abstract class _EventControllerBase with Store {
 
     sortList = ObservableList<Event>.of(provaList + othersList);
 
+    auxList = ObservableList<Event>.of(eventsList
+        .where((i) => DateTime.parse(i.dataInicio).day < currentDate.day)
+        .toList());
+
+    var takeAuxReversed = sortList.length == 3
+        ? auxList.reversed.take(1).toList()
+        : sortList.length == 2
+            ? auxList.reversed.take(2).toList()
+            : sortList.length == 1
+                ? auxList.reversed.take(3).toList()
+                : auxList.reversed.take(0).toList();
+
+    takeAuxReversedList =
+        ObservableList<Event>.of(othersList + takeAuxReversed);
+
+    var auxListOrganized = takeAuxReversedList
+      ..sort((a, b) =>
+          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+
+    completeList = ObservableList<Event>.of(provaList + auxListOrganized);
+
     takeList = sortList.length > 4
         ? ObservableList<Event>.of(sortList.take(4).toList())
         : sortList.length == 4
             ? ObservableList<Event>.of(sortList)
-            : ObservableList<Event>.of(reversedListOrganized);
+            : sortList.length > 0
+                ? ObservableList<Event>.of(completeList.take(4).toList())
+                : ObservableList<Event>.of(reversedListOrganized);
 
     priorityEvents = takeList;
   }

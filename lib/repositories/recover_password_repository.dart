@@ -7,6 +7,7 @@ import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -33,6 +34,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         return data;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);

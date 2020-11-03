@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
+import 'package:sme_app_aluno/models/change_email_and_phone/data_change_email_and_phone.dart';
 import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
   final UserService _userService = UserService();
@@ -44,6 +46,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         ));
 
         return data;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
@@ -56,7 +60,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
   }
 
   @override
-  Future<Data> changeEmailAndPhone(
+  Future<DataChangeEmailAndPhone> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) async {
     final User user = await _userService.find(userId);
     String token = user.token;
@@ -79,7 +83,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       );
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        var data = Data.fromJson(decodeJson);
+        var data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(User(
             id: userId,
             nome: user.nome,
@@ -92,7 +96,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
-        var dataError = Data.fromJson(decodeError);
+        var dataError = DataChangeEmailAndPhone.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {

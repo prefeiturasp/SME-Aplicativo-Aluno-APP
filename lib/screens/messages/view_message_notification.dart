@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,7 +14,6 @@ import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewMessageNotification extends StatefulWidget {
@@ -30,7 +28,6 @@ class ViewMessageNotification extends StatefulWidget {
 }
 
 class _ViewMessageNotificationState extends State<ViewMessageNotification> {
-  final Storage storage = Storage();
   MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool messageIsRead = true;
@@ -115,9 +112,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     if (connectionStatus == ConnectivityStatus.Offline) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;

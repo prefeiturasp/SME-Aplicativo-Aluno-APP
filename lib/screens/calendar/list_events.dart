@@ -127,15 +127,17 @@ class _ListEventsState extends State<ListEvents> {
                               : Colors.transparent,
                           size: screenHeight * 3,
                         ),
-                        onPressed: () async {
-                          setState(() => _currentMonth--);
-                          if (_currentMonth >= 1) {
-                            await _eventController.changeCurrentMonth(
-                                _currentMonth,
-                                widget.student.codigoEol,
-                                widget.userId);
-                          }
-                        }),
+                        onPressed: _currentMonth > 1
+                            ? () async {
+                                setState(() => _currentMonth--);
+                                if (_currentMonth >= 1) {
+                                  await _eventController.changeCurrentMonth(
+                                      _currentMonth,
+                                      widget.student.codigoEol,
+                                      widget.userId);
+                                }
+                              }
+                            : null),
                     Observer(builder: (_) {
                       return AutoSizeText(
                         _eventController.currentMonth.toUpperCase(),
@@ -155,15 +157,17 @@ class _ListEventsState extends State<ListEvents> {
                               : Colors.transparent,
                           size: screenHeight * 3,
                         ),
-                        onPressed: () async {
-                          setState(() => _currentMonth++);
-                          if (_currentMonth <= 12) {
-                            await _eventController.changeCurrentMonth(
-                                _currentMonth,
-                                widget.student.codigoEol,
-                                widget.userId);
-                          }
-                        }),
+                        onPressed: _currentMonth < 12
+                            ? () async {
+                                setState(() => _currentMonth++);
+                                if (_currentMonth <= 12) {
+                                  await _eventController.changeCurrentMonth(
+                                      _currentMonth,
+                                      widget.student.codigoEol,
+                                      widget.userId);
+                                }
+                              }
+                            : null),
                   ],
                 ),
                 decoration: BoxDecoration(
