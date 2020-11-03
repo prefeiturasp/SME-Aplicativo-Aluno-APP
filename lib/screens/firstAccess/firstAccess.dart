@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
@@ -196,6 +198,9 @@ class _FirstAccessState extends State<FirstAccess> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
+    String userCpf = CPFValidator.format(widget.cpf);
+
     return Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -239,7 +244,7 @@ class _FirstAccessState extends State<FirstAccess> {
                         Container(
                             margin: EdgeInsets.only(bottom: screenHeight * 3),
                             child: AutoSizeText(
-                              "Primeiro Acesso! Cadastre uma nova senha para o CPF: ${widget.cpf}",
+                              "Primeiro Acesso! Cadastre uma nova senha para o CPF: $userCpf",
                               maxFontSize: 18,
                               minFontSize: 16,
                               style: TextStyle(
@@ -481,33 +486,41 @@ class _FirstAccessState extends State<FirstAccess> {
                                   },
                                 ),
                                 SizedBox(height: screenHeight * 5),
-                                EABackButton(
-                                    text: "CADASTRAR MAIS TARDE",
-                                    btnColor: Color(0xffd06d12),
-                                    icon: FontAwesomeIcons.chevronLeft,
-                                    iconColor: Color(0xffffd037),
-                                    onPress: () {
-                                      _onBackPress();
-                                    },
-                                    desabled: true),
-                                SizedBox(height: screenHeight * 3),
                                 !_busy
-                                    ? EAButton(
-                                        text: "CADASTRAR",
-                                        icon: FontAwesomeIcons.chevronRight,
-                                        iconColor: Color(0xffffd037),
-                                        btnColor: Color(0xffd06d12),
-                                        desabled: (_password.isNotEmpty &&
-                                                _confirmPassword.isNotEmpty &&
-                                                !spaceNull
-                                                    .hasMatch(_password)) &&
-                                            (_confirmPassword == _password) &&
-                                            (_statusTerm ||
-                                                _termsController
-                                                        .term.termosDeUso ==
-                                                    null),
-                                        onPress: () =>
-                                            _registerNewPassword(_password),
+                                    ? Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          EAButton(
+                                            text: "CADASTRAR",
+                                            icon: FontAwesomeIcons.chevronRight,
+                                            iconColor: Color(0xffffd037),
+                                            btnColor: Color(0xffd06d12),
+                                            desabled: (_password.isNotEmpty &&
+                                                    _confirmPassword
+                                                        .isNotEmpty &&
+                                                    !spaceNull
+                                                        .hasMatch(_password)) &&
+                                                (_confirmPassword ==
+                                                    _password) &&
+                                                (_statusTerm ||
+                                                    _termsController
+                                                            .term.termosDeUso ==
+                                                        null),
+                                            onPress: () =>
+                                                _registerNewPassword(_password),
+                                          ),
+                                          SizedBox(height: screenHeight * 3),
+                                          EABackButton(
+                                              text: "CADASTRAR MAIS TARDE",
+                                              btnColor: Color(0xffd06d12),
+                                              icon:
+                                                  FontAwesomeIcons.chevronLeft,
+                                              iconColor: Color(0xffffd037),
+                                              onPress: () {
+                                                _onBackPress();
+                                              },
+                                              desabled: true),
+                                        ],
                                       )
                                     : GFLoader(
                                         type: GFLoaderType.square,
