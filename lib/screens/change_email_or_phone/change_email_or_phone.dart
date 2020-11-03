@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaback_button.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -150,6 +150,9 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     // _loadEmailAndCelular();
+
+    String userCpf = CPFValidator.format(widget.cpf);
+
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -193,7 +196,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                         Container(
                             margin: EdgeInsets.only(bottom: screenHeight * 3),
                             child: AutoSizeText(
-                              "Informe um e-mail ou número de celular para ser utilizado para a recuperação da sua senha.",
+                              "Informe um e-mail ou número de celular para ser utilizado para a recuperação da senha para o CPF: $userCpf",
                               maxFontSize: 18,
                               minFontSize: 16,
                               textAlign: TextAlign.center,
@@ -347,29 +350,35 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                                 SizedBox(
                                   height: screenHeight * 5,
                                 ),
-                                EABackButton(
-                                    text: "CADASTRAR MAIS TARDE",
-                                    btnColor: Color(0xffd06d12),
-                                    icon: FontAwesomeIcons.chevronLeft,
-                                    iconColor: Color(0xffffd037),
-                                    onPress: () {
-                                      _onBackPress();
-                                    },
-                                    desabled: true),
-                                SizedBox(height: screenHeight * 3),
                                 !_busy
-                                    ? EAButton(
-                                        text: "CADASTRAR",
-                                        icon: FontAwesomeIcons.chevronRight,
-                                        iconColor: Color(0xffffd037),
-                                        btnColor: Color(0xffd06d12),
-                                        desabled:
-                                            EmailValidator.validate(_email) ||
+                                    ? Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          EAButton(
+                                            text: "CADASTRAR",
+                                            icon: FontAwesomeIcons.chevronRight,
+                                            iconColor: Color(0xffffd037),
+                                            btnColor: Color(0xffd06d12),
+                                            desabled: EmailValidator.validate(
+                                                    _email) ||
                                                 _phone.length == 15,
-                                        onPress: () {
-                                          fetchChangeEmailOrPhone(
-                                              _email, _phone, false);
-                                        },
+                                            onPress: () {
+                                              fetchChangeEmailOrPhone(
+                                                  _email, _phone, false);
+                                            },
+                                          ),
+                                          SizedBox(height: screenHeight * 3),
+                                          EABackButton(
+                                              text: "CADASTRAR MAIS TARDE",
+                                              btnColor: Color(0xffd06d12),
+                                              icon:
+                                                  FontAwesomeIcons.chevronLeft,
+                                              iconColor: Color(0xffffd037),
+                                              onPress: () {
+                                                _onBackPress();
+                                              },
+                                              desabled: true),
+                                        ],
                                       )
                                     : GFLoader(
                                         type: GFLoaderType.square,
