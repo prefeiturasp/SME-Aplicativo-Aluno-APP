@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -150,11 +151,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     // _loadEmailAndCelular();
 
-    var one = widget.cpf.characters.getRange(0, 3);
-    var two = widget.cpf.characters.getRange(3, 6);
-    var three = widget.cpf.characters.getRange(6, 9);
-    var four = widget.cpf.characters.getRange(9, 11);
-    String userCpf = "$one.$two.$three-$four";
+    String userCpf = CPFValidator.format(widget.cpf);
 
     return Scaffold(
         key: _scaffoldKey,
@@ -199,7 +196,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
                         Container(
                             margin: EdgeInsets.only(bottom: screenHeight * 3),
                             child: AutoSizeText(
-                              "Informe um e-mail ou número de celular para ser utilizado para a recuperação da senha para o CPF: ${userCpf}",
+                              "Informe um e-mail ou número de celular para ser utilizado para a recuperação da senha para o CPF: $userCpf",
                               maxFontSize: 18,
                               minFontSize: 16,
                               textAlign: TextAlign.center,
