@@ -6,6 +6,7 @@ import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class StudentRepository implements IStudentsRepository {
   final UserService _userService = UserService();
@@ -21,6 +22,9 @@ class StudentRepository implements IStudentsRepository {
         var decodeJson = jsonDecode(response.body);
         final dataEstudents = DataStudent.fromJson(decodeJson);
         return dataEstudents;
+      } else if (response.statusCode == 408) {
+        return DataStudent(
+            ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = DataStudent.fromJson(decodeError);

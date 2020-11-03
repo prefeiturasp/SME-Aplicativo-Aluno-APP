@@ -7,6 +7,7 @@ import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
   final UserService _userService = UserService();
@@ -45,6 +46,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         ));
 
         return data;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
