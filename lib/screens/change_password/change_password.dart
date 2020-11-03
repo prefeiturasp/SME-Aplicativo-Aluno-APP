@@ -387,6 +387,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                                           _password.length <= 12),
                                 ],
                               ),
+                              SizedBox(
+                                height: screenHeight * 2,
+                              ),
                               !_busy
                                   ? EAButton(
                                       text: "CONFIRMAR ALTERAÇÃO",

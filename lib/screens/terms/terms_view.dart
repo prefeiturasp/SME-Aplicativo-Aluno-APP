@@ -60,7 +60,7 @@ class _TermsViewState extends State<TermsView> {
     return Column(children: [
       Container(
         padding: EdgeInsets.all(screenHeight * 4),
-        height: widget.showBtn ? screenHeight * 70 : screenHeight * 88,
+        height: widget.showBtn ? screenHeight * 70 : screenHeight * 86,
         child: Scrollbar(
           child: ListView(
             controller: _controller,

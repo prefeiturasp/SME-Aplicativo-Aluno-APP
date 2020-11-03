@@ -29,7 +29,7 @@ class CheckLine extends StatelessWidget {
           width: screenHeight * 1,
         ),
         Container(
-          width: screenHeight * 40,
+          width: screenHeight * 36,
           child: AutoSizeText(
             text,
             maxFontSize: 17,

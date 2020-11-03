@@ -15,7 +15,6 @@ import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/widgets/filters/eaq_filter_page.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ListMessages extends StatefulWidget {
@@ -32,7 +31,6 @@ class ListMessages extends StatefulWidget {
 
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
-  Storage storage;
   List<Message> listOfmessages;
   bool turmaCheck = true;
   bool smeCheck = true;

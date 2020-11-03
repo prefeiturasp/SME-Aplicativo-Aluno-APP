@@ -1,27 +1,27 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
 import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final UserService _userService = UserService();
 
   @override
-  Future<Data> loginUser(String cpf, String password, onBackgroundFetch) async {
-    String idDevice = await _firebaseMessaging.getToken();
-    print("FIREBASE TOKEN: $idDevice");
+  Future<Data> loginUser(String cpf, String password) async {
+    String idDevice;
+    if (Platform.isAndroid) {
+      idDevice = await _firebaseMessaging.getToken();
+    } else if (Platform.isIOS) {
+      idDevice = 'noToken';
+    }
 
-    // if (!onBackgroundFetch) {
-    //   var ids = new List<int>.generate(20, (i) => i + 1);
-    //   ids.forEach((element) {
-    //     print("Remove ids: $element");
-    //     _firebaseMessaging.unsubscribeFromTopic(element.toString());
-    //   });
-    // }
+    print("FIREBASE TOKEN: $idDevice");
 
     Map _data = {
       "cpf": cpf,
@@ -47,13 +47,15 @@ class AuthenticateRepository implements IAuthenticateRepository {
           _userService.create(user.data);
         }
         return user;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("Erro ao tentatar se autenticar " + stacktrace.toString());
+      print("Erro ao tentar se autenticar " + stacktrace.toString());
       return null;
     }
   }
