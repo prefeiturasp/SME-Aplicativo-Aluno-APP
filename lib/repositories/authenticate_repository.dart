@@ -6,6 +6,7 @@ import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart'
 import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -46,6 +47,8 @@ class AuthenticateRepository implements IAuthenticateRepository {
           _userService.create(user.data);
         }
         return user;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);

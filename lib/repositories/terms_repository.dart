@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/terms/term.dart';
+import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 
 class TermsRepository extends ITermsRepository {
   @override
@@ -35,6 +37,8 @@ class TermsRepository extends ITermsRepository {
         return termo;
       } else if (response.statusCode == 204) {
         return true;
+      } else if (response.statusCode == 408) {
+        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
       } else {
         print('Erro ao obter dados');
         return null;
