@@ -60,7 +60,6 @@ class Student {
     data['codigoTipoEscola'] = this.codigoTipoEscola;
     data['descricaoTipoEscola'] = this.descricaoTipoEscola;
     data['siglaDre'] = this.siglaDre;
-    data['siglaDre'] = this.siglaDre;
     data['turma'] = this.turma;
     data['situacaoMatricula'] = this.situacaoMatricula;
     data['dataNascimento'] = this.dataNascimento;
