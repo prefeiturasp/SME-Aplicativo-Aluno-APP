@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/students/students.controller.dart';
+import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
@@ -14,6 +16,7 @@ import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart'
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
@@ -30,13 +33,35 @@ class _ListStudantsState extends State<ListStudants> {
   final UserService _userService = UserService();
 
   StudentsController _studentsController;
+  BackgroundFetchController _backgroundFetchController;
 
   @override
   void initState() {
     super.initState();
     _studentsController = StudentsController();
+    _backgroundFetchController = BackgroundFetchController();
     _loadingAllStudents();
-    // initPlatformState();
+    _backgroundFetchController.initPlatformState(
+      _onBackgroundFetch,
+      "${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado",
+      10000,
+    );
+  }
+
+  void _onBackgroundFetch(String taskId) async {
+    bool responsibleHasStudent = await _backgroundFetchController
+        .checkIfResponsibleHasStudent(widget.userId);
+    print(
+        '[BackgroundFetch] - INIT -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
+    if (responsibleHasStudent == false) {
+      BackgroundFetch.stop().then((int status) {
+        print(
+            '[BackgroundFetch] - STOP -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
+      });
+      Auth.logout(context, widget.userId);
+    }
+
+    BackgroundFetch.finish(taskId);
   }
 
   Widget _itemCardStudent(BuildContext context, Student model,
