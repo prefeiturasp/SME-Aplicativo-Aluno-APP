@@ -30,7 +30,7 @@ class Auth {
     });
 
     await _userService.delete(userId);
-    // prefs.clear();
+
     Nav.push(context, Login());
   }
 }
