@@ -16,6 +16,7 @@ import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart'
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
@@ -42,7 +43,7 @@ class _ListStudantsState extends State<ListStudants> {
     _loadingAllStudents();
     _backgroundFetchController.initPlatformState(
       _onBackgroundFetch,
-      "com.transistorsoft.customtask",
+      "${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado",
       10000,
     );
   }
@@ -50,11 +51,12 @@ class _ListStudantsState extends State<ListStudants> {
   void _onBackgroundFetch(String taskId) async {
     bool responsibleHasStudent = await _backgroundFetchController
         .checkIfResponsibleHasStudent(widget.userId);
-
+    print(
+        '[BackgroundFetch] - INIT -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
       BackgroundFetch.stop().then((int status) {
         print(
-            '[BackgroundFetch] Serviço de verificação de usuário interrompido: $status');
+            '[BackgroundFetch] - STOP -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
       });
       Auth.logout(context, widget.userId);
     }
