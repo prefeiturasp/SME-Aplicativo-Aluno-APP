@@ -40,9 +40,9 @@ mixin _$BackgroundFetchController on _BackgroundFetchControllerBase, Store {
       '_BackgroundFetchControllerBase.checkIfResponsibleHasStudent');
 
   @override
-  Future<bool> checkIfResponsibleHasStudent(String cpf, int userId) {
+  Future<bool> checkIfResponsibleHasStudent(int userId) {
     return _$checkIfResponsibleHasStudentAsyncAction
-        .run(() => super.checkIfResponsibleHasStudent(cpf, userId));
+        .run(() => super.checkIfResponsibleHasStudent(userId));
   }
 
   @override
