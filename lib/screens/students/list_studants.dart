@@ -48,12 +48,13 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    print("[BackgroundFetch] Serviço de verificação de usuário iniciado");
+    bool responsibleHasStudent = await _backgroundFetchController
+        .checkIfResponsibleHasStudent(widget.userId);
 
-    if (widget.userId == 0) {
+    if (responsibleHasStudent == false) {
       BackgroundFetch.stop().then((int status) {
         print(
-            '[BackgroundFetch] Serviço de verificação de usuário paradoaqaq: $status');
+            '[BackgroundFetch] Serviço de verificação de usuário interrompido: $status');
       });
       Auth.logout(context, widget.userId);
     }

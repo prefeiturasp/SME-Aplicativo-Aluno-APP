@@ -20,6 +20,9 @@ class ResponsibleRepository implements IResponsibleRepository {
         },
       );
 
+      print(
+          "Request: ${response.statusCode} - ${response.request} | ${response.body} ");
+
       if (response.statusCode == 200) {
         return response.body == "true" ? true : false;
       } else {
@@ -28,7 +31,7 @@ class ResponsibleRepository implements IResponsibleRepository {
     } catch (error, stacktrace) {
       print("Erro ao verificar se resposável tem aluno: " +
           stacktrace.toString());
-      return null;
+      return true;
     }
   }
 }
