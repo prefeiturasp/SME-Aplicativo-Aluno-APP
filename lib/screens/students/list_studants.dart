@@ -54,11 +54,7 @@ class _ListStudantsState extends State<ListStudants> {
     print(
         '[BackgroundFetch] - INIT -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
-      BackgroundFetch.stop().then((int status) {
-        print(
-            '[BackgroundFetch] - STOP -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
-      });
-      Auth.logout(context, widget.userId);
+      Auth.logout(context, widget.userId, true);
     }
 
     BackgroundFetch.finish(taskId);
@@ -106,7 +102,7 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
-                  Auth.logout(context, widget.userId);
+                  Auth.logout(context, widget.userId, false);
                   Nav.pushReplacement(context, Login());
                 },
               ),
@@ -139,7 +135,7 @@ class _ListStudantsState extends State<ListStudants> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Auth.logout(context, widget.userId);
+              Auth.logout(context, widget.userId, false);
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,

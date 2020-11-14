@@ -257,10 +257,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () async {
-              // BackgroundFetch.stop().then((int status) {
-              //   print('[BackgroundFetch] stop success: $status');
-              // });
-              Auth.logout(context, _authenticateController.user.id);
+              Auth.logout(context, _authenticateController.user.id, false);
             },
           ),
         ],
