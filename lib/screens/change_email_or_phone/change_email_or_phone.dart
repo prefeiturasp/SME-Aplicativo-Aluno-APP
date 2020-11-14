@@ -137,7 +137,7 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
               FlatButton(
                 child: Text('SIM'),
                 onPressed: () async {
-                  await Auth.logout(context, widget.userId);
+                  await Auth.logout(context, widget.userId, false);
                 },
               )
             ],
