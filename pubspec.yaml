@@ -12,6 +12,7 @@ scripts:
   fclean: flutter clean
 
 dependencies:
+  percent_indicator: ^2.1.8
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
