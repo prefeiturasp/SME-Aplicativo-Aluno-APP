@@ -12,8 +12,12 @@ import 'package:sme_app_aluno/utils/date_format.dart';
 
 class ResumeStudants extends StatefulWidget {
   final Student student;
+  final int userId;
 
-  ResumeStudants({@required this.student});
+  ResumeStudants({
+    @required this.student,
+    @required this.userId,
+  });
 
   @override
   _ResumeStudantsState createState() => _ResumeStudantsState();
@@ -102,7 +106,10 @@ class _ResumeStudantsState extends State<ResumeStudants> {
     }
 
     if (abaFrequencia) {
-      return Frequency();
+      return Frequency(
+        student: widget.student,
+        userId: widget.userId,
+      );
     }
   }
 

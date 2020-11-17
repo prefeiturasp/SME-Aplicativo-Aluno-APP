@@ -1,12 +1,20 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:sme_app_aluno/models/frequency/frequency.dart';
 
-class SimpleCard extends StatelessWidget {
+class FrequencyGlobalCard extends StatelessWidget {
+  final Frequency frequency;
+
+  FrequencyGlobalCard({
+    @required this.frequency,
+  });
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    var frequencyData = frequency.frequencia * 100;
     return Container(
       height: screenHeight * 14,
       padding: EdgeInsets.all(screenHeight * 2),
@@ -34,10 +42,10 @@ class SimpleCard extends StatelessWidget {
                 lineWidth: 6.0,
                 animation: true,
                 animationDuration: 3000,
-                percent: 0.68,
+                percent: frequency.frequencia,
                 animateFromLastPercent: true,
                 center: AutoSizeText(
-                  "68%",
+                  "${frequencyData.toStringAsFixed(0)}%",
                   maxFontSize: 20,
                   minFontSize: 18,
                   style: TextStyle(

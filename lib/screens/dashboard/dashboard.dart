@@ -165,6 +165,7 @@ class _DashboardState extends State<Dashboard> {
                     textColor: Color(0xffD06D12)),
                 CardResumeStudent(
                   student: widget.student,
+                  userId: widget.userId,
                 ),
                 Observer(builder: (context) {
                   if (_messagesController.isLoading) {

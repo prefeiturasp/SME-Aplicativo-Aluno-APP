@@ -7,8 +7,9 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class CardResumeStudent extends StatelessWidget {
   final Student student;
+  final int userId;
 
-  CardResumeStudent({@required this.student});
+  CardResumeStudent({@required this.student, @required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +103,10 @@ class CardResumeStudent extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              ResumeStudants(student: student)));
+                          builder: (context) => ResumeStudants(
+                                student: student,
+                                userId: userId,
+                              )));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
