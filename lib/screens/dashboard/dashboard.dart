@@ -120,7 +120,9 @@ class _DashboardState extends State<Dashboard> {
                 title: events[i].nome,
               ),
               titleEvent: events[i].nome,
-              desc: events[i].descricao.length > 3 ? true : false,
+              desc: events[i].descricao != null
+                  ? (events[i].descricao.length > 3 ? true : false)
+                  : false,
               eventDesc: events[i].descricao,
               dia: events[i].dataInicio,
               tipoEvento: events[i].tipoEvento,
