@@ -80,8 +80,16 @@ class _ExpansionState extends State<Expansion> {
                 margin: EdgeInsets.all(screenHeight * 1.5),
               );
             } else {
-              if (_listNotesController.listNotesDois != null &&
-                  _listNotesController.listNotesDois.isNotEmpty) {
+              if ((_listNotesController.listNotesUm != null &&
+                      _listNotesController.listNotesUm.isNotEmpty) ||
+                  (_listNotesController.listNotesDois != null &&
+                      _listNotesController.listNotesDois.isNotEmpty) ||
+                  (_listNotesController.listNotesTres != null &&
+                      _listNotesController.listNotesTres.isNotEmpty) ||
+                  (_listNotesController.listNotesQuatro != null &&
+                      _listNotesController.listNotesQuatro.isNotEmpty) ||
+                  (_listNotesController.listNotesFinal != null &&
+                      _listNotesController.listNotesFinal.isNotEmpty)) {
                 return Container(
                     child: Column(children: [
                   TileItem(
@@ -290,7 +298,8 @@ class _ExpansionState extends State<Expansion> {
                       Container(
                           height: screenHeight * 50,
                           margin: EdgeInsets.all(screenHeight * 1),
-                          child: SingleChildScrollView(
+                          child: Scrollbar(
+                              child: SingleChildScrollView(
                             child: Column(
                               children: [
                                 _listNotesController.bQuatro != null
@@ -389,7 +398,7 @@ class _ExpansionState extends State<Expansion> {
                                     : SizedBox.shrink(),
                               ],
                             ),
-                          ))
+                          )))
                     ],
                     header: "Observações",
                   )
