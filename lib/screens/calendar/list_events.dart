@@ -58,7 +58,9 @@ class _ListEventsState extends State<ListEvents> {
               title: event.nome,
             ),
             titleEvent: event.nome,
-            desc: event.descricao.length > 3 ? true : false,
+            desc: event.descricao != null
+                ? (event.descricao.length > 3 ? true : false)
+                : false,
             eventDesc: event.descricao,
             dia: event.dataInicio,
             tipoEvento: event.tipoEvento,
