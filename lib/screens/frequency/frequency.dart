@@ -56,6 +56,46 @@ class _FrequencyState extends State<Frequency> {
             SizedBox(
               height: screenHeight * 2.5,
             ),
+            Observer(builder: (context) {
+              if (_frequencyController.loadingFrequency) {
+                return ShimmerCard();
+              } else {
+                return Container(
+                  height: screenHeight * 30,
+                  child: ListView.builder(
+                      itemCount: _frequencyController
+                          .frequency.componentesCurricularesDoAluno.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(bottom: screenHeight * 2.5),
+                          child: ExpansionPanelList(
+                            expansionCallback: (int index, bool isExpanded) {
+                              setState(() {
+                                isOpen = !isOpen;
+                              });
+                            },
+                            children: [
+                              ExpansionPanel(
+                                headerBuilder:
+                                    (BuildContext context, bool isExpanded) {
+                                  return ListTile(
+                                    title: Text(
+                                        "${_frequencyController.frequency.componentesCurricularesDoAluno[index].descricaoComponenteCurricular}"),
+                                  );
+                                },
+                                body: ListTile(
+                                  title: Text('Item 1 child'),
+                                  subtitle: Text('Details goes here'),
+                                ),
+                                isExpanded: isOpen,
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                );
+              }
+            }),
           ],
         ),
       ),
