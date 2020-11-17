@@ -99,33 +99,7 @@ class _ExpansionState extends State<Expansion> {
                         margin: EdgeInsets.all(screenHeight * 1),
                         child: Scrollbar(
                             child: ListView.builder(
-                                itemCount: _listNotesController.listNotesUm !=
-                                            null &&
-                                        _listNotesController
-                                            .listNotesUm.isNotEmpty
-                                    ? _listNotesController.listNotesUm.length
-                                    : _listNotesController.listNotesDois !=
-                                                null &&
-                                            _listNotesController
-                                                .listNotesDois.isNotEmpty
-                                        ? _listNotesController
-                                            .listNotesDois.length
-                                        : _listNotesController.listNotesTres !=
-                                                    null &&
-                                                _listNotesController
-                                                    .listNotesTres.isNotEmpty
-                                            ? _listNotesController
-                                                .listNotesTres.length
-                                            : _listNotesController
-                                                            .listNotesQuatro !=
-                                                        null &&
-                                                    _listNotesController
-                                                        .listNotesQuatro
-                                                        .isNotEmpty
-                                                ? _listNotesController
-                                                    .listNotesQuatro.length
-                                                : _listNotesController
-                                                    .listNotesFinal.length,
+                                itemCount: _listNotesController.tamanho,
                                 itemBuilder: (context, index) {
                                   return NotesBody(
                                     groupSchool: widget.groupSchool,
@@ -302,6 +276,27 @@ class _ExpansionState extends State<Expansion> {
                               child: SingleChildScrollView(
                             child: Column(
                               children: [
+                                _listNotesController.bFinal != null
+                                    ? ObsBody(
+                                        recomendacoesAluno: _listNotesController
+                                                    .bFinal !=
+                                                null
+                                            ? _listNotesController
+                                                .bFinal.recomendacoesAluno
+                                            : 'Sem recomendações ao aluno para este bimestre.',
+                                        recomendacoesFamilia: _listNotesController
+                                                    .bFinal !=
+                                                null
+                                            ? _listNotesController
+                                                .bFinal.recomendacoesFamilia
+                                            : 'Sem recomendações à familía para este bimestre',
+                                        current:
+                                            _listNotesController.bFinal != null
+                                                ? true
+                                                : false,
+                                        title: 'Final',
+                                      )
+                                    : SizedBox.shrink(),
                                 _listNotesController.bQuatro != null
                                     ? ObsBody(
                                         recomendacoesAluno: _listNotesController
@@ -316,10 +311,12 @@ class _ExpansionState extends State<Expansion> {
                                             ? _listNotesController
                                                 .bQuatro.recomendacoesFamilia
                                             : 'Sem recomendações à familía para este bimestre',
-                                        current:
-                                            _listNotesController.bQuatro != null
-                                                ? true
-                                                : false,
+                                        current: _listNotesController.bFinal ==
+                                                    null &&
+                                                _listNotesController.bQuatro !=
+                                                    null
+                                            ? true
+                                            : false,
                                         title: '4º Bim.',
                                       )
                                     : SizedBox.shrink(),
@@ -337,7 +334,7 @@ class _ExpansionState extends State<Expansion> {
                                             ? _listNotesController
                                                 .bTres.recomendacoesFamilia
                                             : 'Sem recomendações à familía para este bimestre',
-                                        current: _listNotesController.bQuatro !=
+                                        current: _listNotesController.bQuatro ==
                                                     null &&
                                                 _listNotesController.bTres !=
                                                     null
@@ -361,7 +358,7 @@ class _ExpansionState extends State<Expansion> {
                                                 .bDois.recomendacoesFamilia
                                             : 'Sem recomendações à familía para este bimestre',
                                         current: widget.groupSchool != 'EJA'
-                                            ? (_listNotesController.bTres !=
+                                            ? (_listNotesController.bTres ==
                                                         null &&
                                                     _listNotesController
                                                             .bDois !=
@@ -388,7 +385,7 @@ class _ExpansionState extends State<Expansion> {
                                             ? _listNotesController
                                                 .bUm.recomendacoesFamilia
                                             : 'Sem recomendações à familía para este bimestre',
-                                        current: _listNotesController.bDois !=
+                                        current: _listNotesController.bDois ==
                                                     null &&
                                                 _listNotesController.bUm != null
                                             ? true

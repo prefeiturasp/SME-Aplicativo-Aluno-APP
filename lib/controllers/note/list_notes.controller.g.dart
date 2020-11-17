@@ -163,18 +163,18 @@ mixin _$ListNotesController on _ListNotesControllerBase, Store {
     });
   }
 
-  final _$listComposeAtom = Atom(name: '_ListNotesControllerBase.listCompose');
+  final _$tamanhoAtom = Atom(name: '_ListNotesControllerBase.tamanho');
 
   @override
-  ObservableList<Note> get listCompose {
-    _$listComposeAtom.reportRead();
-    return super.listCompose;
+  dynamic get tamanho {
+    _$tamanhoAtom.reportRead();
+    return super.tamanho;
   }
 
   @override
-  set listCompose(ObservableList<Note> value) {
-    _$listComposeAtom.reportWrite(value, super.listCompose, () {
-      super.listCompose = value;
+  set tamanho(dynamic value) {
+    _$tamanhoAtom.reportWrite(value, super.tamanho, () {
+      super.tamanho = value;
     });
   }
 
@@ -216,7 +216,7 @@ listNotesDois: ${listNotesDois},
 listNotesTres: ${listNotesTres},
 listNotesQuatro: ${listNotesQuatro},
 listNotesFinal: ${listNotesFinal},
-listCompose: ${listCompose},
+tamanho: ${tamanho},
 loading: ${loading}
     ''';
   }

@@ -45,7 +45,7 @@ abstract class _ListNotesControllerBase with Store {
   ObservableList<Note> listNotesFinal;
 
   @observable
-  ObservableList<Note> listCompose;
+  var tamanho;
 
   @observable
   bool loading = false;
@@ -61,30 +61,60 @@ abstract class _ListNotesControllerBase with Store {
 
       listNotesUm = ObservableList<Note>.of(
           bUm != null ? bUm.notasPorComponenteCurricular : []);
+
+      if (listNotesUm != null && listNotesUm.isNotEmpty) {
+        if (tamanho == null) {
+          tamanho = listNotesUm.length;
+        }
+      }
     } else if (bimestre == 2) {
       bDois = await _listNotesRepository.fetchListNotes(
           anoLetivo, bimestre, codigoUe, codigoTurma, alunoCodigo);
 
       listNotesDois = ObservableList<Note>.of(
           bDois != null ? bDois.notasPorComponenteCurricular : []);
+
+      if (listNotesDois != null && listNotesDois.isNotEmpty) {
+        if (tamanho == null) {
+          tamanho = listNotesDois.length;
+        }
+      }
     } else if (bimestre == 3) {
       bTres = await _listNotesRepository.fetchListNotes(
           anoLetivo, bimestre, codigoUe, codigoTurma, alunoCodigo);
 
       listNotesTres = ObservableList<Note>.of(
           bTres != null ? bTres.notasPorComponenteCurricular : []);
+
+      if (listNotesTres != null && listNotesTres.isNotEmpty) {
+        if (tamanho == null) {
+          tamanho = listNotesTres.length;
+        }
+      }
     } else if (bimestre == 4) {
       bQuatro = await _listNotesRepository.fetchListNotes(
           anoLetivo, bimestre, codigoUe, codigoTurma, alunoCodigo);
 
       listNotesQuatro = ObservableList<Note>.of(
           bQuatro != null ? bQuatro.notasPorComponenteCurricular : []);
+
+      if (listNotesQuatro != null && listNotesQuatro.isNotEmpty) {
+        if (tamanho == null) {
+          tamanho = listNotesQuatro.length;
+        }
+      }
     } else {
       bFinal = await _listNotesRepository.fetchListNotes(
           anoLetivo, bimestre, codigoUe, codigoTurma, alunoCodigo);
 
       listNotesFinal = ObservableList<Note>.of(
           bFinal != null ? bFinal.notasPorComponenteCurricular : []);
+
+      if (listNotesFinal != null && listNotesFinal.isNotEmpty) {
+        if (tamanho == null) {
+          tamanho = listNotesFinal.length;
+        }
+      }
     }
 
     loading = false;

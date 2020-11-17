@@ -166,8 +166,7 @@ class _DashboardState extends State<Dashboard> {
                       color: Color(0xffEEC25E),
                       textColor: Color(0xffD06D12)),
                   CardResumeStudent(
-                    student: widget.student,
-                  ),
+                      student: widget.student, groupSchool: widget.groupSchool),
                   Observer(builder: (context) {
                     if (_messagesController.isLoading) {
                       return GFLoader(

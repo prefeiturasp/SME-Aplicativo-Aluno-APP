@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class Note extends StatelessWidget {
   final String name;
@@ -19,9 +20,11 @@ class Note extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            content: Text(
-              description,
-              textAlign: TextAlign.center,
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [Html(data: description)],
+              ),
             ),
             actions: <Widget>[
               new FlatButton(
