@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,10 @@ import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Login extends StatefulWidget {
+  final String notice;
+
+  Login({this.notice});
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -98,6 +103,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -126,6 +132,28 @@ class _LoginState extends State<Login> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
+                              widget.notice != null
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(screenHeight * 1.5),
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.all(screenHeight * 2),
+                                      child: AutoSizeText(
+                                        widget.notice,
+                                        maxFontSize: 18,
+                                        minFontSize: 16,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
+                              SizedBox(
+                                height: screenHeight * 4,
+                              ),
                               Container(
                                 padding:
                                     EdgeInsets.only(left: screenHeight * 2),
