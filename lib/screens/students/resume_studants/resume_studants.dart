@@ -159,7 +159,9 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                             : widget.student.nome,
                         schoolName: widget.student.escola,
                         schoolType: widget.student.descricaoTipoEscola,
+                        dreName: widget.student.siglaDre,
                         studentGrade: widget.student.turma,
+                        studentEOL: widget.student.codigoEol,
                       ),
                     ),
                     Container(

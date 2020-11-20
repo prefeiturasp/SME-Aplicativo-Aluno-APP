@@ -4,16 +4,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class CardStudent extends StatelessWidget {
+  final int codigoEOL;
   final String name;
   final String schoolName;
   final String schooType;
+  final String dreName;
   final String studentGrade;
   final Function onPress;
   final Image avatar;
 
   CardStudent(
-      {@required this.name,
+      {@required this.codigoEOL,
+      @required this.name,
       @required this.schoolName,
+      @required this.dreName,
       @required this.studentGrade,
       @required this.onPress,
       @required this.schooType,
@@ -76,7 +80,7 @@ class CardStudent extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          "$schooType ${StringSupport.truncateEndString(schoolName, 30)}",
+                          "$schooType ${StringSupport.truncateEndString(schoolName, 30)} ($dreName)",
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xff666666)),
@@ -86,6 +90,15 @@ class CardStudent extends StatelessWidget {
                         ),
                         AutoSizeText(
                           "TURMA $studentGrade",
+                          maxFontSize: 10,
+                          minFontSize: 8,
+                          style: TextStyle(color: Color(0xffBBBDC9)),
+                        ),
+                        SizedBox(
+                          height: screenHeight * 0.3,
+                        ),
+                        AutoSizeText(
+                          "CÓDIGO EOL $codigoEOL",
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xffBBBDC9)),

@@ -68,7 +68,9 @@ class _ListStudantsState extends State<ListStudants> {
           : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
+      codigoEOL: model.codigoEol,
       schooType: model.descricaoTipoEscola,
+      dreName: model.siglaDre,
       onPress: () {
         Nav.push(
             context,
