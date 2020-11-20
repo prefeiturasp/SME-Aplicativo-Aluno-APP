@@ -8,8 +8,9 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 class CardResumeStudent extends StatelessWidget {
   final Student student;
   final String groupSchool;
+  final Widget child;
 
-  CardResumeStudent({@required this.student, this.groupSchool});
+  CardResumeStudent({@required this.student, this.groupSchool, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -34,43 +35,41 @@ class CardResumeStudent extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
+            padding: EdgeInsets.only(
+                top: screenHeight * 2,
+                bottom: screenHeight * 2,
+                left: screenHeight * 2.5,
+                right: screenHeight * 2.5),
             decoration: BoxDecoration(
                 color: Color(0xffEFB330),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  height: screenHeight * 4,
-                  width: screenHeight * 4,
-                  margin: EdgeInsets.only(right: screenHeight * 1),
-                  decoration: BoxDecoration(
-                    color: Color(0xffEFB330),
-                    border: Border.all(
-                      width: screenHeight * 0.3,
-                      color: Colors.white,
+                Row(
+                  children: [
+                    Container(
+                      height: screenHeight * 3,
+                      width: screenHeight * 3,
+                      margin: EdgeInsets.only(right: screenHeight * 1),
+                      child: Center(
+                        child: Icon(
+                          FontAwesomeIcons.userCircle,
+                          size: screenHeight * 3,
+                        ),
+                      ),
                     ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(screenHeight * 2),
-                    ),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      FontAwesomeIcons.user,
-                      color: Colors.white,
-                      size: screenHeight * 2,
-                    ),
-                  ),
+                    AutoSizeText(
+                      "ESTUDANTE",
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    )
+                  ],
                 ),
-                AutoSizeText(
-                  "ESTUDANTE",
-                  maxFontSize: 18,
-                  minFontSize: 16,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w700),
-                )
+                child
               ],
             ),
           ),

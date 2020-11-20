@@ -161,12 +161,14 @@ class _DashboardState extends State<Dashboard> {
                   SizedBox(
                     height: screenHeight * 2.5,
                   ),
-                  TagCustom(
-                      text: widget.groupSchool ?? "Não informado",
-                      color: Color(0xffEEC25E),
-                      textColor: Color(0xffD06D12)),
                   CardResumeStudent(
-                      student: widget.student, groupSchool: widget.groupSchool),
+                    student: widget.student,
+                    groupSchool: widget.groupSchool,
+                    child: TagCustom(
+                        text: widget.groupSchool ?? "Não informado",
+                        color: Color(0xffF8E5BA),
+                        textColor: Color(0xffD06D12)),
+                  ),
                   Observer(builder: (context) {
                     if (_messagesController.isLoading) {
                       return GFLoader(

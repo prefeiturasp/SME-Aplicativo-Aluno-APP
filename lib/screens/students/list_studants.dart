@@ -194,6 +194,9 @@ class _ListStudantsState extends State<ListStudants> {
                                   text: "${dados[index].grupo}",
                                   color: Color(0xffC65D00),
                                 ),
+                                SizedBox(
+                                  height: screenHeight * 2,
+                                ),
                                 _listStudents(
                                   dados[index].students,
                                   context,
