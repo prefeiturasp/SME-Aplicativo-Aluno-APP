@@ -51,9 +51,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SME Aplicativo do Aluno',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primaryColor: Color(0xFFEEC25E)),
         home: Wrapper(),
       ),
     );

@@ -139,7 +139,6 @@ class _ListStudantsState extends State<ListStudants> {
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
-              color: Colors.white,
               size: screenHeight * 2,
             ),
           ),
