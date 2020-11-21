@@ -1,3 +1,4 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,11 @@ import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'controllers/students/students.controller.dart';
 
+/// This "Headless Task" is run when app is terminated.
+void backgroundFetchHeadlessTask(String taskId) async {
+  BackgroundFetch.finish(taskId);
+}
+
 void main() async {
   final SentryClient sentry = new SentryClient(dsn: GlobalConfig.SENTRY_DSN);
   try {} catch (error, stackTrace) {
@@ -25,6 +31,8 @@ void main() async {
     statusBarColor: Color(0xffde9524), // status bar color
   ));
   runApp(MyApp());
+
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatelessWidget {

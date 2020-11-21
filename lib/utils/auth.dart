@@ -1,3 +1,4 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
@@ -9,7 +10,7 @@ import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Auth {
-  static logout(BuildContext context, int userId) async {
+  static logout(BuildContext context, int userId, bool desconected) async {
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
     final UserService _userService = UserService();
     final MessageService _messageService = MessageService();
@@ -30,7 +31,17 @@ class Auth {
     });
 
     await _userService.delete(userId);
-    // prefs.clear();
-    Nav.push(context, Login());
+
+    BackgroundFetch.stop().then((int status) {
+      print('[BackgroundFetch] stop success: $status');
+    });
+
+    Nav.push(
+        context,
+        desconected
+            ? Login(
+                notice:
+                    "Você foi desconectado pois não está mais vinculado como responsável de nenhum estudante ativo. Dúvidas entre em contato com a Unidade Escolar.")
+            : Login());
   }
 }

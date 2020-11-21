@@ -19,11 +19,13 @@ class DrawerMenu extends StatefulWidget {
   final Student student;
   final int codigoGrupo;
   final int userId;
+  final String groupSchool;
 
   DrawerMenu(
       {@required this.student,
       @required this.codigoGrupo,
-      @required this.userId});
+      @required this.userId,
+      @required this.groupSchool});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
@@ -193,6 +195,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   MaterialPageRoute(
                       builder: (context) => ResumeStudants(
                             student: widget.student,
+                            groupSchool: widget.groupSchool,
                           )));
             },
           ),
@@ -257,10 +260,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () async {
-              // BackgroundFetch.stop().then((int status) {
-              //   print('[BackgroundFetch] stop success: $status');
-              // });
-              Auth.logout(context, _authenticateController.user.id);
+              Auth.logout(context, _authenticateController.user.id, false);
             },
           ),
         ],

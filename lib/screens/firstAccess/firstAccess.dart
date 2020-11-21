@@ -186,7 +186,7 @@ class _FirstAccessState extends State<FirstAccess> {
               FlatButton(
                 child: Text('SIM'),
                 onPressed: () async {
-                  Auth.logout(context, widget.id);
+                  Auth.logout(context, widget.id, false);
                 },
               )
             ],
