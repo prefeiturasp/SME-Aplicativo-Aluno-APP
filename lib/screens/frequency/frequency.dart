@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:sme_app_aluno/controllers/frequency/frequency.controller.dart';
@@ -61,7 +62,7 @@ class _FrequencyState extends State<Frequency> {
                 return ShimmerCard();
               } else {
                 return Container(
-                  height: screenHeight * 30,
+                  height: screenHeight * 50,
                   child: ListView.builder(
                       itemCount: _frequencyController
                           .frequency.componentesCurricularesDoAluno.length,
@@ -78,14 +79,47 @@ class _FrequencyState extends State<Frequency> {
                               ExpansionPanel(
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) {
-                                  return ListTile(
-                                    title: Text(
-                                        "${_frequencyController.frequency.componentesCurricularesDoAluno[index].descricaoComponenteCurricular}"),
+                                  return Container(
+                                    padding: EdgeInsets.all(screenHeight * 2.5),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: AutoSizeText(
+                                      "${_frequencyController.frequency.componentesCurricularesDoAluno[index].descricaoComponenteCurricular}",
+                                      maxFontSize: 20,
+                                      minFontSize: 18,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   );
                                 },
-                                body: ListTile(
-                                  title: Text('Item 1 child'),
-                                  subtitle: Text('Details goes here'),
+                                body: Container(
+                                  height: screenHeight * 50,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    top: BorderSide(
+                                      color: Color(0xffDBDBDB),
+                                      width: 1.0,
+                                    ),
+                                  )),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Column(
+                                          children: [
+                                            AutoSizeText(
+                                              "Quantidade de aulas",
+                                              maxFontSize: 16,
+                                              minFontSize: 14,
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                                 isExpanded: isOpen,
                               )

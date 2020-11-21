@@ -19,11 +19,13 @@ class DrawerMenu extends StatefulWidget {
   final Student student;
   final int codigoGrupo;
   final int userId;
+  final String groupSchool;
 
   DrawerMenu(
       {@required this.student,
       @required this.codigoGrupo,
-      @required this.userId});
+      @required this.userId,
+      @required this.groupSchool});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
@@ -194,6 +196,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       builder: (context) => ResumeStudants(
                             student: widget.student,
                             userId: widget.userId,
+                            groupSchool: widget.groupSchool,
                           )));
             },
           ),

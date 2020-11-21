@@ -16,7 +16,7 @@ class FrequencyGlobalCard extends StatelessWidget {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     var frequencyData = frequency.frequencia * 100;
     return Container(
-      height: screenHeight * 14,
+      height: screenHeight * 16,
       padding: EdgeInsets.all(screenHeight * 2),
       decoration: BoxDecoration(
         color: Colors.white,

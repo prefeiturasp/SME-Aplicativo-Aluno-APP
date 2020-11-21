@@ -8,8 +8,10 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 class CardResumeStudent extends StatelessWidget {
   final Student student;
   final int userId;
+  final String groupSchool;
 
-  CardResumeStudent({@required this.student, @required this.userId});
+  CardResumeStudent(
+      {@required this.student, @required this.userId, this.groupSchool});
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +108,7 @@ class CardResumeStudent extends StatelessWidget {
                           builder: (context) => ResumeStudants(
                                 student: student,
                                 userId: userId,
+                                groupSchool: groupSchool,
                               )));
                 },
                 child: Row(

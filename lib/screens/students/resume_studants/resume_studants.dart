@@ -1,11 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/frequency/frequency.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/screens/notes/expansion.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
@@ -13,10 +12,12 @@ import 'package:sme_app_aluno/utils/date_format.dart';
 class ResumeStudants extends StatefulWidget {
   final Student student;
   final int userId;
+  final String groupSchool;
 
   ResumeStudants({
     @required this.student,
     @required this.userId,
+    this.groupSchool,
   });
 
   @override
@@ -91,17 +92,13 @@ class _ResumeStudantsState extends State<ResumeStudants> {
     if (abaBoletim) {
       return Container(
         padding: EdgeInsets.all(screenHeight * 2.5),
-        child: CardAlert(
-          isHeader: false,
-          icon: Icon(
-            FontAwesomeIcons.envelopeOpen,
-            color: Color(0xffFFD037),
-            size: screenHeight * 8,
-          ),
-          text:
-              "Em breve você terá acesso ao boletim do estudante neste espaço. Aguarde as próximas atualizações do aplicativo.",
-          textSize: 20,
+        child: Expansion(
+          codigoUe: widget.student.codigoEscola,
+          codigoTurma: widget.student.codigoTurma.toString(),
+          codigoAluno: widget.student.codigoEol.toString(),
+          groupSchool: widget.groupSchool,
         ),
+        height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
     }
 
