@@ -1,8 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sme_app_aluno/controllers/frequency/frequency.controller.dart';
+import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/frequency/widgets/box_frequency.dart';
+import 'package:sme_app_aluno/screens/frequency/widgets/label_frequency.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/frequency_global_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/shimmer_card.dart';
 
@@ -22,12 +27,14 @@ class Frequency extends StatefulWidget {
 class _FrequencyState extends State<Frequency> {
   FrequencyController _frequencyController;
 
+  final anoLetivo = new DateTime.now().year;
+
   @override
   void initState() {
     super.initState();
     _frequencyController = FrequencyController();
     _frequencyController.fetchFrequency(
-      2020,
+      anoLetivo,
       widget.student.codigoEscola,
       widget.student.codigoTurma.toString(),
       widget.student.codigoEol.toString(),
@@ -35,34 +42,151 @@ class _FrequencyState extends State<Frequency> {
     );
   }
 
-  bool isOpen = false;
+  List<Map<String, dynamic>> _boxes =
+      List.generate(3, (index) => {'isExpanded': false});
+
+  Widget _listBoxBimestre(
+    CurricularComponent data,
+    bool aulas,
+    bool faltas,
+    bool compensacoes,
+  ) {
+    List<Widget> list = new List<Widget>();
+    for (var i = 0; i < data.frequenciasPorBimestre.length; i++) {
+      if (aulas) {
+        list.add(BoxFrequency(
+          title: "${data.frequenciasPorBimestre[i].bimestre}º Bim.",
+          idbox: "${data.frequenciasPorBimestre[i].quantidadeAulas}",
+          fail: false,
+        ));
+      }
+      if (faltas) {
+        list.add(BoxFrequency(
+          title: "${data.frequenciasPorBimestre[i].bimestre}º Bim.",
+          idbox: "${data.frequenciasPorBimestre[i].quantidadeFaltas}",
+          fail: true,
+        ));
+      }
+      if (compensacoes) {
+        list.add(BoxFrequency(
+          title: "${data.frequenciasPorBimestre[i].bimestre}º Bim.",
+          idbox: "${data.frequenciasPorBimestre[i].quantidadeCompensacoes}",
+          fail: false,
+        ));
+      }
+    }
+
+    return new Row(children: list);
+  }
+
+  Widget _rowFrequency(
+    double screenHeight,
+    String label,
+    CurricularComponent data,
+    bool aulas,
+    bool faltas,
+    bool compensacoes,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LabelFrequency(text: label),
+        SizedBox(
+          height: screenHeight * 2,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _listBoxBimestre(
+              data,
+              aulas,
+              faltas,
+              compensacoes,
+            )
+          ],
+        ),
+        SizedBox(
+          height: screenHeight * 2,
+        ),
+      ],
+    );
+  }
+
+  Widget _listProgressBar(
+    CurricularComponent data,
+    double screenHeight,
+  ) {
+    List<Widget> list = new List<Widget>();
+    for (var i = 0; i < data.frequenciasPorBimestre.length; i++) {
+      list.add(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(
+            "${data.frequenciasPorBimestre[i].bimestre}º Bimestre",
+            maxFontSize: 13,
+            minFontSize: 11,
+            style: TextStyle(
+              color: Color(0xff757575),
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          SizedBox(
+            height: screenHeight * 1,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LinearPercentIndicator(
+                width: screenHeight * 30,
+                lineHeight: 14.0,
+                percent: 0.5,
+                backgroundColor: Color(0xffEDEDED),
+                progressColor:
+                    HexColor(data.frequenciasPorBimestre[i].corDaFrequencia),
+              ),
+              AutoSizeText(
+                "${data.frequenciasPorBimestre[i].frequencia.toStringAsFixed(0)}%",
+                maxFontSize: 13,
+                minFontSize: 11,
+                style: TextStyle(
+                  color: Color(0xff757575),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          )
+        ],
+      ));
+    }
+    return new Column(children: list);
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(screenHeight * 2.5),
-        child: Column(
-          children: [
-            Observer(builder: (context) {
-              if (_frequencyController.loadingFrequency) {
-                return ShimmerCard();
-              } else {
-                return FrequencyGlobalCard(
-                    frequency: _frequencyController.frequency);
-              }
-            }),
-            SizedBox(
-              height: screenHeight * 2.5,
-            ),
-            Observer(builder: (context) {
-              if (_frequencyController.loadingFrequency) {
-                return ShimmerCard();
-              } else {
+    return Container(
+      padding: EdgeInsets.all(screenHeight * 2.5),
+      child: Column(
+        children: [
+          Observer(builder: (context) {
+            if (_frequencyController.loadingFrequency) {
+              return ShimmerCard();
+            } else {
+              return FrequencyGlobalCard(
+                  frequency: _frequencyController.frequency);
+            }
+          }),
+          SizedBox(
+            height: screenHeight * 2.5,
+          ),
+          Observer(builder: (context) {
+            if (_frequencyController.loadingFrequency) {
+              return ShimmerCard();
+            } else {
+              if (_frequencyController.frequency != null) {
                 return Container(
-                  height: screenHeight * 50,
+                  height: screenHeight * 100,
                   child: ListView.builder(
                       itemCount: _frequencyController
                           .frequency.componentesCurricularesDoAluno.length,
@@ -72,8 +196,22 @@ class _FrequencyState extends State<Frequency> {
                           child: ExpansionPanelList(
                             expansionCallback: (int index, bool isExpanded) {
                               setState(() {
-                                isOpen = !isOpen;
+                                _boxes[index]["isExpanded"] =
+                                    !_boxes[index]["isExpanded"];
                               });
+
+                              if (_boxes[index]["isExpanded"]) {
+                                _frequencyController.fetchCurricularComponent(
+                                    anoLetivo,
+                                    widget.student.codigoEscola,
+                                    widget.student.codigoTurma.toString(),
+                                    widget.student.codigoEol.toString(),
+                                    _frequencyController
+                                        .frequency
+                                        .componentesCurricularesDoAluno[index]
+                                        .codigoComponenteCurricular
+                                        .toString());
+                              }
                             },
                             children: [
                               ExpansionPanel(
@@ -94,7 +232,7 @@ class _FrequencyState extends State<Frequency> {
                                   );
                                 },
                                 body: Container(
-                                  height: screenHeight * 50,
+                                  height: screenHeight * 100,
                                   decoration: BoxDecoration(
                                       border: Border(
                                     top: BorderSide(
@@ -107,31 +245,77 @@ class _FrequencyState extends State<Frequency> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        child: Column(
-                                          children: [
-                                            AutoSizeText(
-                                              "Quantidade de aulas",
-                                              maxFontSize: 16,
-                                              minFontSize: 14,
-                                            )
-                                          ],
-                                        ),
-                                      )
+                                      Observer(builder: (context) {
+                                        if (_frequencyController
+                                            .loadingCurricularComponent) {
+                                          return ShimmerCard();
+                                        } else {
+                                          return Container(
+                                            padding: EdgeInsets.all(
+                                                screenHeight * 2),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                _rowFrequency(
+                                                  screenHeight,
+                                                  "Quantidade de aulas",
+                                                  _frequencyController
+                                                      .curricularComponent,
+                                                  true,
+                                                  false,
+                                                  false,
+                                                ),
+                                                _rowFrequency(
+                                                  screenHeight,
+                                                  "Quantidade de ausências",
+                                                  _frequencyController
+                                                      .curricularComponent,
+                                                  false,
+                                                  true,
+                                                  false,
+                                                ),
+                                                _rowFrequency(
+                                                  screenHeight,
+                                                  "Ausências compensadas",
+                                                  _frequencyController
+                                                      .curricularComponent,
+                                                  false,
+                                                  false,
+                                                  true,
+                                                ),
+                                                LabelFrequency(
+                                                    text:
+                                                        "Percentual de frequência"),
+                                                SizedBox(
+                                                  height: screenHeight * 2,
+                                                ),
+                                                _listProgressBar(
+                                                  _frequencyController
+                                                      .curricularComponent,
+                                                  screenHeight,
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
+                                      }),
                                     ],
                                   ),
                                 ),
-                                isExpanded: isOpen,
+                                isExpanded: _boxes[index]["isExpanded"],
                               )
                             ],
                           ),
                         );
                       }),
                 );
+              } else {
+                return AutoSizeText("não existe ");
               }
-            }),
-          ],
-        ),
+            }
+          }),
+        ],
       ),
     );
   }

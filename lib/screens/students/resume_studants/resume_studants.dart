@@ -137,7 +137,6 @@ class _ResumeStudantsState extends State<ResumeStudants> {
           child: Container(
             color: Color(0xffE5E5E5),
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
