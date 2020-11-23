@@ -168,7 +168,7 @@ class _ViewMessageState extends State<ViewMessage> {
                   categoriaNotificacao: widget.message.categoriaNotificacao,
                   content: <Widget>[
                     Container(
-                      width: screenHeight * 40,
+                      width: screenHeight * 39,
                       child: AutoSizeText(
                         widget.message.titulo,
                         maxFontSize: 16,
@@ -183,7 +183,7 @@ class _ViewMessageState extends State<ViewMessage> {
                       height: screenHeight * 1.8,
                     ),
                     Container(
-                      width: screenHeight * 41,
+                      width: screenHeight * 39,
                       child: Html(
                         data: widget.message.mensagem,
                         onLinkTap: (url) => _launchURL(url),
