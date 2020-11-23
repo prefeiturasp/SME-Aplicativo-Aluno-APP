@@ -1,4 +1,5 @@
 import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
 import 'package:sme_app_aluno/repositories/frequency_repository.dart';
 
@@ -17,7 +18,13 @@ abstract class _FrequencyControllerBase with Store {
   Frequency frequency;
 
   @observable
+  CurricularComponent curricularComponent;
+
+  @observable
   bool loadingFrequency = false;
+
+  @observable
+  bool loadingCurricularComponent = false;
 
   @action
   fetchFrequency(
@@ -36,5 +43,23 @@ abstract class _FrequencyControllerBase with Store {
       userId,
     );
     loadingFrequency = false;
+  }
+
+  fetchCurricularComponent(
+    int anoLetivo,
+    String codigoUE,
+    String codigoTurma,
+    String codigoAluno,
+    String codigoComponenteCurricular,
+  ) async {
+    loadingCurricularComponent = true;
+    curricularComponent = await _frequencyRepository.fetchCurricularComponent(
+      anoLetivo,
+      codigoUE,
+      codigoTurma,
+      codigoAluno,
+      codigoComponenteCurricular,
+    );
+    loadingCurricularComponent = false;
   }
 }

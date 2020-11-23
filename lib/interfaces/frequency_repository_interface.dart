@@ -1,3 +1,4 @@
+import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
 
 abstract class IFrequencyRepository {
@@ -7,5 +8,13 @@ abstract class IFrequencyRepository {
     String codigoTurma,
     String codigoAluno,
     int userId,
+  );
+
+  Future<CurricularComponent> fetchCurricularComponent(
+    anoLetivo,
+    codigoUE,
+    codigoTurma,
+    codigoAluno,
+    codigoComponenteCurricular,
   );
 }

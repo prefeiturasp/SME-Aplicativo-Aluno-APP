@@ -24,6 +24,22 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
     });
   }
 
+  final _$curricularComponentAtom =
+      Atom(name: '_FrequencyControllerBase.curricularComponent');
+
+  @override
+  CurricularComponent get curricularComponent {
+    _$curricularComponentAtom.reportRead();
+    return super.curricularComponent;
+  }
+
+  @override
+  set curricularComponent(CurricularComponent value) {
+    _$curricularComponentAtom.reportWrite(value, super.curricularComponent, () {
+      super.curricularComponent = value;
+    });
+  }
+
   final _$loadingFrequencyAtom =
       Atom(name: '_FrequencyControllerBase.loadingFrequency');
 
@@ -37,6 +53,23 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
   set loadingFrequency(bool value) {
     _$loadingFrequencyAtom.reportWrite(value, super.loadingFrequency, () {
       super.loadingFrequency = value;
+    });
+  }
+
+  final _$loadingCurricularComponentAtom =
+      Atom(name: '_FrequencyControllerBase.loadingCurricularComponent');
+
+  @override
+  bool get loadingCurricularComponent {
+    _$loadingCurricularComponentAtom.reportRead();
+    return super.loadingCurricularComponent;
+  }
+
+  @override
+  set loadingCurricularComponent(bool value) {
+    _$loadingCurricularComponentAtom
+        .reportWrite(value, super.loadingCurricularComponent, () {
+      super.loadingCurricularComponent = value;
     });
   }
 
@@ -54,7 +87,9 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
   String toString() {
     return '''
 frequency: ${frequency},
-loadingFrequency: ${loadingFrequency}
+curricularComponent: ${curricularComponent},
+loadingFrequency: ${loadingFrequency},
+loadingCurricularComponent: ${loadingCurricularComponent}
     ''';
   }
 }
