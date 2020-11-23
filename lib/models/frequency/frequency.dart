@@ -1,3 +1,5 @@
+import 'package:sme_app_aluno/models/frequency/componentes_curriculares_do_aluno.dart';
+
 class Frequency {
   String anoLetivo;
   String codigoUe;
@@ -10,17 +12,18 @@ class Frequency {
   String corDaFrequencia;
   List<ComponentesCurricularesDoAluno> componentesCurricularesDoAluno;
 
-  Frequency(
-      {this.anoLetivo,
-      this.codigoUe,
-      this.codigoTurma,
-      this.alunoCodigo,
-      this.quantidadeAulas,
-      this.quantidadeFaltas,
-      this.quantidadeCompensacoes,
-      this.frequencia,
-      this.corDaFrequencia,
-      this.componentesCurricularesDoAluno});
+  Frequency({
+    this.anoLetivo,
+    this.codigoUe,
+    this.codigoTurma,
+    this.alunoCodigo,
+    this.quantidadeAulas,
+    this.quantidadeFaltas,
+    this.quantidadeCompensacoes,
+    this.frequencia,
+    this.corDaFrequencia,
+    this.componentesCurricularesDoAluno,
+  });
 
   Frequency.fromJson(Map<String, dynamic> json) {
     anoLetivo = json['anoLetivo'];
@@ -57,26 +60,6 @@ class Frequency {
       data['componentesCurricularesDoAluno'] =
           this.componentesCurricularesDoAluno.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class ComponentesCurricularesDoAluno {
-  int codigoComponenteCurricular;
-  String descricaoComponenteCurricular;
-
-  ComponentesCurricularesDoAluno(
-      {this.codigoComponenteCurricular, this.descricaoComponenteCurricular});
-
-  ComponentesCurricularesDoAluno.fromJson(Map<String, dynamic> json) {
-    codigoComponenteCurricular = json['codigoComponenteCurricular'];
-    descricaoComponenteCurricular = json['descricaoComponenteCurricular'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['codigoComponenteCurricular'] = this.codigoComponenteCurricular;
-    data['descricaoComponenteCurricular'] = this.descricaoComponenteCurricular;
     return data;
   }
 }
