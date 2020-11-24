@@ -43,7 +43,7 @@ class _FrequencyState extends State<Frequency> {
   }
 
   List<Map<String, dynamic>> _boxes =
-      List.generate(3, (index) => {'isExpanded': false});
+      List.generate(4, (index) => {'isExpanded': false});
 
   Widget _listBoxBimestre(
     CurricularComponent data,
@@ -65,6 +65,7 @@ class _FrequencyState extends State<Frequency> {
           title: "${data.frequenciasPorBimestre[i].bimestre}º Bim.",
           idbox: "${data.frequenciasPorBimestre[i].quantidadeFaltas}",
           fail: true,
+          ausencias: data.frequenciasPorBimestre[i].ausencias,
         ));
       }
       if (compensacoes) {
@@ -76,7 +77,9 @@ class _FrequencyState extends State<Frequency> {
       }
     }
 
-    return new Row(children: list);
+    return new Row(
+      children: list,
+    );
   }
 
   Widget _rowFrequency(

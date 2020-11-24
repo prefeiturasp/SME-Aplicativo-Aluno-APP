@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
 
@@ -53,7 +54,7 @@ class FrequencyGlobalCard extends StatelessWidget {
                   ),
                 ),
                 circularStrokeCap: CircularStrokeCap.round,
-                progressColor: Color(0xffF6461F),
+                progressColor: HexColor(frequency.corDaFrequencia),
                 backgroundColor: Color(0xffF1F0F5),
                 reverse: true),
           ),
