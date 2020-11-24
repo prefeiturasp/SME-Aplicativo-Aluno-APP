@@ -78,6 +78,7 @@ class _FrequencyState extends State<Frequency> {
     }
 
     return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: list,
     );
   }
@@ -97,16 +98,11 @@ class _FrequencyState extends State<Frequency> {
         SizedBox(
           height: screenHeight * 2,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _listBoxBimestre(
-              data,
-              aulas,
-              faltas,
-              compensacoes,
-            )
-          ],
+        _listBoxBimestre(
+          data,
+          aulas,
+          faltas,
+          compensacoes,
         ),
         SizedBox(
           height: screenHeight * 2,
@@ -140,9 +136,9 @@ class _FrequencyState extends State<Frequency> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               LinearPercentIndicator(
-                width: screenHeight * 30,
+                width: screenHeight * 36,
                 lineHeight: 14.0,
-                percent: 0.5,
+                percent: data.frequenciasPorBimestre[i].frequencia / 100,
                 backgroundColor: Color(0xffEDEDED),
                 progressColor:
                     HexColor(data.frequenciasPorBimestre[i].corDaFrequencia),
@@ -172,6 +168,7 @@ class _FrequencyState extends State<Frequency> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
+      height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(screenHeight * 2.5),
       child: Column(
         children: [
@@ -192,7 +189,7 @@ class _FrequencyState extends State<Frequency> {
             } else {
               if (_frequencyController.frequency != null) {
                 return Container(
-                  height: screenHeight * 100,
+                  height: screenHeight * 60,
                   child: ListView.builder(
                       itemCount: _frequencyController
                           .frequency.componentesCurricularesDoAluno.length,
@@ -200,13 +197,15 @@ class _FrequencyState extends State<Frequency> {
                         return Container(
                           margin: EdgeInsets.only(bottom: screenHeight * 2.5),
                           child: ExpansionPanelList(
-                            expansionCallback: (int index, bool isExpanded) {
-                              setState(() {
-                                _boxes[index]["isExpanded"] =
-                                    !_boxes[index]["isExpanded"];
-                              });
-
-                              if (_boxes[index]["isExpanded"]) {
+                            expansionCallback:
+                                (int index, bool isExpanded) async {
+                              await _frequencyController.showCard(index);
+                              setState(() {});
+                              bool isExpanded = _frequencyController
+                                  .frequency
+                                  .componentesCurricularesDoAluno[index]
+                                  .isExpanded;
+                              if (isExpanded) {
                                 _frequencyController.fetchCurricularComponent(
                                     anoLetivo,
                                     widget.student.codigoEscola,
@@ -309,7 +308,10 @@ class _FrequencyState extends State<Frequency> {
                                     ],
                                   ),
                                 ),
-                                isExpanded: _boxes[index]["isExpanded"],
+                                isExpanded: _frequencyController
+                                    .frequency
+                                    .componentesCurricularesDoAluno[index]
+                                    .isExpanded,
                               )
                             ],
                           ),

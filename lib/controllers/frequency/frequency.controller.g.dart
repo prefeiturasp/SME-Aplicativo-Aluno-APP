@@ -73,6 +73,14 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
     });
   }
 
+  final _$showCardAsyncAction =
+      AsyncAction('_FrequencyControllerBase.showCard');
+
+  @override
+  Future showCard(int index) {
+    return _$showCardAsyncAction.run(() => super.showCard(index));
+  }
+
   final _$fetchFrequencyAsyncAction =
       AsyncAction('_FrequencyControllerBase.fetchFrequency');
 

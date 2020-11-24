@@ -16,9 +16,47 @@ class BoxFrequency extends StatelessWidget {
     this.ausencias,
   });
 
+  final dataPorExtenso = DateFormat("d 'de' MMMM 'de' y", "pt_BR");
+
+  Widget _listDateAusencias(List<Ausencias> data, double screenHeight) {
+    List<Widget> list = new List<Widget>();
+    for (var i = 0; i < ausencias.length; i++) {
+      list.add(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(
+            "${dataPorExtenso.format(DateTime.parse(data[i].data))}",
+            maxFontSize: 16,
+            minFontSize: 14,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(
+            height: screenHeight * 1,
+          ),
+          AutoSizeText(
+            "${data[i].quantidadeDeFaltas} ausências",
+            maxFontSize: 16,
+            minFontSize: 14,
+            style: TextStyle(
+              color: Color(0xff757575),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ));
+    }
+
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: list,
+    );
+  }
+
   void displayBottomSheet(BuildContext context, double screenHeight) {
     if (ausencias != null && ausencias.length > 0) {
-      final formatDate = DateFormat("d MMMM, y");
       showModalBottomSheet(
           backgroundColor: Color(0x00000000),
           context: context,
@@ -27,7 +65,7 @@ class BoxFrequency extends StatelessWidget {
               children: [
                 Container(
                     width: MediaQuery.of(context).size.width,
-                    height: screenHeight * 20,
+                    height: screenHeight * 12,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -50,7 +88,7 @@ class BoxFrequency extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: screenHeight * 2,
+                          height: screenHeight * 3,
                         ),
                         AutoSizeText(
                           "Datas das ausências",
@@ -62,52 +100,18 @@ class BoxFrequency extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: screenHeight * 2,
+                          height: screenHeight * 3,
                         ),
-                        Divider(),
                       ],
                     )),
                 Container(
-                    height: screenHeight * 36,
+                    height: screenHeight * 44,
                     width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.all(screenHeight * 2.5),
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
-                    child: GridView.builder(
-                      primary: false,
-                      padding: EdgeInsets.all(screenHeight * 2.5),
-                      itemCount: ausencias.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AutoSizeText(
-                              "${formatDate.format(DateTime.parse(ausencias[index].data))}",
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            AutoSizeText(
-                              "${ausencias[index].quantidadeDeFaltas} ausências",
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              style: TextStyle(
-                                color: Color(0xff757575),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    )),
+                    child: _listDateAusencias(ausencias, screenHeight)),
               ],
             );
           });
@@ -121,7 +125,6 @@ class BoxFrequency extends StatelessWidget {
     return GestureDetector(
       onTap: () => fail ? displayBottomSheet(context, screenHeight) : null,
       child: Container(
-        margin: EdgeInsets.only(right: screenHeight * 2),
         child: Column(
           children: [
             AutoSizeText(
@@ -137,7 +140,7 @@ class BoxFrequency extends StatelessWidget {
             ),
             Container(
               width: screenHeight * 8,
-              height: screenHeight * 4,
+              height: screenHeight * 5,
               decoration: BoxDecoration(
                 color: fail ? Colors.white : Color(0xffEDEDED),
                 borderRadius: BorderRadius.all(

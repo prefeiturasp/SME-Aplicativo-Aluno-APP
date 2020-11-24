@@ -1,15 +1,17 @@
 class ComponentesCurricularesDoAluno {
   int codigoComponenteCurricular;
   String descricaoComponenteCurricular;
+  bool isExpanded;
 
-  ComponentesCurricularesDoAluno({
-    this.codigoComponenteCurricular,
-    this.descricaoComponenteCurricular,
-  });
+  ComponentesCurricularesDoAluno(
+      {this.codigoComponenteCurricular,
+      this.descricaoComponenteCurricular,
+      this.isExpanded});
 
   ComponentesCurricularesDoAluno.fromJson(Map<String, dynamic> json) {
     codigoComponenteCurricular = json['codigoComponenteCurricular'];
     descricaoComponenteCurricular = json['descricaoComponenteCurricular'];
+    isExpanded = false;
   }
 
   Map<String, dynamic> toJson() {
