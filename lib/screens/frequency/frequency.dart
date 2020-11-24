@@ -157,7 +157,10 @@ class _FrequencyState extends State<Frequency> {
                 ),
               ),
             ],
-          )
+          ),
+          SizedBox(
+            height: screenHeight * 2.5,
+          ),
         ],
       ));
     }
