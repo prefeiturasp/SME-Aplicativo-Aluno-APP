@@ -114,7 +114,7 @@ class _ListMessageState extends State<ListMessages> {
                     categoriaNotificacao: item.categoriaNotificacao,
                     content: <Widget>[
                       Container(
-                        width: screenHeight * 40,
+                        width: screenHeight * 39,
                         child: AutoSizeText(
                           item.titulo,
                           maxFontSize: 16,
@@ -129,7 +129,7 @@ class _ListMessageState extends State<ListMessages> {
                         height: screenHeight * 1.8,
                       ),
                       Container(
-                        width: screenHeight * 41,
+                        width: screenHeight * 39,
                         child: AutoSizeText(
                           StringSupport.parseHtmlString(
                               StringSupport.truncateEndString(
@@ -299,7 +299,7 @@ class _ListMessageState extends State<ListMessages> {
                       _messagesController.messages.first.categoriaNotificacao,
                   content: <Widget>[
                     Container(
-                      width: screenHeight * 40,
+                      width: screenHeight * 39,
                       child: AutoSizeText(
                         _messagesController.messages.first.titulo,
                         maxFontSize: 16,
@@ -314,7 +314,7 @@ class _ListMessageState extends State<ListMessages> {
                       height: screenHeight * 1.8,
                     ),
                     Container(
-                      width: screenHeight * 41,
+                      width: screenHeight * 39,
                       child: AutoSizeText(
                         StringSupport.parseHtmlString(
                             _messagesController.messages.first.mensagem),

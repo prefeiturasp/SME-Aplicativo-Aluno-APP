@@ -12,7 +12,11 @@ scripts:
   fclean: flutter clean
 
 dependencies:
+  shimmer: ^1.1.2
+  percent_indicator: ^2.1.8
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   cupertino_icons: ^0.1.2
   provider: ^4.3.2+2

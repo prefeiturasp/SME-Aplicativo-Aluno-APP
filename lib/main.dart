@@ -1,6 +1,7 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
@@ -28,7 +29,9 @@ void main() async {
     );
   }
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color(0xffde9524), // status bar color
+    statusBarColor: Color(0xffde9524),
+    statusBarBrightness: Brightness.dark,
+    // status bar color
   ));
   runApp(MyApp());
 
@@ -62,6 +65,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [const Locale('pt', 'BR')],
         home: Wrapper(),
       ),
     );
