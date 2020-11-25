@@ -195,8 +195,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   MaterialPageRoute(
                       builder: (context) => ResumeStudants(
                             student: widget.student,
-                            groupSchool: widget.groupSchool,
                             userId: widget.userId,
+                            groupSchool: widget.groupSchool,
                           )));
             },
           ),

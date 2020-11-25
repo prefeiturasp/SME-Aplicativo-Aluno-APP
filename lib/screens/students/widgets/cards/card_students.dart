@@ -70,11 +70,15 @@ class CardStudent extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        AutoSizeText(
-                          StringSupport.truncateEndString(name, 30),
-                          maxFontSize: 12,
-                          minFontSize: 10,
-                          style: TextStyle(color: Colors.black),
+                        Container(
+                          width: screenHeight * 24,
+                          child: AutoSizeText(
+                            StringSupport.truncateEndString(name, 30),
+                            maxFontSize: 12,
+                            minFontSize: 10,
+                            style: TextStyle(color: Colors.black),
+                            maxLines: 2,
+                          ),
                         ),
                         SizedBox(
                           height: screenHeight * 0.3,

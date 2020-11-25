@@ -28,7 +28,9 @@ void main() async {
     );
   }
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color(0xffde9524), // status bar color
+    statusBarColor: Color(0xffde9524),
+    statusBarBrightness: Brightness.dark,
+    // status bar color
   ));
   runApp(MyApp());
 

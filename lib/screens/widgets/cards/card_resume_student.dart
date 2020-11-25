@@ -7,9 +7,9 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class CardResumeStudent extends StatelessWidget {
   final Student student;
+  final int userId;
   final String groupSchool;
   final Widget child;
-  final int userId;
 
   CardResumeStudent(
       {@required this.student, this.groupSchool, this.child, this.userId});
