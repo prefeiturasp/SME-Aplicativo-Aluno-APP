@@ -9,8 +9,10 @@ class CardResumeStudent extends StatelessWidget {
   final Student student;
   final String groupSchool;
   final Widget child;
+  final int userId;
 
-  CardResumeStudent({@required this.student, this.groupSchool, this.child});
+  CardResumeStudent(
+      {@required this.student, this.groupSchool, this.child, this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +107,9 @@ class CardResumeStudent extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => ResumeStudants(
-                                student: student,
-                                groupSchool: groupSchool,
-                              )));
+                              student: student,
+                              groupSchool: groupSchool,
+                              userId: userId)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

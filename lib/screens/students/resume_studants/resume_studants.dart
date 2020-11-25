@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/data_student/data.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/notes/expansion.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
@@ -13,8 +14,9 @@ import 'package:sme_app_aluno/utils/date_format.dart';
 class ResumeStudants extends StatefulWidget {
   final Student student;
   final String groupSchool;
+  final int userId;
 
-  ResumeStudants({@required this.student, this.groupSchool});
+  ResumeStudants({@required this.student, this.groupSchool, this.userId});
 
   @override
   _ResumeStudantsState createState() => _ResumeStudantsState();
@@ -24,36 +26,6 @@ class _ResumeStudantsState extends State<ResumeStudants> {
   bool abaDados = true;
   bool abaBoletim = false;
   bool abaFrequencia = false;
-  Widget itemResume(BuildContext context, String infoName, String infoData,
-      double screenHeight) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AutoSizeText(
-            infoName,
-            maxFontSize: 18,
-            minFontSize: 16,
-            style: TextStyle(color: Colors.black),
-          ),
-          SizedBox(
-            height: screenHeight * 1,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(screenHeight * 3),
-            decoration: BoxDecoration(color: Colors.white),
-            child: AutoSizeText(
-              infoData,
-              maxFontSize: 18,
-              minFontSize: 16,
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   content(BuildContext context, double screenHeight, Student data) {
     String dateFormatted =
@@ -63,25 +35,16 @@ class _ResumeStudantsState extends State<ResumeStudants> {
 
     if (abaDados) {
       return Container(
-        width: MediaQuery.of(context).size.width,
+        color: Colors.white,
         padding: EdgeInsets.all(screenHeight * 2.5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            itemResume(
-                context, "Data de Nascimento", "$dateFormatted", screenHeight),
-            SizedBox(
-              height: screenHeight * 2.5,
-            ),
-            itemResume(
-                context, "Código EOL", "${data.codigoEol}", screenHeight),
-            SizedBox(
-              height: screenHeight * 2.5,
-            ),
-            itemResume(context, "Situação",
-                "Matriculado em $dateSituacaoMatricula", screenHeight),
-          ],
+        child: DataStudent(
+          dataNasc: dateFormatted,
+          codigoEOL: "${data.codigoEol}",
+          situacao: dateSituacaoMatricula,
+          codigoUe: widget.student.codigoEscola,
+          id: widget.userId,
         ),
+        height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
     }
 

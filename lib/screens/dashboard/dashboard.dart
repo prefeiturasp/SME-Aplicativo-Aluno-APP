@@ -164,6 +164,7 @@ class _DashboardState extends State<Dashboard> {
                   CardResumeStudent(
                     student: widget.student,
                     groupSchool: widget.groupSchool,
+                    userId: widget.userId,
                     child: TagCustom(
                         text: widget.groupSchool ?? "Não informado",
                         color: Color(0xffF8E5BA),
