@@ -68,7 +68,9 @@ class _ListStudantsState extends State<ListStudants> {
           : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
+      codigoEOL: model.codigoEol,
       schooType: model.descricaoTipoEscola,
+      dreName: model.siglaDre,
       onPress: () {
         Nav.push(
             context,
@@ -139,7 +141,6 @@ class _ListStudantsState extends State<ListStudants> {
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
-              color: Colors.white,
               size: screenHeight * 2,
             ),
           ),
@@ -192,6 +193,9 @@ class _ListStudantsState extends State<ListStudants> {
                                 TagCustom(
                                   text: "${dados[index].grupo}",
                                   color: Color(0xffC65D00),
+                                ),
+                                SizedBox(
+                                  height: screenHeight * 2,
                                 ),
                                 _listStudents(
                                   dados[index].students,
