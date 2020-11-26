@@ -241,17 +241,19 @@ class _FrequencyState extends State<Frequency> {
                                   .frequency
                                   .componentesCurricularesDoAluno[index]
                                   .isExpanded;
-                              if (isExpanded) {
-                                _frequencyController.fetchCurricularComponent(
-                                    anoLetivo,
-                                    widget.student.codigoEscola,
-                                    widget.student.codigoTurma.toString(),
-                                    widget.student.codigoEol.toString(),
-                                    _frequencyController
-                                        .frequency
-                                        .componentesCurricularesDoAluno[index]
-                                        .codigoComponenteCurricular
-                                        .toString());
+                              if (isExpanded == true) {
+                                await _frequencyController
+                                    .fetchCurricularComponent(
+                                        anoLetivo,
+                                        widget.student.codigoEscola,
+                                        widget.student.codigoTurma.toString(),
+                                        widget.student.codigoEol.toString(),
+                                        _frequencyController
+                                            .frequency
+                                            .componentesCurricularesDoAluno[
+                                                index]
+                                            .codigoComponenteCurricular
+                                            .toString());
                               }
                             },
                             children: [
@@ -283,81 +285,91 @@ class _FrequencyState extends State<Frequency> {
                                   )),
                                   width: MediaQuery.of(context).size.width,
                                   child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Observer(builder: (context) {
-                                        if (_frequencyController
-                                            .loadingCurricularComponent) {
-                                          return Container(
-                                            child: GFLoader(
-                                              type: GFLoaderType.square,
-                                              loaderColorOne: Color(0xffDE9524),
-                                              loaderColorTwo: Color(0xffC65D00),
-                                              loaderColorThree:
-                                                  Color(0xffC65D00),
-                                              size: GFSize.LARGE,
-                                            ),
-                                            margin: EdgeInsets.all(
-                                                screenHeight * 1.5),
-                                          );
-                                        } else {
-                                          if (_frequencyController.frequency
-                                                  .componentesCurricularesDoAluno !=
-                                              null) {
-                                            return Container(
-                                              padding: EdgeInsets.all(
-                                                  screenHeight * 2),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  _rowFrequency(
-                                                    screenHeight,
-                                                    "Quantidade de aulas",
-                                                    _frequencyController
-                                                        .curricularComponent,
-                                                    true,
-                                                    false,
-                                                    false,
-                                                  ),
-                                                  _rowFrequency(
-                                                    screenHeight,
-                                                    "Quantidade de ausências",
-                                                    _frequencyController
-                                                        .curricularComponent,
-                                                    false,
-                                                    true,
-                                                    false,
-                                                  ),
-                                                  _rowFrequency(
-                                                    screenHeight,
-                                                    "Ausências compensadas",
-                                                    _frequencyController
-                                                        .curricularComponent,
-                                                    false,
-                                                    false,
-                                                    true,
-                                                  ),
-                                                  LabelFrequency(
-                                                      text:
-                                                          "Percentual de frequência"),
-                                                  SizedBox(
-                                                    height: screenHeight * 2,
-                                                  ),
-                                                  _listProgressBar(
-                                                    _frequencyController
-                                                        .curricularComponent,
-                                                    screenHeight,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          } else {
-                                            return Text('erro ao obter dados');
-                                          }
-                                        }
-                                      }),
+                                            if (_frequencyController
+                                                .loadingCurricularComponent) {
+                                              return Container(
+                                                child: GFLoader(
+                                                  type: GFLoaderType.square,
+                                                  loaderColorOne:
+                                                      Color(0xffDE9524),
+                                                  loaderColorTwo:
+                                                      Color(0xffC65D00),
+                                                  loaderColorThree:
+                                                      Color(0xffC65D00),
+                                                  size: GFSize.LARGE,
+                                                ),
+                                                margin: EdgeInsets.all(
+                                                    screenHeight * 1.5),
+                                              );
+                                            } else {
+                                              if (_frequencyController
+                                                      .curricularComponent !=
+                                                  null) {
+                                                return Container(
+                                                    padding: EdgeInsets.all(
+                                                        screenHeight * 2),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          _rowFrequency(
+                                                            screenHeight,
+                                                            "Quantidade de aulas",
+                                                            _frequencyController
+                                                                .curricularComponent,
+                                                            true,
+                                                            false,
+                                                            false,
+                                                          ),
+                                                          _rowFrequency(
+                                                            screenHeight,
+                                                            "Quantidade de ausências",
+                                                            _frequencyController
+                                                                .curricularComponent,
+                                                            false,
+                                                            true,
+                                                            false,
+                                                          ),
+                                                          _rowFrequency(
+                                                            screenHeight,
+                                                            "Ausências compensadas",
+                                                            _frequencyController
+                                                                .curricularComponent,
+                                                            false,
+                                                            false,
+                                                            true,
+                                                          ),
+                                                          LabelFrequency(
+                                                              text:
+                                                                  "Percentual de frequência"),
+                                                          SizedBox(
+                                                            height:
+                                                                screenHeight *
+                                                                    2,
+                                                          ),
+                                                          _listProgressBar(
+                                                            _frequencyController
+                                                                .curricularComponent,
+                                                            screenHeight,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ));
+                                              } else {
+                                                return Text(
+                                                    'erro ao obter dados');
+                                              }
+                                            }
+                                          }) ??
+                                          Text('teste')
                                     ],
                                   ),
                                 ),

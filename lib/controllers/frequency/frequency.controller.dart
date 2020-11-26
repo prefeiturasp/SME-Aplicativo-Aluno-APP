@@ -53,6 +53,7 @@ abstract class _FrequencyControllerBase with Store {
     loadingFrequency = false;
   }
 
+  @action
   fetchCurricularComponent(
     int anoLetivo,
     String codigoUE,
