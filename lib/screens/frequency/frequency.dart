@@ -1,6 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:getflutter/components/loader/gf_loader.dart';
+import 'package:getflutter/size/gf_size.dart';
+import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sme_app_aluno/controllers/frequency/frequency.controller.dart';
@@ -8,6 +12,7 @@ import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/frequency/widgets/box_frequency.dart';
 import 'package:sme_app_aluno/screens/frequency/widgets/label_frequency.dart';
+import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/frequency_global_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/shimmer_card.dart';
 
@@ -174,10 +179,32 @@ class _FrequencyState extends State<Frequency> {
         children: [
           Observer(builder: (context) {
             if (_frequencyController.loadingFrequency) {
-              return ShimmerCard();
+              return Container(
+                child: GFLoader(
+                  type: GFLoaderType.square,
+                  loaderColorOne: Color(0xffDE9524),
+                  loaderColorTwo: Color(0xffC65D00),
+                  loaderColorThree: Color(0xffC65D00),
+                  size: GFSize.LARGE,
+                ),
+                margin: EdgeInsets.all(screenHeight * 1.5),
+              );
             } else {
-              return FrequencyGlobalCard(
-                  frequency: _frequencyController.frequency);
+              if (_frequencyController.frequency != null) {
+                return FrequencyGlobalCard(
+                    frequency: _frequencyController.frequency);
+              } else {
+                return CardAlert(
+                  title: "FREQUÊNCIA",
+                  icon: Icon(
+                    FontAwesomeIcons.calendarAlt,
+                    color: Color(0xffFFD037),
+                    size: screenHeight * 6,
+                  ),
+                  text:
+                      "Não foi encontrado nenhum dado de frequência para este estudante.",
+                );
+              }
             }
           }),
           SizedBox(
@@ -185,7 +212,16 @@ class _FrequencyState extends State<Frequency> {
           ),
           Observer(builder: (context) {
             if (_frequencyController.loadingFrequency) {
-              return ShimmerCard();
+              return Container(
+                child: GFLoader(
+                  type: GFLoaderType.square,
+                  loaderColorOne: Color(0xffDE9524),
+                  loaderColorTwo: Color(0xffC65D00),
+                  loaderColorThree: Color(0xffC65D00),
+                  size: GFSize.LARGE,
+                ),
+                margin: EdgeInsets.all(screenHeight * 1.5),
+              );
             } else {
               if (_frequencyController.frequency != null) {
                 return Container(
@@ -253,56 +289,73 @@ class _FrequencyState extends State<Frequency> {
                                       Observer(builder: (context) {
                                         if (_frequencyController
                                             .loadingCurricularComponent) {
-                                          return ShimmerCard();
-                                        } else {
                                           return Container(
-                                            padding: EdgeInsets.all(
-                                                screenHeight * 2),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                _rowFrequency(
-                                                  screenHeight,
-                                                  "Quantidade de aulas",
-                                                  _frequencyController
-                                                      .curricularComponent,
-                                                  true,
-                                                  false,
-                                                  false,
-                                                ),
-                                                _rowFrequency(
-                                                  screenHeight,
-                                                  "Quantidade de ausências",
-                                                  _frequencyController
-                                                      .curricularComponent,
-                                                  false,
-                                                  true,
-                                                  false,
-                                                ),
-                                                _rowFrequency(
-                                                  screenHeight,
-                                                  "Ausências compensadas",
-                                                  _frequencyController
-                                                      .curricularComponent,
-                                                  false,
-                                                  false,
-                                                  true,
-                                                ),
-                                                LabelFrequency(
-                                                    text:
-                                                        "Percentual de frequência"),
-                                                SizedBox(
-                                                  height: screenHeight * 2,
-                                                ),
-                                                _listProgressBar(
-                                                  _frequencyController
-                                                      .curricularComponent,
-                                                  screenHeight,
-                                                ),
-                                              ],
+                                            child: GFLoader(
+                                              type: GFLoaderType.square,
+                                              loaderColorOne: Color(0xffDE9524),
+                                              loaderColorTwo: Color(0xffC65D00),
+                                              loaderColorThree:
+                                                  Color(0xffC65D00),
+                                              size: GFSize.LARGE,
                                             ),
+                                            margin: EdgeInsets.all(
+                                                screenHeight * 1.5),
                                           );
+                                        } else {
+                                          if (_frequencyController.frequency
+                                                  .componentesCurricularesDoAluno !=
+                                              null) {
+                                            return Container(
+                                              padding: EdgeInsets.all(
+                                                  screenHeight * 2),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  _rowFrequency(
+                                                    screenHeight,
+                                                    "Quantidade de aulas",
+                                                    _frequencyController
+                                                        .curricularComponent,
+                                                    true,
+                                                    false,
+                                                    false,
+                                                  ),
+                                                  _rowFrequency(
+                                                    screenHeight,
+                                                    "Quantidade de ausências",
+                                                    _frequencyController
+                                                        .curricularComponent,
+                                                    false,
+                                                    true,
+                                                    false,
+                                                  ),
+                                                  _rowFrequency(
+                                                    screenHeight,
+                                                    "Ausências compensadas",
+                                                    _frequencyController
+                                                        .curricularComponent,
+                                                    false,
+                                                    false,
+                                                    true,
+                                                  ),
+                                                  LabelFrequency(
+                                                      text:
+                                                          "Percentual de frequência"),
+                                                  SizedBox(
+                                                    height: screenHeight * 2,
+                                                  ),
+                                                  _listProgressBar(
+                                                    _frequencyController
+                                                        .curricularComponent,
+                                                    screenHeight,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return Text('erro ao obter dados');
+                                          }
                                         }
                                       }),
                                     ],
@@ -319,7 +372,7 @@ class _FrequencyState extends State<Frequency> {
                       }),
                 );
               } else {
-                return AutoSizeText("não existe ");
+                return SizedBox.shrink();
               }
             }
           }),
