@@ -97,34 +97,29 @@ class UEBody extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(color: Colors.white),
                 child: infoData != null && infoData.isNotEmpty
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AutoSizeText(
-                            infoData.length == 11
-                                ? "(0" +
-                                    infoData.substring(0, 2) +
-                                    ") " +
-                                    infoData.substring(2, 7) +
-                                    "-" +
-                                    infoData.substring(7)
-                                : "(0" +
-                                    infoData.substring(0, 2) +
-                                    ") " +
-                                    infoData.substring(2, 6) +
-                                    "-" +
-                                    infoData.substring(6),
+                    ? (int.tryParse(infoData) != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AutoSizeText(
+                                infoData,
+                                maxFontSize: 20,
+                                minFontSize: 18,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              Icon(
+                                FontAwesomeIcons.phone,
+                                size: screenHeight * 3,
+                                color: Color(0xFFC65D00),
+                              )
+                            ],
+                          )
+                        : AutoSizeText(
+                            infoData,
                             maxFontSize: 20,
                             minFontSize: 18,
                             style: TextStyle(color: Colors.black),
-                          ),
-                          Icon(
-                            FontAwesomeIcons.phone,
-                            size: screenHeight * 3,
-                            color: Color(0xFFC65D00),
-                          )
-                        ],
-                      )
+                          ))
                     : AutoSizeText(
                         'Informação não disponível.',
                         maxFontSize: 20,
@@ -139,9 +134,11 @@ class UEBody extends StatelessWidget {
           ),
         ),
         onTap: infoData != null && infoData.isNotEmpty
-            ? () {
-                fazerLigacao(infoData);
-              }
+            ? (int.tryParse(infoData) != null
+                ? () {
+                    fazerLigacao(infoData);
+                  }
+                : null)
             : null,
       );
     }
