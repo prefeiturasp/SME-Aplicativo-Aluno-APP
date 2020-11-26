@@ -102,13 +102,13 @@ class UEBody extends StatelessWidget {
                         children: [
                           AutoSizeText(
                             infoData.length == 11
-                                ? "(" +
+                                ? "(0" +
                                     infoData.substring(0, 2) +
                                     ") " +
                                     infoData.substring(2, 7) +
                                     "-" +
                                     infoData.substring(7)
-                                : "(" +
+                                : "(0" +
                                     infoData.substring(0, 2) +
                                     ") " +
                                     infoData.substring(2, 6) +
