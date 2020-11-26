@@ -70,7 +70,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
             password: "_password",
           ));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
 
