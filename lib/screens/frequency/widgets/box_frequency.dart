@@ -56,66 +56,71 @@ class BoxFrequency extends StatelessWidget {
   }
 
   void displayBottomSheet(BuildContext context, double screenHeight) {
-    if (ausencias != null && ausencias.length > 0) {
-      showModalBottomSheet(
-          backgroundColor: Color(0x00000000),
-          context: context,
-          builder: (ctx) {
-            return Column(
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: screenHeight * 12,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(screenHeight * 3.5),
-                        topLeft: Radius.circular(screenHeight * 3.5),
+    if(ausencias == null || ausencias.length == 0) {
+      return;
+    }
+
+    showModalBottomSheet(
+      backgroundColor: Color(0x00000000),
+      context: context,
+      builder: (ctx) {
+        return Column(
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width,
+                height: screenHeight * 12,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(screenHeight * 3.5),
+                    topLeft: Radius.circular(screenHeight * 3.5),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: screenHeight * 8,
+                      height: screenHeight * 1,
+                      margin: EdgeInsets.only(top: screenHeight * 2),
+                      decoration: BoxDecoration(
+                        color: Color(0xffDADADA),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenHeight * 1),
+                        ),
                       ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: screenHeight * 8,
-                          height: screenHeight * 1,
-                          margin: EdgeInsets.only(top: screenHeight * 2),
-                          decoration: BoxDecoration(
-                            color: Color(0xffDADADA),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(screenHeight * 1),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 3,
-                        ),
-                        AutoSizeText(
-                          "Datas das ausências",
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 3,
-                        ),
-                      ],
-                    )),
-                Container(
-                    height: screenHeight * 44,
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(screenHeight * 2.5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                    SizedBox(
+                      height: screenHeight * 3,
                     ),
-                    child: _listDateAusencias(ausencias, screenHeight)),
-              ],
-            );
-          });
-    }
+                    AutoSizeText(
+                      "Datas das ausências",
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 3,
+                    ),
+                  ],
+                )
+              ),
+            Container(
+              height: screenHeight * 44,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(screenHeight * 2.5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: _listDateAusencias(ausencias, screenHeight)
+            ),
+          ],
+        );
+      }
+    );
   }
 
   @override

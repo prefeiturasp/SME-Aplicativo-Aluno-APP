@@ -77,7 +77,7 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
       AsyncAction('_FrequencyControllerBase.showCard');
 
   @override
-  Future showCard(int index) {
+  Future<void> showCard(int index) {
     return _$showCardAsyncAction.run(() => super.showCard(index));
   }
 
@@ -89,6 +89,25 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
       String codigoAluno, int userId) {
     return _$fetchFrequencyAsyncAction.run(() => super
         .fetchFrequency(anoLetivo, codigoUe, codigoTurma, codigoAluno, userId));
+  }
+
+  final _$fetchCurricularComponentAsyncAction =
+      AsyncAction('_FrequencyControllerBase.fetchCurricularComponent');
+
+  @override
+  Future fetchCurricularComponent(
+      int anoLetivo,
+      String codigoUE,
+      String codigoTurma,
+      String codigoAluno,
+      String codigoComponenteCurricular
+  ) {
+    return _$fetchCurricularComponentAsyncAction.run(() {
+      return super.fetchCurricularComponent(
+        anoLetivo, codigoUE, codigoTurma, codigoAluno, 
+        codigoComponenteCurricular
+      );
+    });
   }
 
   @override

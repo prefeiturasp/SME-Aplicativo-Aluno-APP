@@ -70,5 +70,6 @@ abstract class _FrequencyControllerBase with Store {
       codigoComponenteCurricular,
     );
     loadingCurricularComponent = false;
+    return curricularComponent;
   }
 }
