@@ -1,7 +1,10 @@
+import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
+
 class ComponentesCurricularesDoAluno {
   int codigoComponenteCurricular;
   String descricaoComponenteCurricular;
   bool isExpanded;
+  CurricularComponent curricularComponent;
 
   ComponentesCurricularesDoAluno(
       {this.codigoComponenteCurricular,

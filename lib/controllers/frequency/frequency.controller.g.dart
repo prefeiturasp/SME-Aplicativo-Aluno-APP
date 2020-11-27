@@ -100,14 +100,10 @@ mixin _$FrequencyController on _FrequencyControllerBase, Store {
       String codigoUE,
       String codigoTurma,
       String codigoAluno,
-      String codigoComponenteCurricular
-  ) {
-    return _$fetchCurricularComponentAsyncAction.run(() {
-      return super.fetchCurricularComponent(
-        anoLetivo, codigoUE, codigoTurma, codigoAluno, 
-        codigoComponenteCurricular
-      );
-    });
+      String codigoComponenteCurricular) {
+    return _$fetchCurricularComponentAsyncAction.run(() => super
+        .fetchCurricularComponent(anoLetivo, codigoUE, codigoTurma, codigoAluno,
+            codigoComponenteCurricular));
   }
 
   @override

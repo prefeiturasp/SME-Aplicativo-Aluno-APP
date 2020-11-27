@@ -177,48 +177,52 @@ class _FrequencyState extends State<Frequency> {
     margin: EdgeInsets.all(screenHeight * 1.5),
   );
 
-  _buildFrequencyExpandedPanel(size, screenHeight) => Container(
-    padding: EdgeInsets.all(screenHeight * 2),
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _rowFrequency(
-            screenHeight,
-            "Quantidade de aulas",
-            _frequencyController.curricularComponent,
-            true,
-            false,
-            false,
-          ),
-          _rowFrequency(
-            screenHeight,
-            "Quantidade de ausências",
-            _frequencyController.curricularComponent,
-            false,
-            true,
-            false,
-          ),
-          _rowFrequency(
-            screenHeight,
-            "Ausências compensadas",
-            _frequencyController.curricularComponent,
-            false,
-            false,
-            true,
-          ),
-          LabelFrequency(text: "Percentual de frequência"),
-          SizedBox(height: screenHeight * 2,),
-          _listProgressBar(
-            _frequencyController .curricularComponent,
-            screenHeight,
-          ),
-        ],
-      ),
-    ),
-  );
+  _buildFrequencyExpandedPanel(index, size, screenHeight) {
+    var _comp = _frequencyController.frequency.componentesCurricularesDoAluno[index];
 
-  _frequencyContainerBodyObserver(size, screenHeight) => Observer(builder: (context) {
+    return Container(
+      padding: EdgeInsets.all(screenHeight * 2),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _rowFrequency(
+              screenHeight,
+              "Quantidade de aulas",
+              _comp.curricularComponent,
+              true,
+              false,
+              false,
+            ),
+            _rowFrequency(
+              screenHeight,
+              "Quantidade de ausências",
+              _comp.curricularComponent,
+              false,
+              true,
+              false,
+            ),
+            _rowFrequency(
+              screenHeight,
+              "Ausências compensadas",
+              _comp.curricularComponent,
+              false,
+              false,
+              true,
+            ),
+            LabelFrequency(text: "Percentual de frequência"),
+            SizedBox(height: screenHeight * 2,),
+            _listProgressBar(
+              _comp.curricularComponent,
+              screenHeight,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _frequencyContainerBodyObserver(index, size, screenHeight) => Observer(builder: (context) {
     Widget _result;
 
     if (_frequencyController?.loadingCurricularComponent ?? false) {
@@ -226,10 +230,8 @@ class _FrequencyState extends State<Frequency> {
     }
       
     if (_frequencyController?.curricularComponent != null ?? false) {
-      _result = _buildFrequencyExpandedPanel(size, screenHeight);
+      _result = _buildFrequencyExpandedPanel(index, size, screenHeight);
     }
-
-    print("[ INFO ] _frequencyContainerBodyObserver: ${_result}");
     
     return _result ?? Text('erro ao obter dados');
   });
@@ -242,7 +244,7 @@ class _FrequencyState extends State<Frequency> {
       .isExpanded;
 
     if (isExpanded) {
-      await _frequencyController.fetchCurricularComponent(  
+      var _result = await _frequencyController.fetchCurricularComponent(  
         anoLetivo,
         widget.student.codigoEscola,
         widget.student.codigoTurma.toString(),
@@ -253,6 +255,8 @@ class _FrequencyState extends State<Frequency> {
             .codigoComponenteCurricular
             .toString()
       );
+
+      _frequencyController.frequency.componentesCurricularesDoAluno[index].curricularComponent = _result;
     }
 
     setState(() {});
@@ -288,7 +292,7 @@ class _FrequencyState extends State<Frequency> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _frequencyContainerBodyObserver(size, screenHeight)
+          _frequencyContainerBodyObserver(index, size, screenHeight)
         ],
       ),
     ),
@@ -308,21 +312,24 @@ class _FrequencyState extends State<Frequency> {
     text: "Não foi encontrado nenhum dado de frequência para este estudante.",
   );
 
-  _buildMainFrequencyContainer(size, screenHeight) => Container(
-    height: screenHeight * 60,
-    child: ListView.builder(
-      itemCount: _frequencyController.frequency.componentesCurricularesDoAluno.length,
-      itemBuilder: (context, index) => Container(
-        margin: EdgeInsets.only(bottom: screenHeight * 2.5),
-        child: ExpansionPanelList(
-          expansionCallback: _frequencyExpansionPanelCallback,
-          children: [
-            _frequencyExpandedPanel(index, size, screenHeight)
-          ],
-        ),
-      ),
-    ),
-  );
+  _buildMainFrequencyContainer(size, screenHeight) {
+    List _compList = _frequencyController.frequency.componentesCurricularesDoAluno;
+    List<ExpansionPanel> _children = _compList.asMap().entries.map<ExpansionPanel>((entry) {
+      return _frequencyExpandedPanel(entry.key, size, screenHeight);
+    }).toList();
+
+    return Container(
+      height: screenHeight * 60,
+      child: ListView(
+        children: [
+          ExpansionPanelList(
+            expansionCallback: _frequencyExpansionPanelCallback,
+            children: _children,
+          ),
+        ],
+      )
+    );
+  }
 
   _buildEmptyContainer() => Container(height: 0, width: 0,);
 

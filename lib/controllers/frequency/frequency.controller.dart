@@ -30,8 +30,6 @@ abstract class _FrequencyControllerBase with Store {
   Future<void> showCard(int index) async {
     frequency.componentesCurricularesDoAluno[index].isExpanded =
         !frequency.componentesCurricularesDoAluno[index].isExpanded;
-    print(
-        " ---> ${frequency.componentesCurricularesDoAluno[index].isExpanded}");
   }
 
   @action
