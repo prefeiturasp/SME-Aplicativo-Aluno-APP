@@ -30,8 +30,6 @@ abstract class _FrequencyControllerBase with Store {
   Future<void> showCard(int index) async {
     frequency.componentesCurricularesDoAluno[index].isExpanded =
         !frequency.componentesCurricularesDoAluno[index].isExpanded;
-    print(
-        " ---> ${frequency.componentesCurricularesDoAluno[index].isExpanded}");
   }
 
   @action
@@ -53,6 +51,7 @@ abstract class _FrequencyControllerBase with Store {
     loadingFrequency = false;
   }
 
+  @action
   fetchCurricularComponent(
     int anoLetivo,
     String codigoUE,
@@ -69,5 +68,6 @@ abstract class _FrequencyControllerBase with Store {
       codigoComponenteCurricular,
     );
     loadingCurricularComponent = false;
+    return curricularComponent;
   }
 }

@@ -82,7 +82,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
       var screenHeight =
           (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffE5E5E5),
         appBar: AppBar(
           title: Text(
             "Informações do estudante",
@@ -92,154 +92,156 @@ class _ResumeStudantsState extends State<ResumeStudants> {
           backgroundColor: Color(0xffEEC25E),
         ),
         body: SingleChildScrollView(
-          child: Container(
-            color: Color(0xffE5E5E5),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(screenHeight * 2.5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Color(0xffC5C5C5), width: 0.5))),
-                      child: StudentInfo(
-                        studentName: widget.student.nomeSocial != null &&
-                                widget.student.nomeSocial.isNotEmpty
-                            ? widget.student.nomeSocial
-                            : widget.student.nome,
-                        schoolName: widget.student.escola,
-                        schoolType: widget.student.descricaoTipoEscola,
-                        dreName: widget.student.siglaDre,
-                        studentGrade: widget.student.turma,
-                        studentEOL: widget.student.codigoEol,
+          child: Expanded(
+            child: Container(
+              color: Color(0xffE5E5E5),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(screenHeight * 2.5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color(0xffC5C5C5), width: 0.5))),
+                        child: StudentInfo(
+                          studentName: widget.student.nomeSocial != null &&
+                                  widget.student.nomeSocial.isNotEmpty
+                              ? widget.student.nomeSocial
+                              : widget.student.nome,
+                          schoolName: widget.student.escola,
+                          schoolType: widget.student.descricaoTipoEscola,
+                          dreName: widget.student.siglaDre,
+                          studentGrade: widget.student.turma,
+                          studentEOL: widget.student.codigoEol,
+                        ),
                       ),
-                    ),
-                    Container(
-                        child: Row(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              abaDados = true;
-                              abaBoletim = false;
-                              abaFrequencia = false;
-                            });
-                          },
-                          child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
+                      Container(
+                          child: Row(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                abaDados = true;
+                                abaBoletim = false;
+                                abaFrequencia = false;
+                              });
+                            },
+                            child: Container(
+                              width: (MediaQuery.of(context).size.width / 100) *
+                                  33.33,
+                              padding: EdgeInsets.only(
+                                  top: screenHeight * 2.2,
+                                  bottom: screenHeight * 2.2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: abaDados
+                                            ? Color(0xffC65D00)
+                                            : Color(0xffCECECE),
+                                        width: 2)),
+                              ),
+                              child: Center(
+                                child: AutoSizeText(
+                                  "DADOS",
+                                  maxFontSize: 16,
+                                  minFontSize: 14,
+                                  style: TextStyle(
                                       color: abaDados
                                           ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
-                            ),
-                            child: Center(
-                              child: AutoSizeText(
-                                "DADOS",
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(
-                                    color: abaDados
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                          : Color(0xff9f9f9f),
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              abaDados = false;
-                              abaBoletim = true;
-                              abaFrequencia = false;
-                            });
-                          },
-                          child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                abaDados = false;
+                                abaBoletim = true;
+                                abaFrequencia = false;
+                              });
+                            },
+                            child: Container(
+                              width: (MediaQuery.of(context).size.width / 100) *
+                                  33.33,
+                              padding: EdgeInsets.only(
+                                  top: screenHeight * 2.2,
+                                  bottom: screenHeight * 2.2),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: abaBoletim
+                                            ? Color(0xffC65D00)
+                                            : Color(0xffCECECE),
+                                        width: 2)),
+                              ),
+                              child: Center(
+                                child: AutoSizeText(
+                                  "BOLETIM",
+                                  maxFontSize: 16,
+                                  minFontSize: 14,
+                                  style: TextStyle(
                                       color: abaBoletim
                                           ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
-                            ),
-                            child: Center(
-                              child: AutoSizeText(
-                                "BOLETIM",
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(
-                                    color: abaBoletim
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                          : Color(0xff9f9f9f),
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              abaDados = false;
-                              abaBoletim = false;
-                              abaFrequencia = true;
-                            });
-                          },
-                          child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                              top: screenHeight * 2.2,
-                              bottom: screenHeight * 2.2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                abaDados = false;
+                                abaBoletim = false;
+                                abaFrequencia = true;
+                              });
+                            },
+                            child: Container(
+                              width: (MediaQuery.of(context).size.width / 100) *
+                                  33.33,
+                              padding: EdgeInsets.only(
+                                top: screenHeight * 2.2,
+                                bottom: screenHeight * 2.2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: abaFrequencia
+                                            ? Color(0xffC65D00)
+                                            : Color(0xffCECECE),
+                                        width: 2)),
+                              ),
+                              child: Center(
+                                child: AutoSizeText(
+                                  "FREQUÊNCIA",
+                                  maxFontSize: 16,
+                                  minFontSize: 14,
+                                  style: TextStyle(
                                       color: abaFrequencia
                                           ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
-                            ),
-                            child: Center(
-                              child: AutoSizeText(
-                                "FREQUÊNCIA",
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(
-                                    color: abaFrequencia
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                          : Color(0xff9f9f9f),
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    )),
-                    content(context, screenHeight, widget.student)
-                  ],
-                )
-              ],
+                          )
+                        ],
+                      )),
+                      content(context, screenHeight, widget.student)
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
