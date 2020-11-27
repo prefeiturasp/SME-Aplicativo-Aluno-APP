@@ -216,6 +216,7 @@ class _FrequencyState extends State<Frequency> {
               _comp.curricularComponent,
               screenHeight,
             ),
+            SizedBox(height: screenHeight * 2,),
           ],
         ),
       ),
@@ -279,9 +280,8 @@ class _FrequencyState extends State<Frequency> {
       );
     },
     body: Container(
-      height: screenHeight * 100,
       decoration: BoxDecoration(
-          border: Border(
+        border: Border(
         top: BorderSide(
           color: Color(0xffDBDBDB),
           width: 1.0,
@@ -318,16 +318,9 @@ class _FrequencyState extends State<Frequency> {
       return _frequencyExpandedPanel(entry.key, size, screenHeight);
     }).toList();
 
-    return Container(
-      height: screenHeight * 60,
-      child: ListView(
-        children: [
-          ExpansionPanelList(
-            expansionCallback: _frequencyExpansionPanelCallback,
-            children: _children,
-          ),
-        ],
-      )
+    return ExpansionPanelList(
+      expansionCallback: _frequencyExpansionPanelCallback,
+      children: _children,
     );
   }
 
@@ -363,7 +356,7 @@ class _FrequencyState extends State<Frequency> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Container(
-      height: MediaQuery.of(context).size.height,
+      // height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(screenHeight * 2.5),
       child: Column(
         children: [
