@@ -43,7 +43,6 @@ class _ResumeStudantsState extends State<ResumeStudants> {
           codigoUe: widget.student.codigoEscola,
           id: widget.userId,
         ),
-        height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
     }
 
