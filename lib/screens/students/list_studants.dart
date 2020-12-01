@@ -172,8 +172,7 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_studentsController.isLoading ||
-                          _studentsController.dataEstudent == null) {
+                      if (_studentsController.isLoading) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -182,32 +181,38 @@ class _ListStudantsState extends State<ListStudants> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        return ListView.builder(
-                          itemCount:
-                              _studentsController.dataEstudent.data.length,
-                          itemBuilder: (context, index) {
-                            final dados = _studentsController.dataEstudent.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                TagCustom(
-                                  text: "${dados[index].grupo}",
-                                  color: Color(0xffC65D00),
-                                ),
-                                SizedBox(
-                                  height: screenHeight * 2,
-                                ),
-                                _listStudents(
-                                  dados[index].students,
-                                  context,
-                                  dados[index].grupo,
-                                  dados[index].codigoGrupo,
-                                  widget.userId,
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        if (_studentsController.dataEstudent.data == null) {
+                          Auth.logout(context, widget.userId, true);
+                          return Container();
+                        } else {
+                          return ListView.builder(
+                            itemCount:
+                                _studentsController.dataEstudent.data.length,
+                            itemBuilder: (context, index) {
+                              final dados =
+                                  _studentsController.dataEstudent.data;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  TagCustom(
+                                    text: "${dados[index].grupo}",
+                                    color: Color(0xffC65D00),
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 2,
+                                  ),
+                                  _listStudents(
+                                    dados[index].students,
+                                    context,
+                                    dados[index].grupo,
+                                    dados[index].codigoGrupo,
+                                    widget.userId,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
                     }))
               ],
