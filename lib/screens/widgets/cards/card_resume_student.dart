@@ -19,7 +19,7 @@ class CardResumeStudent extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
-      margin: EdgeInsets.only(top: screenHeight * 3),
+      margin: EdgeInsets.only(top: screenHeight * 1),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
