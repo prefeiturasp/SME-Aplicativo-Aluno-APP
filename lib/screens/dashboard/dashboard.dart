@@ -158,9 +158,6 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  SizedBox(
-                    height: screenHeight * 2.5,
-                  ),
                   CardResumeStudent(
                     student: widget.student,
                     groupSchool: widget.groupSchool,

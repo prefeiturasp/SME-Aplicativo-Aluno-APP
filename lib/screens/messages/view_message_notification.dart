@@ -63,7 +63,6 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
         context,
         ListStudants(
           userId: user.id,
-          password: "password",
         ));
   }
 

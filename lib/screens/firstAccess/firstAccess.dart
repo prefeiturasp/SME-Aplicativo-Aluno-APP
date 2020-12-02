@@ -11,7 +11,6 @@ import 'package:get_ip/get_ip.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
-import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
@@ -77,7 +76,6 @@ class _FirstAccessState extends State<FirstAccess> {
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
           builder: (_) => ChangeEmailOrPhone(
                 cpf: widget.cpf,
-                password: _password,
                 userId: widget.id,
               )));
     } else {
