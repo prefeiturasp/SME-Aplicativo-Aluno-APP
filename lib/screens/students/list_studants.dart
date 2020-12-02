@@ -21,9 +21,8 @@ import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
   final int userId;
-  final String password;
 
-  ListStudants({@required this.userId, this.password});
+  ListStudants({@required this.userId});
 
   @override
   _ListStudantsState createState() => _ListStudantsState();
@@ -58,6 +57,11 @@ class _ListStudantsState extends State<ListStudants> {
     }
 
     BackgroundFetch.finish(taskId);
+  }
+
+  _logoutUser() async {
+    List<User> findUsers = await _userService.all();
+    await Auth.logout(context, findUsers[0].id, true);
   }
 
   Widget _itemCardStudent(BuildContext context, Student model,
@@ -181,8 +185,9 @@ class _ListStudantsState extends State<ListStudants> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        if (_studentsController.dataEstudent.data == null) {
-                          Auth.logout(context, widget.userId, true);
+                        if (_studentsController.dataEstudent.data == null &&
+                            widget.userId != null) {
+                          _logoutUser();
                           return Container();
                         } else {
                           return ListView.builder(

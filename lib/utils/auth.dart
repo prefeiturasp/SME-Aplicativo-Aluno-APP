@@ -1,6 +1,7 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
@@ -12,9 +13,10 @@ import 'package:sme_app_aluno/utils/navigator.dart';
 class Auth {
   static logout(BuildContext context, int userId, bool desconected) async {
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-    final UserService _userService = UserService();
-    final MessageService _messageService = MessageService();
-    final GroupMessageService _groupMessageService = GroupMessageService();
+    UserService _userService = UserService();
+    MessageService _messageService = MessageService();
+    GroupMessageService _groupMessageService = GroupMessageService();
+    AuthenticateController _authenticateController = AuthenticateController();
 
     List<Group> groups = await _groupMessageService.all();
     List<Message> messages = await _messageService.all();
@@ -35,6 +37,8 @@ class Auth {
     BackgroundFetch.stop().then((int status) {
       print('[BackgroundFetch] stop success: $status');
     });
+
+    _authenticateController.clearCurrentUser();
 
     Nav.push(
         context,
