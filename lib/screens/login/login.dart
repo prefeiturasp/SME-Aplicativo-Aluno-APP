@@ -72,7 +72,6 @@ class _LoginState extends State<Login> {
             context,
             ChangeEmailOrPhone(
               cpf: _authenticateController.currentUser.data.cpf,
-              password: _password,
               userId: _authenticateController.currentUser.data.id,
             ));
       } else {
@@ -80,7 +79,6 @@ class _LoginState extends State<Login> {
             context,
             ListStudants(
               userId: user.id,
-              password: _password,
             ));
       }
     } else {

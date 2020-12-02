@@ -76,7 +76,6 @@ class _FirstAccessState extends State<FirstAccess> {
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
           builder: (_) => ChangeEmailOrPhone(
                 cpf: widget.cpf,
-                password: _password,
                 userId: widget.id,
               )));
     } else {

@@ -67,7 +67,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
           context,
           ListStudants(
             userId: _authenticateController.user.id,
-            password: "_password",
           ));
     } else {
       Navigator.pushReplacement(
