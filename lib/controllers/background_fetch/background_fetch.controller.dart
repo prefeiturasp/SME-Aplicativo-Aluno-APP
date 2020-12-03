@@ -43,16 +43,20 @@ abstract class _BackgroundFetchControllerBase with Store {
       print('[BackgroundFetch] configure ERROR: $e');
     });
 
-    BackgroundFetch.scheduleTask(
-      TaskConfig(
-        taskId: taskId,
-        delay: delay,
-        periodic: true,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true,
-      ),
-    );
+    try {
+      BackgroundFetch.scheduleTask(
+        TaskConfig(
+          taskId: taskId,
+          delay: delay,
+          periodic: true,
+          forceAlarmManager: true,
+          stopOnTerminate: false,
+          enableHeadless: true,
+        ),
+      ).catchError(print);
+    } catch (ex) {
+      print(ex.toString());
+    }
   }
 
   @action

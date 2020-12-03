@@ -1,7 +1,8 @@
-platform :ios, '12.0'
+platform :ios, '13.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+ENV['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
 
 project 'Runner', {
   'Debug' => :debug,
@@ -47,13 +48,6 @@ def parse_KV_file(file, separator='=')
 end
 
 flutter_ios_podfile_setup
-
-#target 'Runner' do
-#  use_frameworks!
-#  use_modular_headers!
-#
-#  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-#end
 
 target 'Runner' do
   use_frameworks!
@@ -121,6 +115,5 @@ install! 'cocoapods', :disable_input_output_paths => true
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-    # config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
   end
 end
