@@ -128,11 +128,11 @@ class _WrapperState extends State<Wrapper> {
             return ChangeEmailOrPhone(
               cpf: _authenticateController.user.cpf,
               userId: _authenticateController.user.id,
-              password: "_password",
             );
           } else {
             return ListStudants(
-                userId: _authenticateController.user.id, password: "");
+              userId: _authenticateController.user.id,
+            );
           }
         }
       });

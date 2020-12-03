@@ -20,12 +20,10 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ChangeEmailOrPhone extends StatefulWidget {
   final String cpf;
-  final String password;
   final int userId;
 
   ChangeEmailOrPhone({
     @required this.cpf,
-    @required this.password,
     @required this.userId,
   });
 
@@ -113,7 +111,6 @@ class _ChangeEmailOrPhoneState extends State<ChangeEmailOrPhone> {
         MaterialPageRoute(
           builder: (context) => ListStudants(
             userId: widget.userId,
-            password: widget.password,
           ),
         ));
   }

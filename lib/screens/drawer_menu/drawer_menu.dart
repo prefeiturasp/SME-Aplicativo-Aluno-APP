@@ -67,10 +67,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
           context,
           ListStudants(
             userId: _authenticateController.user.id,
-            password: "_password",
           ));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Login()));
     }
   }
 
@@ -195,6 +195,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   MaterialPageRoute(
                       builder: (context) => ResumeStudants(
                             student: widget.student,
+                            userId: widget.userId,
                             groupSchool: widget.groupSchool,
                           )));
             },

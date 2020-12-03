@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +72,6 @@ class _LoginState extends State<Login> {
             context,
             ChangeEmailOrPhone(
               cpf: _authenticateController.currentUser.data.cpf,
-              password: _password,
               userId: _authenticateController.currentUser.data.id,
             ));
       } else {
@@ -81,7 +79,6 @@ class _LoginState extends State<Login> {
             context,
             ListStudants(
               userId: user.id,
-              password: _password,
             ));
       }
     } else {

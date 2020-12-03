@@ -13,6 +13,7 @@ import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'controllers/students/students.controller.dart';
+import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -28,7 +29,9 @@ void main() async {
     );
   }
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color(0xffde9524), // status bar color
+    statusBarColor: Color(0xffde9524),
+    statusBarBrightness: Brightness.dark,
+    // status bar color
   ));
   runApp(MyApp());
 
@@ -38,6 +41,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp() {
     GlobalConfig.Environment = "prod";
+    date_symbol_data_local.initializeDateFormatting();
   }
 
   // This widget is the root of your application.
@@ -59,9 +63,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SME Aplicativo do Aluno',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primaryColor: Color(0xFFEEC25E)),
         home: Wrapper(),
       ),
     );

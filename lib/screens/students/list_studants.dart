@@ -21,9 +21,8 @@ import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
   final int userId;
-  final String password;
 
-  ListStudants({@required this.userId, this.password});
+  ListStudants({@required this.userId});
 
   @override
   _ListStudantsState createState() => _ListStudantsState();
@@ -60,6 +59,11 @@ class _ListStudantsState extends State<ListStudants> {
     BackgroundFetch.finish(taskId);
   }
 
+  _logoutUser() async {
+    List<User> findUsers = await _userService.all();
+    await Auth.logout(context, findUsers[0].id, true);
+  }
+
   Widget _itemCardStudent(BuildContext context, Student model,
       String groupSchool, int codigoGrupo, int userId) {
     return CardStudent(
@@ -68,7 +72,9 @@ class _ListStudantsState extends State<ListStudants> {
           : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
+      codigoEOL: model.codigoEol,
       schooType: model.descricaoTipoEscola,
+      dreName: model.siglaDre,
       onPress: () {
         Nav.push(
             context,
@@ -139,7 +145,6 @@ class _ListStudantsState extends State<ListStudants> {
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
-              color: Colors.white,
               size: screenHeight * 2,
             ),
           ),
@@ -171,8 +176,7 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_studentsController.isLoading ||
-                          _studentsController.dataEstudent == null) {
+                      if (_studentsController.isLoading) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -181,29 +185,39 @@ class _ListStudantsState extends State<ListStudants> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        return ListView.builder(
-                          itemCount:
-                              _studentsController.dataEstudent.data.length,
-                          itemBuilder: (context, index) {
-                            final dados = _studentsController.dataEstudent.data;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                TagCustom(
-                                  text: "${dados[index].grupo}",
-                                  color: Color(0xffC65D00),
-                                ),
-                                _listStudents(
-                                  dados[index].students,
-                                  context,
-                                  dados[index].grupo,
-                                  dados[index].codigoGrupo,
-                                  widget.userId,
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        if (_studentsController.dataEstudent.data == null &&
+                            widget.userId != null) {
+                          _logoutUser();
+                          return Container();
+                        } else {
+                          return ListView.builder(
+                            itemCount:
+                                _studentsController.dataEstudent.data.length,
+                            itemBuilder: (context, index) {
+                              final dados =
+                                  _studentsController.dataEstudent.data;
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  TagCustom(
+                                    text: "${dados[index].grupo}",
+                                    color: Color(0xffC65D00),
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 2,
+                                  ),
+                                  _listStudents(
+                                    dados[index].students,
+                                    context,
+                                    dados[index].grupo,
+                                    dados[index].codigoGrupo,
+                                    widget.userId,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }
                     }))
               ],

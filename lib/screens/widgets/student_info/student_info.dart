@@ -6,6 +6,7 @@ class StudentInfo extends StatelessWidget {
   final String studentName;
   final String schoolName;
   final String schoolType;
+  final String dreName;
   final String studentGrade;
   final int studentEOL;
   final Widget avatar;
@@ -15,6 +16,7 @@ class StudentInfo extends StatelessWidget {
       {@required this.studentName,
       @required this.schoolName,
       @required this.schoolType,
+      @required this.dreName,
       this.studentEOL,
       this.studentGrade,
       this.avatar,
@@ -58,7 +60,7 @@ class StudentInfo extends StatelessWidget {
                       color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 AutoSizeText(
-                  "$schoolType $schoolName",
+                  "$schoolType $schoolName ($dreName)",
                   maxFontSize: 12,
                   minFontSize: 10,
                   style: TextStyle(

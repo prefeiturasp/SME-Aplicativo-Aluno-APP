@@ -62,7 +62,6 @@ class _RedefinePasswordState extends State<RedefinePassword> {
         context,
         ListStudants(
           userId: user.id,
-          password: _password,
         ),
       );
     } else {

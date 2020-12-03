@@ -6,7 +6,6 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/note/list_notes.controller.dart';
-import 'package:sme_app_aluno/controllers/students/students.controller.dart';
 import 'package:sme_app_aluno/screens/notes/notes_body.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
