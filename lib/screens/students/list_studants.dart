@@ -176,7 +176,8 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_studentsController.isLoading) {
+                      if (_studentsController.isLoading ||
+                          _studentsController.dataEstudent == null) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
