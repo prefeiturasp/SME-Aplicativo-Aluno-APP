@@ -8,7 +8,6 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/ue/ue.controller.dart';
 import 'package:sme_app_aluno/screens/data_student/student_body.dart';
 import 'package:sme_app_aluno/screens/data_student/ue_body.dart';
-import 'package:string_validator/string_validator.dart';
 
 class DataStudent extends StatefulWidget {
   final String dataNasc;
@@ -43,70 +42,68 @@ class _DataStudentState extends State<DataStudent> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          StudentBody(
-            dataNasc: widget.dataNasc,
-            codigoEOL: widget.codigoEOL,
-            situacao: widget.situacao,
-          ),
-          Observer(builder: (context) {
-            if (_ueController.isLoading) {
-              return Container(
-                child: GFLoader(
-                  type: GFLoaderType.square,
-                  loaderColorOne: Color(0xffDE9524),
-                  loaderColorTwo: Color(0xffC65D00),
-                  loaderColorThree: Color(0xffC65D00),
-                  size: GFSize.LARGE,
-                ),
-                margin: EdgeInsets.all(screenHeight * 1.5),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        StudentBody(
+          dataNasc: widget.dataNasc,
+          codigoEOL: widget.codigoEOL,
+          situacao: widget.situacao,
+        ),
+        Observer(builder: (context) {
+          if (_ueController.isLoading) {
+            return Container(
+              child: GFLoader(
+                type: GFLoaderType.square,
+                loaderColorOne: Color(0xffDE9524),
+                loaderColorTwo: Color(0xffC65D00),
+                loaderColorThree: Color(0xffC65D00),
+                size: GFSize.LARGE,
+              ),
+              margin: EdgeInsets.all(screenHeight * 1.5),
+            );
+          } else {
+            if (_ueController.dadosUE != null) {
+              return UEBody(
+                dadosUE: _ueController.dadosUE,
               );
             } else {
-              if (_ueController.dadosUE != null) {
-                return UEBody(
-                  dadosUE: _ueController.dadosUE,
-                );
-              } else {
-                return Padding(
-                  padding: EdgeInsets.only(top: screenHeight * 2),
-                  child: Container(
-                    padding: EdgeInsets.all(screenHeight * 2.5),
-                    decoration: BoxDecoration(
-                        color: Color(0xffFFD037),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 2))),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: screenHeight * 2),
-                          child: Icon(
-                            FontAwesomeIcons.flag,
-                            color: Color(0xffC45C04),
-                            size: screenHeight * 2.7,
-                          ),
+              return Padding(
+                padding: EdgeInsets.only(top: screenHeight * 2),
+                child: Container(
+                  padding: EdgeInsets.all(screenHeight * 2.5),
+                  decoration: BoxDecoration(
+                      color: Color(0xffFFD037),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(screenHeight * 2))),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: screenHeight * 2),
+                        child: Icon(
+                          FontAwesomeIcons.flag,
+                          color: Color(0xffC45C04),
+                          size: screenHeight * 2.7,
                         ),
-                        AutoSizeText(
-                          'Dados da Unidade Escolar não disponível',
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(
-                              color: Color(0xffC45C04),
-                              fontWeight: FontWeight.w700),
-                        )
-                      ],
-                    ),
+                      ),
+                      AutoSizeText(
+                        'Dados da Unidade Escolar não disponível',
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: TextStyle(
+                            color: Color(0xffC45C04),
+                            fontWeight: FontWeight.w700),
+                      )
+                    ],
                   ),
-                );
-              }
+                ),
+              );
             }
-          }),
-        ],
-      ),
+          }
+        }),
+      ],
     );
   }
 }
