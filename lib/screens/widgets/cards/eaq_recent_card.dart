@@ -64,7 +64,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     const colorSME = Color(0xff9C33AD);
     const colorUE = Color(0xff5151CF);
-    const colorTURMA = Color(0xff599E00);
+    const colorDRE = Color(0xff599E00);
     return Container(
       width: widget.totalCateories == 1
           ? MediaQuery.of(context).size.width
@@ -102,8 +102,8 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                             ? colorUE
                             : colorUE.withOpacity(0.4)
                         : widget.recent
-                            ? colorTURMA
-                            : colorTURMA.withOpacity(0.4),
+                            ? colorDRE
+                            : colorDRE.withOpacity(0.4),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
@@ -124,7 +124,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                               ? colorSME
                               : widget.message.categoriaNotificacao == "UE"
                                   ? colorUE
-                                  : colorTURMA,
+                                  : colorDRE,
                       size: screenHeight * 2.3,
                     ),
                     SizedBox(
@@ -141,7 +141,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                                   ? colorSME
                                   : widget.message.categoriaNotificacao == "UE"
                                       ? colorUE
-                                      : colorTURMA,
+                                      : colorDRE,
                           fontWeight: FontWeight.w700),
                     ),
                   ],
@@ -160,7 +160,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                                 ? colorSME
                                 : widget.message.categoriaNotificacao == "UE"
                                     ? colorUE
-                                    : colorTURMA,
+                                    : colorDRE,
                         borderRadius: BorderRadius.all(
                           Radius.circular(screenHeight * 1.750),
                         ),
@@ -200,7 +200,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                                       : widget.message.categoriaNotificacao ==
                                               "UE"
                                           ? colorUE
-                                          : colorTURMA),
+                                          : colorDRE),
                             ),
                           )),
                     ),
