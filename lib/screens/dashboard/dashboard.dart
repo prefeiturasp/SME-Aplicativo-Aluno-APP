@@ -76,7 +76,7 @@ class _DashboardState extends State<Dashboard> {
           ? _messagesController.countMessageSME
           : message.categoriaNotificacao == "UE"
               ? _messagesController.countMessageUE
-              : _messagesController.countMessageTurma,
+              : _messagesController.countMessageDRE,
       codigoGrupo: widget.codigoGrupo,
       deleteBtn: false,
       recent: !message.mensagemVisualizada,

@@ -42,7 +42,7 @@ abstract class _MessagesControllerBase with Store {
   int countMessageUE;
 
   @observable
-  int countMessageTurma;
+  int countMessageDRE;
 
   @observable
   bool messageIsRead = false;
@@ -56,8 +56,8 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  loadMessageToFilters(bool turmaCheck, bool smeCheck, bool ueCheck) {
-    filterItems(turmaCheck, smeCheck, ueCheck);
+  loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
+    filterItems(dreCheck, smeCheck, ueCheck);
   }
 
   @action
@@ -78,22 +78,22 @@ abstract class _MessagesControllerBase with Store {
           messages.where((e) => e.categoriaNotificacao == "SME").toList());
       countMessageSME = messagesSME.length;
 
-      final messagesTurma = ObservableList<Message>.of(
-          messages.where((e) => e.categoriaNotificacao == "TURMA").toList());
-      countMessageTurma = messagesTurma.length;
+      final messagesDRE = ObservableList<Message>.of(
+          messages.where((e) => e.categoriaNotificacao == "DRE").toList());
+      countMessageDRE = messagesDRE.length;
 
       final list = ObservableList<Message>();
-
-      if (countMessageUE > 0) {
-        list.add(messagesUe.first);
-      }
 
       if (countMessageSME > 0) {
         list.add(messagesSME.first);
       }
 
-      if (countMessageTurma > 0) {
-        list.add(messagesTurma.first);
+      if (countMessageDRE > 0) {
+        list.add(messagesDRE.first);
+      }
+
+      if (countMessageUE > 0) {
+        list.add(messagesUe.first);
       }
 
       recentMessages = ObservableList<Message>.of(list);
@@ -101,10 +101,10 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
-  void filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
+  void filterItems(bool dreCheck, bool smeCheck, bool ueCheck) {
     if (messages != null) {
       var auxList = ObservableList<Message>();
-      if (smeCheck && ueCheck && turmaCheck) {
+      if (smeCheck && ueCheck && dreCheck) {
         final condition1 = ObservableList<Message>.of(messages);
         condition1.forEach((element) {
           print("condition1");
@@ -112,16 +112,16 @@ abstract class _MessagesControllerBase with Store {
           print("condition1");
         });
         auxList = ObservableList<Message>.of(condition1);
-      } else if (smeCheck && ueCheck && !turmaCheck) {
+      } else if (smeCheck && ueCheck && !dreCheck) {
         final condition2 = ObservableList<Message>.of(
-            messages.where((e) => e.categoriaNotificacao != "TURMA").toList());
+            messages.where((e) => e.categoriaNotificacao != "DRE").toList());
         condition2.forEach((element) {
           print("condition2");
           print(element);
           print("condition2");
         });
         auxList = ObservableList<Message>.of(condition2);
-      } else if (smeCheck && !ueCheck && turmaCheck) {
+      } else if (smeCheck && !ueCheck && dreCheck) {
         final condition3 = ObservableList<Message>.of(messages)
             .where((element) => element.categoriaNotificacao != "UE")
             .toList();
@@ -131,7 +131,7 @@ abstract class _MessagesControllerBase with Store {
           print("condition3");
         });
         auxList = ObservableList<Message>.of(condition3);
-      } else if (smeCheck && !ueCheck && !turmaCheck) {
+      } else if (smeCheck && !ueCheck && !dreCheck) {
         final condition4 = ObservableList<Message>.of(messages)
             .where((element) => element.categoriaNotificacao == "SME")
             .toList();
@@ -141,7 +141,7 @@ abstract class _MessagesControllerBase with Store {
           print("condition4");
         });
         auxList = ObservableList<Message>.of(condition4);
-      } else if (!smeCheck && ueCheck && turmaCheck) {
+      } else if (!smeCheck && ueCheck && dreCheck) {
         final condition5 = ObservableList<Message>.of(messages)
             .where((element) => element.categoriaNotificacao != "SME")
             .toList();
@@ -151,7 +151,7 @@ abstract class _MessagesControllerBase with Store {
           print("condition5");
         });
         auxList = ObservableList<Message>.of(condition5);
-      } else if (!smeCheck && ueCheck && !turmaCheck) {
+      } else if (!smeCheck && ueCheck && !dreCheck) {
         final condition6 = ObservableList<Message>.of(messages)
             .where((element) => element.categoriaNotificacao == "UE")
             .toList();
@@ -161,9 +161,9 @@ abstract class _MessagesControllerBase with Store {
           print("condition6");
         });
         auxList = ObservableList<Message>.of(condition6);
-      } else if (!smeCheck && !ueCheck && turmaCheck) {
+      } else if (!smeCheck && !ueCheck && dreCheck) {
         final condition7 = ObservableList<Message>.of(messages)
-            .where((element) => element.categoriaNotificacao == "TURMA")
+            .where((element) => element.categoriaNotificacao == "DRE")
             .toList();
 
         condition7.forEach((element) {
@@ -173,7 +173,7 @@ abstract class _MessagesControllerBase with Store {
         });
 
         auxList = ObservableList<Message>.of(condition7);
-      } else if (!smeCheck && !ueCheck && !turmaCheck) {
+      } else if (!smeCheck && !ueCheck && !dreCheck) {
         final condition8 = ObservableList<Message>.of([]);
         auxList = ObservableList<Message>.of(condition8);
       }

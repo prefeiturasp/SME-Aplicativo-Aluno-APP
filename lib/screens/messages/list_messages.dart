@@ -32,7 +32,7 @@ class ListMessages extends StatefulWidget {
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
   List<Message> listOfmessages;
-  bool turmaCheck = true;
+  bool dreCheck = true;
   bool smeCheck = true;
   bool ueCheck = true;
 
@@ -249,7 +249,7 @@ class _ListMessageState extends State<ListMessages> {
         );
       } else {
         // _messagesController.loadMessagesNotDeleteds();
-        _messagesController.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
+        _messagesController.loadMessageToFilters(dreCheck, smeCheck, ueCheck);
         if (_messagesController.messages == null ||
             _messagesController.messages.isEmpty) {
           return Container(
@@ -439,22 +439,22 @@ class _ListMessageState extends State<ListMessages> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        turmaCheck = !turmaCheck;
+                        dreCheck = !dreCheck;
                       });
                       _messagesController.filterItems(
-                          turmaCheck, smeCheck, ueCheck);
+                          dreCheck, smeCheck, ueCheck);
                     },
                     child: Chip(
                       backgroundColor:
-                          turmaCheck ? Color(0xffC5DBA0) : Color(0xffDADADA),
-                      avatar: turmaCheck
+                          dreCheck ? Color(0xffC5DBA0) : Color(0xffDADADA),
+                      avatar: dreCheck
                           ? Icon(
                               FontAwesomeIcons.check,
                               size: screenHeight * 2,
                             )
                           : null,
                       label: AutoSizeText(
-                        "TURMA",
+                        "DRE",
                         style: TextStyle(color: Color(0xff42474A)),
                       ),
                     ),
@@ -465,7 +465,7 @@ class _ListMessageState extends State<ListMessages> {
                         smeCheck = !smeCheck;
                       });
                       _messagesController.filterItems(
-                          turmaCheck, smeCheck, ueCheck);
+                          dreCheck, smeCheck, ueCheck);
                     },
                     child: Chip(
                       backgroundColor:
@@ -486,7 +486,7 @@ class _ListMessageState extends State<ListMessages> {
                         ueCheck = !ueCheck;
                       });
                       _messagesController.filterItems(
-                          turmaCheck, smeCheck, ueCheck);
+                          dreCheck, smeCheck, ueCheck);
                     },
                     child: Chip(
                       backgroundColor:
@@ -504,12 +504,12 @@ class _ListMessageState extends State<ListMessages> {
                 ],
               ),
               Observer(builder: (context) {
-                // !turmaCheck && !smeCheck && !ueCheck
+                // !dreCheck && !smeCheck && !ueCheck
                 if (_messagesController.filteredList != null &&
                     _messagesController.filteredList.isNotEmpty) {
                   return _listCardsMessages(
                       _messagesController.filteredList, context, screenHeight);
-                } else if (!turmaCheck && !smeCheck && !ueCheck) {
+                } else if (!dreCheck && !smeCheck && !ueCheck) {
                   return Container(
                     padding: EdgeInsets.all(screenHeight * 2.5),
                     margin: EdgeInsets.only(top: screenHeight * 2.5),
