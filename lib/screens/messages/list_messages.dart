@@ -439,6 +439,27 @@ class _ListMessageState extends State<ListMessages> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
+                        smeCheck = !smeCheck;
+                      });
+                      _messagesController.filterItems(
+                          dreCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
+                      avatar: smeCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("SME",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
                         dreCheck = !dreCheck;
                       });
                       _messagesController.filterItems(
@@ -457,27 +478,6 @@ class _ListMessageState extends State<ListMessages> {
                         "DRE",
                         style: TextStyle(color: Color(0xff42474A)),
                       ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        smeCheck = !smeCheck;
-                      });
-                      _messagesController.filterItems(
-                          dreCheck, smeCheck, ueCheck);
-                    },
-                    child: Chip(
-                      backgroundColor:
-                          smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
-                      avatar: smeCheck
-                          ? Icon(
-                              FontAwesomeIcons.check,
-                              size: screenHeight * 2,
-                            )
-                          : null,
-                      label: AutoSizeText("SME",
-                          style: TextStyle(color: Color(0xff42474A))),
                     ),
                   ),
                   GestureDetector(
