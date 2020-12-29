@@ -147,19 +147,19 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$countMessageTurmaAtom =
-      Atom(name: '_MessagesControllerBase.countMessageTurma');
+  final _$countMessageDREAtom =
+      Atom(name: '_MessagesControllerBase.countMessageDRE');
 
   @override
-  int get countMessageTurma {
-    _$countMessageTurmaAtom.reportRead();
-    return super.countMessageTurma;
+  int get countMessageDRE {
+    _$countMessageDREAtom.reportRead();
+    return super.countMessageDRE;
   }
 
   @override
-  set countMessageTurma(int value) {
-    _$countMessageTurmaAtom.reportWrite(value, super.countMessageTurma, () {
-      super.countMessageTurma = value;
+  set countMessageDRE(int value) {
+    _$countMessageDREAtom.reportWrite(value, super.countMessageDRE, () {
+      super.countMessageDRE = value;
     });
   }
 
@@ -219,11 +219,11 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       ActionController(name: '_MessagesControllerBase');
 
   @override
-  dynamic loadMessageToFilters(bool turmaCheck, bool smeCheck, bool ueCheck) {
+  dynamic loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
     final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
         name: '_MessagesControllerBase.loadMessageToFilters');
     try {
-      return super.loadMessageToFilters(turmaCheck, smeCheck, ueCheck);
+      return super.loadMessageToFilters(dreCheck, smeCheck, ueCheck);
     } finally {
       _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -241,11 +241,11 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
   }
 
   @override
-  void filterItems(bool turmaCheck, bool smeCheck, bool ueCheck) {
+  void filterItems(bool dreCheck, bool smeCheck, bool ueCheck) {
     final _$actionInfo = _$_MessagesControllerBaseActionController.startAction(
         name: '_MessagesControllerBase.filterItems');
     try {
-      return super.filterItems(turmaCheck, smeCheck, ueCheck);
+      return super.filterItems(dreCheck, smeCheck, ueCheck);
     } finally {
       _$_MessagesControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -263,7 +263,7 @@ isLoading: ${isLoading},
 countMessage: ${countMessage},
 countMessageSME: ${countMessageSME},
 countMessageUE: ${countMessageUE},
-countMessageTurma: ${countMessageTurma},
+countMessageDRE: ${countMessageDRE},
 messageIsRead: ${messageIsRead}
     ''';
   }
