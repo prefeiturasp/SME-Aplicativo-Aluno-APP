@@ -1,19 +1,22 @@
+# Estratégia de Transformação Digital e Governo Aberto na SME
+
+Como um governo pode atuar para garantir o bem comum de todos? Na SME, acreditamos que um dos meios para isso seja garantir transparência e prestação de contas e constante relação entre governo e sociedade para o desenvolvimento e implementação de políticas públicas. 
+
+A Portaria SME nº 8.008, de 12 de novembro de 2018 oficializou a estratégia da Secretaria Municipal de Educação de SP para que nossas ações sejam pautadas nos princípios de Governo Aberto e para usarmos os valores e benefícios do mundo digital para melhorarmos nossos processos e serviços para os cidadãos. 
+Com isso, pretendemos: 
+- aumentar os níveis de transparência ativa e de abertura de dados, garantindo a proteção de dados pessoais; 
+- instituir metodologias ágeis e colaborativas como parte do processo de desenvolvimento e de evolução de sistemas administrativos e de serviços digitais; 
+- fortalecer o controle das políticas educacionais e da aplicação de recursos por parte da gestão e da sociedade; 
+- promover espaços e metodologias de colaboração entre governo, academia, sociedade civil e setor privado. 
+
+O [Ateliê do Software](http://forum.govit.prefeitura.sp.gov.br/uploads/default/original/1X/c88a4715eb3f9fc3ceb882c1f6afe9e308805a17.pdf) é uma das ferramentas para operacionalização. Baseado em um modelo de contratação inspirado pelos movimentos ágil e de Software Craftsmanship, trabalhamos com equipes multidisciplinares para o desenvolvimento de produtos que beneficiam toda a comunidade escolar (técnicos da SME e DREs, gestores, professores, alunos e famílias) e concretizam os objetivos da Estratégia de Transformação Digital e Governo Aberto “Pátio Digital”.
+
 # SME-Aplicativo-Aluno-APP (Escola Aqui)
----
 
-> Para as  **famílias e responsáveis dos alunos**  
-> Que  **querem estar em contato com a escola e saber informações pedagógicas dos alunos**  
-> O  **Escola Aqui**  
-> É um  **App Mobile**  
-> Que  **aproxima as pessoas da escola**  
-> Diferentemente de  **grupos do WhatsApp**  
-> O Nosso produto  **aproxima todos os envolvidos no desenvolvimento da educação de qualidade dos alunos (SME/DRE/Escolas/Famílias), garantindo a efetividade dessas comunicações de maneira institucional**
+# Conteúdo
 
-## Conteúdo
----
-
-1.  [Sobre o Time](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Time)
-2.  [Sobre o Produto](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Produto)
+1.  [Sobre o Produto](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Produto)
+2.  [Sobre o Time](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Time)
 3.  [Como surgiu](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Como-surgiu)
 4.  [Links Úteis](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Links-%C3%9Ateis)
 5.  [Comunicação](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Comunica%C3%A7%C3%A3o)
@@ -21,22 +24,23 @@
 7.  [Repositórios](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Reposit%C3%B3rios)
 8.  [Instalação e Configuração](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Instala%C3%A7%C3%A3o-e-Configura%C3%A7%C3%A3o)
 
-
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
----
-
-| Papel | Responsável |
-|--|--|
-| Product Owner | Maria Camila Florêncio |
-| Gerente de Projeto | Aline Freitas |
-| Scrum Master | Allan Bravos |
-| Analista de Negócio | Marlon Gonçalves |
-| Analista UX/UI | Alexandre Costa |
-| Arquiteto | Bruno Alevato |
-| Desenvolvedor Mobile | Diego Collares
-
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-produto)Sobre o Produto
----
+
+## Visão de Futuro
+
+Para as **famílias e responsáveis dos alunos**  
+
+Que **querem estar em contato com a escola e saber informações pedagógicas dos alunos**  
+
+O **Escola Aqui**  
+
+É um **App Mobile**  
+
+Que **aproxima as pessoas da escola**  
+
+Diferentemente de **grupos do WhatsApp**  
+
+O Nosso produto **aproxima todos os envolvidos no desenvolvimento da educação de qualidade dos alunos (SME/DRE/Escolas/Famílias), garantindo a efetividade dessas comunicações de maneira institucional**
 
 ## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#objetivos-de-neg%C3%B3cio)Objetivos de Negócio
 
@@ -68,19 +72,28 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Não é substituto da presença das famílias na escola
 - Não é substituto das informações do Portal Institucional
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#personas)Personas
+## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
 ---
 
-## Responsável
+| Papel | Responsável |
+|--|--|
+| Product Owner | Maria Camila Florêncio |
+| Gerente de Projeto | Aline Freitas |
+| Scrum Master | Allan Bravos |
+| Analista de Negócio | Marlon Gonçalves |
+| Analista UX/UI | Alex Santos |
+| Arquiteto | Bruno Alevato |
+| Desenvolvedor Mobile | Diego Collares |
 
-![responsavel.png](http://amcom.educacao.ws/images/responsavel.png)
+# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#personas)Personas
+
+## Responsável
 
 **Características principais**
 
 - Nem sempre são familiares, podem ser responsáveis e cuidadores de equipamentos públicos
 - Quando o estudante é emancipado ou maior de idade, ele mesmo pode ser o usuário com acesso
 - Usam internet em espaços como CEUs, praças e outros locais públicos e privados
-
 
 **Necessidades**
 
@@ -101,8 +114,6 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 ## Gestor(a) Escolar
 
-![gestor-escolar.png](http://amcom.educacao.ws/images/gestor-escolar.png)
-
 **Características principais**
 
 - Usa o SGP para alimentar os comunicados do app
@@ -122,8 +133,6 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 ## Coordenador de Área SME
 
-![coordenador-de-area.png](http://amcom.educacao.ws/images/coordenador-de-area.png)
-
 **Necessidades**
 
 - Comunicar em nível institucional/em nível de rede
@@ -139,8 +148,6 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 ## DRE
 
-![dre.png](http://amcom.educacao.ws/images/dre.png)
-
 **Necessidades**
 
 - Divulgar campanhas específicas do território
@@ -155,9 +162,9 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Ser reconhecido como canal oficial de comunicação, com informações confíaveis e seguras
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#funcionalidades)Funcionalidades
----
 
-Funcionalidades voltadas para Responsáveis:
+**Funcionalidades voltadas para Responsáveis:**
+
 - Acesso Boletim Bimestral
 - Agenda
 - Frequência
@@ -167,20 +174,18 @@ Funcionalidades voltadas para Responsáveis:
 - Contato com UE
 - Meus dados
 
-Funcionalidades para Gestores UE/DRE/SME:
+**Funcionalidades para Gestores UE/DRE/SME:**
+
 - Cadastro de mensagens
 - Cadastro de documentos
 - Liberação de boletins
 - Dashboard
 
-
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#jornadas)Jornadas
----
 
 ![jornada.png](http://amcom.educacao.ws/images/jornada.png)
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#roadmap)Roadmap
----
 
 Definir um roteiro de lançamento incremental, mostrando claramente os incrementos de MVP  
 Estimar esforço por amostragem  
@@ -226,25 +231,15 @@ Inserir aqui o link para os ambientes utilizados pelo projeto:
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#comunica%C3%A7%C3%A3o)Comunicação
 ---
 
-Canal de comunicação
+# Comunicação:
 
-Objetivos
+| Canal de comunicação | Objetivos |
+|----------------------|-----------|
+| [Issues do Github](https://github.com/prefeiturasp/SME-PTRF/issues) | - Sugestão de novas funcionalidades<br> - Reportar bugs<br> - Discussões técnicas |
 
-[Issues do Github](https://github.com/prefeiturasp/SME-plataforma-curriculo/issues)
+# Como contribuir
 
-- Sugestão de novas funcionalidades  
-- Reportar bugs  
-- Discussões técnicas
-
-[Telegram](https://t.me/patiodigital)
-
-- Comunicar novidades sobre os projetos  
-- Movimentar a comunidade  
-- Falar tópicos que  **não**  demandem discussões profundas
-
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#como-contribuir)Como contribuir
-
-Contribuições são  **super bem vindas**! Se você tem vontade de construir o curriculo digital conosco, veja o nosso  [guia de contribuição](https://github.com/prefeiturasp/SME/blob/master/docs/CONTRIBUTING.md)  onde explicamos detalhadamente como trabalhamos e de que formas você pode nos ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir nosso  [código de conduta](https://github.com/prefeiturasp/SME/blob/master/docs/CODEOFCONDUCT.md).
+Contribuições são **super bem vindas**! Se você tem vontade de construir o Portal Secretaria Municipal de Educação conosco, veja o nosso [guia de contribuição](./CONTRIBUTING.md) onde explicamos detalhadamente como trabalhamos e de que formas você pode nos ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir  nosso [código de conduta](./CODEOFCONDUCT.md).
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#reposit%C3%B3rios)Repositórios
 ---
