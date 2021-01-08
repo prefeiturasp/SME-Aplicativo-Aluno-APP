@@ -21,8 +21,7 @@ O [Ateliê do Software](http://forum.govit.prefeitura.sp.gov.br/uploads/default/
 4.  [Links Úteis](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Links-%C3%9Ateis)
 5.  [Comunicação](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Comunica%C3%A7%C3%A3o)
 6.  [Como contribuir](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#como-contribuir)
-7.  [Repositórios](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Reposit%C3%B3rios)
-8.  [Instalação e Configuração](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Instala%C3%A7%C3%A3o-e-Configura%C3%A7%C3%A3o)
+7.  [Instalação e Configuração](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Instala%C3%A7%C3%A3o-e-Configura%C3%A7%C3%A3o)
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-produto)Sobre o Produto
 
@@ -71,19 +70,6 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Não permite interações dos usuários com a secretaria (comunicação é unilateral)
 - Não é substituto da presença das famílias na escola
 - Não é substituto das informações do Portal Institucional
-
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
----
-
-| Papel | Responsável |
-|--|--|
-| Product Owner | Maria Camila Florêncio |
-| Gerente de Projeto | Aline Freitas |
-| Scrum Master | Allan Bravos |
-| Analista de Negócio | Marlon Gonçalves |
-| Analista UX/UI | Alex Santos |
-| Arquiteto | Bruno Alevato |
-| Desenvolvedor Mobile | Diego Collares |
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#personas)Personas
 
@@ -187,9 +173,22 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#roadmap)Roadmap
 
-Definir um roteiro de lançamento incremental, mostrando claramente os incrementos de MVP  
-Estimar esforço por amostragem  
-Calcular custos e especificar datas e cronograma de entrega
+- Definir um roteiro de lançamento incremental, mostrando claramente os incrementos de MVP  
+- Estimar esforço por amostragem  
+- Calcular custos e especificar datas e cronograma de entrega
+
+## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
+---
+
+| Papel | Responsável |
+|--|--|
+| Product Owner | Maria Camila Florêncio |
+| Gerente de Projeto | Aline Freitas |
+| Scrum Master | Allan Bravos |
+| Analista de Negócio | Marlon Gonçalves |
+| Analista UX/UI | Alex Santos |
+| Arquiteto | Bruno Alevato |
+| Desenvolvedor Mobile | Diego Collares |
 
 ## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#como-surgiu)Como surgiu
 
