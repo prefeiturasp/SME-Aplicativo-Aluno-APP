@@ -228,9 +228,6 @@ Inserir aqui o link para os ambientes utilizados pelo projeto:
 [https://curriculo.sme.prefeitura.sp.gov.br/](https://curriculo.sme.prefeitura.sp.gov.br/)
 
 # [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#comunica%C3%A7%C3%A3o)Comunicação
----
-
-# Comunicação:
 
 | Canal de comunicação | Objetivos |
 |----------------------|-----------|
