@@ -1,81 +1,92 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
+import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/screens/terms/terms_use.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class DrawerMenu extends StatefulWidget {
   final Student student;
   final int codigoGrupo;
-  DrawerMenu({@required this.student, @required this.codigoGrupo});
+  final int userId;
+  final String groupSchool;
+
+  DrawerMenu(
+      {@required this.student,
+      @required this.codigoGrupo,
+      @required this.userId,
+      @required this.groupSchool});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  final Storage _storage = Storage();
-
   AuthenticateController _authenticateController;
   MessagesController _messagesController;
+
   @override
   void initState() {
     super.initState();
     _authenticateController = AuthenticateController();
+    _authenticateController.loadCurrentUser();
   }
 
-  _loadingBackRecentMessage(String token) {
-    setState(() {});
+  _loadingBackRecentMessage() {
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: token);
+    _messagesController.loadMessages(
+      widget.student.codigoEol,
+      _authenticateController.user.id,
+    );
   }
 
-  navigateToListMessages(BuildContext context, Storage storage) async {
-    var _token = await storage.readValueStorage("token") ?? "";
-
+  navigateToListMessages(BuildContext context) async {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ListMessages(
-                  token: _token,
-                  codigoGrupo: widget.codigoGrupo,
-                ))).whenComplete(() => _loadingBackRecentMessage(_token));
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListMessages(
+                userId: _authenticateController.user.id,
+                codigoGrupo: widget.codigoGrupo,
+                codigoAlunoEol: widget.student.codigoEol,
+              )),
+    ).whenComplete(() => _loadingBackRecentMessage());
   }
 
-  // Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => ViewMessage(
-  //             message: _messagesController
-  //                 .messagesNotDeleted.first,
-  //             token: widget.token)))
-  // .whenComplete(() => _loadingBackRecentMessage());
-
-  navigateToListStudents(BuildContext context, Storage storage) async {
-    var _cpf = await storage.readValueStorage("current_cpf") ?? "";
-    var _token = await storage.readValueStorage("token") ?? "";
-    var _password = await storage.readValueStorage("current_password") ?? "";
-    bool isCurrentUser = await storage.containsKey("current_cpf");
-    if (isCurrentUser) {
-      Navigator.push(
+  navigateToListStudents(BuildContext context) async {
+    if (_authenticateController.user != null) {
+      Nav.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => ListStudants(
-                    cpf: _cpf,
-                    token: _token,
-                    password: _password,
-                  )));
+          ListStudants(
+            userId: _authenticateController.user.id,
+          ));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Login()));
     }
+  }
+
+  _navigateToSettings(BuildContext context) async {
+    Nav.push(
+        context,
+        Settings(
+          currentCPF: _authenticateController.user.cpf,
+          email: _authenticateController.user.email,
+          phone: _authenticateController.user.celular,
+          userId: _authenticateController.user.id,
+        ));
+  }
+
+  _navigateToTerms(BuildContext context) {
+    Nav.push(context, TermsUse());
   }
 
   @override
@@ -106,9 +117,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     ),
                   ),
                   Observer(builder: (context) {
-                    if (_authenticateController.currentName != null) {
+                    if (_authenticateController.user != null) {
                       return AutoSizeText(
-                        "${_authenticateController.currentName}",
+                        "${_authenticateController.user.nome}",
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
@@ -140,42 +151,42 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ListTile(
             title: Text('Estudantes'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
+              // radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.userAlt,
+                FontAwesomeIcons.user,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
-              navigateToListStudents(context, _storage);
+              navigateToListStudents(context);
             },
           ),
+          Divider(),
           ListTile(
             title: Text('Mensagens'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.envelopeOpen,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
-              navigateToListMessages(context, _storage);
+              navigateToListMessages(context);
             },
           ),
+          Divider(),
           ListTile(
             title: Text('Frequência / Boletim'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.copy,
                 color: Colors.white,
-                size: screenHeight * 2.3,
+                size: screenHeight * 2,
               ),
             ),
             onTap: () {
@@ -184,25 +195,73 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   MaterialPageRoute(
                       builder: (context) => ResumeStudants(
                             student: widget.student,
+                            userId: widget.userId,
+                            groupSchool: widget.groupSchool,
                           )));
             },
           ),
+          Divider(),
+          ListTile(
+            title: Text('Agenda'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.calendarAlt,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListEvents(
+                          student: widget.student, userId: widget.userId)));
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Meus Dados'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.slidersH,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              _navigateToSettings(context);
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Termos de Uso'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.fileAlt,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              _navigateToTerms(context);
+            },
+          ),
+          Divider(),
           ListTile(
             title: Text('Sair'),
             leading: CircleAvatar(
-              radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.signOutAlt,
                 color: Colors.white,
-                size: screenHeight * 2.5,
+                size: screenHeight * 2,
               ),
             ),
-            onTap: () {
-              BackgroundFetch.stop().then((int status) {
-                print('[BackgroundFetch] stop success: $status');
-              });
-              Auth.logout(context);
+            onTap: () async {
+              Auth.logout(context, _authenticateController.user.id, false);
             },
           ),
         ],

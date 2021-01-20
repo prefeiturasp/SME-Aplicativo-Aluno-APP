@@ -257,4 +257,8 @@ Para compilar a versão com mock:
 
 `flutter build apk -t lib/main.mock.dart Para compilar a versão release:`
 
+<<<<<<< HEAD
 `flutter build apk -t lib/main.dart`
+=======
+`flutter build apk -t lib/main.dart`
+>>>>>>> eaacd60878d012b4f5ea6188f619285ffb0f2aea

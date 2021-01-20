@@ -50,6 +50,7 @@ build/
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/GoogleService-Info.plist
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
@@ -64,3 +65,9 @@ cliente-ws.code-workspace
 pubspec.lock
 *.DS_Store
 *pubspec.lock
+
+*TODO.txt
+*DATA.txt
+
+*.project
+*.last_build_id

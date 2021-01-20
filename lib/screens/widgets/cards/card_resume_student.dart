@@ -7,15 +7,19 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class CardResumeStudent extends StatelessWidget {
   final Student student;
+  final int userId;
+  final String groupSchool;
+  final Widget child;
 
-  CardResumeStudent({@required this.student});
+  CardResumeStudent(
+      {@required this.student, this.groupSchool, this.child, this.userId});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
-      margin: EdgeInsets.only(top: screenHeight * 3),
+      margin: EdgeInsets.only(top: screenHeight * 1),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -33,51 +37,54 @@ class CardResumeStudent extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(screenHeight * 2.5),
+            padding: EdgeInsets.only(
+                top: screenHeight * 2,
+                bottom: screenHeight * 2,
+                left: screenHeight * 2.5,
+                right: screenHeight * 2.5),
             decoration: BoxDecoration(
                 color: Color(0xffEFB330),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2),
                     topRight: Radius.circular(screenHeight * 2))),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  height: screenHeight * 4,
-                  width: screenHeight * 4,
-                  margin: EdgeInsets.only(right: screenHeight * 1),
-                  decoration: BoxDecoration(
-                    color: Color(0xffEFB330),
-                    border: Border.all(
-                      width: screenHeight * 0.3,
-                      color: Colors.white,
+                Row(
+                  children: [
+                    Container(
+                      height: screenHeight * 3,
+                      width: screenHeight * 3,
+                      margin: EdgeInsets.only(right: screenHeight * 1),
+                      child: Center(
+                        child: Icon(
+                          FontAwesomeIcons.userCircle,
+                          size: screenHeight * 3,
+                        ),
+                      ),
                     ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(screenHeight * 2),
-                    ),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      FontAwesomeIcons.user,
-                      color: Colors.white,
-                      size: screenHeight * 2,
-                    ),
-                  ),
+                    AutoSizeText(
+                      "ESTUDANTE",
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    )
+                  ],
                 ),
-                AutoSizeText(
-                  "ESTUDANTE",
-                  maxFontSize: 18,
-                  minFontSize: 16,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w700),
-                )
+                child
               ],
             ),
           ),
           StudentInfo(
             studentName:
-                student.nomeSocial != null ? student.nomeSocial : student.nome,
+                student.nomeSocial != null && student.nomeSocial.isNotEmpty
+                    ? student.nomeSocial
+                    : student.nome,
             schoolName: student.escola,
             schoolType: student.descricaoTipoEscola,
+            dreName: student.siglaDre,
+            studentGrade: student.turma,
+            studentEOL: student.codigoEol,
             padding: EdgeInsets.all(screenHeight * 2.5),
           ),
           Container(
@@ -99,8 +106,10 @@ class CardResumeStudent extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              ResumeStudants(student: student)));
+                          builder: (context) => ResumeStudants(
+                              student: student,
+                              groupSchool: groupSchool,
+                              userId: userId)));
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,0 +1,54 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'background_fetch.controller.dart';
+
+// **************************************************************************
+// StoreGenerator
+// **************************************************************************
+
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+
+mixin _$BackgroundFetchController on _BackgroundFetchControllerBase, Store {
+  final _$responsibleHasStudentAtom =
+      Atom(name: '_BackgroundFetchControllerBase.responsibleHasStudent');
+
+  @override
+  bool get responsibleHasStudent {
+    _$responsibleHasStudentAtom.reportRead();
+    return super.responsibleHasStudent;
+  }
+
+  @override
+  set responsibleHasStudent(bool value) {
+    _$responsibleHasStudentAtom.reportWrite(value, super.responsibleHasStudent,
+        () {
+      super.responsibleHasStudent = value;
+    });
+  }
+
+  final _$initPlatformStateAsyncAction =
+      AsyncAction('_BackgroundFetchControllerBase.initPlatformState');
+
+  @override
+  Future<void> initPlatformState(
+      Function onBackgroundFetch, String taskId, int delay) {
+    return _$initPlatformStateAsyncAction
+        .run(() => super.initPlatformState(onBackgroundFetch, taskId, delay));
+  }
+
+  final _$checkIfResponsibleHasStudentAsyncAction = AsyncAction(
+      '_BackgroundFetchControllerBase.checkIfResponsibleHasStudent');
+
+  @override
+  Future<bool> checkIfResponsibleHasStudent(int userId) {
+    return _$checkIfResponsibleHasStudentAsyncAction
+        .run(() => super.checkIfResponsibleHasStudent(userId));
+  }
+
+  @override
+  String toString() {
+    return '''
+responsibleHasStudent: ${responsibleHasStudent}
+    ''';
+  }
+}
