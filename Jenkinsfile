@@ -19,6 +19,7 @@ pipeline {
        }
 
        stage('Build APK') {
+	when { anyOf { branch 'developer'; branch 'release' } }       
         steps {
           withCredentials([file(credentialsId: 'google-service', variable: 'GOOGLEJSON')]) {
 	  sh 'cp $GOOGLEJSON android/app/google-services.json'	  
@@ -26,6 +27,18 @@ pipeline {
 	  }
         }
       }
+	    
+      stage('Build APK Prod') {
+	when {
+            branch 'master'
+          }      
+        steps {
+          withCredentials([file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSON-PROD')]) {
+	  sh 'cp $GOOGLEJSON-PROD android/app/google-services.json'	  
+          sh 'flutter pub get && flutter build apk'
+	  }
+        }
+      }	    
        stage('sign apk') {
          steps{
            step([$class: 'SignApksBuilder', apksToSign: '**/*.apk', keyAlias: '', keyStoreId: '77b8ac0b-5b0e-4664-8882-3f70e1338484', skipZipalign: true])
