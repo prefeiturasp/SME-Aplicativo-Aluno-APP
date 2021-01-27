@@ -1,4 +1,4 @@
-package com.example.sme_app_aluno
+package br.gov.sp.prefeitura.sme.appaluno
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
