@@ -15,15 +15,15 @@ O [Ateliê do Software](http://forum.govit.prefeitura.sp.gov.br/uploads/default/
 
 # Conteúdo
 
-1.  [Sobre o Produto](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Produto)
-2.  [Sobre o Time](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Sobre-o-Time)
-3.  [Como surgiu](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Como-surgiu)
-4.  [Links Úteis](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Links-%C3%9Ateis)
-5.  [Comunicação](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Comunica%C3%A7%C3%A3o)
-6.  [Como contribuir](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#como-contribuir)
-7.  [Instalação e Configuração](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#Instala%C3%A7%C3%A3o-e-Configura%C3%A7%C3%A3o)
+1.  [Sobre o Produto](#sobre-o-produto)
+2.  [Sobre o Time](#sobre-o-time)
+3.  [Como surgiu](#como-surgiu)
+4.  [Links Úteis](#links-uteis)
+5.  [Comunicação](#comunicação)
+6.  [Como contribuir](#como-contribuir)
+7.  [Instalação e Configuração](#instalação-e-configuração)
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-produto)Sobre o Produto
+# Sobre o Produto
 
 ## Visão de Futuro
 
@@ -39,9 +39,9 @@ Que **aproxima as pessoas da escola**
 
 Diferentemente de **grupos do WhatsApp**  
 
-O Nosso produto **aproxima todos os envolvidos no desenvolvimento da educação de qualidade dos alunos (SME/DRE/Escolas/Famílias), garantindo a efetividade dessas comunicações de maneira institucional**
+O Nosso produto **aproxima todos os envolvidos no desenvolvimento da educação de qualidade dos alunos (SME/DRE/Escolas/Famílias), garantindo a efetividade dessas comunicações de maneira institucional.**
 
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#objetivos-de-neg%C3%B3cio)Objetivos de Negócio
+## Objetivos de Negócio
 
 O Escola Aqui é um aplicativo oficial da SME que:
 
@@ -71,7 +71,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Não é substituto da presença das famílias na escola
 - Não é substituto das informações do Portal Institucional
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#personas)Personas
+# Personas
 
 ## Responsável
 
@@ -147,7 +147,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Segurança de que as informações mais relevantes estariam disponibilizadas no app
 - Ser reconhecido como canal oficial de comunicação, com informações confíaveis e seguras
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#funcionalidades)Funcionalidades
+# Funcionalidades
 
 **Funcionalidades voltadas para Responsáveis:**
 
@@ -167,18 +167,17 @@ O Escola Aqui é um aplicativo oficial da SME que:
 - Liberação de boletins
 - Dashboard
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#jornadas)Jornadas
+# Jornadas
 
 ![jornada.png](http://amcom.educacao.ws/images/jornada.png)
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#roadmap)Roadmap
+# Roadmap
 
 - Definir um roteiro de lançamento incremental, mostrando claramente os incrementos de MVP  
 - Estimar esforço por amostragem  
 - Calcular custos e especificar datas e cronograma de entrega
 
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#sobre-o-time)Sobre o Time:
----
+# Sobre o Time
 
 | Papel | Responsável |
 |--|--|
@@ -190,9 +189,9 @@ O Escola Aqui é um aplicativo oficial da SME que:
 | Arquiteto | Bruno Alevato |
 | Desenvolvedor Mobile | Diego Collares |
 
-## [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#como-surgiu)Como surgiu
+# Como surgiu
 
-### [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#fase-de-descoberta)Fase de Descoberta:
+## Fase de Descoberta
 
 **Entrevista com a área de negócio:**
 
@@ -206,7 +205,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 [https://smeprefeituraspgov.sharepoint.com/sites/amcom/Shared%20Documents/Forms/AllItems.aspx?viewid=086a7575%2Dba9c%2D474d%2D879e%2D2277cb17dcfe&id=%2Fsites%2Famcom%2FShared%20Documents%2FAMCom%2FDesign%20Thinking](https://smeprefeituraspgov.sharepoint.com/sites/amcom/Shared%20Documents/Forms/AllItems.aspx?viewid=086a7575%2Dba9c%2D474d%2D879e%2D2277cb17dcfe&id=%2Fsites%2Famcom%2FShared%20Documents%2FAMCom%2FDesign%20Thinking)
 
-### [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#prot%C3%B3tipos)Protótipos:
+## Protótipos
 
 ![prototipo-escola-aqui.png](http://amcom.educacao.ws/images/prototipo-escola-aqui.png)
 
@@ -214,8 +213,7 @@ O Escola Aqui é um aplicativo oficial da SME que:
 
 [https://www.figma.com/proto/kWXWnzOiKlRH2Mfouhi53I/CONTRATOS?node-id=1867%3A54139&viewport=2599%2C-936%2C0.25&scaling=min-zoom](https://www.figma.com/proto/kWXWnzOiKlRH2Mfouhi53I/CONTRATOS?node-id=1867%3A54139&viewport=2599%2C-936%2C0.25&scaling=min-zoom "https://www.figma.com/proto/kwxwnzoiklrh2mfouhi53i/contratos?node-id=1867%3a54139&viewport=2599%2c-936%2c0.25&scaling=min-zoom")
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#links-%C3%BAteis)Links Úteis
----
+# Links Úteis
 
 Inserir aqui o link para os ambientes utilizados pelo projeto:
 
@@ -227,7 +225,7 @@ Inserir aqui o link para os ambientes utilizados pelo projeto:
 
 [https://curriculo.sme.prefeitura.sp.gov.br/](https://curriculo.sme.prefeitura.sp.gov.br/)
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#comunica%C3%A7%C3%A3o)Comunicação
+# Comunicação
 
 | Canal de comunicação | Objetivos |
 |----------------------|-----------|
@@ -237,8 +235,7 @@ Inserir aqui o link para os ambientes utilizados pelo projeto:
 
 Contribuições são **super bem vindas**! Se você tem vontade de construir o Escola Aqui conosco, veja o nosso [guia de contribuição](./CONTRIBUTING.md) onde explicamos detalhadamente como trabalhamos e de que formas você pode nos ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir  nosso [código de conduta](./CODEOFCONDUCT.md).
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#reposit%C3%B3rios)Repositórios
----
+# Repositórios
 
 [SME-SGP API]
 
@@ -246,8 +243,7 @@ Contribuições são **super bem vindas**! Se você tem vontade de construir o E
 
 [SME-SGP BACK]
 
-# [](https://github.com/prefeiturasp/SME/blob/master/docs/TemplateREADME.md#instala%C3%A7%C3%A3o-e-configura%C3%A7%C3%A3o)Instalação e Configuração
----
+# Instalação e Configuração
 
 Para iniciar o desenvolvimento da aplicação primeiro você precisa ter o Flutter instalado. A versão utilizada atualmente é a `v1.12.13+hotfix.8`. Depois é preciso obter os pacotes (dependências) do dart:
 
@@ -261,4 +257,8 @@ Para compilar a versão com mock:
 
 `flutter build apk -t lib/main.mock.dart Para compilar a versão release:`
 
+<<<<<<< HEAD
 `flutter build apk -t lib/main.dart`
+=======
+`flutter build apk -t lib/main.dart`
+>>>>>>> eaacd60878d012b4f5ea6188f619285ffb0f2aea

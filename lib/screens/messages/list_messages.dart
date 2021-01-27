@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,28 +5,36 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/messages.controller.dart';
+import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
+import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
+import 'package:sme_app_aluno/screens/widgets/filters/eaq_filter_page.dart';
+import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
-import 'package:sme_app_aluno/utils/storage.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
 class ListMessages extends StatefulWidget {
-  final String token;
   final int codigoGrupo;
-  ListMessages({@required this.token, @required this.codigoGrupo});
+  final int codigoAlunoEol;
+  final int userId;
+
+  ListMessages(
+      {@required this.codigoGrupo,
+      @required this.codigoAlunoEol,
+      @required this.userId});
   _ListMessageState createState() => _ListMessageState();
 }
 
 class _ListMessageState extends State<ListMessages> {
   MessagesController _messagesController;
-  Storage storage;
-
   List<Message> listOfmessages;
+  bool dreCheck = true;
+  bool smeCheck = true;
+  bool ueCheck = true;
 
   @override
   void initState() {
@@ -38,9 +44,9 @@ class _ListMessageState extends State<ListMessages> {
   }
 
   _loadingMessages() {
+    setState(() {});
     _messagesController = MessagesController();
-    _messagesController.loadMessages(token: widget.token);
-    _messagesController.subscribeGroupIdToFirebase();
+    _messagesController.loadMessages(widget.codigoAlunoEol, widget.userId);
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
@@ -54,7 +60,12 @@ class _ListMessageState extends State<ListMessages> {
               FlatButton(
                   child: Text("SIM"),
                   onPressed: () {
-                    _removeMesageToStorage(id);
+                    _removeMesageToStorage(
+                      widget.codigoAlunoEol,
+                      id,
+                      widget.userId,
+                    );
+
                     Navigator.of(context).pop(true);
                   }),
               FlatButton(
@@ -68,149 +79,165 @@ class _ListMessageState extends State<ListMessages> {
         });
   }
 
-  _removeMesageToStorage(int id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> ids = [];
-    String currentName = prefs.getString("current_name");
-    String json = prefs.getString("${currentName}_deleted_id");
-    if (json != null) {
-      ids = jsonDecode(json).cast<String>();
-    }
-    ids.add(id.toString());
-    prefs.setString("${currentName}_deleted_id", jsonEncode(ids));
+  _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
+    await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
-  Widget _listCardsMessages(List<Message> messages, BuildContext context,
-      double screenHeight, String token) {
+  _navigateToMessage(BuildContext context, Message message) {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ViewMessage(
+                    userId: widget.userId,
+                    message: message,
+                    codigoAlunoEol: widget.codigoAlunoEol)))
+        .whenComplete(() => _loadingMessages());
+  }
+
+  Widget _listCardsMessages(
+    List<Message> messages,
+    BuildContext context,
+    double screenHeight,
+  ) {
     return new Column(
         children: messages
-            .where((e) => e.id != messages[0].id)
+            .where((e) => e.id != _messagesController.messages[0].id)
             .toList()
-            .map((item) => CardMessage(
-                  headerTitle: "ASSUNTO",
-                  headerIcon: false,
-                  recentMessage: !item.mensagemVisualizada,
-                  content: <Widget>[
-                    AutoSizeText(
-                      item.titulo,
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: !item.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
-                          fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 1.8,
-                    ),
-                    Container(
-                      width: screenHeight * 41,
-                      child: AutoSizeText(
-                        StringSupport.parseHtmlString(
-                            StringSupport.truncateEndString(
-                                item.mensagem, 250)),
+            .map((item) => GestureDetector(
+                  onTap: () {
+                    _navigateToMessage(context, item);
+                  },
+                  child: CardMessage(
+                    headerTitle: item.categoriaNotificacao,
+                    headerIcon: true,
+                    recentMessage: !item.mensagemVisualizada,
+                    categoriaNotificacao: item.categoriaNotificacao,
+                    content: <Widget>[
+                      Container(
+                        width: screenHeight * 39,
+                        child: AutoSizeText(
+                          item.titulo,
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                          maxLines: 2,
+                          style: TextStyle(
+                              color: Color(0xff42474A),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenHeight * 1.8,
+                      ),
+                      Container(
+                        width: screenHeight * 39,
+                        child: AutoSizeText(
+                          StringSupport.parseHtmlString(
+                              StringSupport.truncateEndString(
+                                  item.mensagem, 250)),
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                          maxLines: 10,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Color(0xff929292),
+                              height: screenHeight * 0.240),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenHeight * 3,
+                      ),
+                      AutoSizeText(
+                        DateFormatSuport.formatStringDate(
+                            item.criadoEm, 'dd/MM/yyyy'),
                         maxFontSize: 16,
                         minFontSize: 14,
-                        maxLines: 10,
-                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyle(
-                            color: !item.mensagemVisualizada
-                                ? Colors.white
-                                : Color(0xff666666),
-                            height: screenHeight * 0.240),
+                            color: Color(0xff929292),
+                            fontWeight: FontWeight.w700),
                       ),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 3,
-                    ),
-                    AutoSizeText(
-                      DateFormatSuport.formatStringDate(
-                          item.criadoEm, 'dd/MM/yyyy'),
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: !item.mensagemVisualizada
-                              ? Colors.white
-                              : Color(0xff666666),
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                  footer: true,
-                  footerContent: <Widget>[
-                    GestureDetector(
-                      onTap: () => _confirmDeleteMessage(item.id),
-                      child: Container(
-                        width: screenHeight * 6,
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
-                          ),
-                        ),
-                        child: Icon(
-                          FontAwesomeIcons.trashAlt,
-                          color: Color(0xffC65D00),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Container(
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
-                          ),
-                        ),
-                        child: FlatButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ViewMessage(
-                                          message: item,
-                                          token: widget.token,
-                                        )))
-                                .whenComplete(() => _loadingMessages());
+                    ],
+                    footer: true,
+                    footerContent: <Widget>[
+                      Visibility(
+                        visible: item.mensagemVisualizada,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await _confirmDeleteMessage(item.id);
                           },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              AutoSizeText(
-                                "LER MENSAGEM",
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(
-                                    color: Color(0xffC65D00),
-                                    fontWeight: FontWeight.w700),
+                          child: Container(
+                            width: screenHeight * 6,
+                            height: screenHeight * 6,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Color(0xffC65D00), width: 1),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(screenHeight * 3),
                               ),
-                              SizedBox(
-                                width: screenHeight * 2,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.envelopeOpen,
-                                color: Color(0xffffd037),
-                                size: 16,
-                              )
-                            ],
+                            ),
+                            child: Icon(
+                              FontAwesomeIcons.trashAlt,
+                              color: Color(0xffC65D00),
+                              size: screenHeight * 2.5,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        child: Container(
+                          height: screenHeight * 6,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Color(0xffC65D00), width: 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(screenHeight * 3),
+                            ),
+                          ),
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ViewMessage(
+                                            message: item,
+                                            codigoAlunoEol:
+                                                widget.codigoAlunoEol,
+                                            userId: widget.userId,
+                                          )))
+                                  .whenComplete(() => _loadingMessages());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                AutoSizeText(
+                                  "LER MENSAGEM",
+                                  maxFontSize: 16,
+                                  minFontSize: 14,
+                                  style: TextStyle(
+                                      color: Color(0xffC65D00),
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                SizedBox(
+                                  width: screenHeight * 2,
+                                ),
+                                Icon(
+                                  FontAwesomeIcons.envelopeOpen,
+                                  color: Color(0xffffd037),
+                                  size: 16,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ))
             .toList());
   }
 
-  Widget _buildListMessages(
-      BuildContext context, num screenHeight, String token) {
+  Widget _buildListMessages(BuildContext context, num screenHeight) {
     return Observer(builder: (context) {
       if (_messagesController.isLoading) {
         return GFLoader(
@@ -221,16 +248,15 @@ class _ListMessageState extends State<ListMessages> {
           size: GFSize.LARGE,
         );
       } else {
-        _messagesController.messagesPerGroups(widget.codigoGrupo);
-        _messagesController.loadMessagesNotDeleteds();
-
-        if (_messagesController.messagesNotDeleted == null ||
-            _messagesController.messagesNotDeleted.isEmpty) {
+        // _messagesController.loadMessagesNotDeleteds();
+        _messagesController.loadMessageToFilters(dreCheck, smeCheck, ueCheck);
+        if (_messagesController.messages == null ||
+            _messagesController.messages.isEmpty) {
           return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Visibility(
-                visible: _messagesController.messagesNotDeleted != null &&
-                    _messagesController.messagesNotDeleted.isEmpty,
+                visible: _messagesController.messages != null &&
+                    _messagesController.messages.isEmpty,
                 child: Column(
                   children: <Widget>[
                     AutoSizeText(
@@ -258,148 +284,263 @@ class _ListMessageState extends State<ListMessages> {
                 style: TextStyle(
                     color: Color(0xffDE9524), fontWeight: FontWeight.w500),
               ),
-              CardMessage(
-                headerTitle: "ASSUNTO",
-                headerIcon: true,
-                recentMessage: !_messagesController
-                    .messagesNotDeleted.first.mensagemVisualizada,
-                content: <Widget>[
-                  AutoSizeText(
-                    _messagesController.messagesNotDeleted.first.titulo,
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: !_messagesController
-                                .messagesNotDeleted.first.mensagemVisualizada
-                            ? Colors.white
-                            : Color(0xff666666),
-                        fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 1.8,
-                  ),
-                  Container(
-                    width: screenHeight * 41,
-                    child: AutoSizeText(
-                      StringSupport.parseHtmlString(_messagesController
-                          .messagesNotDeleted.first.mensagem),
+              GestureDetector(
+                onTap: () {
+                  _navigateToMessage(
+                      context, _messagesController.messages.first);
+                },
+                child: CardMessage(
+                  headerTitle:
+                      _messagesController.messages.first.categoriaNotificacao,
+                  headerIcon: true,
+                  recentMessage:
+                      !_messagesController.messages.first.mensagemVisualizada,
+                  categoriaNotificacao:
+                      _messagesController.messages.first.categoriaNotificacao,
+                  content: <Widget>[
+                    Container(
+                      width: screenHeight * 39,
+                      child: AutoSizeText(
+                        _messagesController.messages.first.titulo,
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: Color(0xff42474A),
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 1.8,
+                    ),
+                    Container(
+                      width: screenHeight * 39,
+                      child: AutoSizeText(
+                        StringSupport.parseHtmlString(
+                            _messagesController.messages.first.mensagem),
+                        maxFontSize: 16,
+                        minFontSize: 14,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Color(0xff929292),
+                          height: screenHeight * 0.240,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 3,
+                    ),
+                    AutoSizeText(
+                      DateFormatSuport.formatStringDate(
+                          _messagesController.messages.first.criadoEm,
+                          'dd/MM/yyyy'),
                       maxFontSize: 16,
                       minFontSize: 14,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                       style: TextStyle(
-                        color: !_messagesController
-                                .messagesNotDeleted.first.mensagemVisualizada
-                            ? Colors.white
-                            : Color(0xff666666),
-                        height: screenHeight * 0.240,
-                      ),
+                          color: Color(0xff929292),
+                          fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 3,
-                  ),
-                  AutoSizeText(
-                    DateFormatSuport.formatStringDate(
-                        _messagesController.messagesNotDeleted.first.criadoEm,
-                        'dd/MM/yyyy'),
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    maxLines: 2,
-                    style: TextStyle(
-                        color: !_messagesController
-                                .messagesNotDeleted.first.mensagemVisualizada
-                            ? Colors.white
-                            : Color(0xff666666),
-                        fontWeight: FontWeight.w700),
-                  ),
-                ],
-                footer: true,
-                footerContent: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      _confirmDeleteMessage(
-                          _messagesController.messagesNotDeleted.first.id);
-                    },
-                    child: Container(
-                      width: screenHeight * 6,
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
-                        ),
-                      ),
-                      child: Icon(
-                        FontAwesomeIcons.trashAlt,
-                        color: Color(0xffC65D00),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Container(
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
-                        ),
-                      ),
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ViewMessage(
-                                            token: token,
-                                            message: _messagesController
-                                                .messagesNotDeleted.first,
-                                          )))
+                  ],
+                  footer: true,
+                  footerContent: <Widget>[
+                    Visibility(
+                      visible: _messagesController
+                          .messages.first.mensagemVisualizada,
+                      child: GestureDetector(
+                        onTap: () async {
+                          await _confirmDeleteMessage(
+                                  _messagesController.messages.first.id)
                               .whenComplete(() => _loadingMessages());
                         },
-                        child: Row(
-                          children: <Widget>[
-                            AutoSizeText(
-                              "LER MENSAGEM",
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              style: TextStyle(
-                                  color: Color(0xffC65D00),
-                                  fontWeight: FontWeight.w700),
+                        child: Container(
+                          width: screenHeight * 6,
+                          height: screenHeight * 6,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Color(0xffC65D00), width: 1),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(screenHeight * 3),
                             ),
-                            SizedBox(
-                              width: screenHeight * 2,
-                            ),
-                            Icon(
-                              FontAwesomeIcons.envelopeOpen,
-                              color: Color(0xffffd037),
-                              size: 16,
-                            )
-                          ],
+                          ),
+                          child: Icon(
+                            FontAwesomeIcons.trashAlt,
+                            color: Color(0xffC65D00),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      child: Container(
+                        height: screenHeight * 6,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xffC65D00), width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 3),
+                          ),
+                        ),
+                        child: FlatButton(
+                          onPressed: () {
+                            _navigateToMessage(
+                                context, _messagesController.messages.first);
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              AutoSizeText(
+                                "LER MENSAGEM",
+                                maxFontSize: 16,
+                                minFontSize: 14,
+                                style: TextStyle(
+                                    color: Color(0xffC65D00),
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: screenHeight * 2,
+                              ),
+                              Icon(
+                                FontAwesomeIcons.envelopeOpen,
+                                color: Color(0xffffd037),
+                                size: 16,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: screenHeight * 5,
               ),
-              _messagesController.messagesNotDeleted.length == 1
+              _messagesController.messages.length == 1
                   ? Container()
                   : AutoSizeText(
-                      (_messagesController.messagesNotDeleted.length - 1) == 1
-                          ? "${_messagesController.messagesNotDeleted.length - 1} MENSAGEM ANTIGA"
-                          : "${_messagesController.messagesNotDeleted.length - 1} MENSAGENS ANTIGAS",
+                      (_messagesController.messages.length - 1) == 1
+                          ? "${_messagesController.messages.length - 1} MENSAGEM ANTIGA"
+                          : "${_messagesController.messages.length - 1} MENSAGENS ANTIGAS",
                       maxFontSize: 18,
                       minFontSize: 16,
                       style: TextStyle(
                           color: Color(0xffDE9524),
                           fontWeight: FontWeight.w500),
                     ),
-              _listCardsMessages(_messagesController.messagesNotDeleted,
-                  context, screenHeight, token)
+              EAQFilterPage(
+                items: <Widget>[
+                  AutoSizeText(
+                    "Filtro:",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Color(0xff666666)),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        smeCheck = !smeCheck;
+                      });
+                      _messagesController.filterItems(
+                          dreCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          smeCheck ? Color(0xffEFA2FC) : Color(0xffDADADA),
+                      avatar: smeCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("SME",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        dreCheck = !dreCheck;
+                      });
+                      _messagesController.filterItems(
+                          dreCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          dreCheck ? Color(0xffC5DBA0) : Color(0xffDADADA),
+                      avatar: dreCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText(
+                        "DRE",
+                        style: TextStyle(color: Color(0xff42474A)),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        ueCheck = !ueCheck;
+                      });
+                      _messagesController.filterItems(
+                          dreCheck, smeCheck, ueCheck);
+                    },
+                    child: Chip(
+                      backgroundColor:
+                          ueCheck ? Color(0xffC7C7FF) : Color(0xffDADADA),
+                      avatar: ueCheck
+                          ? Icon(
+                              FontAwesomeIcons.check,
+                              size: screenHeight * 2,
+                            )
+                          : null,
+                      label: AutoSizeText("UE",
+                          style: TextStyle(color: Color(0xff42474A))),
+                    ),
+                  )
+                ],
+              ),
+              Observer(builder: (context) {
+                // !dreCheck && !smeCheck && !ueCheck
+                if (_messagesController.filteredList != null &&
+                    _messagesController.filteredList.isNotEmpty) {
+                  return _listCardsMessages(
+                      _messagesController.filteredList, context, screenHeight);
+                } else if (!dreCheck && !smeCheck && !ueCheck) {
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 2.5),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Selecione uma categoria para visualizar as mensagens.",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    padding: EdgeInsets.all(screenHeight * 4),
+                    margin: EdgeInsets.only(top: screenHeight * 2.5),
+                    child: AutoSizeText(
+                      "Não foi encontrada nenhuma mensagem para este filtro",
+                      textAlign: TextAlign.center,
+                      minFontSize: 14,
+                      maxFontSize: 16,
+                      style: TextStyle(
+                        color: Color(0xff727374),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                }
+              }),
             ],
           );
         }
@@ -409,39 +550,48 @@ class _ListMessageState extends State<ListMessages> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
-    return Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      appBar: AppBar(
-        title: Text("Mensagens"),
-        backgroundColor: Color(0xffEEC25E),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop(true);
-          },
+    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    if (connectionStatus == ConnectivityStatus.Offline) {
+      // BackgroundFetch.stop().then((int status) {
+      //   print('[BackgroundFetch] stop success: $status');
+      // });
+      return NotInteernet();
+    } else {
+      var size = MediaQuery.of(context).size;
+      var screenHeight =
+          (size.height - MediaQuery.of(context).padding.top) / 100;
+      return Scaffold(
+        backgroundColor: Color(0xffE5E5E5),
+        appBar: AppBar(
+          title: Text("Mensagens"),
+          backgroundColor: Color(0xffEEC25E),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
         ),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await _messagesController.loadMessages(token: widget.token);
-        },
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(
-                horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildListMessages(context, screenHeight, widget.token),
-              ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await _messagesController.loadMessages(
+                widget.codigoAlunoEol, widget.userId);
+          },
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenHeight * 2.5, vertical: screenHeight * 2.5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildListMessages(context, screenHeight),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
