@@ -6,7 +6,9 @@ class StudentInfo extends StatelessWidget {
   final String studentName;
   final String schoolName;
   final String schoolType;
+  final String dreName;
   final String studentGrade;
+  final int studentEOL;
   final Widget avatar;
   final EdgeInsets padding;
 
@@ -14,6 +16,8 @@ class StudentInfo extends StatelessWidget {
       {@required this.studentName,
       @required this.schoolName,
       @required this.schoolType,
+      @required this.dreName,
+      this.studentEOL,
       this.studentGrade,
       this.avatar,
       this.padding});
@@ -44,6 +48,7 @@ class StudentInfo extends StatelessWidget {
                   ),
           ),
           Container(
+            width: screenHeight * 25,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -54,17 +59,14 @@ class StudentInfo extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
                 ),
-                Container(
-                  width: screenHeight * 30,
-                  child: AutoSizeText(
-                    "$schoolType $schoolName",
-                    maxFontSize: 12,
-                    minFontSize: 10,
-                    maxLines: 2,
-                    style: TextStyle(
-                      color: Color(0xff666666),
-                    ),
+                AutoSizeText(
+                  "$schoolType $schoolName ($dreName)",
+                  maxFontSize: 12,
+                  minFontSize: 10,
+                  style: TextStyle(
+                    color: Color(0xffC4C4C4),
                   ),
+                  maxLines: 2,
                 ),
                 Visibility(
                   visible: studentGrade != null,
@@ -74,6 +76,18 @@ class StudentInfo extends StatelessWidget {
                     minFontSize: 10,
                     style: TextStyle(
                         color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                    maxLines: 2,
+                  ),
+                ),
+                Visibility(
+                  visible: studentEOL != null,
+                  child: AutoSizeText(
+                    "COD. EOL: $studentEOL",
+                    maxFontSize: 12,
+                    minFontSize: 10,
+                    style: TextStyle(
+                        color: Color(0xff757575), fontWeight: FontWeight.w500),
+                    maxLines: 2,
                   ),
                 ),
               ],

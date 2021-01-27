@@ -1,122 +1,98 @@
-import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/controllers/authenticate.controller.dart';
-import 'package:sme_app_aluno/controllers/students.controller.dart';
+import 'package:sme_app_aluno/controllers/students/students.controller.dart';
+import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
+import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/global_config.dart';
+import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
-  final String cpf;
-  final String token;
-  final String password;
+  final int userId;
 
-  ListStudants(
-      {@required this.cpf, @required this.token, @required this.password});
+  ListStudants({@required this.userId});
 
   @override
   _ListStudantsState createState() => _ListStudantsState();
 }
 
 class _ListStudantsState extends State<ListStudants> {
-  AuthenticateController _authenticateController;
+  final UserService _userService = UserService();
+
   StudentsController _studentsController;
+  BackgroundFetchController _backgroundFetchController;
 
   @override
   void initState() {
     super.initState();
-    _authenticateController = AuthenticateController();
     _studentsController = StudentsController();
+    _backgroundFetchController = BackgroundFetchController();
     _loadingAllStudents();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    BackgroundFetch.configure(
-            BackgroundFetchConfig(
-              minimumFetchInterval: 2,
-              forceAlarmManager: false,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              enableHeadless: true,
-              requiresBatteryNotLow: false,
-              requiresCharging: false,
-              requiresStorageNotLow: false,
-              requiresDeviceIdle: false,
-              requiredNetworkType: NetworkType.NONE,
-            ),
-            _onBackgroundFetch)
-        .then((int status) {
-      print('[BackgroundFetch] configure success: $status');
-    }).catchError((e) {
-      print('[BackgroundFetch] configure ERROR: $e');
-    });
-
-    BackgroundFetch.scheduleTask(TaskConfig(
-        taskId: "com.transistorsoft.customtask",
-        delay: 10000,
-        periodic: true,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true));
+    _backgroundFetchController.initPlatformState(
+      _onBackgroundFetch,
+      "${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado",
+      10000,
+    );
   }
 
   void _onBackgroundFetch(String taskId) async {
-    await _authenticateController.authenticateUser(
-        widget.cpf, widget.password, true);
-
+    bool responsibleHasStudent = await _backgroundFetchController
+        .checkIfResponsibleHasStudent(widget.userId);
     print(
-        "[ DEBUG ] ListStudants._onBackgroundFetch: CurrentUser: ${jsonEncode(_authenticateController.currentUser)}");
-
-    if (_authenticateController.currentUser.erros != null &&
-        _authenticateController.currentUser.erros.isNotEmpty &&
-        _authenticateController.currentUser.erros.length > 0 &&
-        _authenticateController.currentUser.erros[0] != null) {
-      BackgroundFetch.stop().then((int status) {
-        print('[BackgroundFetch] stop success: $status');
-      });
-      Auth.logout(context);
+        '[BackgroundFetch] - INIT -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
+    if (responsibleHasStudent == false) {
+      Auth.logout(context, widget.userId, true);
     }
 
     BackgroundFetch.finish(taskId);
   }
 
-  Widget _itemCardStudent(BuildContext context, Student model, String token,
-      String groupSchool, int codigoGrupo) {
+  _logoutUser() async {
+    List<User> findUsers = await _userService.all();
+    await Auth.logout(context, findUsers[0].id, true);
+  }
+
+  Widget _itemCardStudent(BuildContext context, Student model,
+      String groupSchool, int codigoGrupo, int userId) {
     return CardStudent(
-      name: model.nomeSocial != null ? model.nomeSocial : model.nome,
+      name: model.nomeSocial != null && model.nomeSocial.isNotEmpty
+          ? model.nomeSocial
+          : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
+      codigoEOL: model.codigoEol,
       schooType: model.descricaoTipoEscola,
+      dreName: model.siglaDre,
       onPress: () {
-        Navigator.push(
+        Nav.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => Dashboard(
-                    student: model,
-                    groupSchool: groupSchool,
-                    token: token,
-                    codigoGrupo: codigoGrupo)));
+            Dashboard(
+                userId: widget.userId,
+                student: model,
+                groupSchool: groupSchool,
+                codigoGrupo: codigoGrupo));
       },
     );
   }
 
   Widget _listStudents(List<Student> students, BuildContext context,
-      String groupSchool, String token, int codigoGrupo) {
+      String groupSchool, int codigoGrupo, int userId) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
       list.add(_itemCardStudent(
-          context, students[i], token, groupSchool, codigoGrupo));
+          context, students[i], groupSchool, codigoGrupo, userId));
     }
     return new Column(children: list);
   }
@@ -131,20 +107,9 @@ class _ListStudantsState extends State<ListStudants> {
             actions: <Widget>[
               FlatButton(
                 child: Text("SIM"),
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  BackgroundFetch.stop().then((int status) {
-                    print('[BackgroundFetch] stop success: $status');
-                  });
-                  prefs.remove('current_name');
-                  prefs.remove('current_cpf');
-                  prefs.remove('current_email');
-                  prefs.remove('token');
-                  prefs.remove('password');
-                  prefs.remove('dispositivo_id');
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Login()));
+                onPressed: () {
+                  Auth.logout(context, widget.userId, false);
+                  Nav.pushReplacement(context, Login());
                 },
               ),
               FlatButton(
@@ -159,21 +124,31 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   _loadingAllStudents() async {
-    await _studentsController.loadingStudents(widget.cpf, widget.token);
+    final User user = await _userService.find(widget.userId);
+    await _studentsController.loadingStudents(user.cpf, user.id);
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    // _loadingAllStudents();
-
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       appBar: AppBar(
         title: Text("Estudantes"),
         backgroundColor: Color(0xffEEC25E),
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Auth.logout(context, widget.userId, false);
+            },
+            icon: Icon(
+              FontAwesomeIcons.signOutAlt,
+              size: screenHeight * 2,
+            ),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: _onBackPress,
@@ -201,7 +176,8 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_studentsController.isLoading) {
+                      if (_studentsController.isLoading ||
+                          _studentsController.dataEstudent == null) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -210,20 +186,10 @@ class _ListStudantsState extends State<ListStudants> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        if (_studentsController.dataEstudent == null) {
-                          return Container(
-                              child: Column(
-                            children: <Widget>[
-                              AutoSizeText(
-                                "Erro ao carregar aluno",
-                                maxFontSize: 18,
-                                minFontSize: 16,
-                              ),
-                              Divider(
-                                color: Color(0xffcecece),
-                              )
-                            ],
-                          ));
+                        if (_studentsController.dataEstudent.data == null &&
+                            widget.userId != null) {
+                          _logoutUser();
+                          return Container();
                         } else {
                           return ListView.builder(
                             itemCount:
@@ -235,14 +201,19 @@ class _ListStudantsState extends State<ListStudants> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   TagCustom(
-                                      text: "${dados[index].grupo}",
-                                      color: Color(0xffC65D00)),
+                                    text: "${dados[index].grupo}",
+                                    color: Color(0xffC65D00),
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 2,
+                                  ),
                                   _listStudents(
-                                      dados[index].students,
-                                      context,
-                                      dados[index].grupo,
-                                      widget.token,
-                                      dados[index].codigoGrupo),
+                                    dados[index].students,
+                                    context,
+                                    dados[index].grupo,
+                                    dados[index].codigoGrupo,
+                                    widget.userId,
+                                  ),
                                 ],
                               );
                             },

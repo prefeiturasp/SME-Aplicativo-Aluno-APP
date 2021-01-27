@@ -21,9 +21,10 @@ pipeline {
        stage('Build APK') {
 	when { anyOf { branch 'developer'; branch 'release' } }       
         steps {
-          withCredentials([file(credentialsId: 'google-service', variable: 'GOOGLEJSON')]) {
-	  sh 'cp $GOOGLEJSON android/app/google-services.json'	  
-          sh 'flutter pub get && flutter build apk'
+          withCredentials([file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV')]) {
+	        sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
+                //sh 'cat $GOOGLEJSONDEV'
+                sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
 	  }
         }
       }
