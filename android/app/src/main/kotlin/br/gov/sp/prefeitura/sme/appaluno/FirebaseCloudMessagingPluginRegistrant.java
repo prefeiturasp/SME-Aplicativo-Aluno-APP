@@ -1,4 +1,4 @@
-package com.example.sme_app_aluno;
+package br.gov.sp.prefeitura.sme.appaluno;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
