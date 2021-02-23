@@ -40,7 +40,7 @@ pipeline {
         }
         steps {
           withCredentials([file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSON-PROD')]) {
-	          sh 'cp $GOOGLEJSON-PROD android/app/google-services.json'
+	          sh 'export && cp ${GOOGLEJSON-PROD} android/app/google-services.json'
             sh 'flutter pub get && flutter build apk'
 	        }
         }
