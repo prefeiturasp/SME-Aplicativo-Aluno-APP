@@ -10,7 +10,7 @@ pipeline {
       disableConcurrentBuilds()
       skipDefaultCheckout()  
     }
-    
+
     stages {
        stage('CheckOut') {
         steps {
@@ -28,7 +28,7 @@ pipeline {
         steps {
           withCredentials([file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV')]) {
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-            sh 'cat $GOOGLEJSONDEV'
+            // sh 'cat $GOOGLEJSONDEV'
             sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
           }
         }
@@ -41,7 +41,7 @@ pipeline {
         steps {
           withCredentials([file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSON-PROD')]) {
 	          sh 'cp $GOOGLEJSON-PROD android/app/google-services.json'
-            sh 'cat android/app/google-services.json && flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk'
 	        }
         }
       }
