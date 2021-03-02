@@ -242,7 +242,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                               child: AutoSizeText(
                                 StringSupport.parseHtmlString(
                                     StringSupport.truncateEndString(
-                                        widget.message.mensagem, 250)),
+                                        widget.message.mensagem, 150)),
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 10,
