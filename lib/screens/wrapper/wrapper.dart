@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
@@ -27,12 +28,14 @@ class _WrapperState extends State<Wrapper> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   AuthenticateController _authenticateController;
+  MessagesController _messagesController;
 
   @override
   initState() {
     super.initState();
     _initPushNotificationHandlers();
     _authenticateController = AuthenticateController();
+    _messagesController = MessagesController();
     loadUsers();
   }
 
@@ -87,6 +90,9 @@ class _WrapperState extends State<Wrapper> {
           : 0,
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
     );
+
+    await _messagesController.loadById(_message.id, user.id);
+    _message.mensagem = _messagesController.message.mensagem;
     Nav.push(
         context,
         ViewMessageNotification(
@@ -139,3 +145,5 @@ class _WrapperState extends State<Wrapper> {
     }
   }
 }
+
+class MEssagesController {}
