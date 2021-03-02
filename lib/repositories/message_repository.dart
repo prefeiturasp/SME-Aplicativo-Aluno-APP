@@ -45,6 +45,27 @@ class MessageRepository implements IMessageRepository {
   }
 
   @override
+  Future<Message> getMessageById(int messageId, int userId) async {
+    try {
+      final User user = await _userService.find(userId);
+
+      final response = await http.get("${Api.HOST}/Mensagens/$messageId",
+          headers: {"Authorization": "Bearer ${user.token}"});
+
+      if (response.statusCode == 200) {
+        var decodeJson = jsonDecode(response.body);
+        final message = Message.fromJson(decodeJson);
+        return message;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  @override
   Future<List<Message>> fetchMessages(int codigoEol, int userId) async {
     try {
       final User user = await _userService.find(userId);
