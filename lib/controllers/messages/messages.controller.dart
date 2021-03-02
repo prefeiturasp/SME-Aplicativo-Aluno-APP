@@ -56,6 +56,15 @@ abstract class _MessagesControllerBase with Store {
   }
 
   @action
+  loadById(int messageId, int userId) async {
+    isLoading = true;
+    final messageReceived =
+        await _messagesRepository.getMessageById(messageId, userId);
+    message = messageReceived;
+    isLoading = false;
+  }
+
+  @action
   loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
     filterItems(dreCheck, smeCheck, ueCheck);
   }
