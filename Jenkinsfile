@@ -18,18 +18,38 @@ pipeline {
         }
       }
 
-      stage('Build APK') {
+      stage('Build APK Dev') {
 	      when { 
           anyOf { 
             branch 'developer'; 
+          } 
+        }       
+        steps {
+          withCredentials([
+            file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV'),
+            file(credentialsId: 'app-config-dev', variable: 'APPCONFIGDEV'),
+          ]) {
+            sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
+            sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
+            sh 'flutter pub get && flutter build apk'
+          }
+        }
+      }
+
+      stage('Build APK Hom') {
+	      when { 
+          anyOf { 
             branch 'release' 
           } 
         }       
         steps {
-          withCredentials([file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV')]) {
-            sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-            // sh 'cat $GOOGLEJSONDEV'
-            sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
+          withCredentials([
+            file(credentialsId: 'google-service-hom', variable: 'GOOGLEJSONHOM'),
+            file(credentialsId: 'app-config-hom', variable: 'APPCONFIGHOM'),
+          ]) {
+            sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
+            sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
+            sh 'flutter pub get && flutter build apk'
           }
         }
       }
@@ -39,9 +59,13 @@ pipeline {
           branch 'master'
         }
         steps {
-          withCredentials([file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSONPROD')]) {
+          withCredentials([
+            file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSONPROD'),
+            file(credentialsId: 'app-config-prod', variable: 'APPCONFIGPROD'),
+          ]) {
+            sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
 	        }
         }
       }

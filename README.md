@@ -249,16 +249,22 @@ Para iniciar o desenvolvimento da aplicação primeiro você precisa ter o Flutt
 
 `flutter pub get`
 
+É preciso criar a pasta `config` na raiz do projeto e o arquivo `config/app_config.json` com o formato a seguir (lembre-se de trocar os valores de acordo com sua necessidade): 
+
+```json
+{
+    "environment": "dev",
+    "sentryDsn": "Seu DSN do Sentry",
+    "errorMessageTimeOut": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.",
+    "bundleIdentifier": "br.gov.sp.prefeitura.sme.appaluno",
+    "apiHost": "https://endereco.da.api/api/v1"
+}
+```
+
 A aplicação utiliza o recurso de generators do Flutter, logo precisamos rodar o build_runner para gerar os códigos necessários para o desenvolvimento.
 
 `flutter pub run build_runner build`
 
-Para compilar a versão com mock:
+Para compilar a versão release:
 
-`flutter build apk -t lib/main.mock.dart Para compilar a versão release:`
-
-<<<<<<< HEAD
-`flutter build apk -t lib/main.dart`
-=======
-`flutter build apk -t lib/main.dart`
->>>>>>> eaacd60878d012b4f5ea6188f619285ffb0f2aea
+`flutter build apk -t lib/main.dart --release`
