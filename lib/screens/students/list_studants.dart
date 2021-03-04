@@ -15,8 +15,8 @@ import 'package:sme_app_aluno/screens/login/login.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
-import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class ListStudants extends StatefulWidget {
@@ -42,7 +42,7 @@ class _ListStudantsState extends State<ListStudants> {
     _loadingAllStudents();
     _backgroundFetchController.initPlatformState(
       _onBackgroundFetch,
-      "${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado",
+      "${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado",
       10000,
     );
   }
@@ -51,7 +51,7 @@ class _ListStudantsState extends State<ListStudants> {
     bool responsibleHasStudent = await _backgroundFetchController
         .checkIfResponsibleHasStudent(widget.userId);
     print(
-        '[BackgroundFetch] - INIT -> ${GlobalConfig.BUNDLE_IDENTIFIER}.verificaSeUsuarioTemAlunoVinculado');
+        '[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
       Auth.logout(context, widget.userId, true);
     }

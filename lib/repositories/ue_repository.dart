@@ -4,7 +4,7 @@ import 'package:sme_app_aluno/interfaces/ue_repository_interface.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class UERepository extends IUERepository {
   final UserService _userService = UserService();
@@ -13,7 +13,7 @@ class UERepository extends IUERepository {
   Future<DadosUE> fetchUE(String codigoUe, int id) async {
     final User user = await _userService.find(id);
     try {
-      var response = await http.get("${Api.HOST}/UnidadeEscolar/$codigoUe",
+      var response = await http.get("${AppConfigReader.getApiHost()}/UnidadeEscolar/$codigoUe",
           headers: {"Authorization": "Bearer ${user.token}"});
       if (response.statusCode == 200) {
         var ueResponse = jsonDecode(response.body);
