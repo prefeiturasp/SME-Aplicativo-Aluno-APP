@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:sme_app_aluno/utils/global_config.dart';
 import 'package:sentry/sentry.dart';
 
 import 'controllers/auth/authenticate.controller.dart';
@@ -20,27 +20,38 @@ void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);
 }
 
+Future initializeAppConfig() async {
+  try {
+    await AppConfigReader.initialize();
+  } catch(error) {
+    print("Erro ao ler arquivo de configurações.");
+    print("Verifique se seu projeto possui o arquivo config/app_config.json");
+    print('$error');
+  }
+}
+
 void main() async {
-  final SentryClient sentry = new SentryClient(dsn: GlobalConfig.SENTRY_DSN);
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeAppConfig();
+  final SentryClient sentry = new SentryClient(dsn: AppConfigReader.getSentryDsn());
   try {} catch (error, stackTrace) {
     await sentry.captureException(
       exception: error,
       stackTrace: stackTrace,
     );
   }
+  
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color(0xffde9524),
     statusBarBrightness: Brightness.dark,
-    // status bar color
   ));
+  
   runApp(MyApp());
-
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatelessWidget {
   MyApp() {
-    GlobalConfig.Environment = "prod";
     date_symbol_data_local.initializeDateFormatting();
   }
 

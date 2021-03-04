@@ -6,8 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/utils/api.dart';
-import 'package:sme_app_aluno/utils/global_config.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -23,7 +22,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
 
     try {
       final response = await http.put(
-        "${Api.HOST}/Autenticacao/Senha/Token",
+        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token",
         headers: {
           "Content-Type": "application/json",
         },
@@ -35,7 +34,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         var data = Data.fromJson(decodeJson);
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [GlobalConfig.ERROR_MESSAGE_TIME_OUT]);
+        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
@@ -56,7 +55,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     var body = json.encode(_data);
     try {
       final response = await http.put(
-        "${Api.HOST}/Autenticacao/Senha/Token/Validar",
+        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar",
         headers: {
           "Content-Type": "application/json",
         },
@@ -86,7 +85,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
 
     try {
       final response = await http.put(
-        "${Api.HOST}/Autenticacao/Senha/Redefinir",
+        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir",
         headers: {
           "Content-Type": "application/json",
         },

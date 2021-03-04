@@ -5,7 +5,7 @@ import 'package:sme_app_aluno/interfaces/event_repository_interface.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class EventRepository extends IEventRepository {
   final UserService _userService = UserService();
@@ -17,7 +17,7 @@ class EventRepository extends IEventRepository {
 
     try {
       var response = await http.get(
-        "${Api.HOST}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}",
+        "${AppConfigReader.getApiHost()}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}",
         headers: {
           "Authorization": "Bearer ${user.token}",
           "Content-Type": "application/json"
