@@ -6,7 +6,7 @@ import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/utils/api.dart';
+import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class FrequencyRepository implements IFrequencyRepository {
   final UserService _userService = UserService();
@@ -21,7 +21,7 @@ class FrequencyRepository implements IFrequencyRepository {
     User user = await _userService.find(userId);
     try {
       final response = await http.get(
-          "${Api.HOST}/Aluno/frequencia?AnoLetivo=$anoLetivo&CodigoUe=$codigoUe&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno",
+          "${AppConfigReader.getApiHost()}/Aluno/frequencia?AnoLetivo=$anoLetivo&CodigoUe=$codigoUe&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno",
           headers: {
             "Authorization": "Bearer ${user.token}",
             "Content-Type": "application/json",
@@ -51,7 +51,7 @@ class FrequencyRepository implements IFrequencyRepository {
   ) async {
     try {
       final response = await http.get(
-          "${Api.HOST}/Aluno/frequencia/componente-curricular?AnoLetivo=$anoLetivo&CodigoUe=$codigoUE&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno&CodigoComponenteCurricular=$codigoComponenteCurricular",
+          "${AppConfigReader.getApiHost()}/Aluno/frequencia/componente-curricular?AnoLetivo=$anoLetivo&CodigoUe=$codigoUE&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno&CodigoComponenteCurricular=$codigoComponenteCurricular",
           headers: {
             "Content-Type": "application/json",
           });
