@@ -62,10 +62,13 @@ pipeline {
           withCredentials([
             file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSONPROD'),
             file(credentialsId: 'app-config-prod', variable: 'APPCONFIGPROD'),
+            file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
+            file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
+            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} android/key.properties'
             sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk -t lib/main.dart --release'
+            sh 'flutter clean && flutter pub get && flutter build apk --release'
 	        }
         }
       }
