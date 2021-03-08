@@ -31,7 +31,7 @@ pipeline {
           ]) {
             sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk --release'
           }
         }
       }
@@ -49,7 +49,7 @@ pipeline {
           ]) {
             sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
             sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk --release'
           }
         }
       }
@@ -65,30 +65,21 @@ pipeline {
             file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
-            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} android/key.properties'
-            sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
+            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
+            sh 'cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d\'=\' -f2 > /home/cirrus/key.pass'
+            sh 'cd ${WORKSPACE} && mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter build apk --release'
+            sh "cd ~/ && ./android-sdk-linux/build-tools/29.0.2/apksigner sign --ks ~/key.jks --ks-pass file:/home/cirrus/key.pass ${WORKSPACE}/build/app/outputs/apk/release/app-release.apk"
 	        }
         }
       }
+  }
 
-      stage('sign apk') {
-        steps {
-          step([
-            $class: 'SignApksBuilder', 
-            apksToSign: '**/*.apk', 
-            keyAlias: '', 
-            keyStoreId: '77b8ac0b-5b0e-4664-8882-3f70e1338484', 
-            skipZipalign: true
-          ])
-        }
-      }
-  } 
-  	   
   post {
     always {
       echo 'One way or another, I have finished'
+      archiveArtifacts artifacts: 'build/app/outputs/apk/release/**/*.apk', fingerprint: true
     }
     success {
       telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Esta ok !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n\n Uma nova versão da aplicação esta disponivel!!!")
