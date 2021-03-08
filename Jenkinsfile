@@ -65,12 +65,12 @@ pipeline {
             file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
-            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} android/key.properties'
-            sh "cat android/key.properties | grep keyPassword | cut -d'=' -f2 > ~/key.pass"
-            sh "./Android/sdk/build-tools/29.0.2/apksigner --ks ~/key.jks --ks-pass file:~/key.pass"
-            sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
+            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
+            sh "cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d'=' -f2 > ~/key.pass"
+            sh 'cd ${WORKSPACE} && mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter build apk --release'
+            sh "cd ~/ && ./android-sdk-linux/build-tools/29.0.2/apksigner --ks ~/key.jks --ks-pass file:~/key.pass ${WORKSPACE}/build/app/outputs/apk/release/app-release.apk"
 	        }
         }
       }
