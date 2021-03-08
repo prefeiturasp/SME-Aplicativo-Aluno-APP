@@ -66,7 +66,7 @@ pipeline {
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
-            sh 'cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d\'=\' -f2 > /home/cirrus/key.pass && ls -la /home/cirrus'
+            sh 'cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d\'=\' -f2 > /home/cirrus/key.pass'
             sh 'cd ${WORKSPACE} && mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter build apk --release'
