@@ -66,7 +66,7 @@ pipeline {
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} android/key.properties'
-            sh "set KEYPASS $(cat android/key.properties | grep keyPassword | cut -d'=' -f2)"
+            sh "set KEYPASS (cat android/key.properties | grep keyPassword | cut -d'=' -f2)"
             sh "./Android/sdk/build-tools/29.0.2/apksigner --ks ~/key.jks --ks-pass pass:$KEYPASS"
             sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
