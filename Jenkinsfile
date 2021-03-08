@@ -31,7 +31,7 @@ pipeline {
           ]) {
             sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk --release'
           }
         }
       }
@@ -49,7 +49,7 @@ pipeline {
           ]) {
             sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
             sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
-            sh 'flutter pub get && flutter build apk'
+            sh 'flutter pub get && flutter build apk --release'
           }
         }
       }
@@ -74,11 +74,12 @@ pipeline {
 	        }
         }
       }
-  } 
-  	   
+  }
+
   post {
     always {
       echo 'One way or another, I have finished'
+      archiveArtifacts artifacts: 'build/app/outputs/apk/release/**/*.apk', fingerprint: true
     }
     success {
       telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Esta ok !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n\n Uma nova versão da aplicação esta disponivel!!!")
