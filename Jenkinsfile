@@ -66,7 +66,7 @@ pipeline {
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} android/key.properties'
-            sh "echo ${cat android/key.properties | grep keyPassword | awk -F'[=]'  '{print $2}'}"
+            sh "echo $(cat android/key.properties | grep keyPassword | awk -F'[=]'  '{print $2}')"
             sh "./Android/sdk/build-tools/29.0.2/apksigner --ks ~/key.jks --ks-pass pass:${cat android/key.properties | grep keyPassword | awk -F'[=]'  '{print $2}'}"
             sh 'mkdir config && cp $APPCONFIGPROD config/app_config.json'
 	          sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
@@ -74,18 +74,6 @@ pipeline {
 	        }
         }
       }
-
-      // stage('sign apk') {
-      //   steps {
-      //     step([
-      //       $class: 'SignApksBuilder', 
-      //       apksToSign: '**/*.apk', 
-      //       keyAlias: '', 
-      //       keyStoreId: '77b8ac0b-5b0e-4664-8882-3f70e1338484', 
-      //       skipZipalign: true
-      //     ])
-      //   }
-      // }
   } 
   	   
   post {
