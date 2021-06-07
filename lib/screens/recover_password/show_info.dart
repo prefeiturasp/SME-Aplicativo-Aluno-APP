@@ -105,7 +105,7 @@ class _ShowInfoState extends State<ShowInfo> {
                           children: <Widget>[
                             widget.hasToken
                                 ? AutoSizeText(
-                                    "As orientação já foram enviadas \n para o email cadastrado.",
+                                    "As orientações já foram enviadas \n para o email cadastrado.",
                                     textAlign: TextAlign.center,
                                     maxFontSize: 16,
                                     minFontSize: 14,
