@@ -8,20 +8,21 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_ip/get_ip.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
-import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/terms/terms_view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaback_button.dart';
 
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
+import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 
 class FirstAccess extends StatefulWidget {
@@ -40,7 +41,7 @@ class _FirstAccessState extends State<FirstAccess> {
 
   FirstAccessController _firstAccessController;
   TermsController _termsController;
-  AuthenticateController _authenticateController;
+  final autenticacaoController = GetIt.I.get<AutenticacaoController>();
 
   final numeric = RegExp(r"[0-9]");
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
@@ -68,16 +69,12 @@ class _FirstAccessState extends State<FirstAccess> {
     _firstAccessController = FirstAccessController();
     _termsController = TermsController();
     _termsController.fetchTermo(widget.cpf);
-    _authenticateController = AuthenticateController();
   }
 
   _navigateToScreen() {
     if (_firstAccessController.data.ok) {
-      Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (_) => ChangeEmailOrPhone(
-                cpf: widget.cpf,
-                userId: widget.id,
-              )));
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => AtualizacaoCadastralView()));
     } else {
       onError();
     }
@@ -493,7 +490,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                             icon: FontAwesomeIcons.chevronRight,
                                             iconColor: Color(0xffffd037),
                                             btnColor: Color(0xffd06d12),
-                                            desabled: (_password.isNotEmpty &&
+                                            disabled: (_password.isNotEmpty &&
                                                     _confirmPassword
                                                         .isNotEmpty &&
                                                     !spaceNull
@@ -517,7 +514,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                               onPress: () {
                                                 _onBackPress();
                                               },
-                                              desabled: true),
+                                              disabled: true),
                                         ],
                                       )
                                     : GFLoader(

@@ -1,4 +1,4 @@
-class User {
+class Usuario {
   int id;
   String nome;
   String nomeMae;
@@ -11,7 +11,7 @@ class User {
   DateTime dataNascimento;
   String senha;
 
-  User(
+  Usuario(
       {this.id,
       this.nome,
       this.cpf,
@@ -22,7 +22,7 @@ class User {
       this.celular,
       this.dataNascimento});
 
-  User.fromJson(Map<String, dynamic> json) {
+  Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     cpf = json['cpf'];

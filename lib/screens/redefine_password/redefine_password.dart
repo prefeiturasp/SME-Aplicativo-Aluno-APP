@@ -339,7 +339,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                     icon: FontAwesomeIcons.chevronRight,
                                     iconColor: Color(0xffffd037),
                                     btnColor: Color(0xffd06d12),
-                                    desabled: (_password.isNotEmpty &&
+                                    disabled: (_password.isNotEmpty &&
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
