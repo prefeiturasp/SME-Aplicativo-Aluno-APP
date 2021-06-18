@@ -7,7 +7,7 @@ import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/redefine_password/redefine_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -78,7 +78,7 @@ class _ShowInfoState extends State<ShowInfo> {
             Icons.arrow_back_ios,
             color: Color(0xffF36621),
           ),
-          onPressed: () => Nav.push(context, Login()),
+          onPressed: () => Nav.push(context, LoginView()),
         ),
       ),
       body: SingleChildScrollView(
@@ -217,7 +217,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                   icon: FontAwesomeIcons.chevronRight,
                                   iconColor: Color(0xffffd037),
                                   btnColor: Color(0xffd06d12),
-                                  desabled: _token.length == 8,
+                                  disabled: _token.length == 8,
                                   onPress: () {
                                     _onPressValidateToken(_token, context);
                                   },

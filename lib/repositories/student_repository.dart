@@ -11,11 +11,11 @@ class StudentRepository implements IStudentsRepository {
   final UserService _userService = UserService();
 
   @override
-  Future<DataStudent> fetchStudents(String cpf, int id) async {
-    final User user = await _userService.find(id);
+  Future<DataStudent> fetchStudents(String cpf, int id, String token) async {
     try {
-      final response = await http.post("${AppConfigReader.getApiHost()}/Aluno?cpf=$cpf",
-          headers: {"Authorization": "Bearer ${user.token}"});
+      final response = await http.post(
+          "${AppConfigReader.getApiHost()}/Aluno?cpf=$cpf",
+          headers: {"Authorization": "Bearer ${token}"});
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);

@@ -299,7 +299,7 @@ class _InternalChangeEmailOrPhoneState
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      desabled: (_emailData.isNotEmpty &&
+                                      disabled: (_emailData.isNotEmpty &&
                                               _emailData != _email &&
                                               EmailValidator.validate(
                                                   _emailData)) ||

@@ -42,11 +42,12 @@ class SettingsRepository implements ISettingsRepository {
           celular: user.celular,
           token: data.token,
           primeiroAcesso: user.primeiroAcesso,
-          informarCelularEmail: user.informarCelularEmail,
+          atualizarDadosCadastrais: user.atualizarDadosCadastrais,
         ));
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(
+            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);

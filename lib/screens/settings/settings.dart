@@ -47,110 +47,115 @@ class _SettingsState extends State<Settings> {
         backgroundColor: Color(0xffEEC25E),
       ),
       body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[
-          Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(screenHeight * 2.5),
+                margin: EdgeInsets.only(top: screenHeight * 3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AutoSizeText(
+                      "Dados cadastrais",
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff757575)),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 4,
+                    ),
+                    ViewData(
+                      label: "Usuário",
+                      text: widget.currentCPF ?? "",
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Observer(builder: (context) {
+                        if (_firstAccessController.currentPhone == null) {
+                          return Container();
+                        } else {
+                          return Column(
+                            children: <Widget>[
+                              ViewData(
+                                label: "Email",
+                                text: _firstAccessController.currentEmail,
+                              ),
+                              ViewData(
+                                label: "Telefone",
+                                text: StringSupport.formatStringPhoneNumber(
+                                    _firstAccessController.currentPhone),
+                              ),
+                            ],
+                          );
+                        }
+                      }),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 2.5,
+                    ),
+                    EAButton(
+                      text: "ALTERAR DADOS",
+                      icon: FontAwesomeIcons.chevronRight,
+                      iconColor: Color(0xffffd037),
+                      btnColor: Color(0xffd06d12),
+                      disabled: true,
+                      onPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    InternalChangeEmailOrPhone(
+                                      userId: widget.userId,
+                                    ))).whenComplete(() =>
+                            _firstAccessController
+                                .loadUserForStorage(widget.userId));
+                      },
+                    )
+                  ],
+                )),
+            SizedBox(
+              height: screenHeight * 2.5,
+            ),
+            Divider(
+              height: 0.5,
+            ),
+            Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(screenHeight * 2.5),
               margin: EdgeInsets.only(top: screenHeight * 3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  AutoSizeText(
-                    "Dados cadastrais",
-                    maxFontSize: 18,
-                    minFontSize: 16,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, color: Color(0xff757575)),
-                  ),
-                  SizedBox(
-                    height: screenHeight * 4,
-                  ),
                   ViewData(
-                    label: "Usuário",
-                    text: widget.currentCPF ?? "",
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Observer(builder: (context) {
-                      if (_firstAccessController.currentPhone == null) {
-                        return Container();
-                      } else {
-                        return Column(
-                          children: <Widget>[
-                            ViewData(
-                              label: "Email",
-                              text: _firstAccessController.currentEmail,
-                            ),
-                            ViewData(
-                              label: "Telefone",
-                              text: StringSupport.formatStringPhoneNumber(
-                                  _firstAccessController.currentPhone),
-                            ),
-                          ],
-                        );
-                      }
-                    }),
+                    label: "Senha",
+                    text: "******",
                   ),
                   SizedBox(
-                    height: screenHeight * 2.5,
+                    height: screenHeight * 3,
                   ),
                   EAButton(
-                    text: "ALTERAR DADOS",
+                    text: "ALTERAR SENHA",
                     icon: FontAwesomeIcons.chevronRight,
                     iconColor: Color(0xffffd037),
                     btnColor: Color(0xffd06d12),
-                    desabled: true,
+                    disabled: true,
                     onPress: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => InternalChangeEmailOrPhone(
-                                    userId: widget.userId,
-                                  ))).whenComplete(() => _firstAccessController
-                          .loadUserForStorage(widget.userId));
+                              builder: (context) => ChangePassword(
+                                  cpf: widget.currentCPF, id: widget.userId)));
                     },
                   )
                 ],
-              )),
-          SizedBox(
-            height: screenHeight * 2.5,
-          ),
-          Divider(
-            height: 0.5,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(screenHeight * 2.5),
-              margin: EdgeInsets.only(top: screenHeight * 3),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ViewData(
-                      label: "Senha",
-                      text: "******",
-                    ),
-                    SizedBox(
-                      height: screenHeight * 3,
-                    ),
-                    EAButton(
-                      text: "ALTERAR SENHA",
-                      icon: FontAwesomeIcons.chevronRight,
-                      iconColor: Color(0xffffd037),
-                      btnColor: Color(0xffd06d12),
-                      desabled: true,
-                      onPress: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChangePassword(
-                                    cpf: widget.currentCPF,
-                                    id: widget.userId)));
-                      },
-                    )
-                  ]))
-        ],
-      )),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
