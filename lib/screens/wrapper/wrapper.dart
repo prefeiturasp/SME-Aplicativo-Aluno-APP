@@ -26,7 +26,7 @@ class Wrapper extends StatefulWidget {
   _WrapperState createState() => _WrapperState();
 }
 
-class _WrapperState extends State<Wrapper> {
+class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
   final UserService _userService = UserService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -38,14 +38,23 @@ class _WrapperState extends State<Wrapper> {
   initState() {
     super.initState();
     _initPushNotificationHandlers();
+    WidgetsBinding.instance.addObserver(this);
     _messagesController = MessagesController();
     usuarioStore.carregarUsuario();
   }
 
   @override
   void dispose() {
-    print("SAINDO");
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    print("State of APP : ${state}");
+    if (state == AppLifecycleState.detached) {
+      await usuarioStore.limparUsuario();
+    }
   }
 
   _initPushNotificationHandlers() {
@@ -81,10 +90,6 @@ class _WrapperState extends State<Wrapper> {
   }
 
   _navigateToMessageView(Map<String, dynamic> message) async {
-    final List<User> users = await _userService.all();
-
-    var user = users[0];
-
     Message _message = Message(
       id: int.parse(message["data"]["Id"]),
       titulo: message["data"]["Titulo"],
@@ -96,13 +101,13 @@ class _WrapperState extends State<Wrapper> {
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
     );
 
-    await _messagesController.loadById(_message.id, user.id);
+    await _messagesController.loadById(_message.id, usuarioStore.usuario.id);
     _message.mensagem = _messagesController.message.mensagem;
     Nav.push(
         context,
         ViewMessageNotification(
           message: _message,
-          userId: user.id,
+          userId: usuarioStore.usuario.id,
         ));
   }
 

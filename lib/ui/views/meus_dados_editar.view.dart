@@ -11,7 +11,6 @@ import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/ui/widgets/index.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
-import 'package:asuka/asuka.dart' as asuka;
 import 'package:sme_app_aluno/utils/validators.util.dart';
 
 class MeusDadosEditarView extends StatefulWidget {
@@ -22,6 +21,7 @@ class MeusDadosEditarView extends StatefulWidget {
 class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _emailCtrl = new TextEditingController();
   TextEditingController _nomeMaeCtrl = new TextEditingController();
@@ -81,14 +81,14 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     }
 
     if (!response.ok) {
-      asuka.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: response != null
-              ? Text(response.erros[0])
-              : Text("Erro de serviço"),
-        ),
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: response.erros != null
+            ? Text(response.erros[0])
+            : Text("Erro de serviço"),
       );
+
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }
 
@@ -97,6 +97,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color(0xffFFFFFF),
       appBar: AppBar(
         title: Text("Editar dados do responsável"),

@@ -20,7 +20,7 @@ class AutenticacaoController {
     if (data.data != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('eaUsuario', jsonEncode(data.data.toJson()));
-      usuarioStore.carregarUsuario();
+      await usuarioStore.carregarUsuario();
     }
 
     return data;
