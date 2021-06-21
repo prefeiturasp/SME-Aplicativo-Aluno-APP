@@ -19,7 +19,6 @@ import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'controllers/students/students.controller.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
-import 'package:asuka/asuka.dart' as asuka;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -87,7 +86,6 @@ class MyApp extends StatelessWidget {
                 ConnectivityService().connectionStatusController.stream),
       ],
       child: MaterialApp(
-        builder: asuka.builder,
         debugShowCheckedModeBanner: false,
         title: 'SME Aplicativo do Aluno',
         theme: ThemeData(primaryColor: Color(0xFFEEC25E)),

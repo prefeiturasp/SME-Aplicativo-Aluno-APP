@@ -18,7 +18,6 @@ import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
-import 'package:asuka/asuka.dart' as asuka;
 
 class LoginView extends StatefulWidget {
   final String notice;
@@ -33,6 +32,7 @@ class _LoginViewState extends State<LoginView> {
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -87,14 +87,14 @@ class _LoginViewState extends State<LoginView> {
       }
     } else {
       if (!usuario.ok) {
-        asuka.showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: usuario.erros != null
-                ? Text(usuario.erros[0])
-                : Text("Erro de serviço"),
-          ),
+        final snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          content: usuario.erros != null
+              ? Text(usuario.erros[0])
+              : Text("Erro de serviço"),
         );
+
+        _scaffoldKey.currentState.showSnackBar(snackBar);
       }
     }
   }
@@ -105,6 +105,7 @@ class _LoginViewState extends State<LoginView> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: WillPopScope(
         onWillPop: () async => false,

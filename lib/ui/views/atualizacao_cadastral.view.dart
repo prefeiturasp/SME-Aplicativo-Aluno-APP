@@ -21,7 +21,6 @@ import 'package:sme_app_aluno/ui/widgets/ea_botao.widget.dart';
 import 'package:sme_app_aluno/utils/assets.util.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
-import 'package:asuka/asuka.dart' as asuka;
 import 'package:sme_app_aluno/utils/validators.util.dart';
 
 class AtualizacaoCadastralView extends StatefulWidget {
@@ -38,7 +37,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _emailCtrl = new TextEditingController();
   TextEditingController _nomeMaeCtrl = new TextEditingController();
@@ -109,14 +108,14 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     }
 
     if (!response.ok) {
-      asuka.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: response != null
-              ? Text(response.erros[0])
-              : Text("Erro de serviço"),
-        ),
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: response.erros != null
+            ? Text(response.erros[0])
+            : Text("Erro de serviço"),
       );
+
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }
 
