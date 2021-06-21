@@ -34,6 +34,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
       var decodeJson = jsonDecode(response.body);
       var data = Data.fromJson(decodeJson);
       if (response.statusCode == 200) {
+        await usuarioStore.atualizaPrimeiroAcesso(false);
+
         await _userService.update(User(
           id: usuarioStore.usuario.id,
           nome: usuarioStore.usuario.nome,

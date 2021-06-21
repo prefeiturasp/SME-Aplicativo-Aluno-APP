@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
@@ -39,6 +40,12 @@ class _WrapperState extends State<Wrapper> {
     _initPushNotificationHandlers();
     _messagesController = MessagesController();
     usuarioStore.carregarUsuario();
+  }
+
+  @override
+  void dispose() {
+    print("SAINDO");
+    super.dispose();
   }
 
   _initPushNotificationHandlers() {

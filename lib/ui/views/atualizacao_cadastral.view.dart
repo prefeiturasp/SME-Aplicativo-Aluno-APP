@@ -22,6 +22,7 @@ import 'package:sme_app_aluno/utils/assets.util.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:sme_app_aluno/utils/validators.util.dart';
 
 class AtualizacaoCadastralView extends StatefulWidget {
   AtualizacaoCadastralView();
@@ -107,7 +108,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
           ));
     }
 
-    if (response.erros != null) {
+    if (!response.ok) {
       asuka.showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -231,7 +232,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
-                                  labelText: 'Nome completo',
+                                  labelText: 'Nome completo do responsável',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -259,7 +260,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
-                                  labelText: 'CPF',
+                                  labelText: 'CPF do responsável',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -300,7 +301,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                       fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
-                                      _email = value;
+                                      //_dataNascimento = value;
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -314,17 +315,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (value.isEmpty) {
-                                      return "Data de nascimento deve ser informada";
-                                    }
-                                    var data =
-                                        DateFormat('dd/MM/yyyy').parse(value);
-
-                                    if (data
-                                        .isBefore(DateTime.parse('19300101'))) {
-                                      return "Data inválida";
-                                    }
-                                    return null;
+                                    return ValidatorsUtil.dataNascimento(value);
                                   },
                                   keyboardType: TextInputType.datetime,
                                 ),
@@ -362,7 +353,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    return validadorNomeMae(value);
+                                    return ValidatorsUtil.nomeMae(value);
                                   },
                                   keyboardType: TextInputType.text,
                                 ),
@@ -429,11 +420,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                       fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
-                                      _email = value;
+                                      _telefone = value;
                                     });
                                   },
+                                  validator: (value) {
+                                    return ValidatorsUtil.telefone(value);
+                                  },
                                   decoration: InputDecoration(
-                                    labelText: 'Telefone do responsável',
+                                    labelText:
+                                        'Telefone celular do responsável',
                                     labelStyle:
                                         TextStyle(color: Color(0xff8e8e8e)),
                                     errorStyle:
@@ -470,6 +465,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                         activeColor: ColorsUtil.laranja01,
                                         onChanged: (newValue) {
                                           setState(() {
+                                            _formKey.currentState.validate();
                                             _declaracao = newValue;
                                           });
                                         },
@@ -537,22 +533,5 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       return false;
     }
     return true;
-  }
-
-  String validadorNomeMae(String value) {
-    if (value.isEmpty) {
-      return "Nome da mãe é deve ser informado";
-    }
-    var nomeMaeValidador = value.split(" ");
-    if (nomeMaeValidador.length > 0) {
-      for (var i = 0; i < nomeMaeValidador.length; i++) {
-        if (nomeMaeValidador[i].length == 1 &&
-            nomeMaeValidador[i].toLowerCase() != "e") {
-          return "Nome da mãe não pode ser abreviado";
-        }
-        print(nomeMaeValidador[i].length);
-      }
-    }
-    return null;
   }
 }

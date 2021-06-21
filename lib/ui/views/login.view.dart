@@ -35,7 +35,6 @@ class _LoginViewState extends State<LoginView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   final _formKey = GlobalKey<FormState>();
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool _showPassword = true;
   bool _cpfIsError = false;
@@ -87,14 +86,16 @@ class _LoginViewState extends State<LoginView> {
             ));
       }
     } else {
-      asuka.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: usuario != null
-              ? Text(usuario.erros[0])
-              : Text("Erro de serviço"),
-        ),
-      );
+      if (!usuario.ok) {
+        asuka.showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: usuario.erros != null
+                ? Text(usuario.erros[0])
+                : Text("Erro de serviço"),
+          ),
+        );
+      }
     }
   }
 

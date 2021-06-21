@@ -12,6 +12,7 @@ import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/ui/widgets/index.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:sme_app_aluno/utils/validators.util.dart';
 
 class MeusDadosEditarView extends StatefulWidget {
   @override
@@ -57,6 +58,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     _emailCtrl.text = usuarioStore.usuario.email;
     _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
 
+    _dataNascimento = usuarioStore.usuario.dataNascimento;
     _telefone = _telefoneCtrl.text;
     _email = _emailCtrl.text;
     _nomeMae = _nomeMaeCtrl.text;
@@ -78,7 +80,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       Navigator.of(context).pop();
     }
 
-    if (response.erros != null) {
+    if (!response.ok) {
       asuka.showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -139,7 +141,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 color: Color(0xff333333),
                                 fontWeight: FontWeight.w600),
                             decoration: InputDecoration(
-                              labelText: 'Nome completo',
+                              labelText: 'Nome completo do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                               errorStyle:
                                   TextStyle(fontWeight: FontWeight.w700),
@@ -164,7 +166,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 color: Color(0xff333333),
                                 fontWeight: FontWeight.w600),
                             decoration: InputDecoration(
-                              labelText: 'CPF',
+                              labelText: 'CPF do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                               errorStyle:
                                   TextStyle(fontWeight: FontWeight.w700),
@@ -202,7 +204,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                     fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(() {
-                                    _email = value;
+                                    // _email = value;
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -216,17 +218,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Data de nascimento deve ser informada";
-                                  }
-                                  var data =
-                                      DateFormat('dd/MM/yyyy').parse(value);
-
-                                  if (data
-                                      .isBefore(DateTime.parse('19300101'))) {
-                                    return "Data inválida";
-                                  }
-                                  return null;
+                                  return ValidatorsUtil.dataNascimento(value);
                                 },
                                 keyboardType: TextInputType.datetime,
                               ),
@@ -263,7 +255,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return validadorNomeMae(value);
+                                  return ValidatorsUtil.nomeMae(value);
                                 },
                                 keyboardType: TextInputType.text,
                               ),
@@ -332,7 +324,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Telefone do responsável',
+                                  labelText: 'Telefone celular do responsável',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -340,6 +332,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
+                                validator: (value) {
+                                  return ValidatorsUtil.telefone(value);
+                                },
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -433,6 +428,16 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   }
 
   String validadorNomeMae(String value) {
+    RegExp regExp = new RegExp(
+      r"(\w)\1\1",
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    if (regExp.hasMatch(value)) {
+      return "Nome da mãe não pode conter caracteres repetidos";
+    }
+
     if (value.isEmpty) {
       return "Nome da mãe é deve ser informado";
     }

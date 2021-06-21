@@ -40,9 +40,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var user = UsuarioDataModel.fromJson(decodeJson);
-        // if (user.data.cpf.isNotEmpty) {
-        //   _userService.create(user.data);
-        // }
         return user;
       } else if (response.statusCode == 408) {
         return UsuarioDataModel(

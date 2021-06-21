@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -88,7 +89,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   style: TextStyle(
                       color: Color(0xff333333), fontWeight: FontWeight.w600),
                   decoration: InputDecoration(
-                    labelText: 'Nome completo',
+                    labelText: 'Nome completo do responsável',
                     labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                     errorStyle: TextStyle(fontWeight: FontWeight.w700),
                     // hintText: "Data de nascimento do aluno",
@@ -134,7 +135,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   style: TextStyle(
                       color: Color(0xff333333), fontWeight: FontWeight.w600),
                   decoration: InputDecoration(
-                    labelText: 'Data de nascimento',
+                    labelText: 'Data de nascimento do responsável',
                     labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                     errorStyle: TextStyle(fontWeight: FontWeight.w700),
                     // hintText: "Data de nascimento do aluno",
@@ -157,7 +158,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   style: TextStyle(
                       color: Color(0xff333333), fontWeight: FontWeight.w600),
                   decoration: InputDecoration(
-                    labelText: 'Nome da mãe',
+                    labelText: 'Nome da mãe do responsável',
                     labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                     errorStyle: TextStyle(fontWeight: FontWeight.w700),
                     // hintText: "Data de nascimento do aluno",
@@ -174,20 +175,23 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                 decoration: BoxDecoration(
                   color: ColorsUtil.campoDesabilitado,
                 ),
-                child: TextFormField(
-                  controller: _emailCtrl,
-                  enabled: false,
-                  style: TextStyle(
-                      color: Color(0xff333333), fontWeight: FontWeight.w600),
-                  decoration: InputDecoration(
-                    labelText: 'E-mail',
-                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                    // hintText: "Data de nascimento do aluno",
-                    border: InputBorder.none,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
+                child: Observer(builder: (_) {
+                  return TextFormField(
+                    controller:
+                        TextEditingController(text: usuarioStore.usuario.email),
+                    enabled: false,
+                    style: TextStyle(
+                        color: Color(0xff333333), fontWeight: FontWeight.w600),
+                    decoration: InputDecoration(
+                      labelText: 'E-mail do responsável',
+                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                      // hintText: "Data de nascimento do aluno",
+                      border: InputBorder.none,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  );
+                }),
               ),
               SizedBox(
                 height: screenHeight * 1,
@@ -203,13 +207,25 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   style: TextStyle(
                       color: Color(0xff333333), fontWeight: FontWeight.w600),
                   decoration: InputDecoration(
-                    labelText: 'Telefone',
+                    labelText: 'Telefone celular do responsável',
                     labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                     errorStyle: TextStyle(fontWeight: FontWeight.w700),
                     // hintText: "Data de nascimento do aluno",
                     border: InputBorder.none,
                   ),
                   keyboardType: TextInputType.emailAddress,
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 1.5,
+              ),
+              Center(
+                child: Text(
+                  usuarioStore.usuario.ultimaAtualizacao != null
+                      ? "Dados atualizados em: ${DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.ultimaAtualizacao)} às ${DateFormat("HH:mm").format(usuarioStore.usuario.ultimaAtualizacao)}"
+                      : "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xff333333)),
                 ),
               ),
               SizedBox(
@@ -231,7 +247,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: screenHeight * 3),
+                margin: EdgeInsets.only(top: screenHeight * 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -240,7 +256,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                       text: "******",
                     ),
                     SizedBox(
-                      height: screenHeight * 3,
+                      height: screenHeight * 1,
                     ),
                     EABotaoWidget(
                       text: "ALTERAR SENHA",
