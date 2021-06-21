@@ -350,7 +350,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      width: 280,
+                                      width: MediaQuery.of(context).size.width /
+                                          1.5,
                                       child: AutoSizeText(
                                         "Declaro que as informações acima são verdadeiras",
                                         maxFontSize: 18,
