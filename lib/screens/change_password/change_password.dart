@@ -396,7 +396,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      desabled: (_password.isNotEmpty &&
+                                      disabled: (_password.isNotEmpty &&
                                               _confirmPassword.isNotEmpty &&
                                               _oldPassword.isNotEmpty &&
                                               !spaceNull.hasMatch(_password)) &&

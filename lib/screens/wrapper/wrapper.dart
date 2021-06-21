@@ -2,19 +2,22 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/screens/change_email_or_phone/change_email_or_phone.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/stores/usuario.store.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -25,22 +28,24 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   final UserService _userService = UserService();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  AuthenticateController _authenticateController;
+  final autenticacaoController = GetIt.I.get<AutenticacaoController>();
   MessagesController _messagesController;
 
   @override
   initState() {
     super.initState();
     _initPushNotificationHandlers();
-    _authenticateController = AuthenticateController();
     _messagesController = MessagesController();
-    loadUsers();
+    usuarioStore.carregarUsuario();
   }
 
-  loadUsers() async {
-    await _authenticateController.loadCurrentUser();
+  @override
+  void dispose() {
+    print("SAINDO");
+    super.dispose();
   }
 
   _initPushNotificationHandlers() {
@@ -112,32 +117,19 @@ class _WrapperState extends State<Wrapper> {
       return NotInteernet();
     } else {
       return Observer(builder: (context) {
-        if (_authenticateController.user == null) {
-          return Scaffold(
-              backgroundColor: Colors.white,
-              body: _authenticateController.isLoading
-                  ? GFLoader(
-                      type: GFLoaderType.square,
-                      loaderColorOne: Color(0xffDE9524),
-                      loaderColorTwo: Color(0xffC65D00),
-                      loaderColorThree: Color(0xffC65D00),
-                      size: GFSize.LARGE,
-                    )
-                  : Login());
+        if (usuarioStore.usuario == null) {
+          return Scaffold(backgroundColor: Colors.white, body: LoginView());
         } else {
-          if (_authenticateController.user.primeiroAcesso) {
+          if (usuarioStore.usuario.primeiroAcesso) {
             return FirstAccess(
-              id: _authenticateController.user.id,
-              cpf: _authenticateController.user.cpf,
+              id: usuarioStore.usuario.id,
+              cpf: usuarioStore.usuario.cpf,
             );
-          } else if (_authenticateController.user.informarCelularEmail) {
-            return ChangeEmailOrPhone(
-              cpf: _authenticateController.user.cpf,
-              userId: _authenticateController.user.id,
-            );
+          } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+            return AtualizacaoCadastralView();
           } else {
             return ListStudants(
-              userId: _authenticateController.user.id,
+              userId: usuarioStore.usuario.id,
             );
           }
         }
@@ -145,5 +137,3 @@ class _WrapperState extends State<Wrapper> {
     }
   }
 }
-
-class MEssagesController {}

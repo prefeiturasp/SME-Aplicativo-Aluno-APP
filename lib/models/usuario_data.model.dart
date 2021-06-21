@@ -1,16 +1,16 @@
-import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/models/index.dart';
 
-class Data {
+class UsuarioDataModel {
   bool ok;
   List<String> erros;
-  User data;
+  Usuario data;
 
-  Data({this.ok, this.erros, this.data});
+  UsuarioDataModel({this.ok, this.erros, this.data});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  UsuarioDataModel.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     erros = json['erros'].cast<String>();
-    data = json['data'] != null ? new User.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Usuario.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {

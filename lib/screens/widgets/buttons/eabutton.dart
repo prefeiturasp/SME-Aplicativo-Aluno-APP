@@ -7,7 +7,7 @@ class EAButton extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final Function onPress;
-  final bool desabled;
+  final bool disabled;
 
   EAButton(
       {@required this.text,
@@ -15,7 +15,7 @@ class EAButton extends StatelessWidget {
       @required this.onPress,
       this.icon,
       this.iconColor,
-      this.desabled = false});
+      this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,10 @@ class EAButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: screenHeight * 6,
         decoration: BoxDecoration(
-            color: !desabled ? Color(0xffF2F1EE) : btnColor,
+            color: !disabled ? Color(0xffF2F1EE) : btnColor,
             borderRadius: BorderRadius.circular(screenHeight * 3)),
         child: FlatButton(
-            onPressed: !desabled ? null : onPress,
+            onPressed: !disabled ? null : onPress,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +38,7 @@ class EAButton extends StatelessWidget {
                   maxFontSize: 16,
                   minFontSize: 14,
                   style: TextStyle(
-                      color: !desabled ? Color(0xffC4C4C4) : Colors.white,
+                      color: !disabled ? Color(0xffC4C4C4) : Colors.white,
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -48,7 +48,7 @@ class EAButton extends StatelessWidget {
                   visible: icon != null,
                   child: Icon(
                     icon,
-                    color: !desabled ? Color(0xffC4C4C4) : iconColor,
+                    color: !disabled ? Color(0xffC4C4C4) : iconColor,
                     size: screenHeight * 3,
                   ),
                 )

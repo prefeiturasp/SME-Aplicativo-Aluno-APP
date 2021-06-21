@@ -51,6 +51,10 @@ dependencies:
   get_ip: ^0.4.0
   background_fetch: '^0.5.1'
   hexcolor: ^1.0.6
+  get_it: ^5.0.6
+  shared_preferences: ^0.5.12+4
+  extended_masked_text: ^1.1.0
+  asuka: ^1.0.4
   
 dev_dependencies:
   flutter_test:

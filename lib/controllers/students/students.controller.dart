@@ -1,9 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/repositories/student_repository.dart';
 import 'package:sme_app_aluno/services/group_messages.service.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 part 'students.controller.g.dart';
 
 class StudentsController = _StudentsControllerBase with _$StudentsController;
@@ -12,6 +15,8 @@ abstract class _StudentsControllerBase with Store {
   StudentRepository _studentRepository;
   FirebaseMessaging _firebaseMessaging;
   final _groupMessageService = GroupMessageService();
+  final usuarioController = GetIt.I.get<UsuarioController>();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   _StudentsControllerBase() {
     _studentRepository = StudentRepository();
@@ -82,7 +87,8 @@ abstract class _StudentsControllerBase with Store {
   @action
   loadingStudents(String cpf, int id) async {
     isLoading = true;
-    dataEstudent = await _studentRepository.fetchStudents(cpf, id);
+    dataEstudent = await _studentRepository.fetchStudents(
+        cpf, id, usuarioStore.usuario.token);
     subscribeGroupIdToFirebase();
     isLoading = false;
   }

@@ -3,16 +3,14 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
-import 'package:sme_app_aluno/models/user/data.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class AuthenticateRepository implements IAuthenticateRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  final UserService _userService = UserService();
 
   @override
-  Future<Data> loginUser(String cpf, String password) async {
+  Future<UsuarioDataModel> loginUser(String cpf, String password) async {
     String idDevice;
     if (Platform.isAndroid) {
       idDevice = await _firebaseMessaging.getToken();
@@ -41,16 +39,14 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
-        var user = Data.fromJson(decodeJson);
-        if (user.data.cpf.isNotEmpty) {
-          _userService.create(user.data);
-        }
+        var user = UsuarioDataModel.fromJson(decodeJson);
         return user;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return UsuarioDataModel(
+            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
-        var dataError = Data.fromJson(decodeError);
+        var dataError = UsuarioDataModel.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {

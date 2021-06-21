@@ -98,7 +98,7 @@ class _TermsViewState extends State<TermsView> {
                 text: "ACEITAR TODOS OS TERMOS",
                 iconColor: Color(0xffffd037),
                 btnColor: Color(0xffd06d12),
-                desabled: reachEnd,
+                disabled: reachEnd,
                 // && (_termsController.isTerm == false || _statusTerm == true),
                 onPress: widget.changeStatusTerm,
               ))

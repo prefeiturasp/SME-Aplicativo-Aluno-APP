@@ -1,4 +1,4 @@
-class User {
+class Usuario {
   int id;
   String nome;
   String nomeMae;
@@ -9,9 +9,10 @@ class User {
   bool atualizarDadosCadastrais;
   String celular;
   DateTime dataNascimento;
+  DateTime ultimaAtualizacao;
   String senha;
 
-  User(
+  Usuario(
       {this.id,
       this.nome,
       this.cpf,
@@ -20,9 +21,10 @@ class User {
       this.primeiroAcesso,
       this.atualizarDadosCadastrais,
       this.celular,
-      this.dataNascimento});
+      this.dataNascimento,
+      this.ultimaAtualizacao});
 
-  User.fromJson(Map<String, dynamic> json) {
+  Usuario.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     cpf = json['cpf'];
@@ -32,7 +34,16 @@ class User {
     primeiroAcesso = json['primeiroAcesso'];
     atualizarDadosCadastrais = json['atualizarDadosCadastrais'];
     celular = json['celular'];
-    dataNascimento = DateTime.parse(json['dataNascimento']);
+    dataNascimento = json['dataNascimento'] != null
+        ? (DateTime.tryParse(json['dataNascimento']) != null
+            ? DateTime.parse(json['dataNascimento'])
+            : null)
+        : null;
+    ultimaAtualizacao = json['ultimaAtualizacao'] != null
+        ? (DateTime.tryParse(json['ultimaAtualizacao']) != null
+            ? DateTime.parse(json['ultimaAtualizacao'])
+            : null)
+        : null;
   }
 
   Map<String, dynamic> toMap() {
@@ -46,7 +57,8 @@ class User {
       'primeiroAcesso': primeiroAcesso ? 1 : 0,
       'atualizarDadosCadastrais': atualizarDadosCadastrais ? 1 : 0,
       'celular': celular,
-      'dataNascimento': dataNascimento
+      'dataNascimento': dataNascimento,
+      'ultimaAtualizacao': ultimaAtualizacao
     };
   }
 
@@ -62,6 +74,7 @@ class User {
     data['atualizarDadosCadastrais'] = this.atualizarDadosCadastrais;
     data['celular'] = this.celular;
     data['dataNascimento'] = this.dataNascimento.toString();
+    data['ultimaAtualizacao'] = this.ultimaAtualizacao.toString();
     return data;
   }
 }
