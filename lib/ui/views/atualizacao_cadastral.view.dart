@@ -97,7 +97,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       _busy = false;
     });
 
-    if (response.ok) {
+    if (response != null && response.ok) {
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -105,6 +105,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
               userId: usuarioStore.usuario.id,
             ),
           ));
+    }
+
+    if (response == null) {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text("Ocorreu um erro ao atualizar os dados"),
+      );
+
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     }
 
     if (!response.ok) {
@@ -495,6 +504,16 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                             }
                                           },
                                         ),
+                                        SizedBox(height: screenHeight * 3),
+                                        EABotaoWidget(
+                                            text: "CADASTRAR MAIS TARDE",
+                                            btnColor: Color(0xffd06d12),
+                                            icon: FontAwesomeIcons.chevronLeft,
+                                            iconColor: Color(0xffffd037),
+                                            onPress: () {
+                                              _onBackPress();
+                                            },
+                                            enabled: true),
                                       ],
                                     )
                                   : GFLoader(
