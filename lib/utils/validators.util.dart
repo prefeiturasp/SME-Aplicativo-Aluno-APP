@@ -19,7 +19,7 @@ class ValidatorsUtil {
       multiLine: false,
     );
 
-    if (regExp.hasMatch(value)) {
+    if (regExp.hasMatch(value) || value.length < 11) {
       return "O telefone está incorreto";
     }
     return null;

@@ -309,7 +309,8 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                       fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
-                                      //_dataNascimento = value;
+                                      _dataNascimento =
+                                          DateTime.tryParse(value);
                                     });
                                   },
                                   decoration: InputDecoration(
