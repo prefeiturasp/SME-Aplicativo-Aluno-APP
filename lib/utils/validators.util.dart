@@ -65,7 +65,7 @@ class ValidatorsUtil {
     }
 
     if (data.isAfter(DateTime.now())) {
-      return "Data inválida";
+      return "Data não pode ser superior a data atual";
     }
 
     return null;
