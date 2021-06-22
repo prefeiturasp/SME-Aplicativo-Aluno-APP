@@ -19,7 +19,7 @@ class ValidatorsUtil {
       multiLine: false,
     );
 
-    if (regExp.hasMatch(value)) {
+    if (regExp.hasMatch(value) || value.length < 11) {
       return "O telefone está incorreto";
     }
     return null;
@@ -63,6 +63,11 @@ class ValidatorsUtil {
     if (data.isBefore(DateTime.parse('19300101'))) {
       return "Data inválida";
     }
+
+    if (data.isAfter(DateTime.now())) {
+      return "Data não pode ser superior a data atual";
+    }
+
     return null;
   }
 }
