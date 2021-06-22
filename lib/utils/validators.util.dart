@@ -63,6 +63,11 @@ class ValidatorsUtil {
     if (data.isBefore(DateTime.parse('19300101'))) {
       return "Data inválida";
     }
+
+    if (data.isAfter(DateTime.now())) {
+      return "Data inválida";
+    }
+
     return null;
   }
 }
