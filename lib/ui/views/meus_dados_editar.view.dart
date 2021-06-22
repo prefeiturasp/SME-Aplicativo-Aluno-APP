@@ -327,7 +327,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                     fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(() {
-                                    _email = value;
+                                    _telefone = value;
                                   });
                                 },
                                 decoration: InputDecoration(

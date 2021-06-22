@@ -57,9 +57,6 @@ void main() async {
   ioc.registrarStores();
   ioc.registrarRepositories();
   ioc.registrarControllers();
-  //Repositories
-
-  //Controllers
 
   runApp(MyApp());
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
