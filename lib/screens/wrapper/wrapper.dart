@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -45,6 +46,7 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    usuarioStore.limparUsuario();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -52,8 +54,9 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     print("State of APP : ${state}");
-    if (state == AppLifecycleState.detached) {
-      await usuarioStore.limparUsuario();
+    if (state == AppLifecycleState.detached || state == null) {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.clear();
     }
   }
 
@@ -123,7 +126,7 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
     } else {
       return Observer(builder: (context) {
         if (usuarioStore.usuario == null) {
-          return Scaffold(backgroundColor: Colors.white, body: LoginView());
+          return LoginView();
         } else {
           if (usuarioStore.usuario.primeiroAcesso) {
             return FirstAccess(

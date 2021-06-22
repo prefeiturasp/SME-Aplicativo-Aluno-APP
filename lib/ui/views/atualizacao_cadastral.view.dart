@@ -308,10 +308,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
                                   onChanged: (value) {
-                                    setState(() {
-                                      _dataNascimento =
-                                          DateTime.tryParse(value);
-                                    });
+                                    setState(
+                                      () {
+                                        if (value.isNotEmpty) {
+                                          var data = value.split("/");
+                                          _dataNascimento = DateTime.parse(
+                                              "${data[2]}${data[1]}${data[0]}");
+                                        }
+                                      },
+                                    );
                                   },
                                   decoration: InputDecoration(
                                     labelText:
