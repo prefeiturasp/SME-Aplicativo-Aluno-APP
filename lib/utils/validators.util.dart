@@ -54,6 +54,16 @@ class ValidatorsUtil {
       return "${nomeCampo} não pode conter caracteres especiais";
     }
 
+    regExp = new RegExp(
+      r"[0-9]",
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    if (regExp.hasMatch(value)) {
+      return "${nomeCampo} não pode conter números";
+    }
+
     if (value.contains(".") || value.contains("@") || value.contains("."))
       value = value.replaceAll(".", "");
     var nomeValidador = value.split(" ");

@@ -69,8 +69,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       _busy = true;
     });
 
-    var response = await usuarioController.atualizarDados(_nomeMaeCtrl.text,
-        _dataNascimento, _emailCtrl.text.trim(), _telefoneCtrl.text);
+    var response = await usuarioController.atualizarDados(
+        _nomeMaeCtrl.text.trim(),
+        _dataNascimento,
+        _emailCtrl.text.trim(),
+        _telefoneCtrl.text);
 
     setState(() {
       _busy = false;
@@ -441,32 +444,5 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     }
 
     return true;
-  }
-
-  String validadorNomeMae(String value) {
-    RegExp regExp = new RegExp(
-      r"(\w)\1\1",
-      caseSensitive: false,
-      multiLine: false,
-    );
-
-    if (regExp.hasMatch(value)) {
-      return "Nome da mãe não pode conter caracteres repetidos";
-    }
-
-    if (value.isEmpty) {
-      return "Nome da mãe é deve ser informado";
-    }
-    var nomeMaeValidador = value.split(" ");
-    if (nomeMaeValidador.length > 0) {
-      for (var i = 0; i < nomeMaeValidador.length; i++) {
-        if (nomeMaeValidador[i].length == 1 &&
-            nomeMaeValidador[i].toLowerCase() != "e") {
-          return "Nome da mãe não pode ser abreviado";
-        }
-        print(nomeMaeValidador[i].length);
-      }
-    }
-    return null;
   }
 }
