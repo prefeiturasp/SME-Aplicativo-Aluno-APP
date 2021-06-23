@@ -235,7 +235,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 color: ColorsUtil.campoDesabilitado,
                               ),
                               child: TextFormField(
-                                initialValue: usuarioStore.usuario.nome,
+                                initialValue: usuarioStore.usuario != null
+                                    ? usuarioStore.usuario.nome
+                                    : "",
                                 style: TextStyle(
                                     color: Color(0xff333333),
                                     fontWeight: FontWeight.w600),

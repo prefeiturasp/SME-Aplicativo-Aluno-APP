@@ -27,7 +27,7 @@ class Wrapper extends StatefulWidget {
   _WrapperState createState() => _WrapperState();
 }
 
-class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
+class _WrapperState extends State<Wrapper> {
   final UserService _userService = UserService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -39,7 +39,6 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
   initState() {
     super.initState();
     _initPushNotificationHandlers();
-    WidgetsBinding.instance.addObserver(this);
     _messagesController = MessagesController();
     usuarioStore.carregarUsuario();
   }
@@ -47,17 +46,7 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
   @override
   void dispose() {
     usuarioStore.limparUsuario();
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("State of APP : ${state}");
-    if (state == AppLifecycleState.detached || state == null) {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.clear();
-    }
   }
 
   _initPushNotificationHandlers() {
@@ -114,6 +103,24 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
         ));
   }
 
+  Widget fluxoLogin() {
+    if (usuarioStore.usuario != null) {
+      if (usuarioStore.usuario.primeiroAcesso) {
+        return FirstAccess(
+          id: usuarioStore.usuario.id,
+          cpf: usuarioStore.usuario.cpf,
+        );
+      } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+        return AtualizacaoCadastralView();
+      } else {
+        return ListStudants(
+          userId: usuarioStore.usuario.id,
+        );
+      }
+    }
+    return new Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
@@ -124,24 +131,35 @@ class _WrapperState extends State<Wrapper> with WidgetsBindingObserver {
       // });
       return NotInteernet();
     } else {
-      return Observer(builder: (context) {
-        if (usuarioStore.usuario == null) {
-          return LoginView();
-        } else {
-          if (usuarioStore.usuario.primeiroAcesso) {
-            return FirstAccess(
-              id: usuarioStore.usuario.id,
-              cpf: usuarioStore.usuario.cpf,
-            );
-          } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
-            return AtualizacaoCadastralView();
-          } else {
-            return ListStudants(
-              userId: usuarioStore.usuario.id,
-            );
-          }
-        }
-      });
+      return Observer(
+          builder: (context) => usuarioStore.usuario == null
+              ? LoginView()
+              : (usuarioStore.usuario.primeiroAcesso == null
+                  ? LoginView()
+                  : fluxoLogin()));
     }
   }
 }
+
+// Observer(
+//         builder: (context) {
+//           if (usuarioStore.usuario == null) {
+//             return LoginView();
+//           } else {
+//             if (usuarioStore.usuario != null) {
+//               if (usuarioStore.usuario.primeiroAcesso) {
+//                 return FirstAccess(
+//                   id: usuarioStore.usuario.id,
+//                   cpf: usuarioStore.usuario.cpf,
+//                 );
+//               } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+//                 return AtualizacaoCadastralView();
+//               } else {
+//                 return ListStudants(
+//                   userId: usuarioStore.usuario.id,
+//                 );
+//               }
+//             }
+//           }
+//         },
+//       );
