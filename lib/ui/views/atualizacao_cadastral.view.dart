@@ -91,7 +91,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     });
 
     var response = await usuarioController.atualizarDados(
-        _nomeMae, _dataNascimento, _email, _telefone);
+        _nomeMae, _dataNascimento, _email.trim(), _telefone);
 
     setState(() {
       _busy = false;
@@ -369,7 +369,8 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    return ValidatorsUtil.nomeMae(value);
+                                    return ValidatorsUtil.nome(
+                                        value, "Nome da mãe");
                                   },
                                   keyboardType: TextInputType.text,
                                 ),

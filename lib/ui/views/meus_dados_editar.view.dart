@@ -69,8 +69,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       _busy = true;
     });
 
-    var response = await usuarioController.atualizarDados(
-        _nomeMae, _dataNascimento, _email, _telefone);
+    var response = await usuarioController.atualizarDados(_nomeMaeCtrl.text,
+        _dataNascimento, _emailCtrl.text.trim(), _telefoneCtrl.text);
 
     setState(() {
       _busy = false;
@@ -260,7 +260,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.nomeMae(value);
+                                  return ValidatorsUtil.nome(
+                                      value, "Nome da mãe");
                                 },
                                 keyboardType: TextInputType.text,
                               ),

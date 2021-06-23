@@ -17,6 +17,10 @@ class AutenticacaoController {
   Future<UsuarioDataModel> authenticateUser(String cpf, String password) async {
     var data = await repository.loginUser(cpf, password);
 
+    if (data == null) {
+      return new UsuarioDataModel(data: null, erros: null, ok: false);
+    }
+
     if (data.data != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('eaUsuario', jsonEncode(data.data.toJson()));
