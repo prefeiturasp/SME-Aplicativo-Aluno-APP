@@ -91,7 +91,10 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     });
 
     var response = await usuarioController.atualizarDados(
-        _nomeMae, _dataNascimento, _email.trim(), _telefone);
+        _nomeMaeCtrl.text.trim(),
+        _dataNascimento,
+        _emailCtrl.text.trim(),
+        _telefoneCtrl.text);
 
     setState(() {
       _busy = false;
