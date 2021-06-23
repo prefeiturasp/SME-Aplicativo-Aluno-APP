@@ -12,7 +12,6 @@ import 'package:getflutter/getflutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
-import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -89,6 +88,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     setState(() {
       _busy = true;
     });
+
+    var data = _dataNascimentoCtrl.text.split("/");
+    _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
 
     var response = await usuarioController.atualizarDados(
         _nomeMaeCtrl.text.trim(),
@@ -284,7 +286,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                               ),
                             ),
                           ),

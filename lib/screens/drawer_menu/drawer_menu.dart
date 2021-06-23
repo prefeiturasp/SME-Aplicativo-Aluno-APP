@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
@@ -33,6 +34,7 @@ class DrawerMenu extends StatefulWidget {
 
 class _DrawerMenuState extends State<DrawerMenu> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final usuarioController = GetIt.I.get<UsuarioController>();
 
   MessagesController _messagesController;
 
@@ -219,7 +221,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 size: screenHeight * 2,
               ),
             ),
-            onTap: () {
+            onTap: () async {
+              await usuarioController.obterDadosUsuario();
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => MeusDadosView()),
               );

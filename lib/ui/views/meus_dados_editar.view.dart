@@ -69,6 +69,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       _busy = true;
     });
 
+    var data = _dataNascimentoCtrl.text.split("/");
+    _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
+
     var response = await usuarioController.atualizarDados(
         _nomeMaeCtrl.text.trim(),
         _dataNascimento,

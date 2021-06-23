@@ -1,6 +1,6 @@
 import 'package:sme_app_aluno/utils/data.util.dart';
 
-class Usuario {
+class UsuarioModel {
   int id;
   String nome;
   String nomeMae;
@@ -14,7 +14,7 @@ class Usuario {
   DateTime ultimaAtualizacao;
   String senha;
 
-  Usuario(
+  UsuarioModel(
       {this.id,
       this.nome,
       this.cpf,
@@ -26,7 +26,7 @@ class Usuario {
       this.dataNascimento,
       this.ultimaAtualizacao});
 
-  Usuario.fromJson(Map<String, dynamic> json) {
+  UsuarioModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nome = json['nome'];
     cpf = json['cpf'];

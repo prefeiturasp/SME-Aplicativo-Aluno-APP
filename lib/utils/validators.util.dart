@@ -37,11 +37,11 @@ class ValidatorsUtil {
     );
 
     if (regExp.hasMatch(value)) {
-      return "${nomeCampo} não pode conter caracteres repetidos";
+      return "$nomeCampo não pode conter caracteres repetidos";
     }
 
     if (value.isEmpty) {
-      return "${nomeCampo} deve ser informado";
+      return "$nomeCampo deve ser informado";
     }
 
     regExp = new RegExp(
@@ -51,7 +51,7 @@ class ValidatorsUtil {
     );
 
     if (regExp.hasMatch(value)) {
-      return "${nomeCampo} não pode conter caracteres especiais";
+      return "$nomeCampo não pode conter caracteres especiais";
     }
 
     regExp = new RegExp(
@@ -61,7 +61,7 @@ class ValidatorsUtil {
     );
 
     if (regExp.hasMatch(value)) {
-      return "${nomeCampo} não pode conter números";
+      return "$nomeCampo não pode conter números";
     }
 
     if (value.contains(".") || value.contains("@") || value.contains("."))
@@ -71,7 +71,7 @@ class ValidatorsUtil {
       for (var i = 0; i < nomeValidador.length; i++) {
         if (nomeValidador[i].length == 1 &&
             nomeValidador[i].toLowerCase() != "e") {
-          return "${nomeCampo} não pode ser abreviado";
+          return "$nomeCampo não pode ser abreviado";
         }
         print(nomeValidador[i].length);
       }
