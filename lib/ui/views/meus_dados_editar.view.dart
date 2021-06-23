@@ -148,6 +148,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               border: InputBorder.none,
                             ),
                             enabled: false,
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 3,
                           ),
                         ),
                         SizedBox(
@@ -263,7 +266,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   return ValidatorsUtil.nome(
                                       value, "Nome da mãe");
                                 },
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                               ),
                             ),
                             SizedBox(
@@ -300,7 +305,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 validator: (value) {
                                   return ValidatorsUtil.email(value);
                                 },
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                               ),
                             ),
                             SizedBox(
