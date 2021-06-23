@@ -422,7 +422,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   validator: (value) {
                                     return ValidatorsUtil.email(value);
                                   },
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines: 3,
                                 ),
                               ),
                               SizedBox(
