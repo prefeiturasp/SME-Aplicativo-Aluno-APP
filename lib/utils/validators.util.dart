@@ -41,7 +41,7 @@ class ValidatorsUtil {
     }
 
     if (value.isEmpty) {
-      return "Nome da mãe é deve ser informado";
+      return "Nome da mãe deve ser informado";
     }
 
     value = value.replaceAll(".", "");
@@ -63,7 +63,11 @@ class ValidatorsUtil {
       return "Data de nascimento deve ser informada";
     }
 
-    if (DateTime.tryParse(value) == null) {
+    var dataSeparada = value.split("/");
+
+    if (DateTime.tryParse(
+            "${dataSeparada[2]}${dataSeparada[1]}${dataSeparada[0]}") ==
+        null) {
       return "Data de nascimento com formato inválido";
     }
 
