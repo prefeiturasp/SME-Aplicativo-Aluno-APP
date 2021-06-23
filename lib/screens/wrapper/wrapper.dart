@@ -4,20 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
-import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -28,7 +24,6 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
-  final UserService _userService = UserService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -118,7 +113,19 @@ class _WrapperState extends State<Wrapper> {
         );
       }
     }
-    return new Container();
+
+    return Scaffold(
+      backgroundColor: Color(0xffE5E5E5),
+      body: new Center(
+        child: GFLoader(
+          type: GFLoaderType.square,
+          loaderColorOne: Color(0xffDE9524),
+          loaderColorTwo: Color(0xffC65D00),
+          loaderColorThree: Color(0xffC65D00),
+          size: GFSize.LARGE,
+        ),
+      ),
+    );
   }
 
   @override

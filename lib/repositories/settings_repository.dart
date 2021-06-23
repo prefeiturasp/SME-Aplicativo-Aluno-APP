@@ -42,7 +42,7 @@ class SettingsRepository implements ISettingsRepository {
           email: usuarioStore.usuario.email,
           celular: usuarioStore.usuario.celular,
           token: data.token,
-          primeiroAcesso: usuarioStore.usuario.primeiroAcesso,
+          primeiroAcesso: usuarioStore.usuario?.primeiroAcesso,
           atualizarDadosCadastrais:
               usuarioStore.usuario.atualizarDadosCadastrais,
         ));
