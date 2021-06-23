@@ -32,8 +32,11 @@ class _MeusDadosViewState extends State<MeusDadosView> {
 
   @override
   void initState() {
+    loadInputs();
     super.initState();
+  }
 
+  loadInputs() {
     _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
         ? DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.dataNascimento)
         : "";
@@ -251,7 +254,9 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                           context,
                           MaterialPageRoute(
                               builder: (_) => MeusDadosEditarView()))
-                      .then((value) => setState(() {}));
+                      .then((value) => setState(() {
+                            loadInputs();
+                          }));
                 },
               ),
               Divider(
