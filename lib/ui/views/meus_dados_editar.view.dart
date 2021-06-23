@@ -64,7 +64,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     _nomeMae = _nomeMaeCtrl.text;
   }
 
-  onClickFinalizarCadastro() async {
+  Future<bool> onClickFinalizarCadastro() async {
     setState(() {
       _busy = true;
     });
@@ -76,10 +76,6 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       _busy = false;
     });
 
-    if (response.ok) {
-      Navigator.of(context).pop();
-    }
-
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
@@ -90,6 +86,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
 
       _scaffoldKey.currentState.showSnackBar(snackBar);
     }
+
+    return response.ok;
   }
 
   @override
@@ -299,10 +297,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  if (!EmailValidator.validate(_email)) {
-                                    return 'E-mail inválido';
-                                  }
-                                  return null;
+                                  return ValidatorsUtil.email(value);
                                 },
                                 keyboardType: TextInputType.emailAddress,
                               ),
@@ -372,6 +367,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                       activeColor: ColorsUtil.laranja01,
                                       onChanged: (newValue) {
                                         setState(() {
+                                          _formKey.currentState.validate();
                                           _declaracao = newValue;
                                         });
                                       },
@@ -392,10 +388,14 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                         iconColor: Color(0xffffd037),
                                         btnColor: Color(0xffd06d12),
                                         enabled: habilitaBotaoCadastro(),
-                                        onPress: () {
+                                        onPress: () async {
                                           if (_formKey.currentState
                                               .validate()) {
-                                            onClickFinalizarCadastro();
+                                            var retorno =
+                                                await onClickFinalizarCadastro();
+                                            if (retorno) {
+                                              Navigator.pop(context);
+                                            }
                                           }
                                         },
                                       ),

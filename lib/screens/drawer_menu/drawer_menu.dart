@@ -9,7 +9,6 @@ import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
-import 'package:sme_app_aluno/screens/settings/settings.dart';
 import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/screens/terms/terms_use.dart';
@@ -73,17 +72,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginView()));
     }
-  }
-
-  _navigateToSettings(BuildContext context) async {
-    Nav.push(
-        context,
-        Settings(
-          currentCPF: usuarioStore.usuario.cpf,
-          email: usuarioStore.usuario.email,
-          phone: usuarioStore.usuario.celular,
-          userId: usuarioStore.usuario.id,
-        ));
   }
 
   _navigateToTerms(BuildContext context) {

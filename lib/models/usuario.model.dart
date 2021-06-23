@@ -1,3 +1,5 @@
+import 'package:sme_app_aluno/utils/data.util.dart';
+
 class Usuario {
   int id;
   String nome;
@@ -34,16 +36,9 @@ class Usuario {
     primeiroAcesso = json['primeiroAcesso'];
     atualizarDadosCadastrais = json['atualizarDadosCadastrais'];
     celular = json['celular'];
-    dataNascimento = json['dataNascimento'] != null
-        ? (DateTime.tryParse(json['dataNascimento']) != null
-            ? DateTime.parse(json['dataNascimento'])
-            : null)
-        : null;
-    ultimaAtualizacao = json['ultimaAtualizacao'] != null
-        ? (DateTime.tryParse(json['ultimaAtualizacao']) != null
-            ? DateTime.parse(json['ultimaAtualizacao'])
-            : null)
-        : null;
+    dataNascimento = DataUtil.converteParaDataLocal(json['dataNascimento']);
+    ultimaAtualizacao =
+        DataUtil.converteParaDataLocal(json['ultimaAtualizacao']);
   }
 
   Map<String, dynamic> toMap() {

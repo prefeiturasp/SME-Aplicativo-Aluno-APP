@@ -1,21 +1,20 @@
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/responsible_repository_interface.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class ResponsibleRepository implements IResponsibleRepository {
-  final UserService _userService = UserService();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
     // Autenticacao/usuario/responsavel?cpf=40861153871
-    User user = await _userService.find(userId);
     try {
       final response = await http.get(
-        "${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${user.cpf}",
+        "${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario.cpf}",
         headers: {
-          "Authorization": "Bearer ${user.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json"
         },
       );

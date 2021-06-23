@@ -1,7 +1,11 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:intl/intl.dart';
 
 class ValidatorsUtil {
   static String telefone(String value) {
+    if (value.isEmpty) {
+      return "O telefone deve ser informado";
+    }
     var checarInicial = value.split(" ");
     if (checarInicial.length > 1) {
       if (checarInicial[1].substring(0, 1) != "9") {
@@ -58,6 +62,11 @@ class ValidatorsUtil {
     if (value.isEmpty) {
       return "Data de nascimento deve ser informada";
     }
+
+    if (DateTime.tryParse(value) == null) {
+      return "Data de nascimento com formato inválido";
+    }
+
     var data = DateFormat('dd/MM/yyyy').parse(value);
 
     if (data.isBefore(DateTime.parse('19300101'))) {
@@ -66,6 +75,18 @@ class ValidatorsUtil {
 
     if (data.isAfter(DateTime.now())) {
       return "Data não pode ser superior a data atual";
+    }
+
+    return null;
+  }
+
+  static String email(String value) {
+    if (value.isEmpty) {
+      return "O e-mail deve ser informado";
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return 'E-mail inválido';
     }
 
     return null;

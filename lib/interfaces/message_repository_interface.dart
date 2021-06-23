@@ -1,8 +1,7 @@
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
 
 abstract class IMessageRepository {
-  Future<List<Message>> fetchNewMessages(int codigoEol, User user);
+  Future<List<Message>> fetchNewMessages(int codigoEol);
 
   Future<List<Message>> fetchMessages(int codigoEol, int userId);
 

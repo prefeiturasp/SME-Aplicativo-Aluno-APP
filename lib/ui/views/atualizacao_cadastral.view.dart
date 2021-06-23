@@ -202,7 +202,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                       Container(
                         margin: EdgeInsets.only(bottom: screenHeight * 3),
                         child: AutoSizeText(
-                          "Primeiro Acesso! Atualize os dados de cadastro",
+                          "${(usuarioStore.usuario.primeiroAcesso ? "Primeiro Acesso! " : "")}Atualize os dados de cadastro",
                           maxFontSize: 18,
                           minFontSize: 16,
                           textAlign: TextAlign.center,
@@ -405,10 +405,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (!EmailValidator.validate(_email)) {
-                                      return 'E-mail inválido';
-                                    }
-                                    return null;
+                                    return ValidatorsUtil.email(value);
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                 ),
