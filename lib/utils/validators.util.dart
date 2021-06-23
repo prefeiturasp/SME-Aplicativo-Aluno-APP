@@ -29,7 +29,7 @@ class ValidatorsUtil {
     return null;
   }
 
-  static String nomeMae(String value) {
+  static String nome(String value, String nomeCampo) {
     RegExp regExp = new RegExp(
       r"(\w)\1\1",
       caseSensitive: false,
@@ -37,22 +37,33 @@ class ValidatorsUtil {
     );
 
     if (regExp.hasMatch(value)) {
-      return "Nome da mãe não pode conter caracteres repetidos";
+      return "${nomeCampo} não pode conter caracteres repetidos";
     }
 
     if (value.isEmpty) {
-      return "Nome da mãe deve ser informado";
+      return "${nomeCampo} deve ser informado";
     }
 
-    value = value.replaceAll(".", "");
-    var nomeMaeValidador = value.split(" ");
-    if (nomeMaeValidador.length > 0) {
-      for (var i = 0; i < nomeMaeValidador.length; i++) {
-        if (nomeMaeValidador[i].length == 1 &&
-            nomeMaeValidador[i].toLowerCase() != "e") {
-          return "Nome da mãe não pode ser abreviado";
+    regExp = new RegExp(
+      r"[$&+,:;=?@#|'<>.^*()%!-]",
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    if (regExp.hasMatch(value)) {
+      return "${nomeCampo} não pode conter caracteres especiais";
+    }
+
+    if (value.contains(".") || value.contains("@") || value.contains("."))
+      value = value.replaceAll(".", "");
+    var nomeValidador = value.split(" ");
+    if (nomeValidador.length > 0) {
+      for (var i = 0; i < nomeValidador.length; i++) {
+        if (nomeValidador[i].length == 1 &&
+            nomeValidador[i].toLowerCase() != "e") {
+          return "${nomeCampo} não pode ser abreviado";
         }
-        print(nomeMaeValidador[i].length);
+        print(nomeValidador[i].length);
       }
     }
     return null;
