@@ -64,7 +64,35 @@ class _LoginViewState extends State<LoginView> {
     setState(() {
       _carregando = false;
     });
-    _navigateToScreen(usuario);
+
+    if (!usuario.ok) {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: usuario.erros != null
+            ? Text(usuario.erros[0])
+            : Text("Erro de serviço"),
+      );
+
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    } else {
+      if (usuarioStore.usuario.primeiroAcesso) {
+        Nav.push(
+            context,
+            FirstAccess(
+              id: usuarioStore.usuario.id,
+              cpf: usuarioStore.usuario.cpf,
+            ));
+      } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+        Nav.push(context, AtualizacaoCadastralView());
+      } else {
+        Nav.push(
+            context,
+            ListStudants(
+              userId: usuarioStore.usuario.id,
+            ));
+      }
+    }
+    //_navigateToScreen(usuario);
   }
 
   _navigateToScreen(UsuarioDataModel usuario) async {
