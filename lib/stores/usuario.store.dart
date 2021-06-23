@@ -13,7 +13,7 @@ abstract class _UsuarioStoreBase with Store {
   bool carregando = false;
 
   @observable
-  Usuario usuario = new Usuario();
+  UsuarioModel usuario = new UsuarioModel();
 
   @action
   carregarUsuario() async {
@@ -21,7 +21,7 @@ abstract class _UsuarioStoreBase with Store {
     final prefs = await SharedPreferences.getInstance();
     var prefsUsuario = prefs.getString("eaUsuario");
     if (prefsUsuario != null) {
-      usuario = Usuario.fromJson(jsonDecode(prefsUsuario));
+      usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
     }
     carregando = false;
   }

@@ -53,4 +53,27 @@ class UsuarioRepository extends IUsuarioRepository {
       return null;
     }
   }
+
+  @override
+  Future<UsuarioModel> obterDadosUsuario() async {
+    try {
+      final response = await http.get(
+          "${AppConfigReader.getApiHost()}/Usuario/${usuarioStore.usuario.cpf}",
+          headers: {
+            "Authorization": "Bearer ${usuarioStore.usuario.token}",
+            "Content-Type": "application/json",
+          });
+
+      if (response.statusCode == 200) {
+        var decodeJson = jsonDecode(response.body);
+        var usuario = UsuarioModel.fromJson(decodeJson);
+        return usuario;
+      }
+
+      return null;
+    } catch (error, stacktrace) {
+      print("[Atualizar Usuário] Erro de requisição " + stacktrace.toString());
+      return null;
+    }
+  }
 }
