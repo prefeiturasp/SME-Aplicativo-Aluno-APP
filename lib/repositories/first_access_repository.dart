@@ -65,9 +65,6 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<DataChangeEmailAndPhone> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) async {
-    final User user = await _userService.find(userId);
-    String token = user.token;
-
     Map _data = {
       "id": userId,
       "email": email ?? "",
@@ -79,7 +76,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         "${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular",
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -89,8 +86,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         var data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(User(
             id: userId,
-            nome: user.nome,
-            cpf: user.cpf,
+            nome: usuarioStore.usuario.nome,
+            cpf: usuarioStore.usuario.cpf,
             email: email,
             celular: phone,
             token: data.token,

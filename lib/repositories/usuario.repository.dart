@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/dtos/response.dto.dart';
 import 'package:sme_app_aluno/interfaces/repositories/iusuario.repository.dart';
+import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
@@ -32,9 +33,13 @@ class UsuarioRepository extends IUsuarioRepository {
       );
 
       if (response.statusCode == 200) {
-        await usuarioStore.atualizarDados(
-            email, dataNascimento, nomeMae, telefone);
-        return ResponseDTO.fromJson(jsonDecode(response.body));
+        var decodeJson = jsonDecode(response.body);
+        var user = UsuarioDataModel.fromJson(decodeJson);
+
+        usuarioStore.atualizarDados(email, dataNascimento, nomeMae, telefone,
+            user.data.ultimaAtualizacao);
+
+        return ResponseDTO.fromJson(decodeJson);
       } else if (response.statusCode == 408) {
         return ResponseDTO(
             ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);

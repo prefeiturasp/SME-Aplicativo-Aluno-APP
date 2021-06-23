@@ -141,7 +141,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     // hintText: "Data de nascimento do aluno",
                     border: InputBorder.none,
                   ),
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.datetime,
                 ),
               ),
               SizedBox(
@@ -164,7 +164,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     // hintText: "Data de nascimento do aluno",
                     border: InputBorder.none,
                   ),
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.text,
                 ),
               ),
               SizedBox(
@@ -175,23 +175,21 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                 decoration: BoxDecoration(
                   color: ColorsUtil.campoDesabilitado,
                 ),
-                child: Observer(builder: (_) {
-                  return TextFormField(
-                    controller:
-                        TextEditingController(text: usuarioStore.usuario.email),
-                    enabled: false,
-                    style: TextStyle(
-                        color: Color(0xff333333), fontWeight: FontWeight.w600),
-                    decoration: InputDecoration(
-                      labelText: 'E-mail do responsável',
-                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                      // hintText: "Data de nascimento do aluno",
-                      border: InputBorder.none,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  );
-                }),
+                child: TextFormField(
+                  controller:
+                      TextEditingController(text: usuarioStore.usuario.email),
+                  enabled: false,
+                  style: TextStyle(
+                      color: Color(0xff333333), fontWeight: FontWeight.w600),
+                  decoration: InputDecoration(
+                    labelText: 'E-mail do responsável',
+                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                    // hintText: "Data de nascimento do aluno",
+                    border: InputBorder.none,
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
               ),
               SizedBox(
                 height: screenHeight * 1,
@@ -219,13 +217,15 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               SizedBox(
                 height: screenHeight * 1.5,
               ),
-              Center(
-                child: Text(
-                  usuarioStore.usuario.ultimaAtualizacao != null
-                      ? "Dados atualizados em: ${DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.ultimaAtualizacao)} às ${DateFormat("HH:mm").format(usuarioStore.usuario.ultimaAtualizacao)}"
-                      : "",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xff333333)),
+              Observer(
+                builder: (_) => Center(
+                  child: Text(
+                    usuarioStore.usuario.ultimaAtualizacao != null
+                        ? "Dados atualizados em: ${DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.ultimaAtualizacao)} às ${DateFormat("HH:mm").format(usuarioStore.usuario.ultimaAtualizacao)}"
+                        : "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Color(0xff333333)),
+                  ),
                 ),
               ),
               SizedBox(
@@ -238,8 +238,11 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                 btnColor: Color(0xffd06d12),
                 enabled: true,
                 onPress: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => MeusDadosEditarView()));
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => MeusDadosEditarView()))
+                      .then((value) => setState(() {}));
                 },
               ),
               Divider(
