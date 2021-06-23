@@ -65,6 +65,10 @@ class ValidatorsUtil {
 
     var dataSeparada = value.split("/");
 
+    if (!dataValida(value)) {
+      return "Data de nascimento com formato inválido";
+    }
+
     if (DateTime.tryParse(
             "${dataSeparada[2]}${dataSeparada[1]}${dataSeparada[0]}") ==
         null) {
@@ -94,5 +98,20 @@ class ValidatorsUtil {
     }
 
     return null;
+  }
+
+  static bool dataValida(String dataString) {
+    var dataPartes = dataString.split("/");
+    var dia = int.parse(dataPartes[0]);
+    var mes = int.parse(dataPartes[1]);
+    var ano = int.parse(dataPartes[2]);
+
+    if (ano < 1000 || ano > 3000 || mes == 0 || mes > 12) return false;
+
+    var monthLength = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (ano % 400 == 0 || (ano % 100 != 0 && ano % 4 == 0)) monthLength[1] = 29;
+
+    return dia > 0 && dia <= monthLength[mes - 1];
   }
 }
