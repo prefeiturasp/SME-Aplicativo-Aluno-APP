@@ -51,6 +51,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
       appBar: AppBar(
@@ -81,6 +82,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               ),
               Container(
                 padding: EdgeInsets.only(left: screenHeight * 2),
+                width: screenWidth - 10,
                 decoration: BoxDecoration(
                   color: ColorsUtil.campoDesabilitado,
                 ),
@@ -96,6 +98,9 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     border: InputBorder.none,
                   ),
                   enabled: false,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 3,
                 ),
               ),
               SizedBox(
@@ -164,7 +169,9 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     // hintText: "Data de nascimento do aluno",
                     border: InputBorder.none,
                   ),
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 3,
                 ),
               ),
               SizedBox(
@@ -188,7 +195,9 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     // hintText: "Data de nascimento do aluno",
                     border: InputBorder.none,
                   ),
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 1,
+                  maxLines: 3,
                 ),
               ),
               SizedBox(

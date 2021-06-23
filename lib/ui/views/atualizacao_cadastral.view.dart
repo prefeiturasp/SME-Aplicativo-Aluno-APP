@@ -251,6 +251,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   border: InputBorder.none,
                                 ),
                                 enabled: false,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 3,
                               ),
                             ),
                           ),
@@ -372,7 +375,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     return ValidatorsUtil.nome(
                                         value, "Nome da mãe");
                                   },
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines: 3,
                                 ),
                               ),
                               SizedBox(
