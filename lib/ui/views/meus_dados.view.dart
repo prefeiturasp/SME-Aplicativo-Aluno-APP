@@ -43,7 +43,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
 
     _cpfCtrl.text =
         usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
-    _telefoneCtrl.text = usuarioStore.usuario.celular.isNotEmpty
+    _telefoneCtrl.text = usuarioStore.usuario.celular != null
         ? usuarioStore.usuario.celular
         : "";
     _emailCtrl.text = usuarioStore.usuario.email;
