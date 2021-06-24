@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/frequency_repository_interface.dart';
 import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class FrequencyRepository implements IFrequencyRepository {
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
+
   final UserService _userService = UserService();
   @override
   Future<Frequency> fetchFrequency(
@@ -18,12 +22,11 @@ class FrequencyRepository implements IFrequencyRepository {
     String codigoAluno,
     int userId,
   ) async {
-    User user = await _userService.find(userId);
     try {
       final response = await http.get(
           "${AppConfigReader.getApiHost()}/Aluno/frequencia?AnoLetivo=$anoLetivo&CodigoUe=$codigoUe&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno",
           headers: {
-            "Authorization": "Bearer ${user.token}",
+            "Authorization": "Bearer ${usuarioStore.usuario.token}",
             "Content-Type": "application/json",
           });
 

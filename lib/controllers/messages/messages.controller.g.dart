@@ -188,6 +188,13 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessages(codigoAlunoEol, userId));
   }
 
+  final _$loadByIdAsyncAction = AsyncAction('_MessagesControllerBase.loadById');
+
+  @override
+  Future loadById(int messageId, int userId) {
+    return _$loadByIdAsyncAction.run(() => super.loadById(messageId, userId));
+  }
+
   final _$deleteMessageAsyncAction =
       AsyncAction('_MessagesControllerBase.deleteMessage');
 

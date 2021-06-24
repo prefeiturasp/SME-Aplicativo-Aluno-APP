@@ -1,5 +1,5 @@
-import 'package:sme_app_aluno/models/user/data.dart';
+import 'package:sme_app_aluno/models/index.dart';
 
 abstract class IAuthenticateRepository {
-  Future<Data> loginUser(String cpf, String password);
+  Future<UsuarioDataModel> loginUser(String cpf, String password);
 }

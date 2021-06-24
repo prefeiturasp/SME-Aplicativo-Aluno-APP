@@ -21,8 +21,8 @@ class UserService {
             email: maps[i]['email'],
             token: maps[i]['token'],
             primeiroAcesso: maps[i]['primeiroAcesso'] == 1 ? true : false,
-            informarCelularEmail:
-                maps[i]['informarCelularEmail'] == 1 ? true : false,
+            atualizarDadosCadastrais:
+                maps[i]['atualizarDadosCadastrais'] == 1 ? true : false,
             celular: maps[i]['celular'],
           );
         },
@@ -63,8 +63,8 @@ class UserService {
         email: maps[0]['email'],
         token: maps[0]['token'],
         primeiroAcesso: maps[0]['primeiroAcesso'] == 1 ? true : false,
-        informarCelularEmail:
-            maps[0]['informarCelularEmail'] == 1 ? true : false,
+        atualizarDadosCadastrais:
+            maps[0]['atualizarDadosCadastrais'] == 1 ? true : false,
         celular: maps[0]['celular'],
       );
       print("--------------------------");

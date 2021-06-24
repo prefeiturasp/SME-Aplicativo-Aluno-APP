@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
@@ -6,17 +7,17 @@ import 'package:sme_app_aluno/models/change_email_and_phone/data_change_email_an
 import 'package:sme_app_aluno/models/first_access/data.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
   final UserService _userService = UserService();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
+
   @override
   Future<Data> changeNewPassword(int id, String password) async {
-    final User user = await _userService.find(id);
-
-    int _id = user.id;
     Map _data = {
-      "id": _id,
+      "id": usuarioStore.usuario.id,
       "novaSenha": password,
     };
 
@@ -25,7 +26,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         "${AppConfigReader.getApiHost()}/Autenticacao/PrimeiroAcesso",
         headers: {
-          "Authorization": "Bearer ${user.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -33,20 +34,23 @@ class FirstAccessRepository implements IFirstAccessRepository {
       var decodeJson = jsonDecode(response.body);
       var data = Data.fromJson(decodeJson);
       if (response.statusCode == 200) {
+        await usuarioStore.atualizaPrimeiroAcesso(false);
+
         await _userService.update(User(
-          id: user.id,
-          nome: user.nome,
-          cpf: user.cpf,
-          email: user.email,
-          celular: user.celular,
-          token: user.token,
+          id: usuarioStore.usuario.id,
+          nome: usuarioStore.usuario.nome,
+          cpf: usuarioStore.usuario.cpf,
+          email: usuarioStore.usuario.email,
+          celular: usuarioStore.usuario.celular,
+          token: usuarioStore.usuario.token,
           primeiroAcesso: false,
-          informarCelularEmail: true,
+          atualizarDadosCadastrais: true,
         ));
 
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(
+            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
@@ -61,9 +65,6 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<DataChangeEmailAndPhone> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) async {
-    final User user = await _userService.find(userId);
-    String token = user.token;
-
     Map _data = {
       "id": userId,
       "email": email ?? "",
@@ -75,7 +76,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         "${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular",
         headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -85,13 +86,13 @@ class FirstAccessRepository implements IFirstAccessRepository {
         var data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(User(
             id: userId,
-            nome: user.nome,
-            cpf: user.cpf,
+            nome: usuarioStore.usuario.nome,
+            cpf: usuarioStore.usuario.cpf,
             email: email,
             celular: phone,
             token: data.token,
             primeiroAcesso: false,
-            informarCelularEmail: false));
+            atualizarDadosCadastrais: false));
         return data;
       } else {
         var decodeError = jsonDecode(response.body);

@@ -3,18 +3,19 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/controllers/students/students.controller.dart';
 import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.controller.dart';
+import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/models/student/student.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -29,7 +30,8 @@ class ListStudants extends StatefulWidget {
 }
 
 class _ListStudantsState extends State<ListStudants> {
-  final UserService _userService = UserService();
+  final usuarioController = GetIt.I.get<UsuarioController>();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   StudentsController _studentsController;
   BackgroundFetchController _backgroundFetchController;
@@ -60,8 +62,7 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   _logoutUser() async {
-    List<User> findUsers = await _userService.all();
-    await Auth.logout(context, findUsers[0].id, true);
+    await Auth.logout(context, usuarioStore.usuario.id, true);
   }
 
   Widget _itemCardStudent(BuildContext context, Student model,
@@ -109,7 +110,7 @@ class _ListStudantsState extends State<ListStudants> {
                 child: Text("SIM"),
                 onPressed: () {
                   Auth.logout(context, widget.userId, false);
-                  Nav.pushReplacement(context, Login());
+                  Nav.pushReplacement(context, LoginView());
                 },
               ),
               FlatButton(
@@ -124,8 +125,8 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   _loadingAllStudents() async {
-    final User user = await _userService.find(widget.userId);
-    await _studentsController.loadingStudents(user.cpf, user.id);
+    await _studentsController.loadingStudents(
+        usuarioStore.usuario.cpf, usuarioStore.usuario.id);
   }
 
   @override

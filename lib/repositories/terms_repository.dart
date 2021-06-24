@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
-import 'package:sme_app_aluno/models/user/data.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class TermsRepository extends ITermsRepository {
   @override
   Future<dynamic> fetchTerms(String cpf) async {
     try {
-      var response = await http.get("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
+      var response = await http
+          .get("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
@@ -29,7 +30,8 @@ class TermsRepository extends ITermsRepository {
   @override
   Future<dynamic> fetchTermsCurrentUser() async {
     try {
-      var response = await http.get("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
+      var response =
+          await http.get("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
@@ -37,7 +39,8 @@ class TermsRepository extends ITermsRepository {
       } else if (response.statusCode == 204) {
         return true;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return UsuarioDataModel(
+            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         print('Erro ao obter dados');
         return null;
@@ -62,7 +65,8 @@ class TermsRepository extends ITermsRepository {
     var body = json.encode(data);
 
     try {
-      var response = await http.post("${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite",
+      var response = await http.post(
+          "${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite",
           headers: {
             "Content-Type": "application/json",
           },
