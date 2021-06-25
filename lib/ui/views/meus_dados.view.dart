@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/view_data/view.data.dart';
 import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/views/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/widgets/ea_botao.widget.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
 

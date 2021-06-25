@@ -1,19 +1,14 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/ioc/dependencias.ioc.dart';
-import 'package:sme_app_aluno/repositories/usuario.repository.dart';
-import 'package:sme_app_aluno/screens/wrapper/wrapper.dart';
-import 'package:sme_app_aluno/stores/usuario.store.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sentry/sentry.dart';
 
-import 'controllers/autenticacao.controller.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
@@ -86,7 +81,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SME Aplicativo do Aluno',
         theme: ThemeData(primaryColor: Color(0xFFEEC25E)),
-        home: Wrapper(),
+        home: FluxoInicialView(),
       ),
     );
   }
