@@ -1,12 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 
 class CardResumeStudent extends StatelessWidget {
-  final Student student;
+  final EstudanteModel student;
   final int userId;
   final String groupSchool;
   final Widget child;

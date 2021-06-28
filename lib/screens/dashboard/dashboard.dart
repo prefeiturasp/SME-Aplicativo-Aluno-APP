@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
@@ -25,7 +25,7 @@ import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Dashboard extends StatefulWidget {
-  final Student student;
+  final EstudanteModel student;
   final String groupSchool;
   final int codigoGrupo;
   final int userId;

@@ -13,7 +13,7 @@ import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/screens/recover_password/recover_password.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/ui/views/estudantes.view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
@@ -87,7 +87,7 @@ class _LoginViewState extends State<LoginView> {
       } else {
         Nav.push(
             context,
-            ListStudants(
+            EstudantesView(
               userId: usuarioStore.usuario.id,
             ));
       }
@@ -109,7 +109,7 @@ class _LoginViewState extends State<LoginView> {
       } else {
         Nav.push(
             context,
-            ListStudants(
+            EstudantesView(
               userId: usuarioStore.usuario.id,
             ));
       }

@@ -1,4 +1,4 @@
-class Student {
+class EstudanteModel {
   int codigoEol;
   String nome;
   String nomeSocial;
@@ -15,7 +15,7 @@ class Student {
   int codigoTurma;
   String serieResumida;
 
-  Student({
+  EstudanteModel({
     this.codigoEol,
     this.nome,
     this.nomeSocial,
@@ -33,7 +33,7 @@ class Student {
     this.serieResumida,
   });
 
-  Student.fromJson(Map<String, dynamic> json) {
+  EstudanteModel.fromJson(Map<String, dynamic> json) {
     codigoEol = json['codigoEol'];
     nome = json['nome'];
     nomeSocial = json['nomeSocial'];

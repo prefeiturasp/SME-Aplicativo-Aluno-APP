@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/data_student/data.dart';
 import 'package:sme_app_aluno/screens/frequency/frequency.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
@@ -11,7 +11,7 @@ import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 
 class ResumeStudants extends StatefulWidget {
-  final Student student;
+  final EstudanteModel student;
   final int userId;
   final String groupSchool;
 
@@ -26,7 +26,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
   bool abaBoletim = false;
   bool abaFrequencia = false;
 
-  content(BuildContext context, double screenHeight, Student data) {
+  content(BuildContext context, double screenHeight, EstudanteModel data) {
     String dateFormatted =
         DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
     String dateSituacaoMatricula = DateFormatSuport.formatStringDate(

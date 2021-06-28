@@ -12,7 +12,6 @@ import 'package:sentry/sentry.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
-import 'controllers/students/students.controller.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 
 /// This "Headless Task" is run when app is terminated.
@@ -50,6 +49,7 @@ void main() async {
   final ioc = DependenciasIoC();
 
   ioc.registrarStores();
+  ioc.registrarServicos();
   ioc.registrarRepositories();
   ioc.registrarControllers();
 
@@ -67,7 +67,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<StudentsController>.value(value: StudentsController()),
         Provider<MessagesController>.value(value: MessagesController()),
         Provider<RecoverPasswordController>.value(
             value: RecoverPasswordController()),

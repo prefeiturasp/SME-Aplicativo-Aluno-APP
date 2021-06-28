@@ -1,43 +1,28 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
-import 'package:sme_app_aluno/models/student/data_student.dart';
-import 'package:sme_app_aluno/repositories/student_repository.dart';
+import 'package:sme_app_aluno/repositories/index.dart';
 import 'package:sme_app_aluno/services/group_messages.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
-part 'students.controller.g.dart';
 
-class StudentsController = _StudentsControllerBase with _$StudentsController;
-
-abstract class _StudentsControllerBase with Store {
-  StudentRepository _studentRepository;
+class EstudanteController {
   FirebaseMessaging _firebaseMessaging;
   final _groupMessageService = GroupMessageService();
-  final usuarioController = GetIt.I.get<UsuarioController>();
-  final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final _estudanteRepository = GetIt.I.get<EstudanteRepository>();
+  final _estudanteStore = GetIt.I.get<EstudanteStore>();
 
-  _StudentsControllerBase() {
-    _studentRepository = StudentRepository();
+  EstudanteController() {
     _firebaseMessaging = FirebaseMessaging();
   }
 
-  @observable
-  DataStudent dataEstudent;
-
-  @observable
-  bool isLoading = false;
-
-  @action
   subscribeGroupIdToFirebase() {
-    if (dataEstudent.data != null) {
-      dataEstudent.data.asMap().forEach((index, element) {
+    if (_estudanteStore.gruposEstudantes != null) {
+      _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {
         _firebaseMessaging.subscribeToTopic("Grupo-${element.codigoGrupo}");
         _groupMessageService
             .create(Group(codigo: "Grupo-${element.codigoGrupo}"));
 
-        element.students.asMap().forEach((index, student) {
+        element.estudantes.asMap().forEach((index, student) {
           _firebaseMessaging.subscribeToTopic("DRE-${student.codigoDre}");
           _groupMessageService
               .create(Group(codigo: "DRE-${student.codigoDre}"));
@@ -84,12 +69,11 @@ abstract class _StudentsControllerBase with Store {
     }
   }
 
-  @action
-  loadingStudents(String cpf, int id) async {
-    isLoading = true;
-    dataEstudent = await _studentRepository.fetchStudents(
-        cpf, id, usuarioStore.usuario.token);
+  obterEstudantes() async {
+    _estudanteStore.carregando = true;
+    var data = await _estudanteRepository.obterEstudantes();
+    _estudanteStore.carregarGrupos(data.data);
     subscribeGroupIdToFirebase();
-    isLoading = false;
+    _estudanteStore.carregando = false;
   }
 }

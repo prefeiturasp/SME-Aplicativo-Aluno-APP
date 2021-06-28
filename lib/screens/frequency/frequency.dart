@@ -9,14 +9,14 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sme_app_aluno/controllers/frequency/frequency.controller.dart';
 import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/frequency/widgets/box_frequency.dart';
 import 'package:sme_app_aluno/screens/frequency/widgets/label_frequency.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/frequency_global_card.dart';
 
 class Frequency extends StatefulWidget {
-  final Student student;
+  final EstudanteModel student;
   final int userId;
 
   Frequency({
