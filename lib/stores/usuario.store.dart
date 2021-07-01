@@ -13,7 +13,16 @@ abstract class _UsuarioStoreBase with Store {
   bool carregando = false;
 
   @observable
+  int id;
+
+  @observable
+  String cpf;
+
+  @observable
   UsuarioModel usuario = new UsuarioModel();
+
+  @observable
+  String token;
 
   @action
   carregarUsuario() async {
@@ -22,6 +31,9 @@ abstract class _UsuarioStoreBase with Store {
     var prefsUsuario = prefs.getString("eaUsuario");
     if (prefsUsuario != null) {
       usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
+      id = usuario?.id;
+      cpf = usuario?.cpf;
+      token = usuario?.token;
     }
     carregando = false;
   }
@@ -60,6 +72,7 @@ abstract class _UsuarioStoreBase with Store {
   Future<void> limparUsuario() async {
     final prefs = await SharedPreferences.getInstance();
     usuario = null;
+    token = null;
     prefs.clear();
   }
 }

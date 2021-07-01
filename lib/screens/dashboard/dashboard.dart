@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
@@ -25,13 +25,13 @@ import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Dashboard extends StatefulWidget {
-  final Student student;
+  final EstudanteModel estudante;
   final String groupSchool;
   final int codigoGrupo;
   final int userId;
 
   Dashboard(
-      {@required this.student,
+      {@required this.estudante,
       @required this.groupSchool,
       @required this.codigoGrupo,
       @required this.userId});
@@ -54,13 +54,13 @@ class _DashboardState extends State<Dashboard> {
   _loadingBackRecentMessage() async {
     setState(() {});
     _messagesController = MessagesController();
-    _messagesController.loadMessages(widget.student.codigoEol, widget.userId);
+    _messagesController.loadMessages(widget.estudante.codigoEol, widget.userId);
   }
 
   _loadingCalendar() async {
     _eventController = EventController();
     _eventController.fetchEvento(
-      widget.student.codigoEol,
+      widget.estudante.codigoEol,
       _eventController.currentDate.month,
       _eventController.currentDate.year,
       widget.userId,
@@ -87,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
                 builder: (context) => ViewMessage(
                       userId: widget.userId,
                       message: message,
-                      codigoAlunoEol: widget.student.codigoEol,
+                      codigoAlunoEol: widget.estudante.codigoEol,
                     ))).whenComplete(() => _loadingBackRecentMessage());
       },
       outherRoutes: () {
@@ -97,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
                 builder: (context) => ListMessages(
                       userId: widget.userId,
                       codigoGrupo: widget.codigoGrupo,
-                      codigoAlunoEol: widget.student.codigoEol,
+                      codigoAlunoEol: widget.estudante.codigoEol,
                     ))).whenComplete(() => _loadingBackRecentMessage());
       },
     );
@@ -146,29 +146,82 @@ class _DashboardState extends State<Dashboard> {
       var screenHeight =
           (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
-          backgroundColor: Color(0xffE5E5E5),
-          appBar: AppBar(
-            title: Text("Resumo do Estudante"),
-            backgroundColor: Color(0xffEEC25E),
-          ),
-          body: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(screenHeight * 2.5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  CardResumeStudent(
-                    student: widget.student,
-                    groupSchool: widget.groupSchool,
-                    userId: widget.userId,
-                    child: TagCustom(
-                        text: widget.groupSchool ?? "Não informado",
-                        color: Color(0xffF8E5BA),
-                        textColor: Color(0xffD06D12)),
-                  ),
-                  Observer(builder: (context) {
-                    if (_messagesController.isLoading) {
+        backgroundColor: Color(0xffE5E5E5),
+        appBar: AppBar(
+          title: Text("Resumo do Estudante"),
+          backgroundColor: Color(0xffEEC25E),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(screenHeight * 2.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                CardResumeStudent(
+                  estudante: widget.estudante,
+                  groupSchool: widget.groupSchool,
+                  userId: widget.userId,
+                  child: TagCustom(
+                      text: widget.groupSchool ?? "Não informado",
+                      color: Color(0xffF8E5BA),
+                      textColor: Color(0xffD06D12)),
+                ),
+                Observer(builder: (context) {
+                  if (_messagesController.isLoading) {
+                    return GFLoader(
+                      type: GFLoaderType.square,
+                      loaderColorOne: Color(0xffDE9524),
+                      loaderColorTwo: Color(0xffC65D00),
+                      loaderColorThree: Color(0xffC65D00),
+                      size: GFSize.LARGE,
+                    );
+                  } else {
+                    if (_messagesController.messages != null) {
+                      _messagesController.loadRecentMessagesPorCategory();
+
+                      if (_messagesController.messages == null ||
+                          _messagesController.messages.isEmpty) {
+                        return Container(
+                          child: Visibility(
+                              visible: _messagesController.messages != null &&
+                                  _messagesController.messages.isEmpty,
+                              child: CardRecentMessage(
+                                recent: true,
+                              )),
+                        );
+                      } else {
+                        return Observer(builder: (_) {
+                          if (_messagesController.recentMessages != null) {
+                            return Container(
+                              height: screenHeight * 48,
+                              margin: EdgeInsets.only(top: screenHeight * 3),
+                              child: Visibility(
+                                visible:
+                                    _messagesController.recentMessages.length >
+                                        1,
+                                replacement: _buildItemMEssage(
+                                    _messagesController.recentMessages[0],
+                                    _messagesController.recentMessages.length,
+                                    context),
+                                child: ListView.builder(
+                                    itemCount: _messagesController
+                                        .recentMessages.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      final dados =
+                                          _messagesController.recentMessages;
+                                      return _buildItemMEssage(
+                                          dados[index], dados.length, context);
+                                    }),
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        });
+                      }
+                    } else {
                       return GFLoader(
                         type: GFLoaderType.square,
                         loaderColorOne: Color(0xffDE9524),
@@ -176,140 +229,89 @@ class _DashboardState extends State<Dashboard> {
                         loaderColorThree: Color(0xffC65D00),
                         size: GFSize.LARGE,
                       );
-                    } else {
-                      if (_messagesController.messages != null) {
-                        _messagesController.loadRecentMessagesPorCategory();
-
-                        if (_messagesController.messages == null ||
-                            _messagesController.messages.isEmpty) {
-                          return Container(
-                            child: Visibility(
-                                visible: _messagesController.messages != null &&
-                                    _messagesController.messages.isEmpty,
-                                child: CardRecentMessage(
-                                  recent: true,
-                                )),
-                          );
-                        } else {
-                          return Observer(builder: (_) {
-                            if (_messagesController.recentMessages != null) {
-                              return Container(
-                                height: screenHeight * 48,
-                                margin: EdgeInsets.only(top: screenHeight * 3),
-                                child: Visibility(
-                                  visible: _messagesController
-                                          .recentMessages.length >
-                                      1,
-                                  replacement: _buildItemMEssage(
-                                      _messagesController.recentMessages[0],
-                                      _messagesController.recentMessages.length,
-                                      context),
-                                  child: ListView.builder(
-                                      itemCount: _messagesController
-                                          .recentMessages.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index) {
-                                        final dados =
-                                            _messagesController.recentMessages;
-                                        return _buildItemMEssage(dados[index],
-                                            dados.length, context);
-                                      }),
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          });
-                        }
-                      } else {
-                        return GFLoader(
-                          type: GFLoaderType.square,
-                          loaderColorOne: Color(0xffDE9524),
-                          loaderColorTwo: Color(0xffC65D00),
-                          loaderColorThree: Color(0xffC65D00),
-                          size: GFSize.LARGE,
-                        );
-                      }
                     }
-                  }),
-                  Observer(builder: (context) {
-                    if (_eventController.loading) {
-                      return Container(
-                        child: GFLoader(
-                          type: GFLoaderType.square,
-                          loaderColorOne: Color(0xffDE9524),
-                          loaderColorTwo: Color(0xffC65D00),
-                          loaderColorThree: Color(0xffC65D00),
-                          size: GFSize.LARGE,
-                        ),
-                        margin: EdgeInsets.all(screenHeight * 1.5),
-                      );
-                    } else {
-                      if (_eventController.priorityEvents != null &&
-                          _eventController.priorityEvents.isNotEmpty) {
-                        return CardCalendar(
-                            heightContainer: screenHeight * 48,
-                            title: "AGENDA",
-                            month: _eventController.currentMonth,
-                            lenght: _eventController.events.length,
-                            totalEventos:
-                                "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
-                            widget: Observer(builder: (_) {
-                              return _listEvents(
-                                _eventController.priorityEvents,
-                                context,
-                              );
-                            }),
-                            onPress: () {
-                              Nav.push(
-                                  context,
-                                  ListEvents(
-                                      student: widget.student,
-                                      userId: widget.userId));
-                            });
-                      } else {
-                        return CardAlert(
+                  }
+                }),
+                Observer(builder: (context) {
+                  if (_eventController.loading) {
+                    return Container(
+                      child: GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      ),
+                      margin: EdgeInsets.all(screenHeight * 1.5),
+                    );
+                  } else {
+                    if (_eventController.priorityEvents != null &&
+                        _eventController.priorityEvents.isNotEmpty) {
+                      return CardCalendar(
+                          heightContainer: screenHeight * 48,
                           title: "AGENDA",
-                          icon: Icon(
-                            FontAwesomeIcons.calendarAlt,
-                            color: Color(0xffFFD037),
-                            size: screenHeight * 6,
-                          ),
-                          text:
-                              "Não foi encontrado nenhum evento para este estudante.",
-                        );
-                      }
+                          month: _eventController.currentMonth,
+                          lenght: _eventController.events.length,
+                          totalEventos:
+                              "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
+                          widget: Observer(builder: (_) {
+                            return _listEvents(
+                              _eventController.priorityEvents,
+                              context,
+                            );
+                          }),
+                          onPress: () {
+                            Nav.push(
+                                context,
+                                ListEvents(
+                                    student: widget.estudante,
+                                    userId: widget.userId));
+                          });
+                    } else {
+                      return CardAlert(
+                        title: "AGENDA",
+                        icon: Icon(
+                          FontAwesomeIcons.calendarAlt,
+                          color: Color(0xffFFD037),
+                          size: screenHeight * 6,
+                        ),
+                        text:
+                            "Não foi encontrado nenhum evento para este estudante.",
+                      );
                     }
-                  }),
-                  CardAlert(
-                    title: "ALERTA DE NOTAS",
-                    icon: Icon(
-                      FontAwesomeIcons.envelopeOpen,
-                      color: Color(0xffFFD037),
-                      size: screenHeight * 6,
-                    ),
-                    text:
-                        "Em breve você visualizará alertas de notas neste espaço. Aguarde as próximas atualizações do aplicativo.",
+                  }
+                }),
+                CardAlert(
+                  title: "ALERTA DE NOTAS",
+                  icon: Icon(
+                    FontAwesomeIcons.envelopeOpen,
+                    color: Color(0xffFFD037),
+                    size: screenHeight * 6,
                   ),
-                  CardAlert(
-                    title: "ALERTA DE FREQUÊNCIA",
-                    icon: Icon(
-                      FontAwesomeIcons.envelopeOpen,
-                      color: Color(0xffFFD037),
-                      size: screenHeight * 6,
-                    ),
-                    text:
-                        "Em breve você visualizará alertas de frequência neste espaço. Aguarde as próximas atualizações do aplicativo.",
-                  )
-                ],
-              ),
+                  text:
+                      "Em breve você visualizará alertas de notas neste espaço. Aguarde as próximas atualizações do aplicativo.",
+                ),
+                CardAlert(
+                  title: "ALERTA DE FREQUÊNCIA",
+                  icon: Icon(
+                    FontAwesomeIcons.envelopeOpen,
+                    color: Color(0xffFFD037),
+                    size: screenHeight * 6,
+                  ),
+                  text:
+                      "Em breve você visualizará alertas de frequência neste espaço. Aguarde as próximas atualizações do aplicativo.",
+                )
+              ],
             ),
           ),
-          drawer: DrawerMenu(
-              student: widget.student,
-              codigoGrupo: widget.codigoGrupo,
-              userId: widget.userId,
-              groupSchool: widget.groupSchool));
+        ),
+        drawer: DrawerMenu(
+          estudante: widget.estudante,
+          codigoGrupo: widget.codigoGrupo,
+          userId: widget.userId,
+          groupSchool: widget.groupSchool,
+        ),
+      );
     }
   }
 }

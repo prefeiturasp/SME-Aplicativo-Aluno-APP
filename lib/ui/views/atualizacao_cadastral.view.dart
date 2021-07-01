@@ -1,6 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/widgets/ea_botao.widget.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/assets.util.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
@@ -106,9 +103,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ListStudants(
-              userId: usuarioStore.usuario.id,
-            ),
+            builder: (context) => EstudanteListaView(),
           ));
     }
 
@@ -511,7 +506,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   ? Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        EABotaoWidget(
+                                        EADefaultButton(
                                           text: "FINALIZAR CADASTRO",
                                           icon: FontAwesomeIcons.chevronRight,
                                           iconColor: Color(0xffffd037),
@@ -525,7 +520,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                           },
                                         ),
                                         SizedBox(height: screenHeight * 3),
-                                        EABotaoWidget(
+                                        EADefaultButton(
                                             text: "CADASTRAR MAIS TARDE",
                                             btnColor: Color(0xffd06d12),
                                             icon: FontAwesomeIcons.chevronLeft,
