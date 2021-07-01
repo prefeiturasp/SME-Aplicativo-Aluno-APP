@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
-class EABotaoWidget extends StatelessWidget {
+class EADefaultButton extends StatelessWidget {
   final String text;
   final Color btnColor;
   final IconData icon;
@@ -9,7 +9,7 @@ class EABotaoWidget extends StatelessWidget {
   final Function onPress;
   final bool enabled;
 
-  EABotaoWidget(
+  EADefaultButton(
       {@required this.text,
       @required this.btnColor,
       @required this.onPress,

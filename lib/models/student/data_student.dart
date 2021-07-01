@@ -1,9 +1,9 @@
-import 'package:sme_app_aluno/models/student/data.dart';
+import 'package:sme_app_aluno/models/grupo_estudante.model.dart';
 
 class DataStudent {
   bool ok;
   List<String> erros;
-  List<Data> data;
+  List<GrupoEstudanteModel> data;
 
   DataStudent({this.ok, this.erros, this.data});
 
@@ -11,9 +11,9 @@ class DataStudent {
     ok = json['ok'];
     erros = json['erros'].cast<String>();
     if (json['data'] != null) {
-      data = new List<Data>();
+      data = new List<GrupoEstudanteModel>();
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data.add(new GrupoEstudanteModel.fromJson(v));
       });
     }
   }

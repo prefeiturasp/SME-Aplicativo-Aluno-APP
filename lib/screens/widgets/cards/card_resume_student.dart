@@ -1,18 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
-import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 
 class CardResumeStudent extends StatelessWidget {
-  final Student student;
+  final EstudanteModel estudante;
   final int userId;
   final String groupSchool;
   final Widget child;
 
   CardResumeStudent(
-      {@required this.student, this.groupSchool, this.child, this.userId});
+      {@required this.estudante, this.groupSchool, this.child, this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -77,14 +77,14 @@ class CardResumeStudent extends StatelessWidget {
           ),
           StudentInfo(
             studentName:
-                student.nomeSocial != null && student.nomeSocial.isNotEmpty
-                    ? student.nomeSocial
-                    : student.nome,
-            schoolName: student.escola,
-            schoolType: student.descricaoTipoEscola,
-            dreName: student.siglaDre,
-            studentGrade: student.turma,
-            studentEOL: student.codigoEol,
+                estudante.nomeSocial != null && estudante.nomeSocial.isNotEmpty
+                    ? estudante.nomeSocial
+                    : estudante.nome,
+            schoolName: estudante.escola,
+            schoolType: estudante.descricaoTipoEscola,
+            dreName: estudante.siglaDre,
+            studentGrade: estudante.turma,
+            studentEOL: estudante.codigoEol,
             padding: EdgeInsets.all(screenHeight * 2.5),
           ),
           Container(
@@ -106,8 +106,8 @@ class CardResumeStudent extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ResumeStudants(
-                              student: student,
+                          builder: (context) => EstudanteResumoView(
+                              estudante: estudante,
                               groupSchool: groupSchool,
                               userId: userId)));
                 },

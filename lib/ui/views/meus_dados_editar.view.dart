@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/widgets/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
 import 'package:sme_app_aluno/utils/validators.util.dart';
 
@@ -397,7 +396,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 ? Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      EABotaoWidget(
+                                      EADefaultButton(
                                         text: "SALVAR CADASTRO",
                                         iconColor: Color(0xffffd037),
                                         btnColor: Color(0xffd06d12),

@@ -7,39 +7,35 @@ import 'package:get_it/get_it.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:sme_app_aluno/controllers/students/students.controller.dart';
+import 'package:sme_app_aluno/controllers/estudante.controller.dart';
 import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.controller.dart';
-import 'package:sme_app_aluno/controllers/usuario.controller.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
-import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
-class ListStudants extends StatefulWidget {
-  final int userId;
-
-  ListStudants({@required this.userId});
+class EstudanteListaView extends StatefulWidget {
+  EstudanteListaView();
 
   @override
-  _ListStudantsState createState() => _ListStudantsState();
+  _EstudanteListaViewState createState() => _EstudanteListaViewState();
 }
 
-class _ListStudantsState extends State<ListStudants> {
-  final usuarioController = GetIt.I.get<UsuarioController>();
-  final usuarioStore = GetIt.I.get<UsuarioStore>();
+class _EstudanteListaViewState extends State<EstudanteListaView> {
+  final _estudanteController = GetIt.I.get<EstudanteController>();
+  final _usuarioStore = GetIt.I.get<UsuarioStore>();
+  final _estudanteStore = GetIt.I.get<EstudanteStore>();
 
-  StudentsController _studentsController;
   BackgroundFetchController _backgroundFetchController;
 
   @override
   void initState() {
     super.initState();
-    _studentsController = StudentsController();
     _backgroundFetchController = BackgroundFetchController();
     _loadingAllStudents();
     _backgroundFetchController.initPlatformState(
@@ -51,23 +47,23 @@ class _ListStudantsState extends State<ListStudants> {
 
   void _onBackgroundFetch(String taskId) async {
     bool responsibleHasStudent = await _backgroundFetchController
-        .checkIfResponsibleHasStudent(widget.userId);
+        .checkIfResponsibleHasStudent(_usuarioStore.id);
     print(
         '[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
-      Auth.logout(context, widget.userId, true);
+      Auth.logout(context, _usuarioStore.id, true);
     }
 
     BackgroundFetch.finish(taskId);
   }
 
   _logoutUser() async {
-    await Auth.logout(context, usuarioStore.usuario.id, true);
+    await Auth.logout(context, _usuarioStore.usuario.id, true);
   }
 
-  Widget _itemCardStudent(BuildContext context, Student model,
+  Widget _itemCardStudent(BuildContext context, EstudanteModel model,
       String groupSchool, int codigoGrupo, int userId) {
-    return CardStudent(
+    return EAEstudanteCard(
       name: model.nomeSocial != null && model.nomeSocial.isNotEmpty
           ? model.nomeSocial
           : model.nome,
@@ -80,15 +76,15 @@ class _ListStudantsState extends State<ListStudants> {
         Nav.push(
             context,
             Dashboard(
-                userId: widget.userId,
-                student: model,
+                userId: _usuarioStore.id,
+                estudante: model,
                 groupSchool: groupSchool,
                 codigoGrupo: codigoGrupo));
       },
     );
   }
 
-  Widget _listStudents(List<Student> students, BuildContext context,
+  Widget _listStudents(List<EstudanteModel> students, BuildContext context,
       String groupSchool, int codigoGrupo, int userId) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
@@ -109,7 +105,7 @@ class _ListStudantsState extends State<ListStudants> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
-                  Auth.logout(context, widget.userId, false);
+                  Auth.logout(context, _usuarioStore.id, false);
                   Nav.pushReplacement(context, LoginView());
                 },
               ),
@@ -125,8 +121,8 @@ class _ListStudantsState extends State<ListStudants> {
   }
 
   _loadingAllStudents() async {
-    await _studentsController.loadingStudents(
-        usuarioStore.usuario.cpf, usuarioStore.usuario.id);
+    await _estudanteController.obterEstudantes();
+    setState(() {});
   }
 
   @override
@@ -142,7 +138,7 @@ class _ListStudantsState extends State<ListStudants> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Auth.logout(context, widget.userId, false);
+              Auth.logout(context, _usuarioStore.id, false);
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
@@ -177,8 +173,7 @@ class _ListStudantsState extends State<ListStudants> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_studentsController.isLoading ||
-                          _studentsController.dataEstudent == null) {
+                      if (_estudanteStore.carregando) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -187,17 +182,15 @@ class _ListStudantsState extends State<ListStudants> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        if (_studentsController.dataEstudent.data == null &&
-                            widget.userId != null) {
+                        if (_estudanteStore.gruposEstudantes == null &&
+                            _usuarioStore.id != null) {
                           _logoutUser();
                           return Container();
                         } else {
                           return ListView.builder(
-                            itemCount:
-                                _studentsController.dataEstudent.data.length,
+                            itemCount: _estudanteStore.gruposEstudantes.length,
                             itemBuilder: (context, index) {
-                              final dados =
-                                  _studentsController.dataEstudent.data;
+                              final dados = _estudanteStore.gruposEstudantes;
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
@@ -209,11 +202,11 @@ class _ListStudantsState extends State<ListStudants> {
                                     height: screenHeight * 2,
                                   ),
                                   _listStudents(
-                                    dados[index].students,
+                                    dados[index].estudantes,
                                     context,
                                     dados[index].grupo,
                                     dados[index].codigoGrupo,
-                                    widget.userId,
+                                    _usuarioStore.id,
                                   ),
                                 ],
                               );

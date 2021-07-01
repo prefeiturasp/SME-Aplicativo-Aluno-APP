@@ -10,20 +10,20 @@ import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
-class Wrapper extends StatefulWidget {
+class FluxoInicialView extends StatefulWidget {
   @override
-  _WrapperState createState() => _WrapperState();
+  _FluxoInicialViewState createState() => _FluxoInicialViewState();
 }
 
-class _WrapperState extends State<Wrapper> {
+class _FluxoInicialViewState extends State<FluxoInicialView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -108,9 +108,7 @@ class _WrapperState extends State<Wrapper> {
       } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
         return AtualizacaoCadastralView();
       } else {
-        return ListStudants(
-          userId: usuarioStore.usuario.id,
-        );
+        return EstudanteListaView();
       }
     }
 
@@ -147,26 +145,3 @@ class _WrapperState extends State<Wrapper> {
     }
   }
 }
-
-// Observer(
-//         builder: (context) {
-//           if (usuarioStore.usuario == null) {
-//             return LoginView();
-//           } else {
-//             if (usuarioStore.usuario != null) {
-//               if (usuarioStore.usuario.primeiroAcesso) {
-//                 return FirstAccess(
-//                   id: usuarioStore.usuario.id,
-//                   cpf: usuarioStore.usuario.cpf,
-//                 );
-//               } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
-//                 return AtualizacaoCadastralView();
-//               } else {
-//                 return ListStudants(
-//                   userId: usuarioStore.usuario.id,
-//                 );
-//               }
-//             }
-//           }
-//         },
-//       );

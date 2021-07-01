@@ -213,13 +213,13 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
       int usuarioId,
       int codigoAlunoEol,
       bool mensagemVisualia,
-      Student student}) {
+      EstudanteModel estudante}) {
     return _$updateMessageAsyncAction.run(() => super.updateMessage(
         notificacaoId: notificacaoId,
         usuarioId: usuarioId,
         codigoAlunoEol: codigoAlunoEol,
         mensagemVisualia: mensagemVisualia,
-        student: student));
+        estudante: estudante));
   }
 
   final _$_MessagesControllerBaseActionController =

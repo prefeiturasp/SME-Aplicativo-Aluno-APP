@@ -8,8 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:sme_app_aluno/screens/change_password/change_password.dart';
 import 'package:sme_app_aluno/screens/widgets/view_data/view.data.dart';
 import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/views/index.dart';
-import 'package:sme_app_aluno/ui/widgets/ea_botao.widget.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/colors.util.dart';
 
 class MeusDadosView extends StatefulWidget {
@@ -243,7 +242,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               SizedBox(
                 height: screenHeight * 3,
               ),
-              EABotaoWidget(
+              EADefaultButton(
                 text: "EDITAR DADOS",
                 icon: FontAwesomeIcons.edit,
                 iconColor: Color(0xffffd037),
@@ -275,7 +274,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                     SizedBox(
                       height: screenHeight * 1,
                     ),
-                    EABotaoWidget(
+                    EADefaultButton(
                       text: "ALTERAR SENHA",
                       icon: FontAwesomeIcons.chevronRight,
                       iconColor: Color(0xffffd037),
