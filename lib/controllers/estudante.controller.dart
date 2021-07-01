@@ -76,4 +76,13 @@ class EstudanteController {
     subscribeGroupIdToFirebase();
     _estudanteStore.carregando = false;
   }
+
+  Future<List<int>> obterBimestresDisponiveisParaVisualizacao(
+      String turmaCodigo) async {
+    _estudanteStore.carregando = true;
+    var data = await _estudanteRepository
+        .obterBimestresDisponiveisParaVisualizacao(turmaCodigo);
+    _estudanteStore.carregando = false;
+    return data;
+  }
 }

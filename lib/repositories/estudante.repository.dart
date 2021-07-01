@@ -27,4 +27,23 @@ class EstudanteRepository {
       return null;
     }
   }
+
+  Future<List<int>> obterBimestresDisponiveisParaVisualizacao(
+      String turmaCodigo) async {
+    try {
+      final response = await _api.dio
+          .get("/Aluno/turmas/$turmaCodigo/boletins/liberacoes/bimestres");
+
+      if (response.statusCode == 200) {
+        final bimestres = response.data;
+        return bimestres.cast<int>();
+      } else {
+        return null;
+      }
+    } catch (e, stacktrace) {
+      print("Erro ao carregar lista de Bimestres disponíveis " +
+          stacktrace.toString());
+      return null;
+    }
+  }
 }

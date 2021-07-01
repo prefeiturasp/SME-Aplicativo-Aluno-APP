@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
-class CardStudent extends StatelessWidget {
+class EAEstudanteCard extends StatelessWidget {
   final int codigoEOL;
   final String name;
   final String schoolName;
@@ -13,7 +13,7 @@ class CardStudent extends StatelessWidget {
   final Function onPress;
   final Image avatar;
 
-  CardStudent(
+  EAEstudanteCard(
       {@required this.codigoEOL,
       @required this.name,
       @required this.schoolName,

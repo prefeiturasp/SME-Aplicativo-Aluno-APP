@@ -10,18 +10,19 @@ import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 
-class ResumeStudants extends StatefulWidget {
-  final EstudanteModel student;
+class EstudanteResumoView extends StatefulWidget {
+  final EstudanteModel estudante;
   final int userId;
   final String groupSchool;
 
-  ResumeStudants({@required this.student, this.groupSchool, this.userId});
+  EstudanteResumoView(
+      {@required this.estudante, this.groupSchool, this.userId});
 
   @override
-  _ResumeStudantsState createState() => _ResumeStudantsState();
+  _EstudanteResumoViewState createState() => _EstudanteResumoViewState();
 }
 
-class _ResumeStudantsState extends State<ResumeStudants> {
+class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaDados = true;
   bool abaBoletim = false;
   bool abaFrequencia = false;
@@ -40,7 +41,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
           dataNasc: dateFormatted,
           codigoEOL: "${data.codigoEol}",
           situacao: dateSituacaoMatricula,
-          codigoUe: widget.student.codigoEscola,
+          codigoUe: widget.estudante.codigoEscola,
           id: widget.userId,
         ),
       );
@@ -50,9 +51,9 @@ class _ResumeStudantsState extends State<ResumeStudants> {
       return Container(
         padding: EdgeInsets.all(screenHeight * 2.5),
         child: Expansion(
-          codigoUe: widget.student.codigoEscola,
-          codigoTurma: widget.student.codigoTurma.toString(),
-          codigoAluno: widget.student.codigoEol.toString(),
+          codigoUe: widget.estudante.codigoEscola,
+          codigoTurma: widget.estudante.codigoTurma.toString(),
+          codigoAluno: widget.estudante.codigoEol.toString(),
           groupSchool: widget.groupSchool,
         ),
         height: MediaQuery.of(context).size.height - screenHeight * 26,
@@ -61,7 +62,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
 
     if (abaFrequencia) {
       return Frequency(
-        student: widget.student,
+        student: widget.estudante,
         userId: widget.userId,
       );
     }
@@ -107,15 +108,15 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                               bottom: BorderSide(
                                   color: Color(0xffC5C5C5), width: 0.5))),
                       child: StudentInfo(
-                        studentName: widget.student.nomeSocial != null &&
-                                widget.student.nomeSocial.isNotEmpty
-                            ? widget.student.nomeSocial
-                            : widget.student.nome,
-                        schoolName: widget.student.escola,
-                        schoolType: widget.student.descricaoTipoEscola,
-                        dreName: widget.student.siglaDre,
-                        studentGrade: widget.student.turma,
-                        studentEOL: widget.student.codigoEol,
+                        studentName: widget.estudante.nomeSocial != null &&
+                                widget.estudante.nomeSocial.isNotEmpty
+                            ? widget.estudante.nomeSocial
+                            : widget.estudante.nome,
+                        schoolName: widget.estudante.escola,
+                        schoolType: widget.estudante.descricaoTipoEscola,
+                        dreName: widget.estudante.siglaDre,
+                        studentGrade: widget.estudante.turma,
+                        studentEOL: widget.estudante.codigoEol,
                       ),
                     ),
                     Container(
@@ -235,7 +236,7 @@ class _ResumeStudantsState extends State<ResumeStudants> {
                         )
                       ],
                     )),
-                    content(context, screenHeight, widget.student)
+                    content(context, screenHeight, widget.estudante)
                   ],
                 )
               ],

@@ -8,23 +8,22 @@ import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
-import 'package:sme_app_aluno/ui/views/estudantes.view.dart';
-import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/screens/terms/terms_use.dart';
 import 'package:sme_app_aluno/ui/views/meus_dados.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class DrawerMenu extends StatefulWidget {
-  final EstudanteModel student;
+  final EstudanteModel estudante;
   final int codigoGrupo;
   final int userId;
   final String groupSchool;
 
   DrawerMenu(
-      {@required this.student,
+      {@required this.estudante,
       @required this.codigoGrupo,
       @required this.userId,
       @required this.groupSchool});
@@ -46,7 +45,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   _loadingBackRecentMessage() {
     _messagesController = MessagesController();
     _messagesController.loadMessages(
-      widget.student.codigoEol,
+      widget.estudante.codigoEol,
       usuarioStore.usuario.id,
     );
   }
@@ -55,21 +54,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListMessages(
-                userId: usuarioStore.usuario.id,
-                codigoGrupo: widget.codigoGrupo,
-                codigoAlunoEol: widget.student.codigoEol,
-              )),
+        builder: (context) => ListMessages(
+          userId: usuarioStore.usuario.id,
+          codigoGrupo: widget.codigoGrupo,
+          codigoAlunoEol: widget.estudante.codigoEol,
+        ),
+      ),
     ).whenComplete(() => _loadingBackRecentMessage());
   }
 
   navigateToListStudents(BuildContext context) async {
     if (usuarioStore.usuario != null) {
-      Nav.push(
-          context,
-          EstudantesView(
-            userId: usuarioStore.usuario.id,
-          ));
+      Nav.push(context, EstudanteListaView());
     } else {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => LoginView()));
@@ -184,8 +180,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ResumeStudants(
-                            student: widget.student,
+                      builder: (context) => EstudanteResumoView(
+                            estudante: widget.estudante,
                             userId: widget.userId,
                             groupSchool: widget.groupSchool,
                           )));
@@ -207,7 +203,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ListEvents(
-                          student: widget.student, userId: widget.userId)));
+                          student: widget.estudante, userId: widget.userId)));
             },
           ),
           Divider(),

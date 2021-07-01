@@ -56,13 +56,9 @@ class _RedefinePasswordState extends State<RedefinePassword> {
 
   _navigateToScreen() async {
     if (_recoverPasswordController.dataUser.ok) {
-      final User user =
-          await _userService.find(_recoverPasswordController.dataUser.data.id);
       Nav.push(
         context,
-        EstudantesView(
-          userId: user.id,
-        ),
+        EstudanteListaView(),
       );
     } else {
       onError();

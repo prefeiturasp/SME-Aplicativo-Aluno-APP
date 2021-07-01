@@ -396,7 +396,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 ? Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      EABotaoWidget(
+                                      EADefaultButton(
                                         text: "SALVAR CADASTRO",
                                         iconColor: Color(0xffffd037),
                                         btnColor: Color(0xffd06d12),

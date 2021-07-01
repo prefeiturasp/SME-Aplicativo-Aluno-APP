@@ -29,5 +29,9 @@ class DependenciasIoC {
     getIt.registerSingleton<AutenticacaoController>(AutenticacaoController());
     getIt.registerSingleton<UsuarioController>(UsuarioController());
     getIt.registerSingleton<EstudanteController>(EstudanteController());
+    getIt.registerSingleton<EstudanteNotasController>(
+        EstudanteNotasController());
+    getIt.registerSingleton<EstudanteFrequenciaController>(
+        EstudanteFrequenciaController());
   }
 }

@@ -10,10 +10,10 @@ import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/ui/views/estudantes.view.dart';
 import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -108,9 +108,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
         return AtualizacaoCadastralView();
       } else {
-        return EstudantesView(
-          userId: usuarioStore.usuario.id,
-        );
+        return EstudanteListaView();
       }
     }
 

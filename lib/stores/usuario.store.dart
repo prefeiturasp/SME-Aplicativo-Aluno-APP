@@ -13,16 +13,16 @@ abstract class _UsuarioStoreBase with Store {
   bool carregando = false;
 
   @observable
-  int id = null;
+  int id;
 
   @observable
-  String cpf = null;
+  String cpf;
 
   @observable
   UsuarioModel usuario = new UsuarioModel();
 
   @observable
-  String token = null;
+  String token;
 
   @action
   carregarUsuario() async {

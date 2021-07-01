@@ -2,20 +2,19 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:sme_app_aluno/models/frequency/frequency.dart';
+import 'package:sme_app_aluno/dtos/estudante_frequencia_global.dto.dart';
 
 class FrequencyGlobalCard extends StatelessWidget {
-  final Frequency frequency;
+  final EstudanteFrequenciaGlobalDTO frequencia;
 
   FrequencyGlobalCard({
-    @required this.frequency,
+    @required this.frequencia,
   });
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var frequencyData = frequency.frequencia * 100;
     return Container(
       height: screenHeight * 18,
       padding: EdgeInsets.all(screenHeight * 2),
@@ -43,18 +42,18 @@ class FrequencyGlobalCard extends StatelessWidget {
                 lineWidth: 6.0,
                 animation: true,
                 animationDuration: 3000,
-                percent: frequency.frequencia,
+                percent: frequencia.frequencia / 100,
                 animateFromLastPercent: true,
                 center: AutoSizeText(
-                  "${frequencyData.toStringAsFixed(0)}%",
-                  maxFontSize: 20,
-                  minFontSize: 18,
+                  "${frequencia.frequencia}%",
+                  maxFontSize: 17,
+                  minFontSize: 15,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 circularStrokeCap: CircularStrokeCap.round,
-                progressColor: HexColor(frequency.corDaFrequencia),
+                progressColor: HexColor(frequencia.corDaFrequencia),
                 backgroundColor: Color(0xffF1F0F5),
                 reverse: true),
           ),

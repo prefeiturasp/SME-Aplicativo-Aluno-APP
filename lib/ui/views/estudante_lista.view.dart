@@ -12,23 +12,21 @@ import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.cont
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
-import 'package:sme_app_aluno/screens/students/widgets/cards/card_students.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
-class EstudantesView extends StatefulWidget {
-  final int userId;
-
-  EstudantesView({@required this.userId});
+class EstudanteListaView extends StatefulWidget {
+  EstudanteListaView();
 
   @override
-  _EstudantesViewState createState() => _EstudantesViewState();
+  _EstudanteListaViewState createState() => _EstudanteListaViewState();
 }
 
-class _EstudantesViewState extends State<EstudantesView> {
+class _EstudanteListaViewState extends State<EstudanteListaView> {
   final _estudanteController = GetIt.I.get<EstudanteController>();
   final _usuarioStore = GetIt.I.get<UsuarioStore>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
@@ -49,11 +47,11 @@ class _EstudantesViewState extends State<EstudantesView> {
 
   void _onBackgroundFetch(String taskId) async {
     bool responsibleHasStudent = await _backgroundFetchController
-        .checkIfResponsibleHasStudent(widget.userId);
+        .checkIfResponsibleHasStudent(_usuarioStore.id);
     print(
         '[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
-      Auth.logout(context, widget.userId, true);
+      Auth.logout(context, _usuarioStore.id, true);
     }
 
     BackgroundFetch.finish(taskId);
@@ -65,7 +63,7 @@ class _EstudantesViewState extends State<EstudantesView> {
 
   Widget _itemCardStudent(BuildContext context, EstudanteModel model,
       String groupSchool, int codigoGrupo, int userId) {
-    return CardStudent(
+    return EAEstudanteCard(
       name: model.nomeSocial != null && model.nomeSocial.isNotEmpty
           ? model.nomeSocial
           : model.nome,
@@ -78,8 +76,8 @@ class _EstudantesViewState extends State<EstudantesView> {
         Nav.push(
             context,
             Dashboard(
-                userId: widget.userId,
-                student: model,
+                userId: _usuarioStore.id,
+                estudante: model,
                 groupSchool: groupSchool,
                 codigoGrupo: codigoGrupo));
       },
@@ -107,7 +105,7 @@ class _EstudantesViewState extends State<EstudantesView> {
               FlatButton(
                 child: Text("SIM"),
                 onPressed: () {
-                  Auth.logout(context, widget.userId, false);
+                  Auth.logout(context, _usuarioStore.id, false);
                   Nav.pushReplacement(context, LoginView());
                 },
               ),
@@ -124,6 +122,7 @@ class _EstudantesViewState extends State<EstudantesView> {
 
   _loadingAllStudents() async {
     await _estudanteController.obterEstudantes();
+    setState(() {});
   }
 
   @override
@@ -139,7 +138,7 @@ class _EstudantesViewState extends State<EstudantesView> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Auth.logout(context, widget.userId, false);
+              Auth.logout(context, _usuarioStore.id, false);
             },
             icon: Icon(
               FontAwesomeIcons.signOutAlt,
@@ -174,8 +173,7 @@ class _EstudantesViewState extends State<EstudantesView> {
                     width: MediaQuery.of(context).size.width,
                     height: screenHeight * 74,
                     child: Observer(builder: (context) {
-                      if (_estudanteStore.carregando ||
-                          _estudanteStore.gruposEstudantes == null) {
+                      if (_estudanteStore.carregando) {
                         return GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
@@ -185,7 +183,7 @@ class _EstudantesViewState extends State<EstudantesView> {
                         );
                       } else {
                         if (_estudanteStore.gruposEstudantes == null &&
-                            widget.userId != null) {
+                            _usuarioStore.id != null) {
                           _logoutUser();
                           return Container();
                         } else {
@@ -208,7 +206,7 @@ class _EstudantesViewState extends State<EstudantesView> {
                                     context,
                                     dados[index].grupo,
                                     dados[index].codigoGrupo,
-                                    widget.userId,
+                                    _usuarioStore.id,
                                   ),
                                 ],
                               );
