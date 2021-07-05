@@ -2,7 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UEBody extends StatelessWidget {

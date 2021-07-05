@@ -42,7 +42,6 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
           codigoEOL: "${data.codigoEol}",
           situacao: dateSituacaoMatricula,
           codigoUe: widget.estudante.codigoEscola,
-          id: widget.userId,
         ),
       );
     }
@@ -63,7 +62,6 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
     if (abaFrequencia) {
       return Frequency(
         student: widget.estudante,
-        userId: widget.userId,
       );
     }
   }

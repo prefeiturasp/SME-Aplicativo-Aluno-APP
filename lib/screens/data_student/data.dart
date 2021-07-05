@@ -2,22 +2,22 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
-import 'package:sme_app_aluno/controllers/ue/ue.controller.dart';
+import 'package:sme_app_aluno/controllers/ue.controller.dart';
 import 'package:sme_app_aluno/screens/data_student/student_body.dart';
 import 'package:sme_app_aluno/screens/data_student/ue_body.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 
 class DataStudent extends StatefulWidget {
   final String dataNasc;
   final String codigoEOL;
   final String situacao;
   final String codigoUe;
-  final int id;
 
-  DataStudent(
-      {this.dataNasc, this.codigoEOL, this.situacao, this.codigoUe, this.id});
+  DataStudent({this.dataNasc, this.codigoEOL, this.situacao, this.codigoUe});
 
   @override
   _DataStudentState createState() => _DataStudentState();
@@ -34,7 +34,7 @@ class _DataStudentState extends State<DataStudent> {
 
   loadUE() async {
     _ueController = UEController();
-    _ueController.loadingUE(widget.codigoUe, widget.id);
+    _ueController.loadingUE(widget.codigoUe);
   }
 
   @override
