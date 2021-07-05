@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
-import 'package:sme_app_aluno/repositories/ue_repository.dart';
+import 'package:sme_app_aluno/repositories/ue.repository.dart';
 
 part 'ue.controller.g.dart';
 
@@ -20,9 +20,9 @@ abstract class _UEControllerBase with Store {
   bool isLoading = false;
 
   @action
-  loadingUE(String codigoUe, int id) async {
+  loadingUE(String codigoUe) async {
     isLoading = true;
-    dadosUE = await _ueRepository.fetchUE(codigoUe, id);
+    dadosUE = await _ueRepository.obterPorCodigo(codigoUe);
     isLoading = false;
   }
 }

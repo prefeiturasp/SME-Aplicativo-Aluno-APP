@@ -18,14 +18,13 @@ import 'package:sme_app_aluno/screens/frequency/widgets/box_frequency.dart';
 import 'package:sme_app_aluno/screens/frequency/widgets/label_frequency.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/frequency_global_card.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 
 class Frequency extends StatefulWidget {
   final EstudanteModel student;
-  final int userId;
 
   Frequency({
     @required this.student,
-    @required this.userId,
   });
 
   @override
@@ -35,6 +34,7 @@ class Frequency extends StatefulWidget {
 class _FrequencyState extends State<Frequency> {
   final _frequencyController = GetIt.I.get<EstudanteFrequenciaController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
+  final _usuarioStore = GetIt.I.get<UsuarioStore>();
   List<int> _bimestres;
   final anoLetivo = new DateTime.now().year;
 
@@ -54,7 +54,7 @@ class _FrequencyState extends State<Frequency> {
         widget.student.codigoEscola,
         widget.student.codigoTurma.toString(),
         widget.student.codigoEol.toString(),
-        widget.userId);
+        _usuarioStore.usuario.id);
 
     await _frequencyController.obterFrequenciaGlobal(
         widget.student.codigoTurma.toString(),

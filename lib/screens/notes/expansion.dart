@@ -8,7 +8,6 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
-import 'package:sme_app_aluno/screens/notes/notes_body.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
@@ -87,7 +86,11 @@ class _ExpansionState extends State<Expansion> {
         .componentesCurricularesNotasConceitos[index].notasConceitos
         .singleWhere((element) => element.bimestre == bimestre,
             orElse: () => null);
-    return notaConceito != null ? notaConceito.nota.toString() : "-";
+    return notaConceito != null
+        ? (notaConceito.conceitoId != null
+            ? notaConceito.notaConceito
+            : notaConceito.nota.toString())
+        : "-";
   }
 
   Color _obterCor(int index, int bimestre) {
