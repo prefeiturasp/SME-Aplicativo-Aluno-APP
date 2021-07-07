@@ -18,9 +18,10 @@ class EstudanteController {
   subscribeGroupIdToFirebase() {
     if (_estudanteStore.gruposEstudantes != null) {
       _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {
-        _firebaseMessaging.subscribeToTopic("Grupo-${element.codigoGrupo}");
+        _firebaseMessaging
+            .subscribeToTopic("MODALIDADE-${element.codigoGrupo}");
         _groupMessageService
-            .create(Group(codigo: "Grupo-${element.codigoGrupo}"));
+            .create(Group(codigo: "MODALIDADE-${element.codigoGrupo}"));
 
         element.estudantes.asMap().forEach((index, student) {
           _firebaseMessaging.subscribeToTopic("DRE-${student.codigoDre}");

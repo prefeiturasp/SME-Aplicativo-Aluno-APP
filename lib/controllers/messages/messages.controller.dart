@@ -50,8 +50,12 @@ abstract class _MessagesControllerBase with Store {
   @action
   loadMessages(int codigoAlunoEol, int userId) async {
     isLoading = true;
-    messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(codigoAlunoEol, userId));
+    var retorno =
+        await _messagesRepository.fetchMessages(codigoAlunoEol, userId);
+    if (retorno != null) {
+      messages = ObservableList<Message>.of(retorno);
+    }
+
     isLoading = false;
   }
 
