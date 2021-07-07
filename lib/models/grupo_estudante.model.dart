@@ -8,8 +8,8 @@ class GrupoEstudanteModel {
   GrupoEstudanteModel({this.grupo, this.estudantes});
 
   GrupoEstudanteModel.fromJson(Map<String, dynamic> json) {
-    grupo = json['grupo'];
-    codigoGrupo = json['codigoGrupo'];
+    grupo = json['modalidade'];
+    codigoGrupo = json['modalidadeCodigo'];
     if (json['alunos'] != null) {
       estudantes = new List<EstudanteModel>();
       json['alunos'].forEach((v) {
@@ -20,8 +20,8 @@ class GrupoEstudanteModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['grupo'] = this.grupo;
-    data['codigoGrupo'] = this.codigoGrupo;
+    data['modalidade'] = this.grupo;
+    data['modalidadeCodigo'] = this.codigoGrupo;
     if (this.estudantes != null) {
       data['alunos'] = this.estudantes.map((v) => v.toJson()).toList();
     }
