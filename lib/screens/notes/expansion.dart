@@ -34,7 +34,6 @@ class _ExpansionState extends State<Expansion> {
     super.initState();
     _dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
-    carregarNotas();
   }
 
   carregarNotas() async {
@@ -43,6 +42,8 @@ class _ExpansionState extends State<Expansion> {
     if (bimestres != null) {
       _estudanteNotasController.obterNotasConceito(
           bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
+    } else {
+      _estudanteNotasController.limparNotas();
     }
   }
 
@@ -279,6 +280,7 @@ class _ExpansionState extends State<Expansion> {
 
   @override
   Widget build(BuildContext context) {
+    carregarNotas();
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 

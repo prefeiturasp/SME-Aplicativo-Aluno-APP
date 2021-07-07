@@ -68,6 +68,7 @@ abstract class _EstudanteNotasControllerBase with Store {
     listNotesTres = null;
     listNotesQuatro = null;
     listNotesFinal = null;
+    componentesCurricularesNotasConceitos = null;
   }
 
   @action
