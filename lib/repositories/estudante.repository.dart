@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sme_app_aluno/dtos/componente_curricular.dto.dart';
 import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/services/index.dart';
 import 'package:sme_app_aluno/stores/index.dart';
@@ -24,6 +25,31 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Estudantes " + stacktrace.toString());
+      return null;
+    }
+  }
+
+  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(
+      List<int> bimestres,
+      String codigoUe,
+      String codigoTurma,
+      String alunoCodigo) async {
+    try {
+      var bimestresJoin = bimestres.join("&bimestres=");
+      final response = await _api.dio.get(
+          "/Aluno/ues/$codigoUe/turmas/$codigoTurma/alunos/$alunoCodigo/componentes-curriculares?bimestres=$bimestresJoin");
+
+      if (response.statusCode == 200) {
+        var retorno = (response.data as List)
+            .map((x) => ComponenteCurricularDTO.fromJson(x))
+            .toList();
+        return retorno;
+      } else {
+        return null;
+      }
+    } catch (e, stacktrace) {
+      print("Erro ao carregar lista de Bimestres disponíveis " +
+          stacktrace.toString());
       return null;
     }
   }

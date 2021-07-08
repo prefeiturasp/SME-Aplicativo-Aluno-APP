@@ -33,6 +33,13 @@ abstract class _EstudanteFrequenciaControllerBase with Store {
   bool loadingCurricularComponent = false;
 
   @action
+  limpar() {
+    frequency = null;
+    frequencia = null;
+    curricularComponent = null;
+  }
+
+  @action
   Future<void> showCard(int index) async {
     frequency.componentesCurricularesDoAluno[index].isExpanded =
         !frequency.componentesCurricularesDoAluno[index].isExpanded;
