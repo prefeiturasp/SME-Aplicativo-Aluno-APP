@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sme_app_aluno/dtos/componente_curricular.dto.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/repositories/index.dart';
 import 'package:sme_app_aluno/services/group_messages.service.dart';
@@ -83,6 +84,18 @@ class EstudanteController {
     _estudanteStore.carregando = true;
     var data = await _estudanteRepository
         .obterBimestresDisponiveisParaVisualizacao(turmaCodigo);
+    _estudanteStore.carregando = false;
+    return data;
+  }
+
+  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(
+      List<int> bimestres,
+      String codigoUe,
+      String codigoTurma,
+      String alunoCodigo) async {
+    _estudanteStore.carregando = true;
+    var data = await _estudanteRepository.obterComponentesCurriculares(
+        bimestres, codigoUe, codigoTurma, alunoCodigo);
     _estudanteStore.carregando = false;
     return data;
   }
