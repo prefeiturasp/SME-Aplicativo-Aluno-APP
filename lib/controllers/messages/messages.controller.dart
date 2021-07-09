@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
 
 part 'messages.controller.g.dart';
@@ -50,8 +50,12 @@ abstract class _MessagesControllerBase with Store {
   @action
   loadMessages(int codigoAlunoEol, int userId) async {
     isLoading = true;
-    messages = ObservableList<Message>.of(
-        await _messagesRepository.fetchMessages(codigoAlunoEol, userId));
+    var retorno =
+        await _messagesRepository.fetchMessages(codigoAlunoEol, userId);
+    if (retorno != null) {
+      messages = ObservableList<Message>.of(retorno);
+    }
+
     isLoading = false;
   }
 
@@ -200,7 +204,7 @@ abstract class _MessagesControllerBase with Store {
     int usuarioId,
     int codigoAlunoEol,
     bool mensagemVisualia,
-    Student student,
+    EstudanteModel estudante,
   }) async {
     await _messagesRepository.readMessage(
         notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);

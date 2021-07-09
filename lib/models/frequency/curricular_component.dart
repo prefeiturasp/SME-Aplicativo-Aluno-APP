@@ -1,4 +1,5 @@
 import 'package:sme_app_aluno/models/frequency/frequencias_por_bimestre.dart';
+import 'package:sme_app_aluno/models/index.dart';
 
 class CurricularComponent {
   String anoLetivo;
@@ -9,7 +10,7 @@ class CurricularComponent {
   String alunoCodigo;
   int codigoComponenteCurricular;
   String componenteCurricular;
-  List<FrequenciasPorBimestre> frequenciasPorBimestre;
+  List<EstudanteFrequenciaModel> frequencias;
 
   CurricularComponent(
       {this.anoLetivo,
@@ -20,7 +21,7 @@ class CurricularComponent {
       this.alunoCodigo,
       this.codigoComponenteCurricular,
       this.componenteCurricular,
-      this.frequenciasPorBimestre});
+      this.frequencias});
 
   CurricularComponent.fromJson(Map<String, dynamic> json) {
     anoLetivo = json['anoLetivo'];
@@ -32,9 +33,9 @@ class CurricularComponent {
     codigoComponenteCurricular = json['codigoComponenteCurricular'];
     componenteCurricular = json['componenteCurricular'];
     if (json['frequenciasPorBimestre'] != null) {
-      frequenciasPorBimestre = new List<FrequenciasPorBimestre>();
+      frequencias = new List<EstudanteFrequenciaModel>();
       json['frequenciasPorBimestre'].forEach((v) {
-        frequenciasPorBimestre.add(new FrequenciasPorBimestre.fromJson(v));
+        frequencias.add(new EstudanteFrequenciaModel.fromJson(v));
       });
     }
   }
@@ -49,10 +50,6 @@ class CurricularComponent {
     data['alunoCodigo'] = this.alunoCodigo;
     data['codigoComponenteCurricular'] = this.codigoComponenteCurricular;
     data['componenteCurricular'] = this.componenteCurricular;
-    if (this.frequenciasPorBimestre != null) {
-      data['frequenciasPorBimestre'] =
-          this.frequenciasPorBimestre.map((v) => v.toJson()).toList();
-    }
     return data;
   }
 }

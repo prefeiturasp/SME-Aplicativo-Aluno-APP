@@ -7,11 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class RedefinePassword extends StatefulWidget {
@@ -56,13 +56,9 @@ class _RedefinePasswordState extends State<RedefinePassword> {
 
   _navigateToScreen() async {
     if (_recoverPasswordController.dataUser.ok) {
-      final User user =
-          await _userService.find(_recoverPasswordController.dataUser.data.id);
       Nav.push(
         context,
-        ListStudants(
-          userId: user.id,
-        ),
+        EstudanteListaView(),
       );
     } else {
       onError();
