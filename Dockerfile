@@ -1,4 +1,4 @@
-FROM alevato/android-flutter:android-29
+FROM alevato/android-flutter:android-30
 
 ARG GOOGLE_SERVICES_JSON
 ARG JKS_KEY_FILE
