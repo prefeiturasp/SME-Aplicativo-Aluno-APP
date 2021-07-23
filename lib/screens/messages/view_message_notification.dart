@@ -2,15 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
+import 'package:sme_app_aluno/ui/views/estudante_lista.view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
+import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -32,6 +33,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool messageIsRead = true;
   final UserService _userService = UserService();
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
   void initState() {
@@ -57,13 +59,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   _navigateToListMessage() async {
-    final User user = await _userService.find(widget.userId);
-
-    Nav.push(
-        context,
-        ListStudants(
-          userId: user.id,
-        ));
+    Nav.push(context, EstudanteListaView());
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {

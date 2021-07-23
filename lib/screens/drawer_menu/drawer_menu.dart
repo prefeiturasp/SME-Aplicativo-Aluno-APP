@@ -2,27 +2,28 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
-import 'package:sme_app_aluno/screens/settings/settings.dart';
-import 'package:sme_app_aluno/screens/students/list_studants.dart';
-import 'package:sme_app_aluno/screens/students/resume_studants/resume_studants.dart';
 import 'package:sme_app_aluno/screens/terms/terms_use.dart';
+import 'package:sme_app_aluno/ui/views/meus_dados.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class DrawerMenu extends StatefulWidget {
-  final Student student;
+  final EstudanteModel estudante;
   final int codigoGrupo;
   final int userId;
   final String groupSchool;
 
   DrawerMenu(
-      {@required this.student,
+      {@required this.estudante,
       @required this.codigoGrupo,
       @required this.userId,
       @required this.groupSchool});
@@ -31,21 +32,21 @@ class DrawerMenu extends StatefulWidget {
 }
 
 class _DrawerMenuState extends State<DrawerMenu> {
-  AuthenticateController _authenticateController;
+  final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final usuarioController = GetIt.I.get<UsuarioController>();
+
   MessagesController _messagesController;
 
   @override
   void initState() {
     super.initState();
-    _authenticateController = AuthenticateController();
-    _authenticateController.loadCurrentUser();
   }
 
   _loadingBackRecentMessage() {
     _messagesController = MessagesController();
     _messagesController.loadMessages(
-      widget.student.codigoEol,
-      _authenticateController.user.id,
+      widget.estudante.codigoEol,
+      usuarioStore.usuario.id,
     );
   }
 
@@ -53,36 +54,22 @@ class _DrawerMenuState extends State<DrawerMenu> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListMessages(
-                userId: _authenticateController.user.id,
-                codigoGrupo: widget.codigoGrupo,
-                codigoAlunoEol: widget.student.codigoEol,
-              )),
+        builder: (context) => ListMessages(
+          userId: usuarioStore.usuario.id,
+          codigoGrupo: widget.codigoGrupo,
+          codigoAlunoEol: widget.estudante.codigoEol,
+        ),
+      ),
     ).whenComplete(() => _loadingBackRecentMessage());
   }
 
   navigateToListStudents(BuildContext context) async {
-    if (_authenticateController.user != null) {
-      Nav.push(
-          context,
-          ListStudants(
-            userId: _authenticateController.user.id,
-          ));
+    if (usuarioStore.usuario != null) {
+      Nav.push(context, EstudanteListaView());
     } else {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Login()));
+          context, MaterialPageRoute(builder: (context) => LoginView()));
     }
-  }
-
-  _navigateToSettings(BuildContext context) async {
-    Nav.push(
-        context,
-        Settings(
-          currentCPF: _authenticateController.user.cpf,
-          email: _authenticateController.user.email,
-          phone: _authenticateController.user.celular,
-          userId: _authenticateController.user.id,
-        ));
   }
 
   _navigateToTerms(BuildContext context) {
@@ -117,9 +104,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     ),
                   ),
                   Observer(builder: (context) {
-                    if (_authenticateController.user != null) {
+                    if (usuarioStore.usuario != null) {
                       return AutoSizeText(
-                        "${_authenticateController.user.nome}",
+                        "${usuarioStore.usuario.nome}",
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
@@ -193,8 +180,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ResumeStudants(
-                            student: widget.student,
+                      builder: (context) => EstudanteResumoView(
+                            estudante: widget.estudante,
                             userId: widget.userId,
                             groupSchool: widget.groupSchool,
                           )));
@@ -216,7 +203,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ListEvents(
-                          student: widget.student, userId: widget.userId)));
+                          student: widget.estudante, userId: widget.userId)));
             },
           ),
           Divider(),
@@ -230,8 +217,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 size: screenHeight * 2,
               ),
             ),
-            onTap: () {
-              _navigateToSettings(context);
+            onTap: () async {
+              await usuarioController.obterDadosUsuario();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MeusDadosView()),
+              );
             },
           ),
           Divider(),
@@ -261,7 +251,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () async {
-              Auth.logout(context, _authenticateController.user.id, false);
+              Auth.logout(context, usuarioStore.usuario.id, false);
             },
           ),
         ],

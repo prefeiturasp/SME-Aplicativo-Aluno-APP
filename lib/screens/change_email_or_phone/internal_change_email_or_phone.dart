@@ -13,6 +13,7 @@ import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
+import 'package:sme_app_aluno/utils/validators.util.dart';
 
 class InternalChangeEmailOrPhone extends StatefulWidget {
   final int userId;
@@ -201,13 +202,7 @@ class _InternalChangeEmailOrPhoneState
                                   ),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    if (value != null) {
-                                      if (!EmailValidator.validate(value)) {
-                                        return 'E-mail inválido';
-                                      }
-                                    }
-
-                                    return null;
+                                    return ValidatorsUtil.email(value);
                                   },
                                   onChanged: (value) {
                                     setState(() {
@@ -299,7 +294,7 @@ class _InternalChangeEmailOrPhoneState
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      desabled: (_emailData.isNotEmpty &&
+                                      disabled: (_emailData.isNotEmpty &&
                                               _emailData != _email &&
                                               EmailValidator.validate(
                                                   _emailData)) ||

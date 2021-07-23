@@ -225,7 +225,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      desabled: CPFValidator.isValid(_cpf),
+                                      disabled: CPFValidator.isValid(_cpf),
                                       onPress: () {
                                         if (_formKey.currentState.validate()) {
                                           _onPressGetToken(_cpf, context);

@@ -1,10 +1,12 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:sme_app_aluno/controllers/auth/authenticate.controller.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/screens/login/login.dart';
+import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/services/group_messages.service.dart';
 import 'package:sme_app_aluno/services/message.service.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
@@ -16,7 +18,7 @@ class Auth {
     UserService _userService = UserService();
     MessageService _messageService = MessageService();
     GroupMessageService _groupMessageService = GroupMessageService();
-    AuthenticateController _authenticateController = AuthenticateController();
+    final usuarioStore = GetIt.I.get<UsuarioStore>();
 
     List<Group> groups = await _groupMessageService.all();
     List<Message> messages = await _messageService.all();
@@ -38,14 +40,14 @@ class Auth {
       print('[BackgroundFetch] stop success: $status');
     });
 
-    _authenticateController.clearCurrentUser();
+    usuarioStore.limparUsuario();
 
     Nav.push(
         context,
         desconected
-            ? Login(
+            ? LoginView(
                 notice:
                     "Você foi desconectado pois não está mais vinculado como responsável de nenhum estudante ativo. Dúvidas entre em contato com a Unidade Escolar.")
-            : Login());
+            : LoginView());
   }
 }

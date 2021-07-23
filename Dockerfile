@@ -1,4 +1,4 @@
-FROM alevato/android-flutter:android-29
+FROM alevato/android-flutter:android-30
 
 ARG GOOGLE_SERVICES_JSON
 ARG JKS_KEY_FILE
@@ -15,4 +15,6 @@ RUN echo ${JKS_KEY_PROPERTIES} > /src/android/key.properties
 
 # Build da APK
 WORKDIR /src
-RUN flutter pub get && flutter build appbundle
+RUN flutter pub get \
+    && flutter packages pub run build_runner build --delete-conflicting-outputs \
+    && flutter build appbundle

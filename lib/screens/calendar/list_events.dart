@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
-import 'package:sme_app_aluno/models/student/student.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/label_event.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
@@ -14,7 +14,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 
 class ListEvents extends StatefulWidget {
-  final Student student;
+  final EstudanteModel student;
   final int userId;
 
   ListEvents({
