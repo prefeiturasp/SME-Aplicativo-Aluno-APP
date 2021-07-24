@@ -14,6 +14,8 @@ import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 
+import 'utils/app_config_reader.dart';
+
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);
@@ -32,14 +34,6 @@ Future initializeAppConfig() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeAppConfig();
-  final SentryClient sentry =
-      new SentryClient(dsn: AppConfigReader.getSentryDsn());
-  try {} catch (error, stackTrace) {
-    await sentry.captureException(
-      exception: error,
-      stackTrace: stackTrace,
-    );
-  }
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color(0xffde9524),
