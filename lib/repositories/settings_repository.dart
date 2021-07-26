@@ -57,6 +57,7 @@ class SettingsRepository implements ISettingsRepository {
       }
     } catch (error, stacktrace) {
       print("[AlterarSenha] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }

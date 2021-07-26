@@ -25,6 +25,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Estudantes " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -50,6 +51,7 @@ class EstudanteRepository {
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Bimestres disponíveis " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -69,6 +71,7 @@ class EstudanteRepository {
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Bimestres disponíveis " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

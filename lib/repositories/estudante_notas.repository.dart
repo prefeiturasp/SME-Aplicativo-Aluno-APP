@@ -22,6 +22,7 @@ class EstudanteNotasRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

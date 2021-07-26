@@ -44,6 +44,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e);
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -64,6 +65,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -112,6 +114,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -147,6 +150,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (error, stacktrace) {
       print("[MessageRepository] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
@@ -175,6 +179,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print("Erro ao tentar excluir mensagem $e");
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

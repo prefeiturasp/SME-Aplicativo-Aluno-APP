@@ -58,6 +58,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       }
     } catch (error, stacktrace) {
       print("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
@@ -102,6 +103,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
     } catch (error, stacktrace) {
       print(
           "[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }

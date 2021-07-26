@@ -31,6 +31,7 @@ class EventRepository extends IEventRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

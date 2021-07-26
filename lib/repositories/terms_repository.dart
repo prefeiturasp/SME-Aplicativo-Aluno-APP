@@ -23,6 +23,7 @@ class TermsRepository extends ITermsRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -47,6 +48,7 @@ class TermsRepository extends ITermsRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -79,6 +81,7 @@ class TermsRepository extends ITermsRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

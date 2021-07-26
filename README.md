@@ -263,7 +263,7 @@ Para iniciar o desenvolvimento da aplicação primeiro você precisa ter o Flutt
 
 A aplicação utiliza o recurso de generators do Flutter, logo precisamos rodar o build_runner para gerar os códigos necessários para o desenvolvimento.
 
-`flutter pub run build_runner build`
+`flutter pub run build_runner build --delete-conflicting-outputs`
 
 Para compilar a versão release:
 

@@ -43,6 +43,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     } catch (e, stacktrace) {
       print("[RecoverPassword] sendToken - Erro de requisição " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -73,6 +74,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     } catch (e, stacktrace) {
       print("[RecoverPassword] validateToken - Erro de requisição " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -106,6 +108,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     } catch (e, stacktrace) {
       print("[RecoverPassword] redefinePassword - Erro de requisição " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
