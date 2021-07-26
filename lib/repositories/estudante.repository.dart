@@ -11,7 +11,7 @@ class EstudanteRepository {
 
   Future<DataStudent> obterEstudantes() async {
     try {
-      final response = await _api.dio.post("/Aluno?cpf=${_usuarioStore.cpf}");
+      final response = await _api.dio.get("/Aluno?cpf=${_usuarioStore.cpf}");
 
       if (response.statusCode == 200) {
         final dataEstudents = DataStudent.fromJson(response.data);
