@@ -16,6 +16,7 @@ class MessageService {
       print("--------------------------");
     } catch (ex) {
       print("Erro ao criar mensagem: $ex");
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       return;
     }
   }

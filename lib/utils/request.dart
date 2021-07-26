@@ -20,6 +20,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 
@@ -39,6 +40,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 
@@ -58,6 +60,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 }

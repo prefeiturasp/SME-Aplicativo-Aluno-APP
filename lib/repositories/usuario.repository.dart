@@ -50,6 +50,7 @@ class UsuarioRepository extends IUsuarioRepository {
       }
     } catch (error, stacktrace) {
       print("[Atualizar Usuário] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
@@ -73,6 +74,7 @@ class UsuarioRepository extends IUsuarioRepository {
       return null;
     } catch (error, stacktrace) {
       print("[Atualizar Usuário] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }

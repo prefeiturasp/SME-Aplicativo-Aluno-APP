@@ -30,6 +30,7 @@ class ResponsibleRepository implements IResponsibleRepository {
     } catch (error, stacktrace) {
       print("Erro ao verificar se resposável tem aluno: " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return true;
     }
   }

@@ -33,6 +33,7 @@ class UserService {
       return users;
     } catch (ex) {
       print(ex);
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       return new List<User>();
     }
   }
@@ -72,6 +73,7 @@ class UserService {
       print("--------------------------");
       return user;
     } catch (ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print("<--------------------------");
       print("Erro ao encontrar usuário: $ex");
       print("<--------------------------");
@@ -92,6 +94,7 @@ class UserService {
       print("Usuário atualizado com sucesso: ${model.toMap()}");
       print("--------------------------");
     } catch (ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print("<--------------------------");
       print("Erro ao atualizar usuário: $ex");
       print("<--------------------------");
@@ -109,6 +112,7 @@ class UserService {
       );
       print("Usuário removido com sucesso: $id");
     } catch (ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print("<--------------------------");
       print("Erro ao deletar usuário: $ex");
       print("<--------------------------");
@@ -125,6 +129,7 @@ class UserService {
       print("Mensagem criada com sucesso: ${model.toMap()}");
       print("--------------------------");
     } catch (ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print("Erro ao criar mensagem: $ex");
       return;
     }
