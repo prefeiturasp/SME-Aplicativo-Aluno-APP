@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/dtos/response.dto.dart';

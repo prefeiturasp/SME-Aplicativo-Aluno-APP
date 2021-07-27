@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/responsible_repository_interface.dart';
 import 'package:sme_app_aluno/stores/index.dart';

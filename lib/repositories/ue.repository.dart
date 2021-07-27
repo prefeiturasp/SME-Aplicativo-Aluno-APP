@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
 import 'package:sme_app_aluno/services/api.service.dart';
 

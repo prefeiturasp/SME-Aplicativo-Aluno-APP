@@ -2,6 +2,8 @@ import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 class GroupMessageService {
   final dbHelper = DBHelper(versionDB: 2);

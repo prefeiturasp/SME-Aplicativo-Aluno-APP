@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
 import 'package:sme_app_aluno/models/change_email_and_phone/data_change_email_and_phone.dart';
 import 'package:sme_app_aluno/models/first_access/data.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/models/user/user.dart' as UserModel;
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
@@ -36,7 +37,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       if (response.statusCode == 200) {
         await usuarioStore.atualizaPrimeiroAcesso(false);
 
-        await _userService.update(User(
+        await _userService.update(UserModel.User(
           id: usuarioStore.usuario.id,
           nome: usuarioStore.usuario.nome,
           cpf: usuarioStore.usuario.cpf,
@@ -85,7 +86,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = DataChangeEmailAndPhone.fromJson(decodeJson);
-        await _userService.update(User(
+        await _userService.update(UserModel.User(
             id: userId,
             nome: usuarioStore.usuario.nome,
             cpf: usuarioStore.usuario.cpf,
