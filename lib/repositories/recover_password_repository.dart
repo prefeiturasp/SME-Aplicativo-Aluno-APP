@@ -7,6 +7,8 @@ import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();

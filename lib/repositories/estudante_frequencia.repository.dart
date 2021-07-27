@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/dtos/estudante_frequencia_global.dto.dart';
 import 'package:sme_app_aluno/models/estudante_frequencia.model.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';

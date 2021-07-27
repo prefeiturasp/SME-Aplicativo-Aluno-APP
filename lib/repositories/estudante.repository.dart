@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/dtos/componente_curricular.dto.dart';
 import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/services/index.dart';

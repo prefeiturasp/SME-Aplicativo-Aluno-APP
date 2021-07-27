@@ -1,20 +1,22 @@
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/models/user/user.dart' as UserModel;
 import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 class UserService {
   final dbHelper = DBHelper();
 
-  Future<List<User>> all() async {
+  Future<List<UserModel.User>> all() async {
     try {
       final Database _db = await dbHelper.initDatabase();
       final List<Map<String, dynamic>> maps = await _db.query(TB_USER);
       var users = List.generate(
         maps.length,
         (i) {
-          return User(
+          return UserModel.User(
             id: maps[i]['id'],
             nome: maps[i]['nome'],
             cpf: maps[i]['cpf'],
@@ -34,11 +36,11 @@ class UserService {
     } catch (ex) {
       print(ex);
       GetIt.I.get<SentryClient>().captureException(exception: ex);
-      return new List<User>();
+      return new List<UserModel.User>();
     }
   }
 
-  Future create(User model) async {
+  Future create(UserModel.User model) async {
     final Database _db = await dbHelper.initDatabase();
     try {
       await _db.insert(TB_USER, model.toMap(),
@@ -52,12 +54,12 @@ class UserService {
     }
   }
 
-  Future<User> find(int id) async {
+  Future<UserModel.User> find(int id) async {
     final Database _db = await dbHelper.initDatabase();
     try {
       final List<Map<String, dynamic>> maps =
           await _db.query(TB_USER, where: "id = ?", whereArgs: [id]);
-      User user = User(
+      UserModel.User user = UserModel.User(
         id: maps[0]['id'],
         nome: maps[0]['nome'],
         cpf: maps[0]['cpf'],
@@ -77,11 +79,11 @@ class UserService {
       print("<--------------------------");
       print("Erro ao encontrar usuário: $ex");
       print("<--------------------------");
-      return new User();
+      return new UserModel.User();
     }
   }
 
-  Future update(User model) async {
+  Future update(UserModel.User model) async {
     try {
       final Database _db = await dbHelper.initDatabase();
       await _db.update(
