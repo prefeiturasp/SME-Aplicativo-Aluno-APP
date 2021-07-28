@@ -50,12 +50,13 @@ class EAEstudanteInfo extends StatelessWidget {
                   ),
           ),
           Container(
-            width: screenHeight * 25,
+            width: screenHeight * 35,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 AutoSizeText(
-                  StringSupport.truncateEndString(nome, 25),
+                  nome,
+                  // StringSupport.truncateEndString(nome, 25),
                   maxFontSize: 16,
                   minFontSize: 14,
                   style: TextStyle(
