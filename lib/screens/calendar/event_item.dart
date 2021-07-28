@@ -174,7 +174,7 @@ class EventItem extends StatelessWidget {
                   Wrap(
                     children: [
                       Container(
-                        width: screenHeight * 26,
+                        width: (size.width / 1.75),
                         child: customTitle,
                       )
                     ],
