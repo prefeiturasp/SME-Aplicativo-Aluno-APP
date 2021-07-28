@@ -28,6 +28,7 @@ class EAEstudanteInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    var screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       padding: padding != null ? padding : EdgeInsets.all(0),
@@ -50,7 +51,7 @@ class EAEstudanteInfo extends StatelessWidget {
                   ),
           ),
           Container(
-            width: screenHeight * 35,
+            width: (screenWidth / 1.95),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -71,15 +72,17 @@ class EAEstudanteInfo extends StatelessWidget {
                   ),
                   maxLines: 2,
                 ),
-                AutoSizeText(
-                  "${modalidade.toUpperCase()}",
-                  maxFontSize: 12,
-                  minFontSize: 10,
-                  style: TextStyle(
-                    color: Color(0xffC4C4C4),
-                  ),
-                  maxLines: 2,
-                ),
+                modalidade != null
+                    ? AutoSizeText(
+                        "${modalidade.toUpperCase()}",
+                        maxFontSize: 12,
+                        minFontSize: 10,
+                        style: TextStyle(
+                          color: Color(0xffC4C4C4),
+                        ),
+                        maxLines: 2,
+                      )
+                    : SizedBox(),
                 Visibility(
                   visible: grade != null,
                   child: AutoSizeText(

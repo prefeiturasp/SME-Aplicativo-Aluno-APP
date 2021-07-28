@@ -67,11 +67,11 @@ class EAEstudanteCard extends StatelessWidget {
                           ),
                   ),
                   Container(
+                    width: size.width / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          width: screenHeight * 24,
                           child: AutoSizeText(
                             StringSupport.truncateEndString(name, 28),
                             maxFontSize: 12,
