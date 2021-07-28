@@ -19,7 +19,6 @@ import 'package:sme_app_aluno/screens/widgets/cards/card_calendar.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/eaq_recent_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
-import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -158,14 +157,10 @@ class _DashboardState extends State<Dashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                CardResumeStudent(
+                EAResumoEstudanteCard(
                   estudante: widget.estudante,
-                  groupSchool: widget.groupSchool,
+                  modalidade: widget.groupSchool,
                   userId: widget.userId,
-                  child: TagCustom(
-                      text: widget.groupSchool ?? "Não informado",
-                      color: Color(0xffF8E5BA),
-                      textColor: Color(0xffD06D12)),
                 ),
                 Observer(builder: (context) {
                   if (_messagesController.isLoading) {
