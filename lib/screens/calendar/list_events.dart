@@ -8,10 +8,10 @@ import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/label_event.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
-import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:getflutter/components/loader/gf_loader.dart';
 import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 
 class ListEvents extends StatefulWidget {
   final EstudanteModel student;
@@ -101,15 +101,15 @@ class _ListEventsState extends State<ListEvents> {
                         border: Border(
                             bottom: BorderSide(
                                 color: Color(0xffC5C5C5), width: 0.5))),
-                    child: StudentInfo(
-                      studentName: widget.student.nomeSocial != null
+                    child: EAEstudanteInfo(
+                      nome: widget.student.nomeSocial != null
                           ? widget.student.nomeSocial
                           : widget.student.nome,
-                      schoolName: widget.student.escola,
-                      schoolType: widget.student.descricaoTipoEscola,
-                      dreName: widget.student.siglaDre,
-                      studentGrade: widget.student.turma,
-                      studentEOL: widget.student.codigoEol,
+                      ue: widget.student.escola,
+                      tipoEscola: widget.student.descricaoTipoEscola,
+                      dre: widget.student.siglaDre,
+                      grade: widget.student.turma,
+                      codigoEOL: widget.student.codigoEol,
                     ),
                   ),
                 ],

@@ -2,17 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
-import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
 import 'package:sme_app_aluno/ui/index.dart';
 
-class CardResumeStudent extends StatelessWidget {
+class EAResumoEstudanteCard extends StatelessWidget {
   final EstudanteModel estudante;
   final int userId;
-  final String groupSchool;
-  final Widget child;
+  final String modalidade;
 
-  CardResumeStudent(
-      {@required this.estudante, this.groupSchool, this.child, this.userId});
+  EAResumoEstudanteCard(
+      {@required this.estudante, this.modalidade, this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +69,20 @@ class CardResumeStudent extends StatelessWidget {
                     )
                   ],
                 ),
-                child
               ],
             ),
           ),
-          StudentInfo(
-            studentName:
+          EAEstudanteInfo(
+            nome:
                 estudante.nomeSocial != null && estudante.nomeSocial.isNotEmpty
                     ? estudante.nomeSocial
                     : estudante.nome,
-            schoolName: estudante.escola,
-            schoolType: estudante.descricaoTipoEscola,
-            dreName: estudante.siglaDre,
-            studentGrade: estudante.turma,
-            studentEOL: estudante.codigoEol,
+            ue: estudante.escola,
+            tipoEscola: estudante.descricaoTipoEscola,
+            dre: estudante.siglaDre,
+            grade: estudante.turma,
+            codigoEOL: estudante.codigoEol,
+            modalidade: modalidade,
             padding: EdgeInsets.all(screenHeight * 2.5),
           ),
           Container(
@@ -108,7 +106,7 @@ class CardResumeStudent extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => EstudanteResumoView(
                               estudante: estudante,
-                              groupSchool: groupSchool,
+                              modalidade: modalidade,
                               userId: userId)));
                 },
                 child: Row(
