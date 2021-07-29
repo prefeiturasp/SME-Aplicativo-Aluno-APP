@@ -54,6 +54,24 @@ pipeline {
         }
       }
 	    
+      stage('Build APK Hom 2') {
+	      when { 
+          anyOf { 
+            branch 'release-r2' 
+          } 
+        }       
+        steps {
+          withCredentials([
+            file(credentialsId: 'google-service-hom2', variable: 'GOOGLEJSONHOM'),
+            file(credentialsId: 'app-config-hom2', variable: 'APPCONFIGHOM'),
+          ]) {
+            sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
+            sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
+            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
+          }
+        }
+      }
+	    
       stage('Build APK Prod') {
         when {
           branch 'master'
