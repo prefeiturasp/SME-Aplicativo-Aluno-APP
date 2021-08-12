@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/dtos/componente_curricular.dto.dart';
 import 'package:sme_app_aluno/models/student/data_student.dart';
 import 'package:sme_app_aluno/services/index.dart';
@@ -11,7 +12,7 @@ class EstudanteRepository {
 
   Future<DataStudent> obterEstudantes() async {
     try {
-      final response = await _api.dio.post("/Aluno?cpf=${_usuarioStore.cpf}");
+      final response = await _api.dio.get("/Aluno?cpf=${_usuarioStore.cpf}");
 
       if (response.statusCode == 200) {
         final dataEstudents = DataStudent.fromJson(response.data);
@@ -25,6 +26,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Estudantes " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -50,6 +52,7 @@ class EstudanteRepository {
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Bimestres disponíveis " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -69,6 +72,7 @@ class EstudanteRepository {
     } catch (e, stacktrace) {
       print("Erro ao carregar lista de Bimestres disponíveis " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

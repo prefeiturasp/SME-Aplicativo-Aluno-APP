@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/settings_repository_interface.dart';
 import 'package:sme_app_aluno/models/settings/data.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
+import 'package:sme_app_aluno/models/user/user.dart' as UserModel;
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
@@ -35,7 +36,7 @@ class SettingsRepository implements ISettingsRepository {
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
-        await _userService.update(User(
+        await _userService.update(UserModel.User(
           id: usuarioStore.usuario.id,
           nome: usuarioStore.usuario.nome,
           cpf: usuarioStore.usuario.cpf,
@@ -57,6 +58,7 @@ class SettingsRepository implements ISettingsRepository {
       }
     } catch (error, stacktrace) {
       print("[AlterarSenha] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
