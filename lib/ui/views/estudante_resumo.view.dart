@@ -6,17 +6,16 @@ import 'package:sme_app_aluno/screens/data_student/data.dart';
 import 'package:sme_app_aluno/screens/frequency/frequency.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/notes/expansion.dart';
-import 'package:sme_app_aluno/screens/widgets/student_info/student_info.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 
 class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
   final int userId;
-  final String groupSchool;
+  final String modalidade;
 
-  EstudanteResumoView(
-      {@required this.estudante, this.groupSchool, this.userId});
+  EstudanteResumoView({@required this.estudante, this.modalidade, this.userId});
 
   @override
   _EstudanteResumoViewState createState() => _EstudanteResumoViewState();
@@ -53,7 +52,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
           codigoUe: widget.estudante.codigoEscola,
           codigoTurma: widget.estudante.codigoTurma.toString(),
           codigoAluno: widget.estudante.codigoEol.toString(),
-          groupSchool: widget.groupSchool,
+          groupSchool: widget.modalidade,
         ),
         height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
@@ -105,16 +104,16 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                           border: Border(
                               bottom: BorderSide(
                                   color: Color(0xffC5C5C5), width: 0.5))),
-                      child: StudentInfo(
-                        studentName: widget.estudante.nomeSocial != null &&
+                      child: EAEstudanteInfo(
+                        nome: widget.estudante.nomeSocial != null &&
                                 widget.estudante.nomeSocial.isNotEmpty
                             ? widget.estudante.nomeSocial
                             : widget.estudante.nome,
-                        schoolName: widget.estudante.escola,
-                        schoolType: widget.estudante.descricaoTipoEscola,
-                        dreName: widget.estudante.siglaDre,
-                        studentGrade: widget.estudante.turma,
-                        studentEOL: widget.estudante.codigoEol,
+                        ue: widget.estudante.escola,
+                        tipoEscola: widget.estudante.descricaoTipoEscola,
+                        dre: widget.estudante.siglaDre,
+                        grade: widget.estudante.turma,
+                        codigoEOL: widget.estudante.codigoEol,
                       ),
                     ),
                     Container(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/dtos/response.dto.dart';
@@ -50,6 +51,7 @@ class UsuarioRepository extends IUsuarioRepository {
       }
     } catch (error, stacktrace) {
       print("[Atualizar Usuário] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
@@ -73,6 +75,7 @@ class UsuarioRepository extends IUsuarioRepository {
       return null;
     } catch (error, stacktrace) {
       print("[Atualizar Usuário] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }

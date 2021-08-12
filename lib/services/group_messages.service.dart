@@ -2,6 +2,8 @@ import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 class GroupMessageService {
   final dbHelper = DBHelper(versionDB: 2);
@@ -16,6 +18,7 @@ class GroupMessageService {
       print("--------------------------");
     } catch (ex) {
       print("Erro ao criar mensagem: $ex");
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       return;
     }
   }
@@ -39,6 +42,7 @@ class GroupMessageService {
       return groups;
     } catch (ex) {
       print(ex);
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       return new List<Group>();
     }
   }
@@ -56,6 +60,7 @@ class GroupMessageService {
       print("<--------------------------");
       print("Erro ao deletar usuário: $ex");
       print("<--------------------------");
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       return;
     }
   }

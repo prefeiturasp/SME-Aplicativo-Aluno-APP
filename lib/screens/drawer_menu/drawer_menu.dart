@@ -183,7 +183,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       builder: (context) => EstudanteResumoView(
                             estudante: widget.estudante,
                             userId: widget.userId,
-                            groupSchool: widget.groupSchool,
+                            modalidade: widget.groupSchool,
                           )));
             },
           ),

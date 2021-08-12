@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getflutter/getflutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -45,20 +46,24 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
   }
 
   _initPushNotificationHandlers() {
-    _firebaseMessaging.requestNotificationPermissions();
-    _firebaseMessaging.getToken().then(print);
-    _firebaseMessaging.subscribeToTopic("AppAluno");
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        _popUpNotification(message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        await _navigateToMessageView(message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        await _navigateToMessageView(message);
-      },
-    );
+    try {
+      _firebaseMessaging.requestNotificationPermissions();
+      _firebaseMessaging.getToken().then(print);
+      _firebaseMessaging.subscribeToTopic("AppAluno");
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          _popUpNotification(message);
+        },
+        onLaunch: (Map<String, dynamic> message) async {
+          await _navigateToMessageView(message);
+        },
+        onResume: (Map<String, dynamic> message) async {
+          await _navigateToMessageView(message);
+        },
+      );
+    } catch(ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
+    }
   }
 
   _popUpNotification(Map<String, dynamic> message) {
@@ -131,9 +136,6 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       return Observer(

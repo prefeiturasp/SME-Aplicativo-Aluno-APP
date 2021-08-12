@@ -1,8 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/repositories/index.dart';
 import 'package:sme_app_aluno/services/index.dart';
 import 'package:sme_app_aluno/stores/index.dart';
+
+import '../utils/app_config_reader.dart';
 
 class DependenciasIoC {
   GetIt getIt;
@@ -13,6 +16,12 @@ class DependenciasIoC {
 
   registrarServicos() {
     getIt.registerSingleton<ApiService>(ApiService());
+    getIt.registerSingleton<SentryClient>(new SentryClient(
+        dsn: AppConfigReader.getSentryDsn(),
+        environmentAttributes: new Event(
+          environment: AppConfigReader.getEnvironment()
+        )
+      ));
   }
 
   registrarStores() {

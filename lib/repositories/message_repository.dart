@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -44,6 +45,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e);
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -64,6 +66,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -112,6 +115,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print(e.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -147,6 +151,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (error, stacktrace) {
       print("[MessageRepository] Erro de requisição " + stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return null;
     }
   }
@@ -175,6 +180,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       print("Erro ao tentar excluir mensagem $e");
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

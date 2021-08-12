@@ -1,5 +1,7 @@
 import 'package:background_fetch/background_fetch.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/repositories/responsible_repository.dart';
 
 part 'background_fetch.controller.g.dart';
@@ -55,6 +57,7 @@ abstract class _BackgroundFetchControllerBase with Store {
         ),
       ).catchError(print);
     } catch (ex) {
+      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print(ex.toString());
     }
   }

@@ -1,5 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 class Request {
   //START GET
@@ -20,6 +22,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 
@@ -39,6 +42,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 
@@ -58,6 +62,7 @@ class Request {
       return response;
     } catch (e) {
       print('Erro: $e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
     }
   }
 }

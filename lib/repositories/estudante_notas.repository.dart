@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/services/index.dart';
 
@@ -22,6 +23,7 @@ class EstudanteNotasRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/dtos/estudante_frequencia_global.dto.dart';
 import 'package:sme_app_aluno/models/estudante_frequencia.model.dart';
 import 'package:sme_app_aluno/models/frequency/frequency.dart';
@@ -29,6 +30,7 @@ class EstudanteFrequenciaRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -45,8 +47,6 @@ class EstudanteFrequenciaRepository {
       final response = await _api.dio.get(
           "/Aluno/frequencia/turmas/$codigoTurma/alunos/$codigoAluno/componentes-curriculares/$codigoComponenteCurricular?bimestres=$bimestresJoin");
 
-//${AppConfigReader.getApiHost()}/Aluno/frequencia/componente-curricular?AnoLetivo=$anoLetivo&CodigoUe=$codigoUE&CodigoTurma=$codigoTurma&CodigoAluno=$codigoAluno&CodigoComponenteCurricular=$codigoComponenteCurricular",
-
       if (response.statusCode == 200) {
         var retorno = (response.data as List)
             .map((x) => EstudanteFrequenciaModel.fromJson(x))
@@ -58,6 +58,7 @@ class EstudanteFrequenciaRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }
@@ -77,6 +78,7 @@ class EstudanteFrequenciaRepository {
       }
     } catch (e) {
       print('$e');
+      GetIt.I.get<SentryClient>().captureException(exception: e);
       return null;
     }
   }

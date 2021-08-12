@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/responsible_repository_interface.dart';
 import 'package:sme_app_aluno/stores/index.dart';
@@ -30,6 +31,7 @@ class ResponsibleRepository implements IResponsibleRepository {
     } catch (error, stacktrace) {
       print("Erro ao verificar se resposável tem aluno: " +
           stacktrace.toString());
+      GetIt.I.get<SentryClient>().captureException(exception: error);
       return true;
     }
   }
