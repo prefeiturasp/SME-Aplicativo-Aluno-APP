@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class ObsBody extends StatelessWidget {
   final String title;
@@ -45,7 +45,7 @@ class ObsBody extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Html(data: recomendacoesFamilia)),
+                  subtitle: HtmlWidget(recomendacoesFamilia)),
               ListTile(
                   title: AutoSizeText(
                     'Recomendações ao aluno',
@@ -54,7 +54,7 @@ class ObsBody extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Html(data: recomendacoesAluno)),
+                  subtitle: HtmlWidget(recomendacoesAluno)),
             ],
           ),
         ));

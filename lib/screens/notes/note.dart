@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class Note extends StatelessWidget {
   final String name;
@@ -23,7 +23,7 @@ class Note extends StatelessWidget {
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [Html(data: description)],
+                children: [HtmlWidget(description)],
               ),
             ),
             actions: <Widget>[
