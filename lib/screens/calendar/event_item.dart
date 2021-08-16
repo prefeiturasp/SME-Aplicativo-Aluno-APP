@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -139,9 +139,7 @@ class EventItem extends StatelessWidget {
                   SizedBox(
                     height: 12,
                   ),
-                  Html(
-                    data: eventDesc,
-                  ),
+                  HtmlWidget(eventDesc),
                   Divider(
                     color: Color(0xffCDCDCD),
                   ),
