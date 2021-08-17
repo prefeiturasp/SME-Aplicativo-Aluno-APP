@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 
@@ -76,14 +76,14 @@ class _TermsViewState extends State<TermsView> {
                   SizedBox(
                     height: screenHeight * 4,
                   ),
-                  Html(data: widget.term.termosDeUso),
+                  HtmlWidget(widget.term.termosDeUso),
                   AutoSizeText(
                     'Política de privacidade',
                     minFontSize: 14,
                     maxFontSize: 16,
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  Html(data: widget.term.politicaDePrivacidade),
+                  HtmlWidget(widget.term.politicaDePrivacidade),
                 ],
               ),
             ],

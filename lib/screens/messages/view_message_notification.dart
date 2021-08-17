@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -162,10 +162,8 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     ),
                     Container(
                       width: screenHeight * 39,
-                      child: Html(
-                        data: widget.message.mensagem,
-                        onLinkTap: (url) => _launchURL(url),
-                      ),
+                      child: HtmlWidget(widget.message.mensagem,
+                          onTapUrl: (url) => _launchURL(url)),
                     ),
                     SizedBox(
                       height: screenHeight * 3,
