@@ -213,7 +213,7 @@ class _ExpansionState extends State<Expansion> {
               child: Column(
                 children: [
                   AutoSizeText(
-                    "Em breve o boletim estará disponível para download, Quando isso acontecer, avisaremos através de uma notificação",
+                    "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.",
                     maxFontSize: 14,
                     minFontSize: 12,
                     style: TextStyle(
