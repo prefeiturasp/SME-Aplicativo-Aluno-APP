@@ -165,7 +165,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   style: TextStyle(
                       color: Color(0xff333333), fontWeight: FontWeight.w600),
                   decoration: InputDecoration(
-                    labelText: 'Nome da mãe do responsável',
+                    labelText: 'Filiação do responsável legal',
                     labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                     errorStyle: TextStyle(fontWeight: FontWeight.w700),
                     // hintText: "Data de nascimento do aluno",

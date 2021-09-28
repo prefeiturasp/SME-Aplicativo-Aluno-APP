@@ -14,8 +14,11 @@ class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
   final int userId;
   final String modalidade;
-
-  EstudanteResumoView({@required this.estudante, this.modalidade, this.userId});
+  EstudanteResumoView({
+    @required this.estudante,
+    this.modalidade,
+    this.userId,
+  });
 
   @override
   _EstudanteResumoViewState createState() => _EstudanteResumoViewState();
@@ -26,7 +29,8 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaBoletim = false;
   bool abaFrequencia = false;
 
-  content(BuildContext context, double screenHeight, EstudanteModel data) {
+  content(BuildContext context, double screenHeight, EstudanteModel data,
+      GlobalKey<ScaffoldState> scaffoldkey) {
     String dateFormatted =
         DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
     String dateSituacaoMatricula = DateFormatSuport.formatStringDate(
@@ -53,6 +57,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
           codigoTurma: widget.estudante.codigoTurma.toString(),
           codigoAluno: widget.estudante.codigoEol.toString(),
           groupSchool: widget.modalidade,
+          scaffoldState: scaffoldkey,
         ),
         height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
@@ -68,7 +73,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   @override
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
+    final keyScaffod = new GlobalKey<ScaffoldState>();
     if (connectionStatus == ConnectivityStatus.Offline) {
       // BackgroundFetch.stop().then((int status) {
       //   print('[BackgroundFetch] stop success: $status');
@@ -79,6 +84,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
       var screenHeight =
           (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
+        key: keyScaffod,
         backgroundColor: Color(0xffE5E5E5),
         appBar: AppBar(
           title: Text(
@@ -233,7 +239,12 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                         )
                       ],
                     )),
-                    content(context, screenHeight, widget.estudante)
+                    content(
+                      context,
+                      screenHeight,
+                      widget.estudante,
+                      keyScaffod,
+                    ),
                   ],
                 )
               ],
