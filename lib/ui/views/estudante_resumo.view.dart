@@ -14,8 +14,11 @@ class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
   final int userId;
   final String modalidade;
-
-  EstudanteResumoView({@required this.estudante, this.modalidade, this.userId});
+  EstudanteResumoView({
+    @required this.estudante,
+    this.modalidade,
+    this.userId,
+  });
 
   @override
   _EstudanteResumoViewState createState() => _EstudanteResumoViewState();

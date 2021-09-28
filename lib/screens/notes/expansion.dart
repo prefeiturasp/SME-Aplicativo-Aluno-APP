@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
@@ -20,12 +19,13 @@ class Expansion extends StatefulWidget {
   final String codigoAluno;
   final String groupSchool;
   final GlobalKey<ScaffoldState> scaffoldState;
-  Expansion(
-      {this.codigoUe,
-      this.codigoTurma,
-      this.codigoAluno,
-      this.groupSchool,
-      this.scaffoldState});
+  Expansion({
+    this.codigoUe,
+    this.codigoTurma,
+    this.codigoAluno,
+    this.groupSchool,
+    this.scaffoldState,
+  });
   @override
   _ExpansionState createState() => _ExpansionState();
 }
@@ -255,45 +255,51 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
-  enviarApi() {
+  _enviarApi() {
     print("Chamou API");
   }
 
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    return FlatButton(
-      onPressed: () {
-        enviarApi();
-        _modalInfo(screenHeight);
-      },
-      shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Color(0xffd06d12),
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.circular(50)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AutoSizeText(
-            "GERAR PDF",
-            maxFontSize: 16,
-            minFontSize: 14,
-            style: TextStyle(
-                color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-          ),
-          SizedBox(
-            width: screenHeight * 3,
-          ),
-          Icon(
-            FontAwesomeIcons.edit,
-            color: Color(0xffffd037),
-            size: screenHeight * 3,
-          )
-        ],
-      ),
-    );
+    if (widget.groupSchool == "Ensino Fundamental" ||
+        widget.groupSchool == "Ensino Médio" ||
+        widget.groupSchool == "Educação de Jovens e Adultos") {
+      return FlatButton(
+        onPressed: () {
+          _enviarApi();
+          _modalInfo(screenHeight);
+        },
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xffd06d12),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            AutoSizeText(
+              "GERAR PDF",
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: TextStyle(
+                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              width: screenHeight * 3,
+            ),
+            Icon(
+              FontAwesomeIcons.edit,
+              color: Color(0xffffd037),
+              size: screenHeight * 3,
+            )
+          ],
+        ),
+      );
+    } else {
+      return Text("");
+    }
   }
 
   _buildObsTileItem(screenHeight) => TileItem(
