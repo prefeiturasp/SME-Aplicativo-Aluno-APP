@@ -260,46 +260,40 @@ class _ExpansionState extends State<Expansion> {
   }
 
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.groupSchool == "Ensino Fundamental" ||
-        widget.groupSchool == "Ensino Médio" ||
-        widget.groupSchool == "Educação de Jovens e Adultos") {
-      return FlatButton(
-        onPressed: () {
-          _enviarApi();
-          _modalInfo(screenHeight);
-        },
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color(0xffd06d12),
-              width: 1,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AutoSizeText(
-              "GERAR PDF",
-              maxFontSize: 16,
-              minFontSize: 14,
-              style: TextStyle(
-                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              width: screenHeight * 3,
-            ),
-            Icon(
-              FontAwesomeIcons.edit,
-              color: Color(0xffffd037),
-              size: screenHeight * 3,
-            )
-          ],
-        ),
-      );
-    } else {
-      return SizedBox();
-    }
+    return FlatButton(
+      onPressed: () {
+        _enviarApi();
+        _modalInfo(screenHeight);
+      },
+      shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Color(0xffd06d12),
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(50)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          AutoSizeText(
+            "GERAR PDF",
+            maxFontSize: 16,
+            minFontSize: 14,
+            style: TextStyle(
+                color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+          ),
+          SizedBox(
+            width: screenHeight * 3,
+          ),
+          Icon(
+            FontAwesomeIcons.edit,
+            color: Color(0xffffd037),
+            size: screenHeight * 3,
+          )
+        ],
+      ),
+    );
   }
 
   _buildObsTileItem(screenHeight) => TileItem(
