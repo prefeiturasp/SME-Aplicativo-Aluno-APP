@@ -260,8 +260,8 @@ class _ExpansionState extends State<Expansion> {
   }
 
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.groupSchool == "Ensino Fundamental" &&
-        widget.groupSchool == "Ensino Médio" &&
+    if (widget.groupSchool == "Ensino Fundamental" ||
+        widget.groupSchool == "Ensino Médio" ||
         widget.groupSchool == "Educação de Jovens e Adultos") {
       return FlatButton(
         onPressed: () {
