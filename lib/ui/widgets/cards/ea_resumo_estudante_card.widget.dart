@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/ui/index.dart';
@@ -8,9 +9,9 @@ class EAResumoEstudanteCard extends StatelessWidget {
   final EstudanteModel estudante;
   final int userId;
   final String modalidade;
-
+  final String codigoGrupo;
   EAResumoEstudanteCard(
-      {@required this.estudante, this.modalidade, this.userId});
+      {@required this.estudante, this.modalidade, this.userId, this.codigoGrupo});
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +108,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
                           builder: (context) => EstudanteResumoView(
                               estudante: estudante,
                               modalidade: modalidade,
+                              grupoCodigo: this.codigoGrupo,
                               userId: userId)));
                 },
                 child: Row(

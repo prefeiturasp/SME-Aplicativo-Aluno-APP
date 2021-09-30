@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/enumeradores/modelo_boletim.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/data_student/data.dart';
 import 'package:sme_app_aluno/screens/frequency/frequency.dart';
@@ -14,10 +15,12 @@ class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
   final int userId;
   final String modalidade;
+  final String grupoCodigo;
   EstudanteResumoView({
     @required this.estudante,
     this.modalidade,
     this.userId,
+    @required this.grupoCodigo,
   });
 
   @override
@@ -54,9 +57,14 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
         padding: EdgeInsets.all(screenHeight * 2.5),
         child: Expansion(
           codigoUe: widget.estudante.codigoEscola,
+          codigoDre: widget.estudante.codigoDre,
+          semestre: 0,
+          modelo: ModeloBoletim.Detalhado,
+          anoLetivo: DateTime.now().year,
           codigoTurma: widget.estudante.codigoTurma.toString(),
           codigoAluno: widget.estudante.codigoEol.toString(),
           groupSchool: widget.modalidade,
+          codigoModalidade: widget.grupoCodigo,
           scaffoldState: scaffoldkey,
         ),
         height: MediaQuery.of(context).size.height - screenHeight * 26,

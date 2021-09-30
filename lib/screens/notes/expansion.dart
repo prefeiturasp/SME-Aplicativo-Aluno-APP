@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -8,6 +9,7 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
+import 'package:sme_app_aluno/repositories/boletim_aluno_repository.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
@@ -15,9 +17,14 @@ import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 
 class Expansion extends StatefulWidget {
   final String codigoUe;
+  final String codigoDre;
+  final int semestre;
+  final int modelo;
   final String codigoTurma;
   final String codigoAluno;
   final String groupSchool;
+  final String codigoModalidade;
+  final int anoLetivo;
   final GlobalKey<ScaffoldState> scaffoldState;
   Expansion({
     this.codigoUe,
@@ -25,6 +32,11 @@ class Expansion extends StatefulWidget {
     this.codigoAluno,
     this.groupSchool,
     this.scaffoldState,
+    this.codigoDre,
+    this.semestre,
+    this.modelo,
+    this.anoLetivo,
+    this.codigoModalidade,
   });
   @override
   _ExpansionState createState() => _ExpansionState();
@@ -33,6 +45,7 @@ class Expansion extends StatefulWidget {
 class _ExpansionState extends State<Expansion> {
   final _estudanteNotasController = GetIt.I.get<EstudanteNotasController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
+  final _boletimRepositorio = BoletimAlunoRepository();
   DateTime _dateTime;
   @override
   void initState() {
@@ -255,8 +268,17 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
-  _enviarApi() {
-    print("Chamou API");
+  _enviarApi() async {
+    await _boletimRepositorio.solicitarBoletim(
+      dreCodigo: widget.codigoDre,
+      ueCodigo: widget.codigoUe,
+      semestre: widget.semestre,
+      turmaCodigo: widget.codigoTurma,
+      anoLetivo: widget.anoLetivo,
+      modalidadeCodigo: int.parse(widget.codigoModalidade),
+      modelo: widget.modelo,
+      alunosCodigo: widget.codigoAluno,
+    );
   }
 
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {

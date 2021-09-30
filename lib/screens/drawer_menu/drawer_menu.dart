@@ -184,6 +184,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     estudante: widget.estudante,
                     userId: widget.userId,
                     modalidade: widget.groupSchool,
+                    grupoCodigo: widget.codigoGrupo.toString(),
                   ),
                 ),
               );
