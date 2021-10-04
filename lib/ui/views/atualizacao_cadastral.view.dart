@@ -365,7 +365,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                    labelText: 'Nome da mãe do responsável',
+                                    labelText: 'Filiação do responsável legal',
                                     labelStyle:
                                         TextStyle(color: Color(0xff8e8e8e)),
                                     errorStyle:

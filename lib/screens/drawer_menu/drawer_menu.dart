@@ -178,13 +178,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EstudanteResumoView(
-                            estudante: widget.estudante,
-                            userId: widget.userId,
-                            modalidade: widget.groupSchool,
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EstudanteResumoView(
+                    estudante: widget.estudante,
+                    userId: widget.userId,
+                    modalidade: widget.groupSchool,
+                    grupoCodigo: widget.codigoGrupo.toString(),
+                  ),
+                ),
+              );
             },
           ),
           Divider(),

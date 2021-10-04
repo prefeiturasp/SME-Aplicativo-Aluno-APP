@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +9,9 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
+import 'package:sme_app_aluno/repositories/boletim_aluno_repository.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
@@ -14,12 +19,27 @@ import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 
 class Expansion extends StatefulWidget {
   final String codigoUe;
+  final String codigoDre;
+  final int semestre;
+  final int modelo;
   final String codigoTurma;
   final String codigoAluno;
   final String groupSchool;
-
-  Expansion(
-      {this.codigoUe, this.codigoTurma, this.codigoAluno, this.groupSchool});
+  final String codigoModalidade;
+  final int anoLetivo;
+  final GlobalKey<ScaffoldState> scaffoldState;
+  Expansion({
+    this.codigoUe,
+    this.codigoTurma,
+    this.codigoAluno,
+    this.groupSchool,
+    this.scaffoldState,
+    this.codigoDre,
+    this.semestre,
+    this.modelo,
+    this.anoLetivo,
+    this.codigoModalidade,
+  });
   @override
   _ExpansionState createState() => _ExpansionState();
 }
@@ -27,8 +47,8 @@ class Expansion extends StatefulWidget {
 class _ExpansionState extends State<Expansion> {
   final _estudanteNotasController = GetIt.I.get<EstudanteNotasController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
+  final _boletimRepositorio = BoletimAlunoRepository();
   DateTime _dateTime;
-
   @override
   void initState() {
     super.initState();
@@ -153,6 +173,158 @@ class _ExpansionState extends State<Expansion> {
         ],
         header: "Notas e conceitos do estudante",
       );
+
+  _modalInfo(double screenHeight) {
+    var size = MediaQuery.of(context).size;
+    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(screenHeight * 8),
+            topLeft: Radius.circular(screenHeight * 8),
+          ),
+          color: Colors.white,
+        ),
+        height: screenHeight * 30,
+        child: Column(
+          children: [
+            Container(
+              width: screenHeight * 8,
+              height: screenHeight * 1,
+              margin: EdgeInsets.only(top: screenHeight * 2),
+              decoration: BoxDecoration(
+                color: Color(0xffDADADA),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(screenHeight * 1),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: screenHeight * 3,
+            ),
+            AutoSizeText(
+              "AVISO",
+              maxFontSize: 18,
+              minFontSize: 16,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Expanded(
+              child: Divider(),
+            ),
+            Container(
+              height: screenHeight * 20,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(screenHeight * 2.5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  AutoSizeText(
+                    "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Color(0xffd06d12),
+                          width: 1,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        AutoSizeText(
+                          "ENTENDI",
+                          maxFontSize: 14,
+                          minFontSize: 12,
+                          style: TextStyle(
+                              color: Color(0xffd06d12),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _enviarApi() async {
+    await _boletimRepositorio.solicitarBoletim(
+      dreCodigo: widget.codigoDre,
+      ueCodigo: widget.codigoUe,
+      semestre: widget.semestre,
+      turmaCodigo: widget.codigoTurma,
+      anoLetivo: widget.anoLetivo,
+      modalidadeCodigo: int.parse(widget.codigoModalidade),
+      modelo: widget.modelo,
+      alunosCodigo: widget.codigoAluno,
+    );
+  }
+
+  _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
+    if (widget.codigoModalidade == ModalidadeTipo.EJA ||
+        widget.codigoModalidade == ModalidadeTipo.Medio ||
+        widget.codigoModalidade == ModalidadeTipo.Fundamental) {
+      return FlatButton(
+        onPressed: () {
+          _enviarApi();
+          _modalInfo(screenHeight);
+        },
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xffd06d12),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            AutoSizeText(
+              "GERAR PDF",
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: TextStyle(
+                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              width: screenHeight * 3,
+            ),
+            Icon(
+              FontAwesomeIcons.edit,
+              color: Color(0xffffd037),
+              size: screenHeight * 3,
+            )
+          ],
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
+  }
 
   _buildObsTileItem(screenHeight) => TileItem(
         body: [
@@ -299,7 +471,11 @@ class _ExpansionState extends State<Expansion> {
               return Container(
                   child: Column(children: [
                 _montarNotasConceito(screenHeight),
-                _buildObsTileItem(screenHeight)
+                _buildObsTileItem(screenHeight),
+                SizedBox(
+                  height: 10,
+                ),
+                _gerarPdf(screenHeight, widget.scaffoldState),
               ]));
             }
 
