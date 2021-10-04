@@ -9,6 +9,8 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/repositories/boletim_aluno_repository.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
@@ -282,40 +284,46 @@ class _ExpansionState extends State<Expansion> {
   }
 
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    return FlatButton(
-      onPressed: () {
-        _enviarApi();
-        _modalInfo(screenHeight);
-      },
-      shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Color(0xffd06d12),
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.circular(50)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AutoSizeText(
-            "GERAR PDF",
-            maxFontSize: 16,
-            minFontSize: 14,
-            style: TextStyle(
-                color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-          ),
-          SizedBox(
-            width: screenHeight * 3,
-          ),
-          Icon(
-            FontAwesomeIcons.edit,
-            color: Color(0xffffd037),
-            size: screenHeight * 3,
-          )
-        ],
-      ),
-    );
+    if (widget.codigoModalidade == ModalidadeTipo.EJA ||
+        widget.codigoModalidade == ModalidadeTipo.Medio ||
+        widget.codigoModalidade == ModalidadeTipo.Fundamental) {
+      return FlatButton(
+        onPressed: () {
+          _enviarApi();
+          _modalInfo(screenHeight);
+        },
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xffd06d12),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            AutoSizeText(
+              "GERAR PDF",
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: TextStyle(
+                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              width: screenHeight * 3,
+            ),
+            Icon(
+              FontAwesomeIcons.edit,
+              color: Color(0xffffd037),
+              size: screenHeight * 3,
+            )
+          ],
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 
   _buildObsTileItem(screenHeight) => TileItem(
