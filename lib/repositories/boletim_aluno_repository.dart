@@ -27,7 +27,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       "anoLetivo": anoLetivo,
       "modalidadeCodigo": modalidadeCodigo,
       "modelo": modelo,
-      "alunosCodigo": alunosCodigo
+      "alunoCodigo": alunosCodigo
     };
     String body = json.encode(_data);
     try {
