@@ -279,7 +279,7 @@ class _ExpansionState extends State<Expansion> {
       anoLetivo: widget.anoLetivo,
       modalidadeCodigo: int.parse(widget.codigoModalidade),
       modelo: widget.modelo,
-      alunosCodigo: widget.codigoAluno,
+      alunoCodigo: widget.codigoAluno,
     );
   }
 

@@ -7,6 +7,6 @@ abstract class IBoletimRepository {
     int anoLetivo,
     int modalidadeCodigo,
     int modelo,
-    String alunosCodigo,
+    String alunoCodigo,
   });
 }
