@@ -5,7 +5,7 @@ class EstudanteNotaConceitoModel {
   int componenteCurricularCodigo;
   String componenteCurricularNome;
   int conceitoId;
-  double nota;
+  String nota;
   String corDaNota;
   String notaConceito;
 
