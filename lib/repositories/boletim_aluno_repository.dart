@@ -16,7 +16,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
     int anoLetivo,
     int modalidadeCodigo,
     int modelo,
-    String alunosCodigo,
+    String alunoCodigo,
   }) async {
     var url = "${AppConfigReader.getApiHost()}/Aluno/notas/imprimirboletim";
     Map _data = {
@@ -27,7 +27,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       "anoLetivo": anoLetivo,
       "modalidadeCodigo": modalidadeCodigo,
       "modelo": modelo,
-      "alunosCodigo": alunosCodigo
+      "alunoCodigo": alunoCodigo
     };
     String body = json.encode(_data);
     try {
