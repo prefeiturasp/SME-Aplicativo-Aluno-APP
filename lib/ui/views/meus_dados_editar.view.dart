@@ -260,6 +260,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'Filiação do responsável legal',
+                                  hintText: 'Preferencialmente nome da mãe',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -269,7 +270,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 ),
                                 validator: (value) {
                                   return ValidatorsUtil.nome(
-                                      value, "Nome da mãe");
+                                      value, "Nome do responsável legal");
                                 },
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
@@ -434,6 +435,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   }
 
   bool habilitaBotaoCadastro() {
+    setState(() {
+      _formKey.currentState.validate();
+    });
     if (_nomeMae == null) {
       return false;
     }
