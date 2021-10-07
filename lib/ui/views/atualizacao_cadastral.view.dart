@@ -360,7 +360,6 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                       color: Color(0xff333333),
                                       fontWeight: FontWeight.w600),
                                   onChanged: (value) {
-                                    print("foii");
                                     setState(() {
                                       _nomeMae = value;
                                       _formKey.currentState.validate();
