@@ -435,9 +435,6 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   }
 
   bool habilitaBotaoCadastro() {
-    setState(() {
-      _formKey.currentState.validate();
-    });
     if (_nomeMae == null) {
       return false;
     }
