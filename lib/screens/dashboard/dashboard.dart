@@ -161,6 +161,7 @@ class _DashboardState extends State<Dashboard> {
                   estudante: widget.estudante,
                   modalidade: widget.groupSchool,
                   userId: widget.userId,
+                  codigoGrupo: widget.codigoGrupo.toString(),
                 ),
                 Observer(builder: (context) {
                   if (_messagesController.isLoading) {

@@ -362,10 +362,12 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   onChanged: (value) {
                                     setState(() {
                                       _nomeMae = value;
+                                      _formKey.currentState.validate();
                                     });
                                   },
                                   decoration: InputDecoration(
-                                    labelText: 'Nome da mãe do responsável',
+                                    labelText: 'Filiação do responsável legal',
+                                    hintText: 'Preferencialmente nome da mãe',
                                     labelStyle:
                                         TextStyle(color: Color(0xff8e8e8e)),
                                     errorStyle:
@@ -374,8 +376,11 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    return ValidatorsUtil.nome(
-                                        value, "Nome da mãe");
+                                    if (value == null || value.isEmpty) {
+                                      return ValidatorsUtil.nome(
+                                          value, "Nome do responsável legal");
+                                    } else
+                                      return null;
                                   },
                                   keyboardType: TextInputType.multiline,
                                   minLines: 1,

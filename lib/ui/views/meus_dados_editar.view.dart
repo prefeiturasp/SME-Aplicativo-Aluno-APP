@@ -259,7 +259,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                  labelText: 'Nome da mãe do responsável',
+                                  labelText: 'Filiação do responsável legal',
+                                  hintText: 'Preferencialmente nome da mãe',
                                   labelStyle:
                                       TextStyle(color: Color(0xff8e8e8e)),
                                   errorStyle:
@@ -269,7 +270,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 ),
                                 validator: (value) {
                                   return ValidatorsUtil.nome(
-                                      value, "Nome da mãe");
+                                      value, "Nome do responsável legal");
                                 },
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
