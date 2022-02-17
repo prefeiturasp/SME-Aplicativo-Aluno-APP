@@ -162,35 +162,17 @@ class EAResumoOutrosServicosCard extends StatelessWidget {
             ),
           ),
           //Inicio Novo Widget
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              OutrosLinksInfoWidget(
+          Wrap(
+            alignment: WrapAlignment.center,
+            children: List.generate(
+              linksPrioridades.length,
+              (index) {
+                return OutrosLinksInfoWidget(
                   screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[0]),
-              OutrosLinksInfoWidget(
-                  screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[1]),
-              OutrosLinksInfoWidget(
-                  screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[2]),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              OutrosLinksInfoWidget(
-                  screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[3]),
-              OutrosLinksInfoWidget(
-                  screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[4]),
-              OutrosLinksInfoWidget(
-                  screenHeight: screenHeight,
-                  outroServicoModel: linksPrioridades[5]),
-            ],
+                  outroServicoModel: linksPrioridades[index],
+                );
+              },
+            ),
           ),
           //Fim Novo Widget
           Container(
@@ -267,7 +249,7 @@ class OutrosLinksInfoWidget extends StatelessWidget {
                 left: screenHeight * 2.5,
                 top: screenHeight * 0.5,
               ),
-              child: ClipOval(
+              child: ClipRect(
                 child: Image.asset(
                   outroServicoModel.icone,
                   width: screenHeight * 8,
