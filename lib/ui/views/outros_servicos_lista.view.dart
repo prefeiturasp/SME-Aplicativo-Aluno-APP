@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
+import 'package:sme_app_aluno/models/outros_servicos/outros_servicos_categoria.model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:collection/collection.dart";
+import 'package:grouped_list/grouped_list.dart';
 
 class OutrosServicosLista extends StatelessWidget {
   const OutrosServicosLista({Key key}) : super(key: key);
@@ -10,12 +14,11 @@ class OutrosServicosLista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<OutroServicoModel> outrosServico = [];
-
     outrosServico.add(OutroServicoModel(
       cartegoria: 'Alimentação',
       titulo: 'Prato Aberto',
       descricao:
-          'Um Jeito fácil para todo mundo se nutir de informação sobre o que é servido na escola',
+          'Um Jeito fácil para todo mundo se nutir de informação sobre o que é servido na escola.',
       urlSite: 'https://pratoaberto.sme.prefeitura.sp.gov.br/',
       icone: 'assets/images/prato_aberto.png',
       prioridade: true,
@@ -24,7 +27,7 @@ class OutrosServicosLista extends StatelessWidget {
       OutroServicoModel(
         cartegoria: 'Material e Uniforme',
         titulo: 'Material Escolar',
-        descricao: 'Crédito para compra do material escolar no aplicativo',
+        descricao: 'Crédito para compra do material escolar no aplicativo.',
         urlSite: 'https://portalmaterialescolar.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/material_escolar.png',
         prioridade: true,
@@ -35,7 +38,7 @@ class OutrosServicosLista extends StatelessWidget {
         cartegoria: 'Material e Uniforme',
         titulo: 'Uniformes',
         descricao:
-            'Use o crédito para comprar o uniforme escolar em um fornecedor cadastrado',
+            'Use o crédito para comprar o uniforme escolar em um fornecedor cadastrado.',
         urlSite: 'https://portaldeuniformes.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/uniformes.png',
         prioridade: true,
@@ -45,7 +48,7 @@ class OutrosServicosLista extends StatelessWidget {
       OutroServicoModel(
         cartegoria: 'Solicitações e Informações',
         titulo: 'Voltas às aulas',
-        descricao: 'Veja todos os detalhes sobre a volta às aulas',
+        descricao: 'Veja todos os detalhes sobre a volta às aulas.',
         urlSite: 'https://educacao.sme.prefeitura.sp.gov.br/ano-letivo-2022/',
         icone: 'assets/images/voltas_aulas.png',
         prioridade: true,
@@ -95,120 +98,52 @@ class OutrosServicosLista extends StatelessWidget {
         prioridade: false,
       ),
     );
-    final agrupamentoPorCategoria =
-        groupBy(outrosServico, (obj) => (obj as OutroServicoModel).cartegoria);
+    List mapOutrosServico = [];
 
-    final agrupamentoMap = agrupamentoPorCategoria.values.toList();
-  
-    pergarTipo(agrupamentoPorCategoria);
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var screenWidth = MediaQuery.of(context).size.width;
+    for (var i = 0; i < outrosServico.length; i++) {
+      mapOutrosServico.add(outrosServico[i].toJson());
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Outros Serviços"),
       ),
-      body: ListView.builder(
-        itemCount: outrosServico.length,
-        itemBuilder: (context, index) {
-          return ListaGeralLiskOUtrosServicos(
-            screenWidth: screenWidth,
-            screenHeight: screenHeight,
-            outroServicoMode: outrosServico[index],
+      body: GroupedListView<dynamic, String>(
+        elements: mapOutrosServico,
+        groupBy: (servico) => servico['cartegoria'],
+        groupComparator: (value1, value2) => value2.compareTo(value1),
+        itemComparator: (item1, item2) =>
+            item1['titulo'].compareTo(item2['titulo']),
+        order: GroupedListOrder.DESC,
+        useStickyGroupSeparators: true,
+        groupSeparatorBuilder: (String value) => Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Text(
+            value,
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        itemBuilder: (c, servico) {
+          return Card(
+            elevation: 8.0,
+            margin: new EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
+            child: ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              leading: Image.asset(servico['icone']),
+              title: Text(
+                servico['titulo'],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(servico['descricao']),
+              onTap: () {
+                launch(servico['urlSite']);
+              },
+            ),
           );
         },
-      ),
-    );
-  }
-}
-
-pergarTipo(Map<String, List<OutroServicoModel>> agrupamentoPorCategoria) {}
-
-class ListaGeralLiskOUtrosServicos extends StatelessWidget {
-  final double screenWidth;
-  final double screenHeight;
-  final OutroServicoModel outroServicoMode;
-  const ListaGeralLiskOUtrosServicos(
-      {Key key,
-      @required this.screenWidth,
-      @required this.screenHeight,
-      @required this.outroServicoMode})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Color(0xffE5E5E5),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(screenHeight * 2.5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5),
-                    ),
-                  ),
-                  child: InkWell(
-                    child: Container(
-                      padding: EdgeInsets.all(0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[],
-                          ),
-                          // Container(
-                          //   margin: EdgeInsets.only(right: screenHeight * 2.5),
-                          //   child: ClipOval(
-                          //     child: Image.asset(
-                          //       outroServicoMode.icone,
-                          //       width: screenHeight * 8,
-                          //       height: screenHeight * 8,
-                          //       fit: BoxFit.cover,
-                          //     ),
-                          //   ),
-                          // ),
-                          // Container(
-                          //   width: (screenWidth / 1.95),
-                          //   child: Column(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: <Widget>[
-                          //       AutoSizeText(
-                          //         outroServicoMode.titulo,
-                          //         maxFontSize: 16,
-                          //         minFontSize: 14,
-                          //         style: TextStyle(
-                          //             color: Colors.black,
-                          //             fontWeight: FontWeight.w500),
-                          //       ),
-                          //       AutoSizeText(
-                          //         outroServicoMode.descricao,
-                          //         maxFontSize: 16,
-                          //         minFontSize: 14,
-                          //         style: TextStyle(
-                          //           color: Color(0xffC4C4C4),
-                          //         ),
-                          //         maxLines: 2,
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                    onTap: () => launch(outroServicoMode.urlSite),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
