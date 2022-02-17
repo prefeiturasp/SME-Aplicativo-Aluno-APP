@@ -11,7 +11,10 @@ class EAResumoEstudanteCard extends StatelessWidget {
   final String modalidade;
   final String codigoGrupo;
   EAResumoEstudanteCard(
-      {@required this.estudante, this.modalidade, this.userId, this.codigoGrupo});
+      {@required this.estudante,
+      this.modalidade,
+      this.userId,
+      this.codigoGrupo});
 
   @override
   Widget build(BuildContext context) {

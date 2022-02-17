@@ -13,6 +13,7 @@ import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/terms/terms_use.dart';
 import 'package:sme_app_aluno/ui/views/meus_dados.view.dart';
+import 'package:sme_app_aluno/ui/views/outros_servicos_lista.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -240,6 +241,26 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               _navigateToTerms(context);
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Outros Serviços'),
+            leading: CircleAvatar(
+              backgroundColor: Color(0xffEA9200),
+              child: Icon(
+                FontAwesomeIcons.alignJustify,
+                color: Colors.white,
+                size: screenHeight * 2,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OutrosServicosLista(),
+                ),
+              );
             },
           ),
           Divider(),
