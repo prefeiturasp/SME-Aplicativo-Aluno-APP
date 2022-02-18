@@ -1,11 +1,6 @@
-import 'dart:convert';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
-import 'package:sme_app_aluno/models/outros_servicos/outros_servicos_categoria.model.dart';
 import 'package:url_launcher/url_launcher.dart';
-import "package:collection/collection.dart";
 import 'package:grouped_list/grouped_list.dart';
 
 class OutrosServicosLista extends StatelessWidget {
@@ -15,7 +10,7 @@ class OutrosServicosLista extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<OutroServicoModel> outrosServico = [];
     outrosServico.add(OutroServicoModel(
-      cartegoria: 'Alimentação',
+      categoria: 'Alimentação',
       titulo: 'Prato Aberto',
       descricao:
           'Um Jeito fácil para todo mundo se nutir de informação sobre o que é servido na escola.',
@@ -25,7 +20,7 @@ class OutrosServicosLista extends StatelessWidget {
     ));
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Material e Uniforme',
+        categoria: 'Material e Uniforme',
         titulo: 'Material Escolar',
         descricao: 'Crédito para compra do material escolar no aplicativo.',
         urlSite: 'https://portalmaterialescolar.sme.prefeitura.sp.gov.br/',
@@ -35,7 +30,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Material e Uniforme',
+        categoria: 'Material e Uniforme',
         titulo: 'Uniformes',
         descricao:
             'Use o crédito para comprar o uniforme escolar em um fornecedor cadastrado.',
@@ -46,7 +41,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Solicitações e Informações',
+        categoria: 'Solicitações e Informações',
         titulo: 'Voltas às aulas',
         descricao: 'Veja todos os detalhes sobre a volta às aulas.',
         urlSite: 'https://educacao.sme.prefeitura.sp.gov.br/ano-letivo-2022/',
@@ -56,7 +51,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Solicitações e Informações',
+        categoria: 'Solicitações e Informações',
         titulo: 'Escola aberta',
         descricao:
             'É possível consultar os dados de escolas ou gerais, de toda a Rede Municipal de Educação.',
@@ -67,7 +62,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Solicitações e Informações',
+        categoria: 'Solicitações e Informações',
         titulo: 'NAAPA',
         descricao:
             'Conheça o trabalho do Núcleo de Apoio e Acompanhamento para Aprendizegem(NAAPA).',
@@ -78,7 +73,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Solicitações e Informações',
+        categoria: 'Solicitações e Informações',
         titulo: 'SIC - Serviço de informações ao cidadão',
         descricao:
             'O SIC recebe e registra pedidos de acesso à informação feitos por cidadõas.',
@@ -89,7 +84,7 @@ class OutrosServicosLista extends StatelessWidget {
     );
     outrosServico.add(
       OutroServicoModel(
-        cartegoria: 'Solicitações e Informações',
+        categoria: 'Solicitações e Informações',
         titulo: 'Solicitação de vaga',
         descricao:
             'Preencha o formúlario online, para efetuar solicitações de vagas disponíveis.',
@@ -109,7 +104,7 @@ class OutrosServicosLista extends StatelessWidget {
       ),
       body: GroupedListView<dynamic, String>(
         elements: mapOutrosServico,
-        groupBy: (servico) => servico['cartegoria'],
+        groupBy: (servico) => servico['categoria'],
         groupComparator: (value1, value2) => value2.compareTo(value1),
         itemComparator: (item1, item2) =>
             item1['titulo'].compareTo(item2['titulo']),

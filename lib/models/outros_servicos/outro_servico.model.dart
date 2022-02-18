@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OutroServicoModel {
-  String cartegoria;
+  String categoria;
   String titulo;
   String descricao;
   String urlSite;
@@ -9,7 +9,7 @@ class OutroServicoModel {
   bool prioridade;
 
   OutroServicoModel({
-    @required this.cartegoria,
+    @required this.categoria,
     @required this.titulo,
     @required this.descricao,
     @required this.urlSite,
@@ -18,7 +18,7 @@ class OutroServicoModel {
   });
 
   OutroServicoModel.fromJson(Map<String, dynamic> json) {
-    cartegoria = json['cartegoria'] ?? "";
+    categoria = json['categoria'] ?? "";
     titulo = json['titulo'] ?? "";
     descricao = json['descricao'] ?? "";
     urlSite = json['urlSite'] ?? "";
@@ -28,7 +28,7 @@ class OutroServicoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cartegoria'] = this.cartegoria;
+    data['categoria'] = this.categoria;
     data['titulo'] = this.titulo;
     data['descricao'] = this.descricao;
     data['urlSite'] = this.urlSite;
