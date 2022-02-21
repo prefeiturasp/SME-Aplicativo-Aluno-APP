@@ -250,15 +250,15 @@ class OutrosLinksInfoWidget extends StatelessWidget {
           InkWell(
             child: Container(
               margin: EdgeInsets.only(
-                right: screenHeight * 2.5,
-                left: screenHeight * 2.5,
+                right: screenHeight * 3.0,
+                left: screenHeight * 3.0,
                 top: screenHeight * 0.5,
               ),
               child: ClipRect(
                 child: Image.asset(
                   outroServicoModel.icone,
-                  width: screenHeight * 8,
-                  height: screenHeight * 8,
+                  width: screenHeight * 9,
+                  height: screenHeight * 9,
                   fit: BoxFit.cover,
                 ),
               ),
