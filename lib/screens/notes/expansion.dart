@@ -165,11 +165,13 @@ class _ExpansionState extends State<Expansion> {
             height: screenHeight * 50,
             margin: EdgeInsets.all(screenHeight * 1),
             child: Scrollbar(
-                child: ListView.builder(
-                    itemCount: _estudanteNotasController
-                        .componentesCurricularesNotasConceitos.length,
-                    itemBuilder: _corpoNotasMontar)),
-          )
+              child: ListView.builder(
+                itemCount: _estudanteNotasController
+                    .componentesCurricularesNotasConceitos.length,
+                itemBuilder: _corpoNotasMontar,
+              ),
+            ),
+          ),
         ],
         header: "Notas e conceitos do estudante",
       );
@@ -329,10 +331,11 @@ class _ExpansionState extends State<Expansion> {
   _buildObsTileItem(screenHeight) => TileItem(
         body: [
           Container(
-              height: screenHeight * 50,
-              margin: EdgeInsets.all(screenHeight * 1),
-              child: Scrollbar(
-                  child: SingleChildScrollView(
+            height: screenHeight * 30,
+            margin: EdgeInsets.all(screenHeight * 1),
+            child: Scrollbar(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
                 child: Column(
                   children: [
                     _estudanteNotasController.bFinal != null
@@ -445,7 +448,9 @@ class _ExpansionState extends State<Expansion> {
                         : SizedBox.shrink(),
                   ],
                 ),
-              )))
+              ),
+            ),
+          ),
         ],
         header: "Observações",
       );
