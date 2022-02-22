@@ -125,7 +125,7 @@ class _EAResumoOutrosServicosCardState
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           AutoSizeText(
-                            "MAIS INFORMAÇÕES",
+                            "MAIS SERVIÇOS",
                             maxFontSize: 16,
                             minFontSize: 14,
                             style: TextStyle(
