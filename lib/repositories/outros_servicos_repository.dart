@@ -10,8 +10,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   @override
   Future<List<OutroServicoModel>> obterLinksPioritario() async {
     try {
-      var url =
-          "${AppConfigReader.getApiHost()}/outrosservicos/links/prioritarios";
+      var url = "${AppConfigReader.getApiHost()}/outroservico/links/destaque";
       var response = await http.get(url);
       List mapOutrosServico = [];
       var outrosServico = [];
@@ -33,7 +32,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   @override
   Future<List<OutroServicoModel>> obterTodosLinks() async {
     try {
-      var url = "${AppConfigReader.getApiHost()}/outrosservicos/links";
+      var url = "${AppConfigReader.getApiHost()}/outrosservicos/links/lista";
       var response = await http.get(url);
       List mapOutrosServico = [];
       var outrosServico = [];

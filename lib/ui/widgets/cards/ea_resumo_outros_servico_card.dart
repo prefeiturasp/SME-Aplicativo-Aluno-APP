@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
+import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:sme_app_aluno/ui/views/outros_servicos_lista.view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +27,7 @@ class _EAResumoOutrosServicosCardState
           'Um Jeito fácil para todo mundo se nutir de informação sobre o que é servido na escola',
       urlSite: 'https://pratoaberto.sme.prefeitura.sp.gov.br/',
       icone: 'assets/images/prato_aberto.png',
-      prioridade: true,
+      destaque: true,
     ));
     outrosServico.add(
       OutroServicoModel(
@@ -35,7 +36,7 @@ class _EAResumoOutrosServicosCardState
         descricao: 'Crédito para compra do material escolar no aplicativo',
         urlSite: 'https://portalmaterialescolar.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/material_escolar.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -46,7 +47,7 @@ class _EAResumoOutrosServicosCardState
             'Use o crédito para comprar o uniforme escolar em um fornecedor cadastrado',
         urlSite: 'https://portaldeuniformes.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/uniformes.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -56,7 +57,7 @@ class _EAResumoOutrosServicosCardState
         descricao: 'Veja todos os detalhes sobre a volta às aulas',
         urlSite: 'https://educacao.sme.prefeitura.sp.gov.br/ano-letivo-2022/',
         icone: 'assets/images/voltas_aulas.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -67,7 +68,7 @@ class _EAResumoOutrosServicosCardState
             'É possível consultar os dados de escolas ou gerais, de toda a Rede Municipal de Educação.',
         urlSite: 'https://escolaaberta.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/escola_aberta.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -78,7 +79,7 @@ class _EAResumoOutrosServicosCardState
             'Conheça o trabalho do Núcleo de Apoio e Acompanhamento para Aprendizegem(NAAPA).',
         urlSite: 'https://turmadonaapa.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/naapa.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -89,7 +90,7 @@ class _EAResumoOutrosServicosCardState
             'O SIC recebe e registra pedidos de acesso à informação feitos por cidadõas.',
         urlSite: 'http://esic.prefeitura.sp.gov.br/',
         icone: 'assets/images/sic.png',
-        prioridade: false,
+        destaque: false,
       ),
     );
     outrosServico.add(
@@ -100,12 +101,14 @@ class _EAResumoOutrosServicosCardState
             'Preencha o formúlario online, para efetuar solicitações de vagas disponíveis.',
         urlSite: 'https://vaganacreche.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/solicitacao_vaga.png',
-        prioridade: false,
+        destaque: false,
       ),
     );
 
     final List<OutroServicoModel> linksPrioridades =
-        outrosServico.where((x) => x.prioridade == true).toList();
+        outrosServico.where((x) => x.destaque == true).toList();
+    var outroServicosRepository = OutrosServicosRepository();
+    var pri = outroServicosRepository.obterLinksPioritario();
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(

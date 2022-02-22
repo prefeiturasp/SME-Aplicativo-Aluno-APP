@@ -6,7 +6,7 @@ class OutroServicoModel {
   String descricao;
   String urlSite;
   String icone;
-  bool prioridade;
+  bool destaque;
 
   OutroServicoModel({
     @required this.categoria,
@@ -14,7 +14,7 @@ class OutroServicoModel {
     @required this.descricao,
     @required this.urlSite,
     @required this.icone,
-    @required this.prioridade,
+    @required this.destaque,
   });
 
   OutroServicoModel.fromJson(Map<String, dynamic> json) {
@@ -23,7 +23,7 @@ class OutroServicoModel {
     descricao = json['descricao'] ?? "";
     urlSite = json['urlSite'] ?? "";
     icone = json['icone'] ?? "";
-    prioridade = json['prioridade'] ?? false;
+    destaque = json['destaque'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -33,7 +33,7 @@ class OutroServicoModel {
     data['descricao'] = this.descricao;
     data['urlSite'] = this.urlSite;
     data['icone'] = this.icone;
-    data['prioridade'] = this.prioridade;
+    data['destaque'] = this.destaque;
     return data;
   }
 }

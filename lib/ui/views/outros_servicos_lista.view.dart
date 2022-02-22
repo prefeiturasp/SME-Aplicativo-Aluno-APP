@@ -16,7 +16,7 @@ class OutrosServicosLista extends StatelessWidget {
           'Um Jeito fácil para todo mundo se nutir de informação sobre o que é servido na escola.',
       urlSite: 'https://pratoaberto.sme.prefeitura.sp.gov.br/',
       icone: 'assets/images/prato_aberto.png',
-      prioridade: true,
+      destaque: true,
     ));
     outrosServico.add(
       OutroServicoModel(
@@ -25,7 +25,7 @@ class OutrosServicosLista extends StatelessWidget {
         descricao: 'Crédito para compra do material escolar no aplicativo.',
         urlSite: 'https://portalmaterialescolar.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/material_escolar.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -36,7 +36,7 @@ class OutrosServicosLista extends StatelessWidget {
             'Use o crédito para comprar o uniforme escolar em um fornecedor cadastrado.',
         urlSite: 'https://portaldeuniformes.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/uniformes.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -46,7 +46,7 @@ class OutrosServicosLista extends StatelessWidget {
         descricao: 'Veja todos os detalhes sobre a volta às aulas.',
         urlSite: 'https://educacao.sme.prefeitura.sp.gov.br/ano-letivo-2022/',
         icone: 'assets/images/voltas_aulas.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -57,7 +57,7 @@ class OutrosServicosLista extends StatelessWidget {
             'É possível consultar os dados de escolas ou gerais, de toda a Rede Municipal de Educação.',
         urlSite: 'https://escolaaberta.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/escola_aberta.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -68,7 +68,7 @@ class OutrosServicosLista extends StatelessWidget {
             'Conheça o trabalho do Núcleo de Apoio e Acompanhamento para Aprendizegem(NAAPA).',
         urlSite: 'https://turmadonaapa.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/naapa.png',
-        prioridade: true,
+        destaque: true,
       ),
     );
     outrosServico.add(
@@ -79,7 +79,7 @@ class OutrosServicosLista extends StatelessWidget {
             'O SIC recebe e registra pedidos de acesso à informação feitos por cidadõas.',
         urlSite: 'http://esic.prefeitura.sp.gov.br/',
         icone: 'assets/images/sic.png',
-        prioridade: false,
+        destaque: false,
       ),
     );
     outrosServico.add(
@@ -90,7 +90,7 @@ class OutrosServicosLista extends StatelessWidget {
             'Preencha o formúlario online, para efetuar solicitações de vagas disponíveis.',
         urlSite: 'https://vaganacreche.sme.prefeitura.sp.gov.br/',
         icone: 'assets/images/solicitacao_vaga.png',
-        prioridade: false,
+        destaque: false,
       ),
     );
     List mapOutrosServico = [];
