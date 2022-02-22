@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
 import 'package:sme_app_aluno/interfaces/outros_servicos_repository_interface.dart';
 import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
@@ -11,15 +13,17 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   Future<List<OutroServicoModel>> obterLinksPioritario() async {
     try {
       var url = "${AppConfigReader.getApiHost()}/outroservico/links/destaque";
-      var response = await http.get(url);
-      List mapOutrosServico = [];
-      var outrosServico = [];
+      var response = await http.get(url, headers: {
+        "Authorization": "Bearer ${usuarioStore.usuario.token}",
+        "Content-Type": "application/json",
+      });
+
       List<OutroServicoModel> retorno = [];
-      for (var i = 0; i < outrosServico.length; i++) {
-        mapOutrosServico.add(outrosServico[i].toJson());
-      }
-      if (response.statusCode == 200) {
-        print(response);
+
+      if (response?.body != null && response?.statusCode == 200) {
+        Iterable interable = jsonDecode(response.body);
+        retorno = List<OutroServicoModel>.from(
+            interable.map((model) => OutroServicoModel.fromJson(model)));
         return retorno;
       } else {
         return retorno;
@@ -32,16 +36,17 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   @override
   Future<List<OutroServicoModel>> obterTodosLinks() async {
     try {
-      var url = "${AppConfigReader.getApiHost()}/outrosservicos/links/lista";
-      var response = await http.get(url);
-      List mapOutrosServico = [];
-      var outrosServico = [];
+      var url = "${AppConfigReader.getApiHost()}/outroservico/links/lista";
+      var response = await http.get(url, headers: {
+        "Authorization": "Bearer ${usuarioStore.usuario.token}",
+        "Content-Type": "application/json",
+      });
       List<OutroServicoModel> retorno = [];
-      for (var i = 0; i < outrosServico.length; i++) {
-        mapOutrosServico.add(outrosServico[i].toJson());
-      }
-      if (response.statusCode == 200) {
-        print(response);
+
+      if (response?.body != null && response?.statusCode == 200) {
+        Iterable interable = jsonDecode(response.body);
+        retorno = List<OutroServicoModel>.from(
+            interable.map((model) => OutroServicoModel.fromJson(model)));
         return retorno;
       } else {
         return retorno;
