@@ -27,8 +27,8 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
             return GroupedListView<dynamic, String>(
               elements: snapshot.data.toList(),
               groupBy: (servico) => servico.categoria,
-              groupComparator: (value1, value2) => value2.compareTo(value1),
-              itemComparator: (item1, item2) =>
+              groupComparator: (value2, value1) => value1.compareTo(value2),
+              itemComparator: (item2, item1) =>
                   item1.titulo.compareTo(item2.titulo),
               order: GroupedListOrder.DESC,
               useStickyGroupSeparators: true,
