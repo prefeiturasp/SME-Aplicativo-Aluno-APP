@@ -123,16 +123,16 @@ class CorpoNotas extends StatelessWidget {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: screenHeight * 0.5),
+      padding: EdgeInsets.only(bottom: screenHeight * 0.4),
       child: ListTile(
           title: AutoSizeText(
             title,
-            minFontSize: 13,
-            maxFontSize: 15,
+            minFontSize: 12,
+            maxFontSize: 14,
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
           subtitle: Padding(
-              padding: EdgeInsets.all(screenHeight * 0.5),
+              padding: EdgeInsets.all(screenHeight * 0.4),
               child: groupSchool != 'EJA'
                   ? _buildGroupNonEJA()
                   : _buildGroupEJA())),
