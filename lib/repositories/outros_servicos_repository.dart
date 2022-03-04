@@ -34,6 +34,30 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   }
 
   @override
+  Future<bool> verificarSeRelatorioExiste(String codigoRelatorio) async {
+    try {
+      String body = json.encode(codigoRelatorio);
+      var url = "${AppConfigReader.getApiHost()}/Aluno/relatorio-existe";
+      var response = await http.post(
+        url,
+        headers: {
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
+          "Content-Type": "application/json",
+        },
+        body: body,
+      );
+      if (response.statusCode == 200 && response.body == "true") {
+        return true;
+      } else {
+        print('Erro ao obter dados');
+        return false;
+      }
+    } catch (e, stacktrace) {
+      print("Erro ao carregar lista de Links  " + stacktrace.toString());
+    }
+  }
+
+  @override
   Future<List<OutroServicoModel>> obterTodosLinks() async {
     try {
       var url = "${AppConfigReader.getApiHost()}/outroservico/links/lista";
