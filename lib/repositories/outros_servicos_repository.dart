@@ -37,7 +37,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
   Future<bool> verificarSeRelatorioExiste(String codigoRelatorio) async {
     try {
       String body = json.encode(codigoRelatorio);
-      var url = "${AppConfigReader.getApiHost()}/Aluno/relatorio-existe";
+      var url = "${AppConfigReader.getApiHost()}/relatorio/existe";
       var response = await http.post(
         url,
         headers: {
