@@ -9,7 +9,6 @@ import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
-import 'package:sme_app_aluno/screens/widgets/info_box/modal_aviso.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:url_launcher/url_launcher.dart';
