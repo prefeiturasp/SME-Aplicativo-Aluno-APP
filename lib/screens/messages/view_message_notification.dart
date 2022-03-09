@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/ui/views/estudante_lista.view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';

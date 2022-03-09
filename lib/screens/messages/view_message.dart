@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
+import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
@@ -123,10 +124,123 @@ class _ViewMessageState extends State<ViewMessage> {
 
   _launchURL(url) async {
     if (await canLaunch(url)) {
-      await launch(url);
+      var codigo = _obterCodigoRelatorio(url);
+      bool relatorioExiste = await _relatorioExiste(codigo);
+      if (relatorioExiste) {
+        await launch(url);
+      } else {
+        _modalInfo();
+      }
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Future<bool> _relatorioExiste(String codigo) async {
+    final outroServicoRepositorio = OutrosServicosRepository();
+    return await outroServicoRepositorio.verificarSeRelatorioExiste(codigo);
+  }
+
+  String _obterCodigoRelatorio(url) {
+    final regexp = RegExp(
+        r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+    return regexp.stringMatch(url);
+  }
+
+  _modalInfo() {
+    var size = MediaQuery.of(context).size;
+    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(screenHeight * 8),
+            topLeft: Radius.circular(screenHeight * 8),
+          ),
+          color: Colors.white,
+        ),
+        height: screenHeight * 30,
+        child: Column(
+          children: [
+            Container(
+              width: screenHeight * 8,
+              height: screenHeight * 1,
+              margin: EdgeInsets.only(top: screenHeight * 2),
+              decoration: BoxDecoration(
+                color: Color(0xffDADADA),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(screenHeight * 1),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: screenHeight * 3,
+            ),
+            AutoSizeText(
+              "AVISO",
+              maxFontSize: 18,
+              minFontSize: 16,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Expanded(
+              child: Divider(),
+            ),
+            Container(
+              height: screenHeight * 20,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.all(screenHeight * 2.5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  AutoSizeText(
+                    "O arquivo não está mais disponível, solicite a geração do relatório novamente.",
+                    maxFontSize: 14,
+                    minFontSize: 12,
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Color(0xffd06d12),
+                          width: 1,
+                          style: BorderStyle.solid,
+                        ),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        AutoSizeText(
+                          "ENTENDI",
+                          maxFontSize: 14,
+                          minFontSize: 12,
+                          style: TextStyle(
+                              color: Color(0xffd06d12),
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -184,8 +298,10 @@ class _ViewMessageState extends State<ViewMessage> {
                     ),
                     Container(
                       width: screenHeight * 39,
-                      child: HtmlWidget(widget.message.mensagem,
-                          onTapUrl: (url) => _launchURL(url)),
+                      child: HtmlWidget(
+                        widget.message.mensagem,
+                        onTapUrl: (url) => _launchURL(url),
+                      ),
                     ),
                     SizedBox(
                       height: screenHeight * 3,
