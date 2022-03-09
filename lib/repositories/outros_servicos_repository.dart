@@ -49,11 +49,10 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
       if (response.statusCode == 200 && response.body == "true") {
         return true;
       } else {
-        print('Erro ao obter dados');
         return false;
       }
     } catch (e, stacktrace) {
-      print("Erro ao carregar lista de Links  " + stacktrace.toString());
+      print("Erro ao consultar dados  " + stacktrace.toString());
     }
   }
 
