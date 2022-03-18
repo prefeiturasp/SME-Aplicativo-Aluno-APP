@@ -56,6 +56,10 @@ class _ExpansionState extends State<Expansion> {
     _estudanteNotasController.limparNotas();
   }
 
+  String msgBoletim =
+      "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.";
+  String msgRAA =
+      "Em breve o Relatório de Acompanhamento de Aprendizagem(RAA) estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação";
   carregarNotas() async {
     var bimestres = await _estudanteController
         .obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
@@ -176,7 +180,7 @@ class _ExpansionState extends State<Expansion> {
         header: "Notas e conceitos do estudante",
       );
 
-  _modalInfo(double screenHeight) {
+  _modalInfo(double screenHeight, String msg) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return showModalBottomSheet(
@@ -230,7 +234,7 @@ class _ExpansionState extends State<Expansion> {
               child: Column(
                 children: [
                   AutoSizeText(
-                    "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.",
+                    msg,
                     maxFontSize: 14,
                     minFontSize: 12,
                     style: TextStyle(
@@ -285,6 +289,20 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
+  _solicitarRelatorioRaa() async {
+    Map _data = {
+      "dreCodigo": widget.codigoDre,
+      "ueCodigo": widget.codigoUe,
+      "semestre": widget.semestre,
+      "turmaCodigo": widget.codigoTurma,
+      "anoLetivo": widget.anoLetivo,
+      "modalidadeCodigo": int.parse(widget.codigoModalidade),
+      "modelo": widget.modelo,
+      "alunoCodigo": widget.codigoAluno,
+    };
+    print(_data);
+  }
+
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EJA ||
         widget.codigoModalidade == ModalidadeTipo.Medio ||
@@ -292,7 +310,7 @@ class _ExpansionState extends State<Expansion> {
       return FlatButton(
         onPressed: () {
           _enviarApi();
-          _modalInfo(screenHeight);
+          _modalInfo(screenHeight, msgBoletim);
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -307,6 +325,47 @@ class _ExpansionState extends State<Expansion> {
           children: <Widget>[
             AutoSizeText(
               "GERAR PDF",
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: TextStyle(
+                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              width: screenHeight * 3,
+            ),
+            Icon(
+              FontAwesomeIcons.edit,
+              color: Color(0xffffd037),
+              size: screenHeight * 3,
+            )
+          ],
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+  _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
+    if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+      return FlatButton(
+        onPressed: () {
+          _solicitarRelatorioRaa();
+          _modalInfo(screenHeight, msgRAA);
+        },
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Color(0xffd06d12),
+              width: 1,
+              style: BorderStyle.solid,
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            AutoSizeText(
+              "GERAR RELATÓRIO",
               maxFontSize: 16,
               minFontSize: 14,
               style: TextStyle(
@@ -471,19 +530,42 @@ class _ExpansionState extends State<Expansion> {
             }
 
             if (_estudanteNotasController
-                    .componentesCurricularesNotasConceitos !=
-                null) {
+                        .componentesCurricularesNotasConceitos !=
+                    null &&
+                widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
               return Container(
-                  child: Column(children: [
-                _montarNotasConceito(screenHeight),
-                _buildObsTileItem(screenHeight),
-                SizedBox(
-                  height: 10,
+                child: Column(
+                  children: [
+                    _montarNotasConceito(screenHeight),
+                    _buildObsTileItem(screenHeight),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _gerarPdf(screenHeight, widget.scaffoldState),
+                  ],
                 ),
-                _gerarPdf(screenHeight, widget.scaffoldState),
-              ]));
+              );
             }
-
+            if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+              return Container(
+                child: Column(
+                  children: [
+                    Text(
+                      "Clique no botão abaixo para gerar o Relatório de Acompanhamento de Aprendizagem(RAA).",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _botaoRaa(screenHeight, widget.scaffoldState),
+                  ],
+                ),
+              );
+            }
             return CardAlert(
               title: "NOTAS",
               icon: Icon(

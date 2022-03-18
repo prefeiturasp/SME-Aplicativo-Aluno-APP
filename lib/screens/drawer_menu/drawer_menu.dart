@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/stores/index.dart';
@@ -81,7 +82,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
+    var textoBotaoRelatorio =
+        widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
+            ? "Frequência / Relatório"
+            : "Frequência / Boletim";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -168,7 +172,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Frequência / Boletim'),
+            title: Text(textoBotaoRelatorio),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(

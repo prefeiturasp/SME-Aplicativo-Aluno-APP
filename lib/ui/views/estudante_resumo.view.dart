@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/enumeradores/modelo_boletim.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/data_student/data.dart';
@@ -195,7 +196,10 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                "BOLETIM",
+                                widget.grupoCodigo ==
+                                        ModalidadeTipo.EducacaoInfantil
+                                    ? "RELATÓRIO"
+                                    : "BOLETIM",
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
