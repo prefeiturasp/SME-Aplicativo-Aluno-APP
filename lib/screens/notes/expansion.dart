@@ -15,6 +15,7 @@ import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
+import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 
 class Expansion extends StatefulWidget {
   final String codigoUe;
@@ -58,14 +59,6 @@ class _ExpansionState extends State<Expansion> {
     _dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
   }
-
-  String msgBoletim =
-      "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.";
-  String msgRAA =
-      "Em breve o Relatório de Acompanhamento de Aprendizagem(RAA) estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação";
-  String msgErroSolicitacao =
-      "Ocorreu um erro interno. Favor contatar o Suporte";
-
   carregarNotas() async {
     var bimestres = await _estudanteController
         .obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
@@ -315,9 +308,9 @@ class _ExpansionState extends State<Expansion> {
         onPressed: () async {
           var solicitacao = await _solicitarBoletim();
           if (solicitacao)
-            _modalInfo(screenHeight, msgBoletim);
+            _modalInfo(screenHeight, MensagemSistema.SolicitacaoBoletim);
           else
-            _modalInfo(screenHeight, msgErroSolicitacao);
+            _modalInfo(screenHeight, MensagemSistema.ErroInterno);
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -359,9 +352,9 @@ class _ExpansionState extends State<Expansion> {
         onPressed: () async {
           var solicitacao = await _solicitarRelatorioRaa();
           if (solicitacao)
-            _modalInfo(screenHeight, msgRAA);
+            _modalInfo(screenHeight, MensagemSistema.SolicitacaoRaa);
           else
-            _modalInfo(screenHeight, msgErroSolicitacao);
+            _modalInfo(screenHeight, MensagemSistema.ErroInterno);
         },
         shape: RoundedRectangleBorder(
           side: BorderSide(
