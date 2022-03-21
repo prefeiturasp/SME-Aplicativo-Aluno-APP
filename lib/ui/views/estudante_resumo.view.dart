@@ -84,9 +84,6 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     final keyScaffod = new GlobalKey<ScaffoldState>();
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
