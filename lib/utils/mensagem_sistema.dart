@@ -4,6 +4,8 @@ class MensagemSistema{
   static const String AvisoSolicitacaoRaa = "Em breve o Relatório de Acompanhamento de Aprendizagem(RAA) estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação";
   static const String AvisoSolicitacaoBoletim = "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.";
   static const String MenuLabelFrequenciaRelatorio = "Frequência / Relatório";
+  static const String AbaLabelRelatorio = "RELATÓRIO";
+  static const String AbaLabelBoletim = "BOLETIM";
   static const String MenuLabelFrequenciaBoletim = "Frequência / Boletim";
   static const String MenuLabelSairSistema = "Sair";
   static const String MenuLabelOutrosServicos = "Outros Serviços";
@@ -15,4 +17,7 @@ class MensagemSistema{
   static const String MenuLabelStatusAtivo = "Usuário Ativo";
   static const String MenuLabelNaoCarregado = "Não carregado";
   static const String CaminhoImagemUsuario = "assets/images/avatar_estudante.png";
+  static const String LabelBotaoGerarRelatorio = "GERAR RELATÓRIO";
+  static const String LabelBotaoGerarPDF = "GERAR PDF";
+  static const String TextoTelaSolicitacaoRaa = "Clique no botão abaixo para gerar o Relatório de Acompanhamento de Aprendizagem(RAA).";
 }

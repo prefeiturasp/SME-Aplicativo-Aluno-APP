@@ -11,6 +11,7 @@ import 'package:sme_app_aluno/screens/notes/expansion.dart';
 import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
+import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 
 class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
@@ -195,8 +196,8 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                               child: AutoSizeText(
                                 widget.grupoCodigo ==
                                         ModalidadeTipo.EducacaoInfantil
-                                    ? "RELATÓRIO"
-                                    : "BOLETIM",
+                                    ? MensagemSistema.AbaLabelRelatorio
+                                    : MensagemSistema.AbaLabelBoletim,
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(

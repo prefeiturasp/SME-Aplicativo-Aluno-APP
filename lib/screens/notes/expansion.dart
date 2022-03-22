@@ -324,7 +324,7 @@ class _ExpansionState extends State<Expansion> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AutoSizeText(
-              "GERAR PDF",
+              MensagemSistema.LabelBotaoGerarPDF,
               maxFontSize: 16,
               minFontSize: 14,
               style: TextStyle(
@@ -369,7 +369,7 @@ class _ExpansionState extends State<Expansion> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AutoSizeText(
-              "GERAR RELATÓRIO",
+              MensagemSistema.LabelBotaoGerarRelatorio,
               maxFontSize: 16,
               minFontSize: 14,
               style: TextStyle(
@@ -555,7 +555,7 @@ class _ExpansionState extends State<Expansion> {
                 child: Column(
                   children: [
                     Text(
-                      "Clique no botão abaixo para gerar o Relatório de Acompanhamento de Aprendizagem(RAA).",
+                      MensagemSistema.TextoTelaSolicitacaoRaa,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
