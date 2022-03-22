@@ -308,9 +308,9 @@ class _ExpansionState extends State<Expansion> {
         onPressed: () async {
           var solicitacao = await _solicitarBoletim();
           if (solicitacao)
-            _modalInfo(screenHeight, MensagemSistema.SolicitacaoBoletim);
+            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
           else
-            _modalInfo(screenHeight, MensagemSistema.ErroInterno);
+            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -352,9 +352,9 @@ class _ExpansionState extends State<Expansion> {
         onPressed: () async {
           var solicitacao = await _solicitarRelatorioRaa();
           if (solicitacao)
-            _modalInfo(screenHeight, MensagemSistema.SolicitacaoRaa);
+            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoRaa);
           else
-            _modalInfo(screenHeight, MensagemSistema.ErroInterno);
+            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
         },
         shape: RoundedRectangleBorder(
           side: BorderSide(

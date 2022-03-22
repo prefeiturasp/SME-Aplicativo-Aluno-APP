@@ -16,6 +16,7 @@ import 'package:sme_app_aluno/screens/terms/terms_use.dart';
 import 'package:sme_app_aluno/ui/views/meus_dados.view.dart';
 import 'package:sme_app_aluno/ui/views/outros_servicos_lista.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
+import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class DrawerMenu extends StatefulWidget {
@@ -84,8 +85,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     var textoBotaoRelatorio =
         widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
-            ? "Frequência / Relatório"
-            : "Frequência / Boletim";
+            ? MensagemSistema.MenuLabelFrequenciaRelatorio
+            : MensagemSistema.MenuLabelFrequenciaBoletim;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -101,7 +102,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         right: screenHeight * 3, bottom: screenHeight * 3),
                     child: ClipOval(
                       child: Image.asset(
-                        "assets/images/avatar_estudante.png",
+                        MensagemSistema.CaminhoImagemUsuario,
                         width: screenHeight * 8,
                         height: screenHeight * 8,
                         fit: BoxFit.cover,
@@ -119,7 +120,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                       );
                     } else {
                       return AutoSizeText(
-                        "Não carregado",
+                        MensagemSistema.MenuLabelNaoCarregado,
                         maxFontSize: 16,
                         minFontSize: 14,
                         style: TextStyle(
@@ -128,7 +129,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     }
                   }),
                   AutoSizeText(
-                    "Usuário Ativo",
+                    MensagemSistema.MenuLabelStatusAtivo,
                     maxFontSize: 14,
                     minFontSize: 12,
                     style: TextStyle(color: Color(0xffC4C4C4)),
@@ -141,7 +142,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
           ),
           ListTile(
-            title: Text('Estudantes'),
+            title: Text(MensagemSistema.MenuLabelEstudantes),
             leading: CircleAvatar(
               // radius: screenHeight * 2,
               backgroundColor: Color(0xffEA9200),
@@ -157,7 +158,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Mensagens'),
+            title: Text(MensagemSistema.MenuLabelMensagens),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
@@ -197,7 +198,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Agenda'),
+            title: Text(MensagemSistema.MenuLabelAgenda),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
@@ -216,7 +217,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Meus Dados'),
+            title: Text(MensagemSistema.MenuLabelMeusDados),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
@@ -234,7 +235,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Termos de Uso'),
+            title: Text(MensagemSistema.MenuLabelOutrosServicos),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
@@ -249,7 +250,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Outros Serviços'),
+            title: Text(MensagemSistema.MenuLabelOutrosServicos),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
@@ -269,7 +270,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           Divider(),
           ListTile(
-            title: Text('Sair'),
+            title: Text(MensagemSistema.MenuLabelSairSistema),
             leading: CircleAvatar(
               backgroundColor: Color(0xffEA9200),
               child: Icon(
