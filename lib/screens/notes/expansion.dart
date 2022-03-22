@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -10,12 +9,13 @@ import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
-import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/repositories/boletim_aluno_repository.dart';
+import 'package:sme_app_aluno/repositories/relatorio_raa_repository.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
+import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 
 class Expansion extends StatefulWidget {
   final String codigoUe;
@@ -28,6 +28,7 @@ class Expansion extends StatefulWidget {
   final String codigoModalidade;
   final int anoLetivo;
   final GlobalKey<ScaffoldState> scaffoldState;
+
   Expansion({
     this.codigoUe,
     this.codigoTurma,
@@ -40,6 +41,7 @@ class Expansion extends StatefulWidget {
     this.anoLetivo,
     this.codigoModalidade,
   });
+
   @override
   _ExpansionState createState() => _ExpansionState();
 }
@@ -48,14 +50,15 @@ class _ExpansionState extends State<Expansion> {
   final _estudanteNotasController = GetIt.I.get<EstudanteNotasController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
   final _boletimRepositorio = BoletimAlunoRepository();
+  final _relatorioRaarepositorio = RelatorioRaaRepository();
   DateTime _dateTime;
+
   @override
   void initState() {
     super.initState();
     _dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
   }
-
   carregarNotas() async {
     var bimestres = await _estudanteController
         .obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
@@ -176,7 +179,7 @@ class _ExpansionState extends State<Expansion> {
         header: "Notas e conceitos do estudante",
       );
 
-  _modalInfo(double screenHeight) {
+  _modalInfo(double screenHeight, String msg) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return showModalBottomSheet(
@@ -230,7 +233,7 @@ class _ExpansionState extends State<Expansion> {
               child: Column(
                 children: [
                   AutoSizeText(
-                    "Em breve o boletim estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação.",
+                    msg,
                     maxFontSize: 14,
                     minFontSize: 12,
                     style: TextStyle(
@@ -272,8 +275,8 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
-  _enviarApi() async {
-    await _boletimRepositorio.solicitarBoletim(
+  Future<bool> _solicitarBoletim() async {
+   return await _boletimRepositorio.solicitarBoletim(
       dreCodigo: widget.codigoDre,
       ueCodigo: widget.codigoUe,
       semestre: widget.semestre,
@@ -285,14 +288,29 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
+  Future<bool> _solicitarRelatorioRaa() async {
+    return await _relatorioRaarepositorio.solicitarRelatorioRaa(
+      dreCodigo: widget.codigoDre,
+      ueCodigo: widget.codigoUe,
+      semestre: widget.semestre,
+      turmaCodigo: widget.codigoTurma,
+      anoLetivo: widget.anoLetivo,
+      modalidadeCodigo: int.parse(widget.codigoModalidade),
+      alunoCodigo: widget.codigoAluno,
+    );
+  }
+
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EJA ||
         widget.codigoModalidade == ModalidadeTipo.Medio ||
         widget.codigoModalidade == ModalidadeTipo.Fundamental) {
       return FlatButton(
-        onPressed: () {
-          _enviarApi();
-          _modalInfo(screenHeight);
+        onPressed: () async {
+          var solicitacao = await _solicitarBoletim();
+          if (solicitacao)
+            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
+          else
+            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
         },
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -306,7 +324,52 @@ class _ExpansionState extends State<Expansion> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AutoSizeText(
-              "GERAR PDF",
+              MensagemSistema.LabelBotaoGerarPDF,
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: TextStyle(
+                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              width: screenHeight * 3,
+            ),
+            Icon(
+              FontAwesomeIcons.edit,
+              color: Color(0xffffd037),
+              size: screenHeight * 3,
+            )
+          ],
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+  _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
+    if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+      return FlatButton(
+        onPressed: () async {
+          var solicitacao = await _solicitarRelatorioRaa();
+          if (solicitacao)
+            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoRaa);
+          else
+            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
+        },
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Color(0xffd06d12),
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            AutoSizeText(
+              MensagemSistema.LabelBotaoGerarRelatorio,
               maxFontSize: 16,
               minFontSize: 14,
               style: TextStyle(
@@ -471,19 +534,42 @@ class _ExpansionState extends State<Expansion> {
             }
 
             if (_estudanteNotasController
-                    .componentesCurricularesNotasConceitos !=
-                null) {
+                        .componentesCurricularesNotasConceitos !=
+                    null &&
+                widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
               return Container(
-                  child: Column(children: [
-                _montarNotasConceito(screenHeight),
-                _buildObsTileItem(screenHeight),
-                SizedBox(
-                  height: 10,
+                child: Column(
+                  children: [
+                    _montarNotasConceito(screenHeight),
+                    _buildObsTileItem(screenHeight),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _gerarPdf(screenHeight, widget.scaffoldState),
+                  ],
                 ),
-                _gerarPdf(screenHeight, widget.scaffoldState),
-              ]));
+              );
             }
-
+            if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+              return Container(
+                child: Column(
+                  children: [
+                    Text(
+                      MensagemSistema.TextoTelaSolicitacaoRaa,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _botaoRaa(screenHeight, widget.scaffoldState),
+                  ],
+                ),
+              );
+            }
             return CardAlert(
               title: "NOTAS",
               icon: Icon(
