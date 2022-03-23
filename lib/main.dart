@@ -8,7 +8,7 @@ import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sentry/sentry.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
         title: 'SME Aplicativo do Aluno',
         theme: ThemeData(primaryColor: Color(0xFFEEC25E)),
         home: FluxoInicialView(),
+        builder: EasyLoading.init(),
       ),
     );
   }
