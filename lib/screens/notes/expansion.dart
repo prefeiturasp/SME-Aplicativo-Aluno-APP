@@ -16,6 +16,7 @@ import 'package:sme_app_aluno/screens/notes/obs_body.dart';
 import 'package:sme_app_aluno/screens/notes/tile_item.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
 import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Expansion extends StatefulWidget {
   final String codigoUe;
@@ -59,6 +60,7 @@ class _ExpansionState extends State<Expansion> {
     _dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
   }
+
   carregarNotas() async {
     var bimestres = await _estudanteController
         .obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
@@ -276,7 +278,7 @@ class _ExpansionState extends State<Expansion> {
   }
 
   Future<bool> _solicitarBoletim() async {
-   return await _boletimRepositorio.solicitarBoletim(
+    return await _boletimRepositorio.solicitarBoletim(
       dreCodigo: widget.codigoDre,
       ueCodigo: widget.codigoUe,
       semestre: widget.semestre,
@@ -300,47 +302,69 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
+  bool mostrarBotao = true;
+  ocultarButao() {
+    EasyLoading.show(status: 'Aguarde....');
+    setState(() {
+      mostrarBotao = false;
+    });
+  }
+
+  exibirBotao() {
+    EasyLoading.dismiss();
+    setState(() {
+      mostrarBotao = true;
+    });
+  }
+
   _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EJA ||
         widget.codigoModalidade == ModalidadeTipo.Medio ||
         widget.codigoModalidade == ModalidadeTipo.Fundamental) {
-      return FlatButton(
-        onPressed: () async {
-          var solicitacao = await _solicitarBoletim();
-          if (solicitacao)
-            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
-          else
-            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
-        },
-        shape: RoundedRectangleBorder(
-            side: BorderSide(
-              color: Color(0xffd06d12),
-              width: 1,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.circular(50)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AutoSizeText(
-              MensagemSistema.LabelBotaoGerarPDF,
-              maxFontSize: 16,
-              minFontSize: 14,
-              style: TextStyle(
-                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              width: screenHeight * 3,
-            ),
-            Icon(
-              FontAwesomeIcons.edit,
-              color: Color(0xffffd037),
-              size: screenHeight * 3,
+      return mostrarBotao
+          ? FlatButton(
+              onPressed: () async {
+                ocultarButao();
+                var solicitacao = await _solicitarBoletim();
+                if (solicitacao) {
+                  exibirBotao();
+                  _modalInfo(
+                      screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
+                } else {
+                  exibirBotao();
+                  _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
+                }
+              },
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Color(0xffd06d12),
+                    width: 1,
+                    style: BorderStyle.solid,
+                  ),
+                  borderRadius: BorderRadius.circular(50)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  AutoSizeText(
+                    MensagemSistema.LabelBotaoGerarPDF,
+                    maxFontSize: 16,
+                    minFontSize: 14,
+                    style: TextStyle(
+                        color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: screenHeight * 3,
+                  ),
+                  Icon(
+                    FontAwesomeIcons.edit,
+                    color: Color(0xffffd037),
+                    size: screenHeight * 3,
+                  )
+                ],
+              ),
             )
-          ],
-        ),
-      );
+          : SizedBox();
     } else {
       return SizedBox();
     }
@@ -348,44 +372,50 @@ class _ExpansionState extends State<Expansion> {
 
   _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
-      return FlatButton(
-        onPressed: () async {
-          var solicitacao = await _solicitarRelatorioRaa();
-          if (solicitacao)
-            _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoRaa);
-          else
-            _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
-        },
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            color: Color(0xffd06d12),
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AutoSizeText(
-              MensagemSistema.LabelBotaoGerarRelatorio,
-              maxFontSize: 16,
-              minFontSize: 14,
-              style: TextStyle(
-                  color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              width: screenHeight * 3,
-            ),
-            Icon(
-              FontAwesomeIcons.edit,
-              color: Color(0xffffd037),
-              size: screenHeight * 3,
+      return mostrarBotao
+          ? FlatButton(
+              onPressed: () async {
+                ocultarButao();
+                var solicitacao = await _solicitarRelatorioRaa();
+                if (solicitacao) {
+                  exibirBotao();
+                  _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoRaa);
+                } else {
+                  exibirBotao();
+                  _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
+                }
+              },
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: Color(0xffd06d12),
+                  width: 1,
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  AutoSizeText(
+                    MensagemSistema.LabelBotaoGerarRelatorio,
+                    maxFontSize: 16,
+                    minFontSize: 14,
+                    style: TextStyle(
+                        color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: screenHeight * 3,
+                  ),
+                  Icon(
+                    FontAwesomeIcons.edit,
+                    color: Color(0xffffd037),
+                    size: screenHeight * 3,
+                  )
+                ],
+              ),
             )
-          ],
-        ),
-      );
+          : SizedBox();
     } else {
       return SizedBox();
     }
