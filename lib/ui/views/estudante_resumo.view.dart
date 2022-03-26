@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/enumeradores/modelo_boletim.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/data_student/data.dart';
@@ -10,6 +11,7 @@ import 'package:sme_app_aluno/screens/notes/expansion.dart';
 import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
+import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 
 class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
@@ -83,9 +85,6 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     final keyScaffod = new GlobalKey<ScaffoldState>();
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
@@ -195,7 +194,10 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                "BOLETIM",
+                                widget.grupoCodigo ==
+                                        ModalidadeTipo.EducacaoInfantil
+                                    ? MensagemSistema.AbaLabelRelatorio
+                                    : MensagemSistema.AbaLabelBoletim,
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
