@@ -236,8 +236,8 @@ class _ExpansionState extends State<Expansion> {
                 children: [
                   AutoSizeText(
                     msg,
-                    maxFontSize: 14,
-                    minFontSize: 12,
+                    maxFontSize: 13,
+                    minFontSize: 11,
                     style: TextStyle(
                       color: Colors.black,
                     ),
@@ -259,11 +259,11 @@ class _ExpansionState extends State<Expansion> {
                       children: <Widget>[
                         AutoSizeText(
                           "ENTENDI",
-                          maxFontSize: 14,
-                          minFontSize: 12,
+                          maxFontSize: 13,
+                          minFontSize: 11,
                           style: TextStyle(
                               color: Color(0xffd06d12),
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
