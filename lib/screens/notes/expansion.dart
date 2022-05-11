@@ -110,26 +110,32 @@ class _ExpansionState extends State<Expansion> {
   String _obterNota(int index, int bimestre) {
     var notaConceito = _estudanteNotasController
         .componentesCurricularesNotasConceitos[index].notasConceitos
-        .singleWhere((element) => element.bimestre == bimestre,
-            orElse: () => null);
-    return notaConceito != null
-        ? (notaConceito.conceitoId != null
-            ? notaConceito.notaConceito
-            : notaConceito.nota.toString())
-        : "-";
+        .where((element) => element.bimestre == bimestre);
+    var qtdRegistros = notaConceito.length;
+    if (qtdRegistros > 0) {
+      return notaConceito != null
+          ? (notaConceito.first.conceitoId != null
+              ? notaConceito.first.notaConceito
+              : notaConceito.first.nota.toString())
+          : "-";
+    }
+    return "-";
   }
 
   Color _obterCor(int index, int bimestre) {
     var notaConceito = _estudanteNotasController
         .componentesCurricularesNotasConceitos[index].notasConceitos
-        .singleWhere((element) => element.bimestre == bimestre,
-            orElse: () => null);
-    return notaConceito != null
-        ? HexColor(notaConceito.corDaNota.toString())
-        : Color(0xFFD4D4D4);
+        .where((element) => element.bimestre == bimestre);
+    var qtdRegistros = notaConceito.length;
+    if (qtdRegistros > 0) {
+      return notaConceito != null
+          ? HexColor(notaConceito.first.corDaNota.toString())
+          : Color(0xFFD4D4D4);
+    }
+    return Color(0xFFD4D4D4);
   }
 
-  Widget _corpoNotasMontar(context, index) {
+  Widget _corpoNotasMontar(context, int index) {
     return CorpoNotas(
       groupSchool: widget.groupSchool,
       title: _estudanteNotasController

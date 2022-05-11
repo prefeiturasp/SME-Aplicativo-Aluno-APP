@@ -56,7 +56,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
 
     if (abaBoletim) {
       return Container(
-        padding: EdgeInsets.all(screenHeight * 2.5),
+        padding: EdgeInsets.all(screenHeight),
         child: Expansion(
           codigoUe: widget.estudante.codigoEscola,
           codigoDre: widget.estudante.codigoDre,

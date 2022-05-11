@@ -21,73 +21,79 @@ class CorpoNotas extends StatelessWidget {
   final Color corFinal;
   final String groupSchool;
 
-  CorpoNotas(
-      {this.title,
-      this.bUm,
-      this.bDois,
-      this.bTres,
-      this.bQuatro,
-      this.bFinal,
-      this.descUm,
-      this.descDois,
-      this.descTres,
-      this.descQuatro,
-      this.descFinal,
-      this.corUm,
-      this.corDois,
-      this.corTres,
-      this.corQuatro,
-      this.corFinal,
-      this.groupSchool});
+  CorpoNotas({
+    this.title,
+    this.bUm,
+    this.bDois,
+    this.bTres,
+    this.bQuatro,
+    this.bFinal,
+    this.descUm,
+    this.descDois,
+    this.descTres,
+    this.descQuatro,
+    this.descFinal,
+    this.corUm,
+    this.corDois,
+    this.corTres,
+    this.corQuatro,
+    this.corFinal,
+    this.groupSchool,
+  });
 
-  _buildGroupNonEJA() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Note(
-            current: bDois == '-' &&
-                    bTres == '-' &&
-                    bQuatro == '-' &&
-                    bFinal == '-' &&
-                    bUm != '-'
-                ? true
-                : false,
-            name: '1º Bim',
-            noteValue: bUm,
-            color: corUm,
-            description: descUm,
-          ),
-          Note(
-            current:
-                bTres == '-' && bQuatro == '-' && bFinal == '-' && bDois != '-'
-                    ? true
-                    : false,
-            name: '2º Bim',
-            noteValue: bDois,
-            color: corDois,
-            description: descDois,
-          ),
-          Note(
-            current: bQuatro == '-' && bTres != '-' ? true : false,
-            name: '3º Bim',
-            noteValue: bTres,
-            color: corTres,
-            description: descTres,
-          ),
-          Note(
-            current: bFinal == '-' && bQuatro != '-' ? true : false,
-            name: '4º Bim',
-            noteValue: bQuatro,
-            color: corQuatro,
-            description: descQuatro,
-          ),
-          Note(
-            current: bFinal != '-' ? true : false,
-            name: 'Final',
-            noteValue: bFinal,
-            color: corFinal,
-            description: descFinal,
-          ),
-        ],
+  _buildGroupNonEJA() => Padding(
+        padding: const EdgeInsets.all(0.1),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Note(
+              current: bDois == '-' &&
+                      bTres == '-' &&
+                      bQuatro == '-' &&
+                      bFinal == '-' &&
+                      bUm != '-'
+                  ? true
+                  : false,
+              name: '1º Bim',
+              noteValue: bUm,
+              color: corUm,
+              description: descUm,
+            ),
+            Note(
+              current: bTres == '-' &&
+                      bQuatro == '-' &&
+                      bFinal == '-' &&
+                      bDois != '-'
+                  ? true
+                  : false,
+              name: '2º Bim',
+              noteValue: bDois,
+              color: corDois,
+              description: descDois,
+            ),
+            Note(
+              current: bQuatro == '-' && bTres != '-' ? true : false,
+              name: '3º Bim',
+              noteValue: bTres,
+              color: corTres,
+              description: descTres,
+            ),
+            Note(
+              current: bFinal == '-' && bQuatro != '-' ? true : false,
+              name: '4º Bim',
+              noteValue: bQuatro,
+              color: corQuatro,
+              description: descQuatro,
+            ),
+            Note(
+              current: bFinal != '-' ? true : false,
+              name: 'Final',
+              noteValue: bFinal,
+              color: corFinal,
+              description: descFinal,
+            ),
+          ],
+        ),
       );
 
   _buildGroupEJA() => Row(
@@ -125,17 +131,17 @@ class CorpoNotas extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: screenHeight * 0.4),
       child: ListTile(
-          title: AutoSizeText(
-            title,
-            minFontSize: 12,
-            maxFontSize: 14,
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
-          subtitle: Padding(
-              padding: EdgeInsets.all(screenHeight * 0.4),
-              child: groupSchool != 'EJA'
-                  ? _buildGroupNonEJA()
-                  : _buildGroupEJA())),
+        title: AutoSizeText(
+          title,
+          minFontSize: 12,
+          maxFontSize: 14,
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        subtitle: Padding(
+          padding: EdgeInsets.all(screenHeight * 0.4),
+          child: groupSchool != 'EJA' ? _buildGroupNonEJA() : _buildGroupEJA(),
+        ),
+      ),
     );
   }
 }
