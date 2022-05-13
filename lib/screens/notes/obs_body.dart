@@ -47,14 +47,15 @@ class ObsBody extends StatelessWidget {
                   ),
                   subtitle: HtmlWidget(recomendacoesFamilia)),
               ListTile(
-                  title: AutoSizeText(
-                    'Recomendações ao aluno',
-                    minFontSize: 12,
-                    maxFontSize: 14,
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: HtmlWidget(recomendacoesAluno)),
+                title: AutoSizeText(
+                  'Recomendações ao aluno',
+                  minFontSize: 12,
+                  maxFontSize: 14,
+                  style: TextStyle(
+                      color: Colors.black54, fontWeight: FontWeight.bold),
+                ),
+                subtitle: HtmlWidget(recomendacoesAluno),
+              ),
             ],
           ),
         ));
