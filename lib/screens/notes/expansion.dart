@@ -8,8 +8,10 @@ import 'package:getflutter/size/gf_size.dart';
 import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
+import 'package:sme_app_aluno/dtos/recomendacao_aluno.dto.dart';
 import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/repositories/boletim_aluno_repository.dart';
+import 'package:sme_app_aluno/repositories/recomendacao_aluno_repository.dart';
 import 'package:sme_app_aluno/repositories/relatorio_raa_repository.dart';
 import 'package:sme_app_aluno/screens/notes/corpo_notas.dart';
 import 'package:sme_app_aluno/screens/notes/obs_body.dart';
@@ -52,13 +54,15 @@ class _ExpansionState extends State<Expansion> {
   final _estudanteController = GetIt.I.get<EstudanteController>();
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
+  final _repositorioRecomandacao = RecomendacaoAlunoRepository();
   DateTime _dateTime;
-
+  var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
     super.initState();
     _dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
+    _buscarRecomandacao();
   }
 
   carregarNotas() async {
@@ -296,6 +300,18 @@ class _ExpansionState extends State<Expansion> {
     );
   }
 
+  _buscarRecomandacao() async {
+    var busca = await _repositorioRecomandacao.obterRecomendacaoAluno(
+        widget.codigoAluno,
+        widget.codigoTurma,
+        widget.anoLetivo,
+        int.parse(widget.codigoModalidade),
+        widget.semestre);
+    setState(() {
+      recomendacaoAluno = busca;
+    });
+  }
+
   Future<bool> _solicitarRelatorioRaa() async {
     return await _relatorioRaarepositorio.solicitarRelatorioRaa(
       dreCodigo: widget.codigoDre,
@@ -427,126 +443,19 @@ class _ExpansionState extends State<Expansion> {
     }
   }
 
-  _buildObsTileItem(screenHeight) => TileItem(
+  _montarObs(screenHeight) => TileItem(
         body: [
           Container(
-            height: screenHeight * 30,
+            height: screenHeight * 50,
             margin: EdgeInsets.all(screenHeight * 1),
             child: Scrollbar(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  children: [
-                    _estudanteNotasController.bFinal != null
-                        ? ObsBody(
-                            recomendacoesAluno: _estudanteNotasController
-                                        .bFinal !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bFinal.recomendacoesAluno
-                                : 'Sem recomendações ao aluno para este bimestre.',
-                            recomendacoesFamilia: _estudanteNotasController
-                                        .bFinal !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bFinal.recomendacoesFamilia
-                                : 'Sem recomendações à familía para este bimestre',
-                            current: _estudanteNotasController.bFinal != null
-                                ? true
-                                : false,
-                            title: 'Final',
-                          )
-                        : SizedBox.shrink(),
-                    _estudanteNotasController.bQuatro != null
-                        ? ObsBody(
-                            recomendacoesAluno: _estudanteNotasController
-                                        .bQuatro !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bQuatro.recomendacoesAluno
-                                : 'Sem recomendações ao aluno para este bimestre.',
-                            recomendacoesFamilia: _estudanteNotasController
-                                        .bQuatro !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bQuatro.recomendacoesFamilia
-                                : 'Sem recomendações à familía para este bimestre',
-                            current: _estudanteNotasController.bFinal == null &&
-                                    _estudanteNotasController.bQuatro != null
-                                ? true
-                                : false,
-                            title: '4º Bim.',
-                          )
-                        : SizedBox.shrink(),
-                    _estudanteNotasController.bTres != null
-                        ? ObsBody(
-                            recomendacoesAluno: _estudanteNotasController
-                                        .bTres !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bTres.recomendacoesAluno
-                                : 'Sem recomendações ao aluno para este bimestre.',
-                            recomendacoesFamilia: _estudanteNotasController
-                                        .bTres !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bTres.recomendacoesFamilia
-                                : 'Sem recomendações à familía para este bimestre',
-                            current:
-                                _estudanteNotasController.bQuatro == null &&
-                                        _estudanteNotasController.bTres != null
-                                    ? true
-                                    : false,
-                            title: '3º Bim.',
-                          )
-                        : SizedBox.shrink(),
-                    _estudanteNotasController.bDois != null
-                        ? ObsBody(
-                            recomendacoesAluno: _estudanteNotasController
-                                        .bDois !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bDois.recomendacoesAluno
-                                : 'Sem recomendações ao aluno para este bimestre.',
-                            recomendacoesFamilia: _estudanteNotasController
-                                        .bUm !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bDois.recomendacoesFamilia
-                                : 'Sem recomendações à familía para este bimestre',
-                            current: widget.groupSchool != 'EJA'
-                                ? (_estudanteNotasController.bTres == null &&
-                                        _estudanteNotasController.bDois != null
-                                    ? true
-                                    : false)
-                                : _estudanteNotasController.bDois != null
-                                    ? true
-                                    : false,
-                            title: '2º Bim.',
-                          )
-                        : SizedBox.shrink(),
-                    _estudanteNotasController.bDois != null
-                        ? ObsBody(
-                            recomendacoesAluno: _estudanteNotasController.bUm !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bUm.recomendacoesAluno
-                                : 'Sem recomendações ao aluno para este bimestre.',
-                            recomendacoesFamilia: _estudanteNotasController
-                                        .bUm !=
-                                    null
-                                ? _estudanteNotasController
-                                    .bUm.recomendacoesFamilia
-                                : 'Sem recomendações à familía para este bimestre',
-                            current: _estudanteNotasController.bDois == null &&
-                                    _estudanteNotasController.bUm != null
-                                ? true
-                                : false,
-                            title: '1º Bim.',
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                ),
+              child: ObsBody(
+                current: true,
+                recomendacoesAluno: recomendacaoAluno.recomendacoesAluno ??
+                    recomendacaoAluno.mensagemAlerta,
+                recomendacoesFamilia: recomendacaoAluno.recomendacoesFamilia ??
+                    "Sem recomendações à familía para exibir",
+                title: "Recomendações",
               ),
             ),
           ),
@@ -577,7 +486,7 @@ class _ExpansionState extends State<Expansion> {
                 child: Column(
                   children: [
                     _montarNotasConceito(screenHeight),
-                    _buildObsTileItem(screenHeight),
+                    _montarObs(screenHeight),
                     SizedBox(
                       height: 10,
                     ),
