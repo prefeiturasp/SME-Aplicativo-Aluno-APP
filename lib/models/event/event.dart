@@ -1,45 +1,52 @@
-class Event {
-  String nome;
-  String descricao;
-  String diaSemana;
-  String dataInicio;
-  String dataFim;
-  int tipoEvento;
-  int anoLetivo;
-  String componenteCurricular;
+import 'dart:convert';
 
+class Event {
+  final String nome;
+  final String descricao;
+  final String diaSemana;
+  final String dataInicio;
+  final String dataFim;
+  final int tipoEvento;
+  final int anoLetivo;
+  final String componenteCurricular;
   Event({
-    this.nome,
-    this.descricao,
-    this.diaSemana,
-    this.dataInicio,
-    this.dataFim,
-    this.tipoEvento,
-    this.anoLetivo,
-    this.componenteCurricular,
+    required this.nome,
+    required this.descricao,
+    required this.diaSemana,
+    required this.dataInicio,
+    required this.dataFim,
+    required this.tipoEvento,
+    required this.anoLetivo,
+    required this.componenteCurricular,
   });
 
-  Event.fromJson(Map<String, dynamic> json) {
-    nome = json['nome'];
-    descricao = json['descricao'];
-    diaSemana = json['diaSemana'];
-    dataInicio = json['dataInicio'];
-    dataFim = json['dataFim'];
-    tipoEvento = json['tipoEvento'];
-    anoLetivo = json['anoLetivo'];
-    componenteCurricular = json['componenteCurricular'];
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'nome': nome,
+      'descricao': descricao,
+      'diaSemana': diaSemana,
+      'dataInicio': dataInicio,
+      'dataFim': dataFim,
+      'tipoEvento': tipoEvento,
+      'anoLetivo': anoLetivo,
+      'componenteCurricular': componenteCurricular,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['nome'] = this.nome;
-    data['descricao'] = this.descricao;
-    data['diaSemana'] = this.diaSemana;
-    data['dataInicio'] = this.dataInicio;
-    data['dataFim'] = this.dataFim;
-    data['tipoEvento'] = this.tipoEvento;
-    data['anoLetivo'] = this.anoLetivo;
-    data['componenteCurricular'] = this.componenteCurricular;
-    return data;
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
+      nome: map['nome'] as String,
+      descricao: map['descricao'] as String,
+      diaSemana: map['diaSemana'] as String,
+      dataInicio: map['dataInicio'] as String,
+      dataFim: map['dataFim'] as String,
+      tipoEvento: map['tipoEvento'] as int,
+      anoLetivo: map['anoLetivo'] as int,
+      componenteCurricular: map['componenteCurricular'] as String,
+    );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory Event.fromJson(String source) => Event.fromMap(json.decode(source) as Map<String, dynamic>);
 }
