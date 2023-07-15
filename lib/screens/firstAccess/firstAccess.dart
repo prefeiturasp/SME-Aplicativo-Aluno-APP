@@ -1,15 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:device_info/device_info.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get_ip/get_ip.dart';
+import 'package:get_ip_address/get_ip_address.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 
@@ -29,7 +28,7 @@ class FirstAccess extends StatefulWidget {
   final int id;
   final String cpf;
 
-  FirstAccess({@required this.id, @required this.cpf});
+  FirstAccess({required this.id, required this.cpf});
 
   @override
   _FirstAccessState createState() => _FirstAccessState();
@@ -39,8 +38,8 @@ class _FirstAccessState extends State<FirstAccess> {
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  FirstAccessController _firstAccessController;
-  TermsController _termsController;
+  late FirstAccessController _firstAccessController;
+  late TermsController _termsController;
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
 
   final numeric = RegExp(r"[0-9]");
@@ -54,7 +53,7 @@ class _FirstAccessState extends State<FirstAccess> {
   String _ip = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-  ReactionDisposer _disposer;
+  late ReactionDisposer _disposer;
 
   bool _showPassword = true;
   bool _busy = false;
@@ -73,17 +72,22 @@ class _FirstAccessState extends State<FirstAccess> {
 
   _navigateToScreen() {
     if (_firstAccessController.data.ok) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => AtualizacaoCadastralView()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => AtualizacaoCadastralView()));
     } else {
       onError();
     }
   }
 
+  Future<String> obterIp() async {
+    var ipAddress = IpAddress(type: RequestType.text);
+    dynamic data = await ipAddress.getIpAddress();
+    return data.toString();
+  }
+
   Future<void> initPlatformState() async {
-    String ipAddress;
+    String ipAddress = "";
     try {
-      ipAddress = await GetIp.ipAddress;
+      ipAddress = await obterIp();
     } on PlatformException {
       ipAddress = 'Failed to get ipAddress.';
     }
@@ -117,18 +121,17 @@ class _FirstAccessState extends State<FirstAccess> {
       deviceId = iosInfo.utsname.machine;
     }
 
-    await _termsController.registerTerms(_termsController.term.id, widget.cpf,
-        deviceId, _ip, _termsController.term.versao);
+    await _termsController.registerTerms(
+        _termsController.term.id, widget.cpf, deviceId, _ip, _termsController.term.versao);
   }
 
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: _firstAccessController.data != null
-            ? Text(_firstAccessController.data.erros[0])
-            : Text("Erro de serviço"));
+        content:
+            _firstAccessController.data != null ? Text(_firstAccessController.data.erros[0]) : Text("Erro de serviço"));
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   howModalBottomSheetTerm(Term term) {
@@ -162,31 +165,36 @@ class _FirstAccessState extends State<FirstAccess> {
     Navigator.pop(context);
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Deseja sair do aplicativo?'),
-            content: Text(
-              "Ao confirmar você será desconectado do aplicado. Para voltar para esta etapa você deverá realizar o login novamente. Deseja realmente sair do aplicativo?",
+  Future<bool> _onBackPress() async {
+    bool retorno = false;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Deseja sair do aplicativo?'),
+          content: Text(
+            "Ao confirmar você será desconectado do aplicado. Para voltar para esta etapa você deverá realizar o login novamente. Deseja realmente sair do aplicativo?",
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text('NÃO'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                retorno = true;
+              },
             ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('NÃO'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: Text('SIM'),
-                onPressed: () async {
-                  Auth.logout(context, widget.id, false);
-                },
-              )
-            ],
-          );
-        });
+            ElevatedButton(
+              child: Text('SIM'),
+              onPressed: () async {
+                Auth.logout(context, widget.id, false);
+                retorno = false;
+              },
+            )
+          ],
+        );
+      },
+    );
+    return retorno;
   }
 
   @override
@@ -215,11 +223,8 @@ class _FirstAccessState extends State<FirstAccess> {
                             Container(
                               width: screenHeight * 36,
                               alignment: Alignment.center,
-                              margin: EdgeInsets.only(
-                                  top: screenHeight * 8,
-                                  bottom: screenHeight * 2),
-                              child: Image.asset(
-                                  "assets/images/Logo_escola_aqui.png"),
+                              margin: EdgeInsets.only(top: screenHeight * 8, bottom: screenHeight * 2),
+                              child: Image.asset("assets/images/Logo_escola_aqui.png"),
                             ),
                             Align(
                               alignment: Alignment.topRight,
@@ -242,41 +247,34 @@ class _FirstAccessState extends State<FirstAccess> {
                               "Primeiro Acesso! Cadastre uma nova senha para o CPF: $userCpf",
                               maxFontSize: 18,
                               minFontSize: 16,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff757575)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
                             )),
                         Form(
+                          autovalidateMode: AutovalidateMode.always,
                           key: _formKey,
-                          autovalidate: true,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  padding:
-                                      EdgeInsets.only(left: screenHeight * 2),
+                                  padding: EdgeInsets.only(left: screenHeight * 2),
                                   decoration: BoxDecoration(
                                     color: Color(0xfff0f0f0),
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: _passwordIsError
-                                                ? Colors.red
-                                                : Color(0xffD06D12),
+                                            color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                             width: screenHeight * 0.39)),
                                   ),
                                   child: TextFormField(
                                       obscureText: _showPassword,
-                                      style: TextStyle(
-                                          color: Color(0xff333333),
-                                          fontWeight: FontWeight.w600),
+                                      style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                       onChanged: (value) {
                                         setState(() {
                                           _password = value;
                                         });
                                       },
                                       validator: (value) {
-                                        if (value.isNotEmpty) {
+                                        if (value!.isNotEmpty) {
                                           if (spaceNull.hasMatch(value)) {
                                             return "Senha não pode ter espaço em branco";
                                           }
@@ -286,10 +284,8 @@ class _FirstAccessState extends State<FirstAccess> {
                                       },
                                       decoration: InputDecoration(
                                         labelText: 'Nova senha',
-                                        labelStyle:
-                                            TextStyle(color: Color(0xff8e8e8e)),
-                                        errorStyle: TextStyle(
-                                            fontWeight: FontWeight.w700),
+                                        labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                        errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                         // hintText: "Data de nascimento do aluno",
                                         border: InputBorder.none,
                                       ),
@@ -299,23 +295,17 @@ class _FirstAccessState extends State<FirstAccess> {
                                   height: screenHeight * 1,
                                 ),
                                 Container(
-                                  margin:
-                                      EdgeInsets.only(top: screenHeight * 5),
-                                  padding:
-                                      EdgeInsets.only(left: screenHeight * 2),
+                                  margin: EdgeInsets.only(top: screenHeight * 5),
+                                  padding: EdgeInsets.only(left: screenHeight * 2),
                                   decoration: BoxDecoration(
                                     color: Color(0xfff0f0f0),
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: _passwordIsError
-                                                ? Colors.red
-                                                : Color(0xffD06D12),
+                                            color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                             width: screenHeight * 0.39)),
                                   ),
                                   child: TextFormField(
-                                    style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontWeight: FontWeight.w600),
+                                    style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                     obscureText: _showPassword,
                                     onChanged: (value) {
                                       setState(() {
@@ -337,15 +327,13 @@ class _FirstAccessState extends State<FirstAccess> {
                                       ),
 
                                       labelText: 'Confirmar a nova senha',
-                                      labelStyle:
-                                          TextStyle(color: Color(0xff8e8e8e)),
-                                      errorStyle: TextStyle(
-                                          fontWeight: FontWeight.w700),
+                                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                       // hintText: "Data de nascimento do aluno",
                                       border: InputBorder.none,
                                     ),
                                     validator: (value) {
-                                      if (value.isNotEmpty) {
+                                      if (value!.isNotEmpty) {
                                         if (value != _password) {
                                           return "Senhas não correspondem";
                                         }
@@ -366,9 +354,7 @@ class _FirstAccessState extends State<FirstAccess> {
                                       "Requisitos para sua nova senha!",
                                       maxFontSize: 18,
                                       minFontSize: 16,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff717171)),
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
                                     ),
                                     SizedBox(
                                       height: screenHeight * 2,
@@ -376,62 +362,47 @@ class _FirstAccessState extends State<FirstAccess> {
                                     CheckLine(
                                         screenHeight: screenHeight,
                                         text: "Uma letra maiúscula",
-                                        checked:
-                                            upperCaseChar.hasMatch(_password)),
+                                        checked: upperCaseChar.hasMatch(_password)),
                                     CheckLine(
                                         screenHeight: screenHeight,
                                         text: "Uma letra minúscula",
-                                        checked:
-                                            lowCaseChar.hasMatch(_password)),
+                                        checked: lowCaseChar.hasMatch(_password)),
                                     CheckLine(
                                       screenHeight: screenHeight,
-                                      text:
-                                          "Um algarismo (número) ou um símbolo (caractere especial)",
-                                      checked: (numeric.hasMatch(_password) ||
-                                          symbols.hasMatch(_password)),
+                                      text: "Um algarismo (número) ou um símbolo (caractere especial)",
+                                      checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
                                     ),
                                     CheckLine(
                                       screenHeight: screenHeight,
-                                      text:
-                                          "Não pode permitir caracteres acentuados",
+                                      text: "Não pode permitir caracteres acentuados",
                                       checked: _password.length > 0 &&
-                                          !accentUppercase
-                                              .hasMatch(_password) &&
+                                          !accentUppercase.hasMatch(_password) &&
                                           !accentLowcase.hasMatch(_password),
                                     ),
                                     CheckLine(
                                         screenHeight: screenHeight,
-                                        text:
-                                            "Deve ter no mínimo 8 e no máximo 12 caracteres.",
-                                        checked: _password.length >= 8 &&
-                                            _password.length <= 12),
+                                        text: "Deve ter no mínimo 8 e no máximo 12 caracteres.",
+                                        checked: _password.length >= 8 && _password.length <= 12),
                                   ],
                                 ),
                                 Observer(
                                   builder: (context) {
-                                    if (_termsController.term != null &&
-                                        _termsController.term.termosDeUso !=
-                                            null) {
+                                    if (_termsController.term.termosDeUso != null) {
                                       return GestureDetector(
                                           child: InfoBox(
-                                            icon: FontAwesomeIcons
-                                                .exclamationTriangle,
+                                            icon: FontAwesomeIcons.exclamationTriangle,
                                             content: <Widget>[
                                               AutoSizeText(
                                                 "Você precisa aceitar os Termos de Uso",
                                                 maxFontSize: 18,
                                                 minFontSize: 16,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xff717171)),
+                                                style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
                                               ),
                                               SizedBox(
                                                 height: screenHeight * 2,
                                               ),
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Wrap(
                                                     children: [
@@ -440,41 +411,27 @@ class _FirstAccessState extends State<FirstAccess> {
                                                         maxFontSize: 16,
                                                         minFontSize: 14,
                                                         style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color:
-                                                              Color(0xff076397),
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: Color(0xff076397),
+                                                          decoration: TextDecoration.underline,
                                                         ),
                                                       ),
                                                       SizedBox(width: 10),
-                                                      Icon(
-                                                          FontAwesomeIcons
-                                                              .fileAlt,
-                                                          size: 16,
-                                                          color: Color(
-                                                              0xff717171)),
+                                                      Icon(FontAwesomeIcons.fileAlt,
+                                                          size: 16, color: Color(0xff717171)),
                                                     ],
                                                   ),
                                                   _statusTerm
                                                       ? Icon(
                                                           Icons.check_box,
-                                                          color:
-                                                              Color(0xffd06d12),
+                                                          color: Color(0xffd06d12),
                                                         )
-                                                      : Icon(
-                                                          Icons
-                                                              .check_box_outline_blank,
-                                                          color:
-                                                              Color(0xff8e8e8e))
+                                                      : Icon(Icons.check_box_outline_blank, color: Color(0xff8e8e8e))
                                                 ],
                                               )
                                             ],
                                           ),
-                                          onTap: () => howModalBottomSheetTerm(
-                                              _termsController.term));
+                                          onTap: () => howModalBottomSheetTerm(_termsController.term));
                                     } else {
                                       return SizedBox.shrink();
                                     }
@@ -491,25 +448,17 @@ class _FirstAccessState extends State<FirstAccess> {
                                             iconColor: Color(0xffffd037),
                                             btnColor: Color(0xffd06d12),
                                             disabled: (_password.isNotEmpty &&
-                                                    _confirmPassword
-                                                        .isNotEmpty &&
-                                                    !spaceNull
-                                                        .hasMatch(_password)) &&
-                                                (_confirmPassword ==
-                                                    _password) &&
-                                                (_statusTerm ||
-                                                    _termsController
-                                                            .term.termosDeUso ==
-                                                        null),
-                                            onPress: () =>
-                                                _registerNewPassword(_password),
+                                                    _confirmPassword.isNotEmpty &&
+                                                    !spaceNull.hasMatch(_password)) &&
+                                                (_confirmPassword == _password) &&
+                                                (_statusTerm),
+                                            onPress: () => _registerNewPassword(_password),
                                           ),
                                           SizedBox(height: screenHeight * 3),
                                           EABackButton(
                                               text: "CADASTRAR MAIS TARDE",
                                               btnColor: Color(0xffd06d12),
-                                              icon:
-                                                  FontAwesomeIcons.chevronLeft,
+                                              icon: FontAwesomeIcons.chevronLeft,
                                               iconColor: Color(0xffffd037),
                                               onPress: () {
                                                 _onBackPress();
@@ -532,8 +481,7 @@ class _FirstAccessState extends State<FirstAccess> {
                   Container(
                     height: screenHeight * 6,
                     margin: EdgeInsets.only(top: 70),
-                    child: Image.asset("assets/images/logo_sme.png",
-                        fit: BoxFit.cover),
+                    child: Image.asset("assets/images/logo_sme.png", fit: BoxFit.cover),
                   ),
                 ],
               ),

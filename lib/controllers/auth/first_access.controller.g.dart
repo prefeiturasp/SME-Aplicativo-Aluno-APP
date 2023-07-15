@@ -6,10 +6,11 @@ part of 'first_access.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
-  final _$dataAtom = Atom(name: '_FirstAccessControllerBase.data');
+  late final _$dataAtom =
+      Atom(name: '_FirstAccessControllerBase.data', context: context);
 
   @override
   Data get data {
@@ -24,8 +25,8 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
     });
   }
 
-  final _$dataEmailOrPhoneAtom =
-      Atom(name: '_FirstAccessControllerBase.dataEmailOrPhone');
+  late final _$dataEmailOrPhoneAtom = Atom(
+      name: '_FirstAccessControllerBase.dataEmailOrPhone', context: context);
 
   @override
   DataChangeEmailAndPhone get dataEmailOrPhone {
@@ -40,8 +41,8 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
     });
   }
 
-  final _$currentEmailAtom =
-      Atom(name: '_FirstAccessControllerBase.currentEmail');
+  late final _$currentEmailAtom =
+      Atom(name: '_FirstAccessControllerBase.currentEmail', context: context);
 
   @override
   String get currentEmail {
@@ -56,8 +57,8 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
     });
   }
 
-  final _$currentPhoneAtom =
-      Atom(name: '_FirstAccessControllerBase.currentPhone');
+  late final _$currentPhoneAtom =
+      Atom(name: '_FirstAccessControllerBase.currentPhone', context: context);
 
   @override
   String get currentPhone {
@@ -72,8 +73,9 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
     });
   }
 
-  final _$changeNewPasswordAsyncAction =
-      AsyncAction('_FirstAccessControllerBase.changeNewPassword');
+  late final _$changeNewPasswordAsyncAction = AsyncAction(
+      '_FirstAccessControllerBase.changeNewPassword',
+      context: context);
 
   @override
   Future changeNewPassword(int id, String password) {
@@ -81,8 +83,9 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
         .run(() => super.changeNewPassword(id, password));
   }
 
-  final _$changeEmailAndPhoneAsyncAction =
-      AsyncAction('_FirstAccessControllerBase.changeEmailAndPhone');
+  late final _$changeEmailAndPhoneAsyncAction = AsyncAction(
+      '_FirstAccessControllerBase.changeEmailAndPhone',
+      context: context);
 
   @override
   Future changeEmailAndPhone(
@@ -91,8 +94,9 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
         () => super.changeEmailAndPhone(email, phone, userId, changePassword));
   }
 
-  final _$loadUserForStorageAsyncAction =
-      AsyncAction('_FirstAccessControllerBase.loadUserForStorage');
+  late final _$loadUserForStorageAsyncAction = AsyncAction(
+      '_FirstAccessControllerBase.loadUserForStorage',
+      context: context);
 
   @override
   Future loadUserForStorage(int userId) {

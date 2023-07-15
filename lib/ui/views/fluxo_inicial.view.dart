@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
@@ -61,7 +61,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
           await _navigateToMessageView(message);
         },
       );
-    } catch(ex) {
+    } catch (ex) {
       GetIt.I.get<SentryClient>().captureException(exception: ex);
     }
   }
@@ -87,9 +87,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       titulo: message["data"]["Titulo"],
       mensagem: message["data"]["Mensagem"],
       criadoEm: message["data"]["CriadoEm"],
-      codigoEOL: message["data"]["CodigoEOL"] != null
-          ? int.parse(message["data"]["CodigoEOL"])
-          : 0,
+      codigoEOL: message["data"]["CodigoEOL"] != null ? int.parse(message["data"]["CodigoEOL"]) : 0,
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
     );
 
@@ -104,17 +102,15 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
   }
 
   Widget fluxoLogin() {
-    if (usuarioStore.usuario != null) {
-      if (usuarioStore.usuario.primeiroAcesso) {
-        return FirstAccess(
-          id: usuarioStore.usuario.id,
-          cpf: usuarioStore.usuario.cpf,
-        );
-      } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
-        return AtualizacaoCadastralView();
-      } else {
-        return EstudanteListaView();
-      }
+    if (usuarioStore.usuario.primeiroAcesso) {
+      return FirstAccess(
+        id: usuarioStore.usuario.id,
+        cpf: usuarioStore.usuario.cpf,
+      );
+    } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+      return AtualizacaoCadastralView();
+    } else {
+      return EstudanteListaView();
     }
 
     return Scaffold(
@@ -141,9 +137,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       return Observer(
           builder: (context) => usuarioStore.usuario == null
               ? LoginView()
-              : (usuarioStore.usuario.primeiroAcesso == null
-                  ? LoginView()
-                  : fluxoLogin()));
+              : (usuarioStore.usuario.primeiroAcesso == null ? LoginView() : fluxoLogin()));
     }
   }
 }

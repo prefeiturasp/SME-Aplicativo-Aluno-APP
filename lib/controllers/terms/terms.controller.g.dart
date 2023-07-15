@@ -6,10 +6,11 @@ part of 'terms.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$TermsController on _TermsControllerBase, Store {
-  final _$termAtom = Atom(name: '_TermsControllerBase.term');
+  late final _$termAtom =
+      Atom(name: '_TermsControllerBase.term', context: context);
 
   @override
   Term get term {
@@ -24,7 +25,8 @@ mixin _$TermsController on _TermsControllerBase, Store {
     });
   }
 
-  final _$loadingAtom = Atom(name: '_TermsControllerBase.loading');
+  late final _$loadingAtom =
+      Atom(name: '_TermsControllerBase.loading', context: context);
 
   @override
   bool get loading {
@@ -39,7 +41,8 @@ mixin _$TermsController on _TermsControllerBase, Store {
     });
   }
 
-  final _$isTermAtom = Atom(name: '_TermsControllerBase.isTerm');
+  late final _$isTermAtom =
+      Atom(name: '_TermsControllerBase.isTerm', context: context);
 
   @override
   bool get isTerm {
@@ -54,16 +57,17 @@ mixin _$TermsController on _TermsControllerBase, Store {
     });
   }
 
-  final _$fetchTermoAsyncAction =
-      AsyncAction('_TermsControllerBase.fetchTermo');
+  late final _$fetchTermoAsyncAction =
+      AsyncAction('_TermsControllerBase.fetchTermo', context: context);
 
   @override
   Future fetchTermo(String cpf) {
     return _$fetchTermoAsyncAction.run(() => super.fetchTermo(cpf));
   }
 
-  final _$fetchTermoCurrentUserAsyncAction =
-      AsyncAction('_TermsControllerBase.fetchTermoCurrentUser');
+  late final _$fetchTermoCurrentUserAsyncAction = AsyncAction(
+      '_TermsControllerBase.fetchTermoCurrentUser',
+      context: context);
 
   @override
   Future fetchTermoCurrentUser() {
@@ -71,8 +75,8 @@ mixin _$TermsController on _TermsControllerBase, Store {
         .run(() => super.fetchTermoCurrentUser());
   }
 
-  final _$registerTermsAsyncAction =
-      AsyncAction('_TermsControllerBase.registerTerms');
+  late final _$registerTermsAsyncAction =
+      AsyncAction('_TermsControllerBase.registerTerms', context: context);
 
   @override
   Future registerTerms(

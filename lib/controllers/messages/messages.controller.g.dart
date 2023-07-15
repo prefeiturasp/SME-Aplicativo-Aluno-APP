@@ -6,10 +6,11 @@ part of 'messages.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MessagesController on _MessagesControllerBase, Store {
-  final _$messageAtom = Atom(name: '_MessagesControllerBase.message');
+  late final _$messageAtom =
+      Atom(name: '_MessagesControllerBase.message', context: context);
 
   @override
   Message get message {
@@ -24,7 +25,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$messagesAtom = Atom(name: '_MessagesControllerBase.messages');
+  late final _$messagesAtom =
+      Atom(name: '_MessagesControllerBase.messages', context: context);
 
   @override
   ObservableList<Message> get messages {
@@ -39,8 +41,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$recentMessagesAtom =
-      Atom(name: '_MessagesControllerBase.recentMessages');
+  late final _$recentMessagesAtom =
+      Atom(name: '_MessagesControllerBase.recentMessages', context: context);
 
   @override
   ObservableList<Message> get recentMessages {
@@ -55,7 +57,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$auxListAtom = Atom(name: '_MessagesControllerBase.auxList');
+  late final _$auxListAtom =
+      Atom(name: '_MessagesControllerBase.auxList', context: context);
 
   @override
   ObservableList<Message> get auxList {
@@ -70,7 +73,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$filteredListAtom = Atom(name: '_MessagesControllerBase.filteredList');
+  late final _$filteredListAtom =
+      Atom(name: '_MessagesControllerBase.filteredList', context: context);
 
   @override
   ObservableList<Message> get filteredList {
@@ -85,7 +89,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$isLoadingAtom = Atom(name: '_MessagesControllerBase.isLoading');
+  late final _$isLoadingAtom =
+      Atom(name: '_MessagesControllerBase.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -100,7 +105,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$countMessageAtom = Atom(name: '_MessagesControllerBase.countMessage');
+  late final _$countMessageAtom =
+      Atom(name: '_MessagesControllerBase.countMessage', context: context);
 
   @override
   int get countMessage {
@@ -115,8 +121,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$countMessageSMEAtom =
-      Atom(name: '_MessagesControllerBase.countMessageSME');
+  late final _$countMessageSMEAtom =
+      Atom(name: '_MessagesControllerBase.countMessageSME', context: context);
 
   @override
   int get countMessageSME {
@@ -131,8 +137,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$countMessageUEAtom =
-      Atom(name: '_MessagesControllerBase.countMessageUE');
+  late final _$countMessageUEAtom =
+      Atom(name: '_MessagesControllerBase.countMessageUE', context: context);
 
   @override
   int get countMessageUE {
@@ -147,8 +153,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$countMessageDREAtom =
-      Atom(name: '_MessagesControllerBase.countMessageDRE');
+  late final _$countMessageDREAtom =
+      Atom(name: '_MessagesControllerBase.countMessageDRE', context: context);
 
   @override
   int get countMessageDRE {
@@ -163,8 +169,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$messageIsReadAtom =
-      Atom(name: '_MessagesControllerBase.messageIsRead');
+  late final _$messageIsReadAtom =
+      Atom(name: '_MessagesControllerBase.messageIsRead', context: context);
 
   @override
   bool get messageIsRead {
@@ -179,8 +185,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
     });
   }
 
-  final _$loadMessagesAsyncAction =
-      AsyncAction('_MessagesControllerBase.loadMessages');
+  late final _$loadMessagesAsyncAction =
+      AsyncAction('_MessagesControllerBase.loadMessages', context: context);
 
   @override
   Future loadMessages(int codigoAlunoEol, int userId) {
@@ -188,15 +194,16 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.loadMessages(codigoAlunoEol, userId));
   }
 
-  final _$loadByIdAsyncAction = AsyncAction('_MessagesControllerBase.loadById');
+  late final _$loadByIdAsyncAction =
+      AsyncAction('_MessagesControllerBase.loadById', context: context);
 
   @override
   Future loadById(int messageId, int userId) {
     return _$loadByIdAsyncAction.run(() => super.loadById(messageId, userId));
   }
 
-  final _$deleteMessageAsyncAction =
-      AsyncAction('_MessagesControllerBase.deleteMessage');
+  late final _$deleteMessageAsyncAction =
+      AsyncAction('_MessagesControllerBase.deleteMessage', context: context);
 
   @override
   Future deleteMessage(int codigoEol, int idNotificacao, int userId) {
@@ -204,8 +211,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         .run(() => super.deleteMessage(codigoEol, idNotificacao, userId));
   }
 
-  final _$updateMessageAsyncAction =
-      AsyncAction('_MessagesControllerBase.updateMessage');
+  late final _$updateMessageAsyncAction =
+      AsyncAction('_MessagesControllerBase.updateMessage', context: context);
 
   @override
   Future updateMessage(
@@ -222,8 +229,8 @@ mixin _$MessagesController on _MessagesControllerBase, Store {
         estudante: estudante));
   }
 
-  final _$_MessagesControllerBaseActionController =
-      ActionController(name: '_MessagesControllerBase');
+  late final _$_MessagesControllerBaseActionController =
+      ActionController(name: '_MessagesControllerBase', context: context);
 
   @override
   dynamic loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {

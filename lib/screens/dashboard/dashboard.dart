@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
@@ -30,11 +28,7 @@ class Dashboard extends StatefulWidget {
   final int codigoGrupo;
   final int userId;
 
-  Dashboard(
-      {@required this.estudante,
-      @required this.groupSchool,
-      @required this.codigoGrupo,
-      @required this.userId});
+  Dashboard({required this.estudante, required this.groupSchool, required this.codigoGrupo, required this.userId});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -67,8 +61,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _buildItemMEssage(
-      Message message, int totalCategories, BuildContext context) {
+  Widget _buildItemMEssage(Message message, int totalCategories, BuildContext context) {
     return EAQRecentCardMessage(
       totalCateories: totalCategories,
       message: message,
@@ -109,8 +102,7 @@ class _DashboardState extends State<Dashboard> {
   ) {
     List<Widget> list = new List<Widget>();
     for (int i = 0; i < events.length; i++) {
-      String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() +
-          (events[i].diaSemana).substring(1);
+      String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() + (events[i].diaSemana).substring(1);
 
       list.add(Column(
         children: [
@@ -120,9 +112,7 @@ class _DashboardState extends State<Dashboard> {
                 title: events[i].nome,
               ),
               titleEvent: events[i].nome,
-              desc: events[i].descricao != null
-                  ? (events[i].descricao.length > 3 ? true : false)
-                  : false,
+              desc: events[i].descricao != null ? (events[i].descricao.length > 3 ? true : false) : false,
               eventDesc: events[i].descricao,
               dia: events[i].dataInicio,
               tipoEvento: events[i].tipoEvento,
@@ -143,8 +133,7 @@ class _DashboardState extends State<Dashboard> {
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
-      var screenHeight =
-          (size.height - MediaQuery.of(context).padding.top) / 100;
+      var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
         backgroundColor: Color(0xffE5E5E5),
         appBar: AppBar(
@@ -177,12 +166,10 @@ class _DashboardState extends State<Dashboard> {
                     if (_messagesController.messages != null) {
                       _messagesController.loadRecentMessagesPorCategory();
 
-                      if (_messagesController.messages == null ||
-                          _messagesController.messages.isEmpty) {
+                      if (_messagesController.messages.isEmpty) {
                         return Container(
                           child: Visibility(
-                              visible: _messagesController.messages != null &&
-                                  _messagesController.messages.isEmpty,
+                              visible: _messagesController.messages.isEmpty,
                               child: CardRecentMessage(
                                 recent: true,
                               )),
@@ -194,22 +181,15 @@ class _DashboardState extends State<Dashboard> {
                               height: screenHeight * 48,
                               margin: EdgeInsets.only(top: screenHeight * 3),
                               child: Visibility(
-                                visible:
-                                    _messagesController.recentMessages.length >
-                                        1,
-                                replacement: _buildItemMEssage(
-                                    _messagesController.recentMessages[0],
-                                    _messagesController.recentMessages.length,
-                                    context),
+                                visible: _messagesController.recentMessages.length > 1,
+                                replacement: _buildItemMEssage(_messagesController.recentMessages[0],
+                                    _messagesController.recentMessages.length, context),
                                 child: ListView.builder(
-                                    itemCount: _messagesController
-                                        .recentMessages.length,
+                                    itemCount: _messagesController.recentMessages.length,
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
-                                      final dados =
-                                          _messagesController.recentMessages;
-                                      return _buildItemMEssage(
-                                          dados[index], dados.length, context);
+                                      final dados = _messagesController.recentMessages;
+                                      return _buildItemMEssage(dados[index], dados.length, context);
                                     }),
                               ),
                             );
@@ -243,8 +223,7 @@ class _DashboardState extends State<Dashboard> {
                         margin: EdgeInsets.all(screenHeight * 1.5),
                       );
                     } else {
-                      if (_eventController.priorityEvents != null &&
-                          _eventController.priorityEvents.isNotEmpty) {
+                      if (_eventController.priorityEvents.isNotEmpty) {
                         return CardCalendar(
                             heightContainer: screenHeight * 48,
                             title: "AGENDA",
@@ -259,11 +238,7 @@ class _DashboardState extends State<Dashboard> {
                               );
                             }),
                             onPress: () {
-                              Nav.push(
-                                  context,
-                                  ListEvents(
-                                      student: widget.estudante,
-                                      userId: widget.userId));
+                              Nav.push(context, ListEvents(student: widget.estudante, userId: widget.userId));
                             });
                       } else {
                         return CardAlert(
@@ -273,8 +248,7 @@ class _DashboardState extends State<Dashboard> {
                             color: Color(0xffFFD037),
                             size: screenHeight * 6,
                           ),
-                          text:
-                              "Não foi encontrado nenhum evento para este estudante.",
+                          text: "Não foi encontrado nenhum evento para este estudante.",
                         );
                       }
                     }

@@ -1,12 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:brasil_fields/formatter/cpf_input_formatter.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
 import 'package:sme_app_aluno/screens/recover_password/show_info.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
@@ -96,8 +94,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
         onWillPop: () async => false,
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(
-                left: screenHeight * 2.5, right: screenHeight * 2.5),
+            padding: EdgeInsets.only(left: screenHeight * 2.5, right: screenHeight * 2.5),
             child: Column(
               children: <Widget>[
                 Container(
@@ -107,55 +104,43 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                         width: screenHeight * 36,
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(bottom: screenHeight * 6),
-                        child:
-                            Image.asset("assets/images/Logo_escola_aqui.png"),
+                        child: Image.asset("assets/images/Logo_escola_aqui.png"),
                       ),
                       Container(
-                        padding: EdgeInsets.only(
-                            bottom: screenHeight * 6,
-                            left: screenHeight * 6,
-                            right: screenHeight * 6),
+                        padding:
+                            EdgeInsets.only(bottom: screenHeight * 6, left: screenHeight * 6, right: screenHeight * 6),
                         child: AutoSizeText(
                           "Ao continuar será acionada a opção de recuperação de senha e você receberá um e-mail com as orientações.",
                           textAlign: TextAlign.center,
                           maxFontSize: 16,
                           minFontSize: 14,
                           maxLines: 5,
-                          style: TextStyle(
-                              color: Color(0xff757575),
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                         ),
                       ),
                       Form(
-                        autovalidate: true,
+                        autovalidateMode: AutovalidateMode.always,
                         key: _formKey,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _cpfIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _cpfIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   initialValue: widget.input,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'Usuário',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
@@ -203,9 +188,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     maxFontSize: 14,
                                     minFontSize: 12,
                                     maxLines: 3,
-                                    style: TextStyle(
-                                        color: Color(0xff757575),
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -242,8 +225,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                 Container(
                   height: screenHeight * 6,
                   margin: EdgeInsets.only(top: 70),
-                  child: Image.asset("assets/images/logo_sme.png",
-                      fit: BoxFit.cover),
+                  child: Image.asset("assets/images/logo_sme.png", fit: BoxFit.cover),
                 ),
               ],
             ),

@@ -1,12 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:brasil_fields/formatter/telefone_input_formatter.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/models/user/user.dart';
@@ -18,27 +17,25 @@ import 'package:sme_app_aluno/utils/validators.util.dart';
 class InternalChangeEmailOrPhone extends StatefulWidget {
   final int userId;
 
-  InternalChangeEmailOrPhone({@required this.userId});
+  InternalChangeEmailOrPhone({required this.userId});
 
   @override
-  _InternalChangeEmailOrPhoneState createState() =>
-      _InternalChangeEmailOrPhoneState();
+  _InternalChangeEmailOrPhoneState createState() => _InternalChangeEmailOrPhoneState();
 }
 
-class _InternalChangeEmailOrPhoneState
-    extends State<InternalChangeEmailOrPhone> {
+class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> {
   final UserService _userService = UserService();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  FirstAccessController _firstAccessController;
+  late FirstAccessController _firstAccessController;
 
-  ReactionDisposer disposer;
+  late ReactionDisposer disposer;
 
   bool _busy = false;
-  String _email;
-  String _phone;
+  String _email = "";
+  String _phone = "";
 
   String _emailData = "";
   String _phoneData = "";
@@ -54,8 +51,7 @@ class _InternalChangeEmailOrPhoneState
     final User user = await _userService.find(widget.userId);
     String email = user.email;
     String phone = user.celular;
-    var maskedPhone =
-        phone != "" ? StringSupport.formatStringPhoneNumber(phone) : phone;
+    var maskedPhone = phone != "" ? StringSupport.formatStringPhoneNumber(phone) : phone;
 
     setState(() => _email = email);
     setState(() => _phone = maskedPhone);
@@ -66,9 +62,7 @@ class _InternalChangeEmailOrPhoneState
       _busy = true;
     });
 
-    await _firstAccessController
-        .changeEmailAndPhone(email, phone, userId, true)
-        .then((data) {
+    await _firstAccessController.changeEmailAndPhone(email, phone, userId, true).then((data) {
       _onSuccess();
     });
 
@@ -80,11 +74,10 @@ class _InternalChangeEmailOrPhoneState
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: _firstAccessController.data != null
-            ? Text(_firstAccessController.data.erros[0])
-            : Text("Erro de serviço"));
+        content:
+            _firstAccessController.data != null ? Text(_firstAccessController.data.erros[0]) : Text("Erro de serviço"));
 
-    _scaffoldKey.currentState.showSnackBar(snackbar);
+    _scaffoldKey.currentState!.showSnackBar(snackbar);
   }
 
   _onSuccess() {
@@ -112,8 +105,7 @@ class _InternalChangeEmailOrPhoneState
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Atenção"),
-            content: Text(
-                "Você não confirmou as suas alterações, deseja descartá-las?"),
+            content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
             actions: <Widget>[
               FlatButton(
                 child: Text("SIM"),
@@ -138,9 +130,7 @@ class _InternalChangeEmailOrPhoneState
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return WillPopScope(
-      onWillPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty)
-          ? _onBackPress
-          : null,
+      onWillPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty) ? _onBackPress : null,
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -158,8 +148,7 @@ class _InternalChangeEmailOrPhoneState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.only(
-                              bottom: screenHeight * 4, top: screenHeight * 3),
+                          margin: EdgeInsets.only(bottom: screenHeight * 4, top: screenHeight * 3),
                           child: AutoSizeText(
                             "Alterar e-mail ou telefone",
                             maxFontSize: 18,
@@ -176,28 +165,20 @@ class _InternalChangeEmailOrPhoneState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Color(0xffD06D12),
-                                          width: screenHeight * 0.39)),
+                                  border:
+                                      Border(bottom: BorderSide(color: Color(0xffD06D12), width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   initialValue: _email,
-                                  autovalidate:
-                                      _email.isEmpty || _emailData != "",
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  autovalidateMode: _email.isEmpty || _emailData != "",
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'E-mail',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     border: InputBorder.none,
                                   ),
                                   keyboardType: TextInputType.emailAddress,
@@ -224,31 +205,23 @@ class _InternalChangeEmailOrPhoneState
                                 ),
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 margin: EdgeInsets.only(
                                   top: screenHeight * 3,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Color(0xffD06D12),
-                                          width: screenHeight * 0.39)),
+                                  border:
+                                      Border(bottom: BorderSide(color: Color(0xffD06D12), width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   initialValue: _phone,
-                                  autovalidate: _phone.isNotEmpty ||
-                                      _phoneData.isNotEmpty,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  autovalidate: _phone.isNotEmpty || _phoneData.isNotEmpty,
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'Número de Telefone',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
@@ -296,20 +269,11 @@ class _InternalChangeEmailOrPhoneState
                                       btnColor: Color(0xffd06d12),
                                       disabled: (_emailData.isNotEmpty &&
                                               _emailData != _email &&
-                                              EmailValidator.validate(
-                                                  _emailData)) ||
-                                          (_phoneData.isNotEmpty &&
-                                              _phoneData != _phone &&
-                                              _phoneData.length == 15),
+                                              EmailValidator.validate(_emailData)) ||
+                                          (_phoneData.isNotEmpty && _phoneData != _phone && _phoneData.length == 15),
                                       onPress: () {
-                                        fetchChangeEmailOrPhone(
-                                            _emailData.isEmpty
-                                                ? _email
-                                                : _emailData,
-                                            _phoneData.isEmpty
-                                                ? _phone
-                                                : _phoneData,
-                                            widget.userId);
+                                        fetchChangeEmailOrPhone(_emailData.isEmpty ? _email : _emailData,
+                                            _phoneData.isEmpty ? _phone : _phoneData, widget.userId);
                                       },
                                     )
                                   : GFLoader(

@@ -3,7 +3,7 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -24,13 +24,10 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
 
   TextEditingController _emailCtrl = new TextEditingController();
   TextEditingController _nomeMaeCtrl = new TextEditingController();
-  MaskedTextController _dataNascimentoCtrl =
-      new MaskedTextController(mask: '00/00/0000');
-  MaskedTextController _cpfCtrl =
-      new MaskedTextController(mask: '000.000.000-00');
+  MaskedTextController _dataNascimentoCtrl = new MaskedTextController(mask: '00/00/0000');
+  MaskedTextController _cpfCtrl = new MaskedTextController(mask: '000.000.000-00');
 
-  MaskedTextController _telefoneCtrl =
-      new MaskedTextController(mask: '(00) 00000-0000');
+  MaskedTextController _telefoneCtrl = new MaskedTextController(mask: '(00) 00000-0000');
 
   final _formKey = GlobalKey<FormState>();
 
@@ -49,11 +46,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
         ? DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.dataNascimento)
         : "";
 
-    _cpfCtrl.text =
-        usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
-    _telefoneCtrl.text = usuarioStore.usuario.celular != null
-        ? usuarioStore.usuario.celular
-        : "";
+    _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
+    _telefoneCtrl.text = usuarioStore.usuario.celular != null ? usuarioStore.usuario.celular : "";
     _emailCtrl.text = usuarioStore.usuario.email;
     _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
 
@@ -72,10 +66,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
 
     var response = await usuarioController.atualizarDados(
-        _nomeMaeCtrl.text.trim(),
-        _dataNascimento,
-        _emailCtrl.text.trim(),
-        _telefoneCtrl.text);
+        _nomeMaeCtrl.text.trim(), _dataNascimento, _emailCtrl.text.trim(), _telefoneCtrl.text);
 
     setState(() {
       _busy = false;
@@ -84,9 +75,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: response.erros != null
-            ? Text(response.erros[0])
-            : Text("Erro de serviço"),
+        content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
       );
 
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -141,14 +130,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                           ),
                           child: TextFormField(
                             initialValue: usuarioStore.usuario.nome,
-                            style: TextStyle(
-                                color: Color(0xff333333),
-                                fontWeight: FontWeight.w600),
+                            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                             decoration: InputDecoration(
                               labelText: 'Nome completo do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                              errorStyle:
-                                  TextStyle(fontWeight: FontWeight.w700),
+                              errorStyle: TextStyle(fontWeight: FontWeight.w700),
                               // hintText: "Data de nascimento do aluno",
                               border: InputBorder.none,
                             ),
@@ -169,14 +155,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                           child: TextFormField(
                             controller: _cpfCtrl,
                             enabled: false,
-                            style: TextStyle(
-                                color: Color(0xff333333),
-                                fontWeight: FontWeight.w600),
+                            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                             decoration: InputDecoration(
                               labelText: 'CPF do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                              errorStyle:
-                                  TextStyle(fontWeight: FontWeight.w700),
+                              errorStyle: TextStyle(fontWeight: FontWeight.w700),
                               // hintText: "Data de nascimento do aluno",
                               border: InputBorder.none,
                             ),
@@ -200,33 +183,25 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               decoration: BoxDecoration(
                                 color: ColorsUtil.campoHabilitado,
                                 border: Border(
-                                    bottom: BorderSide(
-                                        color: ColorsUtil.campoBorda,
-                                        width: screenHeight * 0.39)),
+                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
                                 controller: _dataNascimentoCtrl,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(
                                     () {
                                       if (value.isNotEmpty) {
                                         var data = value.split("/");
-                                        _dataNascimento = DateTime.parse(
-                                            "${data[2]}${data[1]}${data[0]}");
+                                        _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
                                       }
                                     },
                                   );
                                 },
                                 decoration: InputDecoration(
-                                  labelText:
-                                      'Data de nascimento do responsável',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelText: 'Data de nascimento do responsável',
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
@@ -244,15 +219,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               decoration: BoxDecoration(
                                 color: ColorsUtil.campoHabilitado,
                                 border: Border(
-                                    bottom: BorderSide(
-                                        color: ColorsUtil.campoBorda,
-                                        width: screenHeight * 0.39)),
+                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
                                 controller: _nomeMaeCtrl,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(() {
                                     _nomeMae = value;
@@ -261,16 +232,13 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 decoration: InputDecoration(
                                   labelText: 'Filiação do responsável legal',
                                   hintText: 'Preferencialmente nome da mãe',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.nome(
-                                      value, "Nome do responsável legal");
+                                  return ValidatorsUtil.nome(value, "Nome do responsável legal");
                                 },
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
@@ -285,15 +253,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               decoration: BoxDecoration(
                                 color: ColorsUtil.campoHabilitado,
                                 border: Border(
-                                    bottom: BorderSide(
-                                        color: ColorsUtil.campoBorda,
-                                        width: screenHeight * 0.39)),
+                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
                                 controller: _emailCtrl,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(() {
                                     _email = value;
@@ -301,10 +265,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'E-mail do responsável',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
@@ -324,16 +286,12 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               decoration: BoxDecoration(
                                 color: ColorsUtil.campoHabilitado,
                                 border: Border(
-                                  bottom: BorderSide(
-                                      color: ColorsUtil.campoBorda,
-                                      width: screenHeight * 0.39),
+                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                                 ),
                               ),
                               child: TextFormField(
                                 controller: _telefoneCtrl,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 onChanged: (value) {
                                   setState(() {
                                     _telefone = value;
@@ -341,10 +299,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'Telefone celular do responsável',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
@@ -361,19 +317,15 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                               icon: FontAwesomeIcons.exclamationTriangle,
                               content: <Widget>[
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
+                                      width: MediaQuery.of(context).size.width / 1.5,
                                       child: AutoSizeText(
                                         "Declaro que as informações acima são verdadeiras",
                                         maxFontSize: 18,
                                         minFontSize: 16,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: ColorsUtil.cinza01),
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
                                       ),
                                     ),
                                     Checkbox(
@@ -403,10 +355,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                         btnColor: Color(0xffd06d12),
                                         enabled: habilitaBotaoCadastro(),
                                         onPress: () async {
-                                          if (_formKey.currentState
-                                              .validate()) {
-                                            var retorno =
-                                                await onClickFinalizarCadastro();
+                                          if (_formKey.currentState.validate()) {
+                                            var retorno = await onClickFinalizarCadastro();
                                             if (retorno) {
                                               Navigator.pop(context);
                                             }

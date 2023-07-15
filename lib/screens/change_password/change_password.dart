@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/settings/settings.controller.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
@@ -75,9 +75,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     setState(() {
       _busy = true;
     });
-    await _settingsController
-        .changePassword(password, oldPassword, userId)
-        .then((data) {
+    await _settingsController.changePassword(password, oldPassword, userId).then((data) {
       _navigateToScreen();
     });
     setState(() {
@@ -88,9 +86,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: _settingsController.data != null
-            ? Text(_settingsController.data.erros[0])
-            : Text("Erro de serviço"));
+        content: _settingsController.data != null ? Text(_settingsController.data.erros[0]) : Text("Erro de serviço"));
 
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
@@ -101,8 +97,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Atenção"),
-            content: Text(
-                "Você não confirmou as suas alterações, deseja descartá-las?"),
+            content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
             actions: <Widget>[
               FlatButton(
                 child: Text("SIM"),
@@ -133,11 +128,8 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: Color(0xffEEC25E),
       ),
       body: WillPopScope(
-        onWillPop: (_password.isNotEmpty ||
-                _oldPassword.isNotEmpty ||
-                _confirmPassword.isNotEmpty)
-            ? _onBackPress
-            : null,
+        onWillPop:
+            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress : null,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
@@ -148,40 +140,32 @@ class _ChangePasswordState extends State<ChangePassword> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.only(
-                              bottom: screenHeight * 3, top: screenHeight * 3),
+                          margin: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 3),
                           child: AutoSizeText(
                             "Confirme a nova senha abaixo",
                             maxFontSize: 18,
                             minFontSize: 16,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff757575)),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
                           )),
                       Form(
+                        autovalidateMode: AutovalidateMode.always,
                         key: _formKey,
-                        autovalidate: true,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _passwordIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                     obscureText: _showOldPassword,
-                                    style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontWeight: FontWeight.w600),
+                                    style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                     onChanged: (value) {
                                       setState(() {
                                         _oldPassword = value;
@@ -205,16 +189,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         iconSize: screenHeight * 3.0,
                                         onPressed: () {
                                           setState(() {
-                                            _showOldPassword =
-                                                !_showOldPassword;
+                                            _showOldPassword = !_showOldPassword;
                                           });
                                         },
                                       ),
                                       labelText: 'Senha Antiga',
-                                      labelStyle:
-                                          TextStyle(color: Color(0xff8e8e8e)),
-                                      errorStyle: TextStyle(
-                                          fontWeight: FontWeight.w700),
+                                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                       // hintText: "Data de nascimento do aluno",
                                       border: InputBorder.none,
                                     ),
@@ -224,22 +205,17 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 height: screenHeight * 4,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _passwordIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                     obscureText: _showNewPassword,
-                                    style: TextStyle(
-                                        color: Color(0xff333333),
-                                        fontWeight: FontWeight.w600),
+                                    style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                     onChanged: (value) {
                                       setState(() {
                                         _password = value;
@@ -263,16 +239,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         iconSize: screenHeight * 3.0,
                                         onPressed: () {
                                           setState(() {
-                                            _showNewPassword =
-                                                !_showNewPassword;
+                                            _showNewPassword = !_showNewPassword;
                                           });
                                         },
                                       ),
                                       labelText: 'Nova senha',
-                                      labelStyle:
-                                          TextStyle(color: Color(0xff8e8e8e)),
-                                      errorStyle: TextStyle(
-                                          fontWeight: FontWeight.w700),
+                                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                       // hintText: "Data de nascimento do aluno",
                                       border: InputBorder.none,
                                     ),
@@ -282,21 +255,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 height: screenHeight * 4,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _passwordIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   obscureText: _showConfirmPassword,
                                   onChanged: (value) {
                                     setState(() {
@@ -312,17 +280,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       iconSize: screenHeight * 3.0,
                                       onPressed: () {
                                         setState(() {
-                                          _showConfirmPassword =
-                                              !_showConfirmPassword;
+                                          _showConfirmPassword = !_showConfirmPassword;
                                         });
                                       },
                                     ),
 
                                     labelText: 'Confirmar a nova senha',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
@@ -348,9 +313,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     "Requisitos para sua nova senha!",
                                     maxFontSize: 18,
                                     minFontSize: 16,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff717171)),
+                                    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
                                   ),
                                   SizedBox(
                                     height: screenHeight * 2,
@@ -358,33 +321,27 @@ class _ChangePasswordState extends State<ChangePassword> {
                                   CheckLine(
                                       screenHeight: screenHeight,
                                       text: "Uma letra maiúscula",
-                                      checked:
-                                          upperCaseChar.hasMatch(_password)),
+                                      checked: upperCaseChar.hasMatch(_password)),
                                   CheckLine(
                                       screenHeight: screenHeight,
                                       text: "Uma letra minúscula",
                                       checked: lowCaseChar.hasMatch(_password)),
                                   CheckLine(
                                     screenHeight: screenHeight,
-                                    text:
-                                        "Um algarismo (número) ou um símbolo (caractere especial)",
-                                    checked: (numeric.hasMatch(_password) ||
-                                        symbols.hasMatch(_password)),
+                                    text: "Um algarismo (número) ou um símbolo (caractere especial)",
+                                    checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
                                   ),
                                   CheckLine(
                                     screenHeight: screenHeight,
-                                    text:
-                                        "Não pode permitir caracteres acentuados",
+                                    text: "Não pode permitir caracteres acentuados",
                                     checked: _password.length > 0 &&
                                         !accentUppercase.hasMatch(_password) &&
                                         !accentLowcase.hasMatch(_password),
                                   ),
                                   CheckLine(
                                       screenHeight: screenHeight,
-                                      text:
-                                          "Deve ter no mínimo 8 e no máximo 12 caracteres.",
-                                      checked: _password.length >= 8 &&
-                                          _password.length <= 12),
+                                      text: "Deve ter no mínimo 8 e no máximo 12 caracteres.",
+                                      checked: _password.length >= 8 && _password.length <= 12),
                                 ],
                               ),
                               SizedBox(
@@ -402,8 +359,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                               !spaceNull.hasMatch(_password)) &&
                                           (_confirmPassword == _password),
                                       onPress: () {
-                                        _changePassword(
-                                            _password, _oldPassword, widget.id);
+                                        _changePassword(_password, _oldPassword, widget.id);
                                       },
                                     )
                                   : GFLoader(

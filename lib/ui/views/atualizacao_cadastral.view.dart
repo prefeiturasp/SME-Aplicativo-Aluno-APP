@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
@@ -23,8 +23,7 @@ class AtualizacaoCadastralView extends StatefulWidget {
   AtualizacaoCadastralView();
 
   @override
-  _AtualizacaoCadastralViewState createState() =>
-      _AtualizacaoCadastralViewState();
+  _AtualizacaoCadastralViewState createState() => _AtualizacaoCadastralViewState();
 }
 
 class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
@@ -37,13 +36,10 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
 
   TextEditingController _emailCtrl = new TextEditingController();
   TextEditingController _nomeMaeCtrl = new TextEditingController();
-  MaskedTextController _dataNascimentoCtrl =
-      new MaskedTextController(mask: '00/00/0000');
-  MaskedTextController _cpfCtrl =
-      new MaskedTextController(mask: '000.000.000-00');
+  MaskedTextController _dataNascimentoCtrl = new MaskedTextController(mask: '00/00/0000');
+  MaskedTextController _cpfCtrl = new MaskedTextController(mask: '000.000.000-00');
 
-  MaskedTextController _telefoneCtrl =
-      new MaskedTextController(mask: '(00) 00000-0000');
+  MaskedTextController _telefoneCtrl = new MaskedTextController(mask: '(00) 00000-0000');
 
   ReactionDisposer disposer;
 
@@ -67,11 +63,8 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
           : "";
 
       _dataNascimento = usuarioStore.usuario.dataNascimento;
-      _cpfCtrl.text =
-          usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
-      _telefoneCtrl.text = usuarioStore.usuario.celular.isNotEmpty
-          ? usuarioStore.usuario.celular
-          : "";
+      _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
+      _telefoneCtrl.text = usuarioStore.usuario.celular.isNotEmpty ? usuarioStore.usuario.celular : "";
       _emailCtrl.text = usuarioStore.usuario.email;
       _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
       _email = usuarioStore.usuario.email;
@@ -90,16 +83,13 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
 
     var response = await usuarioController.atualizarDados(
-        _nomeMaeCtrl.text.trim(),
-        _dataNascimento,
-        _emailCtrl.text.trim(),
-        _telefoneCtrl.text);
+        _nomeMaeCtrl.text.trim(), _dataNascimento, _emailCtrl.text.trim(), _telefoneCtrl.text);
 
     setState(() {
       _busy = false;
     });
 
-    if (response != null && response.ok) {
+    if (response.ok) {
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -119,9 +109,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: response.erros != null
-            ? Text(response.erros[0])
-            : Text("Erro de serviço"),
+        content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
       );
 
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -179,9 +167,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                           Container(
                             width: screenHeight * 36,
                             alignment: Alignment.center,
-                            margin: EdgeInsets.only(
-                                top: screenHeight * 8,
-                                bottom: screenHeight * 2),
+                            margin: EdgeInsets.only(top: screenHeight * 8, bottom: screenHeight * 2),
                             child: AssetsUtil.logoEA,
                           ),
                           Align(
@@ -235,18 +221,12 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 color: ColorsUtil.campoDesabilitado,
                               ),
                               child: TextFormField(
-                                initialValue: usuarioStore.usuario != null
-                                    ? usuarioStore.usuario.nome
-                                    : "",
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                initialValue: usuarioStore.usuario != null ? usuarioStore.usuario.nome : "",
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
                                   labelText: 'Nome completo do responsável',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
@@ -269,15 +249,11 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                               child: TextFormField(
                                 controller: _cpfCtrl,
                                 enabled: false,
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
                                   labelText: 'CPF do responsável',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   // hintText: "Data de nascimento do aluno",
                                   border: InputBorder.none,
                                 ),
@@ -300,38 +276,29 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: ColorsUtil.campoHabilitado,
                                   border: Border(
-                                      bottom: BorderSide(
-                                          color: ColorsUtil.campoBorda,
-                                          width: screenHeight * 0.39)),
+                                      bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   controller: _dataNascimentoCtrl,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(
                                       () {
                                         if (value.isNotEmpty) {
                                           var data = value.split("/");
-                                          _dataNascimento = DateTime.parse(
-                                              "${data[2]}${data[1]}${data[0]}");
+                                          _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
                                         }
                                       },
                                     );
                                   },
                                   decoration: InputDecoration(
-                                    labelText:
-                                        'Data de nascimento do responsável',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelText: 'Data de nascimento do responsável',
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
@@ -345,20 +312,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 height: screenHeight * 2,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: ColorsUtil.campoHabilitado,
                                   border: Border(
-                                      bottom: BorderSide(
-                                          color: ColorsUtil.campoBorda,
-                                          width: screenHeight * 0.39)),
+                                      bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   controller: _nomeMaeCtrl,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
                                       _nomeMae = value;
@@ -368,17 +330,14 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   decoration: InputDecoration(
                                     labelText: 'Filiação do responsável legal',
                                     hintText: 'Preferencialmente nome da mãe',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return ValidatorsUtil.nome(
-                                          value, "Nome do responsável legal");
+                                      return ValidatorsUtil.nome(value, "Nome do responsável legal");
                                     } else
                                       return null;
                                   },
@@ -391,20 +350,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 height: screenHeight * 2,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: ColorsUtil.campoHabilitado,
                                   border: Border(
-                                      bottom: BorderSide(
-                                          color: ColorsUtil.campoBorda,
-                                          width: screenHeight * 0.39)),
+                                      bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   controller: _emailCtrl,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
                                       _email = value;
@@ -412,10 +366,8 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   },
                                   decoration: InputDecoration(
                                     labelText: 'E-mail do responsável',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
@@ -431,21 +383,16 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 height: screenHeight * 2,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: ColorsUtil.campoHabilitado,
                                   border: Border(
-                                    bottom: BorderSide(
-                                        color: ColorsUtil.campoBorda,
-                                        width: screenHeight * 0.39),
+                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                                   ),
                                 ),
                                 child: TextFormField(
                                   controller: _telefoneCtrl,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   onChanged: (value) {
                                     setState(() {
                                       _telefone = value;
@@ -455,12 +402,9 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     return ValidatorsUtil.telefone(value);
                                   },
                                   decoration: InputDecoration(
-                                    labelText:
-                                        'Telefone celular do responsável',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelText: 'Telefone celular do responsável',
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
@@ -474,20 +418,15 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 icon: FontAwesomeIcons.exclamationTriangle,
                                 content: <Widget>[
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.5,
+                                        width: MediaQuery.of(context).size.width / 1.5,
                                         child: AutoSizeText(
                                           "Declaro que as informações acima são verdadeiras",
                                           maxFontSize: 18,
                                           minFontSize: 16,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: ColorsUtil.cinza01),
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
                                         ),
                                       ),
                                       Checkbox(
@@ -518,8 +457,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                           btnColor: Color(0xffd06d12),
                                           enabled: habilitaBotaoCadastro(),
                                           onPress: () {
-                                            if (_formKey.currentState
-                                                .validate()) {
+                                            if (_formKey.currentState.validate()) {
                                               onClickFinalizarCadastro();
                                             }
                                           },
@@ -551,8 +489,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                 Container(
                   height: screenHeight * 6,
                   margin: EdgeInsets.only(top: 70),
-                  child: Image.asset("assets/images/logo_sme.png",
-                      fit: BoxFit.cover),
+                  child: Image.asset("assets/images/logo_sme.png", fit: BoxFit.cover),
                 ),
               ],
             ),

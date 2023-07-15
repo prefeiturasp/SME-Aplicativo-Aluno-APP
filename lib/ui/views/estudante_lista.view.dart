@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/estudante.controller.dart';
 import 'package:sme_app_aluno/controllers/background_fetch/background_fetch.controller.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
@@ -46,10 +44,8 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    bool responsibleHasStudent = await _backgroundFetchController
-        .checkIfResponsibleHasStudent(_usuarioStore.id);
-    print(
-        '[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
+    bool responsibleHasStudent = await _backgroundFetchController.checkIfResponsibleHasStudent(_usuarioStore.id);
+    print('[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
       Auth.logout(context, _usuarioStore.id, true);
     }
@@ -61,35 +57,26 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
     await Auth.logout(context, _usuarioStore.usuario.id, true);
   }
 
-  Widget _itemCardStudent(BuildContext context, EstudanteModel model,
-      String groupSchool, int codigoGrupo, int userId) {
+  Widget _itemCardStudent(BuildContext context, EstudanteModel model, String groupSchool, int codigoGrupo, int userId) {
     return EAEstudanteCard(
-      name: model.nomeSocial != null && model.nomeSocial.isNotEmpty
-          ? model.nomeSocial
-          : model.nome,
+      name: model.nomeSocial.isNotEmpty ? model.nomeSocial : model.nome,
       schoolName: model.escola,
       studentGrade: model.turma,
       codigoEOL: model.codigoEol,
       schooType: model.descricaoTipoEscola,
       dreName: model.siglaDre,
       onPress: () {
-        Nav.push(
-            context,
-            Dashboard(
-                userId: _usuarioStore.id,
-                estudante: model,
-                groupSchool: groupSchool,
-                codigoGrupo: codigoGrupo));
+        Nav.push(context,
+            Dashboard(userId: _usuarioStore.id, estudante: model, groupSchool: groupSchool, codigoGrupo: codigoGrupo));
       },
     );
   }
 
-  Widget _listStudents(List<EstudanteModel> students, BuildContext context,
-      String groupSchool, int codigoGrupo, int userId) {
+  Widget _listStudents(
+      List<EstudanteModel> students, BuildContext context, String groupSchool, int codigoGrupo, int userId) {
     List<Widget> list = new List<Widget>();
     for (var i = 0; i < students.length; i++) {
-      list.add(_itemCardStudent(
-          context, students[i], groupSchool, codigoGrupo, userId));
+      list.add(_itemCardStudent(context, students[i], groupSchool, codigoGrupo, userId));
     }
     return new Column(children: list);
   }
@@ -163,8 +150,7 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
                   "ALUNOS CADASTRADOS PARA O RESPONSÁVEL",
                   maxFontSize: 16,
                   minFontSize: 14,
-                  style: TextStyle(
-                      color: Color(0xffDE9524), fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Color(0xffDE9524), fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
                   height: screenHeight * 3.5,
@@ -182,8 +168,7 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
                           size: GFSize.LARGE,
                         );
                       } else {
-                        if (_estudanteStore.gruposEstudantes == null &&
-                            _usuarioStore.id != null) {
+                        if (_estudanteStore.gruposEstudantes == null) {
                           _logoutUser();
                           return Container();
                         } else {

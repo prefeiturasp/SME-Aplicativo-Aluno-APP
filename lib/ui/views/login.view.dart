@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/usuario.controller.dart';
 import 'package:sme_app_aluno/models/index.dart';
@@ -58,8 +56,7 @@ class _LoginViewState extends State<LoginView> {
       _carregando = true;
     });
 
-    UsuarioDataModel usuario =
-        await autenticacaoController.authenticateUser(cpf, password);
+    UsuarioDataModel usuario = await autenticacaoController.authenticateUser(cpf, password);
 
     setState(() {
       _carregando = false;
@@ -68,9 +65,7 @@ class _LoginViewState extends State<LoginView> {
     if (!usuario.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: usuario.erros != null
-            ? Text(usuario.erros[0])
-            : Text("Erro de serviço"),
+        content: usuario.erros != null ? Text(usuario.erros[0]) : Text("Erro de serviço"),
       );
 
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -111,13 +106,11 @@ class _LoginViewState extends State<LoginView> {
                       Container(
                         width: screenHeight * 36,
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(
-                            top: screenHeight * 8, bottom: screenHeight * 6),
-                        child:
-                            Image.asset("assets/images/Logo_escola_aqui.png"),
+                        margin: EdgeInsets.only(top: screenHeight * 8, bottom: screenHeight * 6),
+                        child: Image.asset("assets/images/Logo_escola_aqui.png"),
                       ),
                       Form(
-                        autovalidate: true,
+                        autovalidateMode: AutovalidateMode.always,
                         key: _formKey,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -136,9 +129,7 @@ class _LoginViewState extends State<LoginView> {
                                         widget.notice,
                                         maxFontSize: 18,
                                         minFontSize: 16,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500),
+                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
                                       ),
                                     )
                                   : SizedBox.shrink(),
@@ -146,28 +137,21 @@ class _LoginViewState extends State<LoginView> {
                                 height: screenHeight * 4,
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _cpfIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _cpfIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
                                   initialValue: _cpf,
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'Usuário',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     border: InputBorder.none,
                                   ),
                                   onChanged: (value) {
@@ -206,21 +190,16 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: screenHeight * 5),
-                                padding:
-                                    EdgeInsets.only(left: screenHeight * 2),
+                                padding: EdgeInsets.only(left: screenHeight * 2),
                                 decoration: BoxDecoration(
                                   color: Color(0xfff0f0f0),
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: _passwordIsError
-                                              ? Colors.red
-                                              : Color(0xffD06D12),
+                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
                                           width: screenHeight * 0.39)),
                                 ),
                                 child: TextFormField(
-                                  style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   obscureText: _showPassword,
                                   onChanged: (value) {
                                     setState(() {
@@ -238,9 +217,8 @@ class _LoginViewState extends State<LoginView> {
                                   },
                                   decoration: InputDecoration(
                                     suffixIcon: IconButton(
-                                      icon: _showPassword
-                                          ? Icon(FontAwesomeIcons.eye)
-                                          : Icon(FontAwesomeIcons.eyeSlash),
+                                      icon:
+                                          _showPassword ? Icon(FontAwesomeIcons.eye) : Icon(FontAwesomeIcons.eyeSlash),
                                       color: Color(0xff6e6e6e),
                                       iconSize: screenHeight * 3.0,
                                       onPressed: () {
@@ -250,10 +228,8 @@ class _LoginViewState extends State<LoginView> {
                                       },
                                     ),
                                     labelText: 'Senha',
-                                    labelStyle:
-                                        TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle:
-                                        TextStyle(fontWeight: FontWeight.w700),
+                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                     // hintText: "Data de nascimento do aluno",
                                     border: InputBorder.none,
                                   ),
@@ -279,17 +255,14 @@ class _LoginViewState extends State<LoginView> {
                                 alignment: Alignment.bottomRight,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Nav.push(context,
-                                        RecoverPassword(input: _cpfRaw));
+                                    Nav.push(context, RecoverPassword(input: _cpfRaw));
                                   },
                                   child: AutoSizeText(
                                     "Esqueci minha senha",
                                     maxFontSize: 14,
                                     minFontSize: 12,
                                     maxLines: 3,
-                                    style: TextStyle(
-                                        color: Color(0xff757575),
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -309,8 +282,7 @@ class _LoginViewState extends State<LoginView> {
                                       icon: FontAwesomeIcons.chevronRight,
                                       iconColor: Color(0xffffd037),
                                       btnColor: Color(0xffd06d12),
-                                      disabled: CPFValidator.isValid(_cpf) &&
-                                          _password.length >= 7,
+                                      disabled: CPFValidator.isValid(_cpf) && _password.length >= 7,
                                       onPress: () {
                                         if (_formKey.currentState.validate()) {
                                           _handleSignIn(_cpf, _password);
@@ -330,8 +302,7 @@ class _LoginViewState extends State<LoginView> {
                 Container(
                   height: screenHeight * 6,
                   margin: EdgeInsets.only(top: 70),
-                  child: Image.asset("assets/images/logo_sme.png",
-                      fit: BoxFit.cover),
+                  child: Image.asset("assets/images/logo_sme.png", fit: BoxFit.cover),
                 ),
               ],
             ),

@@ -6,11 +6,12 @@ part of 'background_fetch.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$BackgroundFetchController on _BackgroundFetchControllerBase, Store {
-  final _$responsibleHasStudentAtom =
-      Atom(name: '_BackgroundFetchControllerBase.responsibleHasStudent');
+  late final _$responsibleHasStudentAtom = Atom(
+      name: '_BackgroundFetchControllerBase.responsibleHasStudent',
+      context: context);
 
   @override
   bool get responsibleHasStudent {
@@ -26,8 +27,9 @@ mixin _$BackgroundFetchController on _BackgroundFetchControllerBase, Store {
     });
   }
 
-  final _$initPlatformStateAsyncAction =
-      AsyncAction('_BackgroundFetchControllerBase.initPlatformState');
+  late final _$initPlatformStateAsyncAction = AsyncAction(
+      '_BackgroundFetchControllerBase.initPlatformState',
+      context: context);
 
   @override
   Future<void> initPlatformState(
@@ -36,8 +38,9 @@ mixin _$BackgroundFetchController on _BackgroundFetchControllerBase, Store {
         .run(() => super.initPlatformState(onBackgroundFetch, taskId, delay));
   }
 
-  final _$checkIfResponsibleHasStudentAsyncAction = AsyncAction(
-      '_BackgroundFetchControllerBase.checkIfResponsibleHasStudent');
+  late final _$checkIfResponsibleHasStudentAsyncAction = AsyncAction(
+      '_BackgroundFetchControllerBase.checkIfResponsibleHasStudent',
+      context: context);
 
   @override
   Future<bool> checkIfResponsibleHasStudent(int userId) {

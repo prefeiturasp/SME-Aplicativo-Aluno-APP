@@ -57,7 +57,6 @@ abstract class _BackgroundFetchControllerBase with Store {
         ),
       ).catchError(print);
     } catch (ex) {
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
       print(ex.toString());
     }
   }

@@ -8,10 +8,8 @@ import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/label_event.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
 import 'package:sme_app_aluno/ui/index.dart';
+import 'package:getwidget/getwidget.dart';
 
 class ListEvents extends StatefulWidget {
   final EstudanteModel student;
@@ -47,8 +45,7 @@ class _ListEventsState extends State<ListEvents> {
     Event event,
     BuildContext context,
   ) {
-    String diaSemana = (event.diaSemana).substring(0, 1).toUpperCase() +
-        (event.diaSemana).substring(1);
+    String diaSemana = (event.diaSemana).substring(0, 1).toUpperCase() + (event.diaSemana).substring(1);
 
     return Column(
       children: [
@@ -58,9 +55,7 @@ class _ListEventsState extends State<ListEvents> {
               title: event.nome,
             ),
             titleEvent: event.nome,
-            desc: event.descricao != null
-                ? (event.descricao.length > 3 ? true : false)
-                : false,
+            desc: event.descricao != null ? (event.descricao.length > 3 ? true : false) : false,
             eventDesc: event.descricao,
             dia: event.dataInicio,
             tipoEvento: event.tipoEvento,
@@ -97,14 +92,9 @@ class _ListEventsState extends State<ListEvents> {
                   Container(
                     padding: EdgeInsets.all(screenHeight * 2.5),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color(0xffC5C5C5), width: 0.5))),
+                        color: Colors.white, border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5))),
                     child: EAEstudanteInfo(
-                      nome: widget.student.nomeSocial != null
-                          ? widget.student.nomeSocial
-                          : widget.student.nome,
+                      nome: widget.student.nomeSocial != null ? widget.student.nomeSocial : widget.student.nome,
                       ue: widget.student.escola,
                       tipoEscola: widget.student.descricaoTipoEscola,
                       dre: widget.student.siglaDre,
@@ -115,10 +105,7 @@ class _ListEventsState extends State<ListEvents> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(
-                    top: screenHeight * 2,
-                    left: screenHeight * 2,
-                    right: screenHeight * 2),
+                margin: EdgeInsets.only(top: screenHeight * 2, left: screenHeight * 2, right: screenHeight * 2),
                 // width: screenHeight * 40,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,9 +113,7 @@ class _ListEventsState extends State<ListEvents> {
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleLeft,
-                          color: _currentMonth > 1
-                              ? Color(0xffC45C04)
-                              : Colors.transparent,
+                          color: _currentMonth > 1 ? Color(0xffC45C04) : Colors.transparent,
                           size: screenHeight * 3,
                         ),
                         onPressed: _currentMonth > 1
@@ -136,9 +121,7 @@ class _ListEventsState extends State<ListEvents> {
                                 setState(() => _currentMonth--);
                                 if (_currentMonth >= 1) {
                                   await _eventController.changeCurrentMonth(
-                                      _currentMonth,
-                                      widget.student.codigoEol,
-                                      widget.userId);
+                                      _currentMonth, widget.student.codigoEol, widget.userId);
                                 }
                               }
                             : null),
@@ -147,18 +130,14 @@ class _ListEventsState extends State<ListEvents> {
                         _eventController.currentMonth.toUpperCase(),
                         maxFontSize: 18,
                         minFontSize: 16,
-                        style: TextStyle(
-                            color: Color(0xffC45C04),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
                         textAlign: TextAlign.center,
                       );
                     }),
                     IconButton(
                         icon: Icon(
                           FontAwesomeIcons.angleRight,
-                          color: _currentMonth < 12
-                              ? Color(0xffC45C04)
-                              : Colors.transparent,
+                          color: _currentMonth < 12 ? Color(0xffC45C04) : Colors.transparent,
                           size: screenHeight * 3,
                         ),
                         onPressed: _currentMonth < 12
@@ -166,9 +145,7 @@ class _ListEventsState extends State<ListEvents> {
                                 setState(() => _currentMonth++);
                                 if (_currentMonth <= 12) {
                                   await _eventController.changeCurrentMonth(
-                                      _currentMonth,
-                                      widget.student.codigoEol,
-                                      widget.userId);
+                                      _currentMonth, widget.student.codigoEol, widget.userId);
                                 }
                               }
                             : null),
@@ -216,13 +193,9 @@ class _ListEventsState extends State<ListEvents> {
                               height: screenHeight * 50,
                               child: Scrollbar(
                                 child: ListView.builder(
-                                    itemCount:
-                                        _eventController.eventsSortDate.length,
+                                    itemCount: _eventController.eventsSortDate.length,
                                     itemBuilder: (context, index) {
-                                      return _eventItemBuild(
-                                          _eventController
-                                              .eventsSortDate[index],
-                                          context);
+                                      return _eventItemBuild(_eventController.eventsSortDate[index], context);
                                     }),
                               ));
                         } else {
@@ -256,14 +229,9 @@ class _ListEventsState extends State<ListEvents> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LabelEvent(
-                        labelName: "Avaliação", labelColor: colorAvaliacao),
-                    LabelEvent(
-                        labelName: "Dias sem aula",
-                        labelColor: colorDiasSemAula),
-                    LabelEvent(
-                        labelName: "Demais eventos",
-                        labelColor: colorDemaisEventos),
+                    LabelEvent(labelName: "Avaliação", labelColor: colorAvaliacao),
+                    LabelEvent(labelName: "Dias sem aula", labelColor: colorDiasSemAula),
+                    LabelEvent(labelName: "Demais eventos", labelColor: colorDemaisEventos),
                   ],
                 ),
               )
@@ -290,8 +258,7 @@ class _ListEventsState extends State<ListEvents> {
             ),
             width: screenHeight * 2.5,
             height: screenHeight * 2.5,
-            margin: EdgeInsets.only(
-                bottom: screenHeight * 0.5, top: screenHeight * 0.5),
+            margin: EdgeInsets.only(bottom: screenHeight * 0.5, top: screenHeight * 0.5),
           ),
           SizedBox(
             width: screenHeight * 1,

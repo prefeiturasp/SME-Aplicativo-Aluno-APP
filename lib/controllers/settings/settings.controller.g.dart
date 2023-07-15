@@ -6,10 +6,11 @@ part of 'settings.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SettingsController on _SettingsControllerBase, Store {
-  final _$dataAtom = Atom(name: '_SettingsControllerBase.data');
+  late final _$dataAtom =
+      Atom(name: '_SettingsControllerBase.data', context: context);
 
   @override
   Data get data {
@@ -24,7 +25,8 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
     });
   }
 
-  final _$isLoadingAtom = Atom(name: '_SettingsControllerBase.isLoading');
+  late final _$isLoadingAtom =
+      Atom(name: '_SettingsControllerBase.isLoading', context: context);
 
   @override
   bool get isLoading {
@@ -39,8 +41,8 @@ mixin _$SettingsController on _SettingsControllerBase, Store {
     });
   }
 
-  final _$changePasswordAsyncAction =
-      AsyncAction('_SettingsControllerBase.changePassword');
+  late final _$changePasswordAsyncAction =
+      AsyncAction('_SettingsControllerBase.changePassword', context: context);
 
   @override
   Future changePassword(String password, String oldPassword, int userId) {

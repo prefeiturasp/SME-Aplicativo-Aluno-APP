@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/getflutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/screens/terms/terms_view.dart';
 

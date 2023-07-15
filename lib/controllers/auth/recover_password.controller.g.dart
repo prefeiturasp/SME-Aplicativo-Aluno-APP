@@ -6,10 +6,11 @@ part of 'recover_password.controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
-  final _$dataAtom = Atom(name: '_RecoverPasswordControllerBase.data');
+  late final _$dataAtom =
+      Atom(name: '_RecoverPasswordControllerBase.data', context: context);
 
   @override
   Data get data {
@@ -24,7 +25,8 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     });
   }
 
-  final _$dataUserAtom = Atom(name: '_RecoverPasswordControllerBase.dataUser');
+  late final _$dataUserAtom =
+      Atom(name: '_RecoverPasswordControllerBase.dataUser', context: context);
 
   @override
   DataUser get dataUser {
@@ -39,7 +41,8 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     });
   }
 
-  final _$emailAtom = Atom(name: '_RecoverPasswordControllerBase.email');
+  late final _$emailAtom =
+      Atom(name: '_RecoverPasswordControllerBase.email', context: context);
 
   @override
   String get email {
@@ -54,7 +57,8 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     });
   }
 
-  final _$loadingAtom = Atom(name: '_RecoverPasswordControllerBase.loading');
+  late final _$loadingAtom =
+      Atom(name: '_RecoverPasswordControllerBase.loading', context: context);
 
   @override
   bool get loading {
@@ -69,24 +73,26 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
     });
   }
 
-  final _$sendTokenAsyncAction =
-      AsyncAction('_RecoverPasswordControllerBase.sendToken');
+  late final _$sendTokenAsyncAction =
+      AsyncAction('_RecoverPasswordControllerBase.sendToken', context: context);
 
   @override
   Future sendToken(String cpf) {
     return _$sendTokenAsyncAction.run(() => super.sendToken(cpf));
   }
 
-  final _$validateTokenAsyncAction =
-      AsyncAction('_RecoverPasswordControllerBase.validateToken');
+  late final _$validateTokenAsyncAction = AsyncAction(
+      '_RecoverPasswordControllerBase.validateToken',
+      context: context);
 
   @override
   Future validateToken(String token) {
     return _$validateTokenAsyncAction.run(() => super.validateToken(token));
   }
 
-  final _$redefinePasswordAsyncAction =
-      AsyncAction('_RecoverPasswordControllerBase.redefinePassword');
+  late final _$redefinePasswordAsyncAction = AsyncAction(
+      '_RecoverPasswordControllerBase.redefinePassword',
+      context: context);
 
   @override
   Future redefinePassword(String password, String token) {

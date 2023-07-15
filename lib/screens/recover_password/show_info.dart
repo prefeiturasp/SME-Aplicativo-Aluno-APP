@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
 import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/redefine_password/redefine_password.dart';
@@ -83,8 +81,7 @@ class _ShowInfoState extends State<ShowInfo> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(
-              left: screenHeight * 2.5, right: screenHeight * 2.5),
+          padding: EdgeInsets.only(left: screenHeight * 2.5, right: screenHeight * 2.5),
           child: Column(
             children: <Widget>[
               Container(
@@ -97,10 +94,8 @@ class _ShowInfoState extends State<ShowInfo> {
                       child: Image.asset("assets/images/Logo_escola_aqui.png"),
                     ),
                     Container(
-                        padding: EdgeInsets.only(
-                            bottom: screenHeight * 6,
-                            left: screenHeight * 6,
-                            right: screenHeight * 6),
+                        padding:
+                            EdgeInsets.only(bottom: screenHeight * 6, left: screenHeight * 6, right: screenHeight * 6),
                         child: Column(
                           children: <Widget>[
                             widget.hasToken
@@ -110,9 +105,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                     maxFontSize: 16,
                                     minFontSize: 14,
                                     maxLines: 5,
-                                    style: TextStyle(
-                                        color: Color(0xff757575),
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                                   )
                                 : AutoSizeText(
                                     "As orientações para recuperação de \n senha foram enviadas para",
@@ -120,9 +113,7 @@ class _ShowInfoState extends State<ShowInfo> {
                                     maxFontSize: 16,
                                     minFontSize: 14,
                                     maxLines: 5,
-                                    style: TextStyle(
-                                        color: Color(0xff757575),
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                                   ),
                             widget.hasToken
                                 ? Container()
@@ -132,35 +123,28 @@ class _ShowInfoState extends State<ShowInfo> {
                             widget.hasToken
                                 ? Container()
                                 : AutoSizeText(
-                                    StringSupport.replaceEmailSecurity(
-                                        widget.email, 3),
+                                    StringSupport.replaceEmailSecurity(widget.email, 3),
                                     textAlign: TextAlign.center,
                                     maxFontSize: 16,
                                     minFontSize: 14,
                                     maxLines: 5,
-                                    style: TextStyle(
-                                        color: Color(0xffD16C12),
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: Color(0xffD16C12), fontWeight: FontWeight.bold),
                                   ),
                             SizedBox(
                               height: screenHeight * 3,
                             ),
                             AutoSizeText(
-                              widget.hasToken
-                                  ? "Verifique sua caixa de entrada!"
-                                  : "verifique sua caixa de entrada!",
+                              widget.hasToken ? "Verifique sua caixa de entrada!" : "verifique sua caixa de entrada!",
                               textAlign: TextAlign.center,
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 5,
-                              style: TextStyle(
-                                  color: Color(0xff757575),
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.bold),
                             ),
                           ],
                         )),
                     Form(
-                      autovalidate: true,
+                      autovalidateMode: AutovalidateMode.always,
                       key: _formKey,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -171,21 +155,15 @@ class _ShowInfoState extends State<ShowInfo> {
                               padding: EdgeInsets.only(left: screenHeight * 2),
                               decoration: BoxDecoration(
                                 color: Color(0xfff0f0f0),
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Color(0xffD06D12),
-                                        width: screenHeight * 0.39)),
+                                border:
+                                    Border(bottom: BorderSide(color: Color(0xffD06D12), width: screenHeight * 0.39)),
                               ),
                               child: TextFormField(
-                                style: TextStyle(
-                                    color: Color(0xff333333),
-                                    fontWeight: FontWeight.w600),
+                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 decoration: InputDecoration(
                                   labelText: 'Código',
-                                  labelStyle:
-                                      TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle:
-                                      TextStyle(fontWeight: FontWeight.w700),
+                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
@@ -232,8 +210,7 @@ class _ShowInfoState extends State<ShowInfo> {
               Container(
                 height: screenHeight * 6,
                 margin: EdgeInsets.only(top: 70),
-                child: Image.asset("assets/images/logo_sme.png",
-                    fit: BoxFit.cover),
+                child: Image.asset("assets/images/logo_sme.png", fit: BoxFit.cover),
               ),
             ],
           ),
