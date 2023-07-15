@@ -7,43 +7,38 @@ import 'package:sme_app_aluno/services/user.service.dart';
 
 part 'first_access.controller.g.dart';
 
-class FirstAccessController = _FirstAccessControllerBase
-    with _$FirstAccessController;
+class FirstAccessController = _FirstAccessControllerBase with _$FirstAccessController;
 
 abstract class _FirstAccessControllerBase with Store {
-  FirstAccessRepository _firstAccessRepository;
+  late FirstAccessRepository firstAccessRepository;
   final UserService _userService = UserService();
-  _FirstAccessControllerBase() {
-    _firstAccessRepository = FirstAccessRepository();
-  }
+  _FirstAccessControllerBase({required this.firstAccessRepository});
 
   @observable
-  Data data;
+  late Data data;
 
   @observable
-  DataChangeEmailAndPhone dataEmailOrPhone;
+  late DataChangeEmailAndPhone dataEmailOrPhone;
 
   bool isLoading = false;
 
   @observable
-  String currentEmail;
+  late String currentEmail;
 
   @observable
-  String currentPhone;
+  late String currentPhone;
 
   @action
   changeNewPassword(int id, String password) async {
     isLoading = true;
-    data = await _firstAccessRepository.changeNewPassword(id, password);
+    data = await firstAccessRepository.changeNewPassword(id, password);
     isLoading = false;
   }
 
   @action
-  changeEmailAndPhone(
-      String email, String phone, int userId, bool changePassword) async {
+  changeEmailAndPhone(String email, String phone, int userId, bool changePassword) async {
     isLoading = true;
-    dataEmailOrPhone = await _firstAccessRepository.changeEmailAndPhone(
-        email, phone, userId, changePassword);
+    dataEmailOrPhone = await firstAccessRepository.changeEmailAndPhone(email, phone, userId, changePassword);
     isLoading = false;
   }
 
