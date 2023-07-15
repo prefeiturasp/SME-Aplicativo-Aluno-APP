@@ -7,14 +7,12 @@ import 'package:sme_app_aluno/ioc/dependencias.ioc.dart';
 import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:sentry/sentry.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
-
-import 'utils/app_config_reader.dart';
+import 'dart:developer' as developer;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -25,9 +23,9 @@ Future initializeAppConfig() async {
   try {
     await AppConfigReader.initialize();
   } catch (error) {
-    print("Erro ao ler arquivo de configurações.");
-    print("Verifique se seu projeto possui o arquivo config/app_config.json");
-    print('$error');
+    developer.log("Erro ao ler arquivo de configurações.");
+    developer.log("Verifique se seu projeto possui o arquivo config/app_config.json");
+    developer.log('$error');
   }
 }
 
@@ -62,13 +60,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<MessagesController>.value(value: MessagesController()),
-        Provider<RecoverPasswordController>.value(
-            value: RecoverPasswordController()),
+        Provider<RecoverPasswordController>.value(value: RecoverPasswordController()),
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         Provider<TermsController>.value(value: TermsController()),
         StreamProvider<ConnectivityStatus>(
-            create: (context) =>
-                ConnectivityService().connectionStatusController.stream),
+            initialData: ConnectivityStatus.Celular,
+            create: (context) => ConnectivityService().connectionStatusController.stream),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
