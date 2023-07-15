@@ -25,8 +25,7 @@ class ViewMessageNotification extends StatefulWidget {
   ViewMessageNotification({@required this.message, @required this.userId});
 
   @override
-  _ViewMessageNotificationState createState() =>
-      _ViewMessageNotificationState();
+  _ViewMessageNotificationState createState() => _ViewMessageNotificationState();
 }
 
 class _ViewMessageNotificationState extends State<ViewMessageNotification> {
@@ -69,22 +68,20 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Atenção"),
-            content: Text(
-                "Você tem certeza que deseja marcar esta mensagem como não lida?"),
+            content: Text("Você tem certeza que deseja marcar esta mensagem como não lida?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
                     _viewMessageUpdate(true, true);
                     Navigator.of(context).pop(false);
-                    var snackbar = SnackBar(
-                        content: Text("Mensagem marcada como não lida"));
+                    var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
                     setState(() {
                       messageIsRead = !messageIsRead;
                     });
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -111,8 +108,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
-      var screenHeight =
-          (size.height - MediaQuery.of(context).padding.top) / 100;
+      var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xffE5E5E5),
@@ -137,8 +133,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                 ),
                 AutoSizeText(
                   "MENSAGEM",
-                  style: TextStyle(
-                      color: Color(0xffDE9524), fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Color(0xffDE9524), fontWeight: FontWeight.w500),
                 ),
                 CardMessage(
                   headerTitle: widget.message.categoriaNotificacao,
@@ -153,9 +148,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 5,
-                        style: TextStyle(
-                            color: Color(0xff666666),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
                       ),
                     ),
                     SizedBox(
@@ -163,21 +156,17 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     ),
                     Container(
                       width: screenHeight * 39,
-                      child: HtmlWidget(widget.message.mensagem,
-                          onTapUrl: (url) => _launchURL(url)),
+                      child: HtmlWidget(widget.message.mensagem, onTapUrl: (url) => _launchURL(url)),
                     ),
                     SizedBox(
                       height: screenHeight * 3,
                     ),
                     AutoSizeText(
-                      DateFormatSuport.formatStringDate(
-                          widget.message.criadoEm, 'dd/MM/yyyy'),
+                      DateFormatSuport.formatStringDate(widget.message.criadoEm, 'dd/MM/yyyy'),
                       maxFontSize: 16,
                       minFontSize: 14,
                       maxLines: 2,
-                      style: TextStyle(
-                          color: Color(0xff666666),
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
                     ),
                   ],
                   footer: true,
@@ -196,8 +185,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                                   color: Color(0xffC65D00),
                                 ),
                                 screenHeight: screenHeight,
-                                onPress: () => _confirmNotReadeMessage(
-                                    widget.message.id, scaffoldKey)),
+                                onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey)),
                           ),
                         ],
                       ),
@@ -206,13 +194,12 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                       child: Container(
                         height: screenHeight * 6,
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xffC65D00), width: 1),
+                          border: Border.all(color: Color(0xffC65D00), width: 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(screenHeight * 3),
                           ),
                         ),
-                        child: FlatButton(
+                        child: ElevatedButton(
                           onPressed: () async {
                             _navigateToListMessage();
                           },
@@ -224,9 +211,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                                 "VOLTAR",
                                 maxFontSize: 16,
                                 minFontSize: 14,
-                                style: TextStyle(
-                                    color: Color(0xffC65D00),
-                                    fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 width: screenHeight * 1,

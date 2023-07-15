@@ -64,54 +64,46 @@ class _ExpansionState extends State<Expansion> {
   }
 
   carregarNotas() async {
-    var bimestres = await _estudanteController
-        .obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
+    var bimestres = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
     if (bimestres != null) {
-      _estudanteNotasController.obterNotasConceito(
-          bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
+      _estudanteNotasController.obterNotasConceito(bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
     } else {
       _estudanteNotasController.limparNotas();
     }
   }
 
   _buildNotesDescUm(index) {
-    return _estudanteNotasController.listNotesUm != null &&
-            _estudanteNotasController.listNotesUm.isNotEmpty
+    return _estudanteNotasController.listNotesUm != null && _estudanteNotasController.listNotesUm.isNotEmpty
         ? _estudanteNotasController.listNotesUm[index].notaDescricao
         : '';
   }
 
   _buildNotesDescDois(index) {
-    return _estudanteNotasController.listNotesDois != null &&
-            _estudanteNotasController.listNotesDois.isNotEmpty
+    return _estudanteNotasController.listNotesDois != null && _estudanteNotasController.listNotesDois.isNotEmpty
         ? _estudanteNotasController.listNotesDois[index].notaDescricao
         : '';
   }
 
   _buildNotesDescTres(index) {
-    return _estudanteNotasController.listNotesTres != null &&
-            _estudanteNotasController.listNotesTres.isNotEmpty
+    return _estudanteNotasController.listNotesTres != null && _estudanteNotasController.listNotesTres.isNotEmpty
         ? _estudanteNotasController.listNotesTres[index].notaDescricao
         : '';
   }
 
   _buildNotesDescQuatro(index) {
-    return _estudanteNotasController.listNotesQuatro != null &&
-            _estudanteNotasController.listNotesQuatro.isNotEmpty
+    return _estudanteNotasController.listNotesQuatro != null && _estudanteNotasController.listNotesQuatro.isNotEmpty
         ? _estudanteNotasController.listNotesQuatro[index].notaDescricao
         : '';
   }
 
   _buildNotesDescFinal(index) {
-    return _estudanteNotasController.listNotesFinal != null &&
-            _estudanteNotasController.listNotesFinal.isNotEmpty
+    return _estudanteNotasController.listNotesFinal != null && _estudanteNotasController.listNotesFinal.isNotEmpty
         ? _estudanteNotasController.listNotesFinal[index].notaDescricao
         : '';
   }
 
   String _obterNota(int index, int bimestre) {
-    var notaConceito = _estudanteNotasController
-        .componentesCurricularesNotasConceitos[index].notasConceitos
+    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos
         .where((element) => element.bimestre == bimestre);
     var qtdRegistros = notaConceito.length;
     if (qtdRegistros > 0) {
@@ -125,14 +117,11 @@ class _ExpansionState extends State<Expansion> {
   }
 
   Color _obterCor(int index, int bimestre) {
-    var notaConceito = _estudanteNotasController
-        .componentesCurricularesNotasConceitos[index].notasConceitos
+    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos
         .where((element) => element.bimestre == bimestre);
     var qtdRegistros = notaConceito.length;
     if (qtdRegistros > 0) {
-      return notaConceito != null
-          ? HexColor(notaConceito.first.corDaNota.toString())
-          : Color(0xFFD4D4D4);
+      return notaConceito != null ? HexColor(notaConceito.first.corDaNota.toString()) : Color(0xFFD4D4D4);
     }
     return Color(0xFFD4D4D4);
   }
@@ -140,9 +129,7 @@ class _ExpansionState extends State<Expansion> {
   Widget _corpoNotasMontar(context, int index) {
     return CorpoNotas(
       groupSchool: widget.groupSchool,
-      title: _estudanteNotasController
-          .componentesCurricularesNotasConceitos[index]
-          .componenteCurricularNome,
+      title: _estudanteNotasController.componentesCurricularesNotasConceitos[index].componenteCurricularNome,
       bUm: _obterNota(index, 1),
       bDois: _obterNota(index, 2),
       bTres: _obterNota(index, 3),
@@ -179,8 +166,7 @@ class _ExpansionState extends State<Expansion> {
             margin: EdgeInsets.all(screenHeight * 1),
             child: Scrollbar(
               child: ListView.builder(
-                itemCount: _estudanteNotasController
-                    .componentesCurricularesNotasConceitos.length,
+                itemCount: _estudanteNotasController.componentesCurricularesNotasConceitos.length,
                 itemBuilder: _corpoNotasMontar,
               ),
             ),
@@ -250,7 +236,7 @@ class _ExpansionState extends State<Expansion> {
                       color: Colors.black,
                     ),
                   ),
-                  FlatButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -269,9 +255,7 @@ class _ExpansionState extends State<Expansion> {
                           "ENTENDI",
                           maxFontSize: 13,
                           minFontSize: 11,
-                          style: TextStyle(
-                              color: Color(0xffd06d12),
-                              fontWeight: FontWeight.w600),
+                          style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
@@ -300,11 +284,7 @@ class _ExpansionState extends State<Expansion> {
 
   _buscarRecomandacao() async {
     var busca = await _repositorioRecomandacao.obterRecomendacaoAluno(
-        widget.codigoAluno,
-        widget.codigoTurma,
-        widget.anoLetivo,
-        int.parse(widget.codigoModalidade),
-        widget.semestre);
+        widget.codigoAluno, widget.codigoTurma, widget.anoLetivo, int.parse(widget.codigoModalidade), widget.semestre);
     setState(() {
       recomendacaoAluno = busca;
     });
@@ -342,14 +322,13 @@ class _ExpansionState extends State<Expansion> {
         widget.codigoModalidade == ModalidadeTipo.Medio ||
         widget.codigoModalidade == ModalidadeTipo.Fundamental) {
       return mostrarBotao
-          ? FlatButton(
+          ? ElevatedButton(
               onPressed: () async {
                 ocultarButao();
                 var solicitacao = await _solicitarBoletim();
                 if (solicitacao) {
                   exibirBotao();
-                  _modalInfo(
-                      screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
+                  _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
                 } else {
                   exibirBotao();
                   _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
@@ -370,8 +349,7 @@ class _ExpansionState extends State<Expansion> {
                     MensagemSistema.LabelBotaoGerarPDF,
                     maxFontSize: 16,
                     minFontSize: 14,
-                    style: TextStyle(
-                        color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+                    style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
                     width: screenHeight * 3,
@@ -393,7 +371,7 @@ class _ExpansionState extends State<Expansion> {
   _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
       return mostrarBotao
-          ? FlatButton(
+          ? ElevatedButton(
               onPressed: () async {
                 ocultarButao();
                 var solicitacao = await _solicitarRelatorioRaa();
@@ -421,8 +399,7 @@ class _ExpansionState extends State<Expansion> {
                     MensagemSistema.LabelBotaoGerarRelatorio,
                     maxFontSize: 16,
                     minFontSize: 14,
-                    style: TextStyle(
-                        color: Color(0xffd06d12), fontWeight: FontWeight.w700),
+                    style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
                     width: screenHeight * 3,
@@ -449,10 +426,9 @@ class _ExpansionState extends State<Expansion> {
             child: Scrollbar(
               child: ObsBody(
                 current: true,
-                recomendacoesAluno: recomendacaoAluno.recomendacoesAluno ??
-                    recomendacaoAluno.mensagemAlerta,
-                recomendacoesFamilia: recomendacaoAluno.recomendacoesFamilia ??
-                    "Sem recomendações à familía para exibir",
+                recomendacoesAluno: recomendacaoAluno.recomendacoesAluno ?? recomendacaoAluno.mensagemAlerta,
+                recomendacoesFamilia:
+                    recomendacaoAluno.recomendacoesFamilia ?? "Sem recomendações à familía para exibir",
                 title: "Recomendações",
               ),
             ),
@@ -476,9 +452,7 @@ class _ExpansionState extends State<Expansion> {
               return _buildLoader(screenHeight);
             }
 
-            if (_estudanteNotasController
-                        .componentesCurricularesNotasConceitos !=
-                    null &&
+            if (_estudanteNotasController.componentesCurricularesNotasConceitos != null &&
                 widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
               return Container(
                 child: Column(

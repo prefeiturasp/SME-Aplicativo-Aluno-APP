@@ -38,12 +38,12 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
             title: Text("Atenção"),
             content: Text("Você tem certeza que deseja excluir esta mensagem?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
                     // _removeMesageToStorage(id);
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -83,8 +83,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
             decoration: BoxDecoration(
                 color: widget.recent ? Color(0xffE1771D) : Color(0xffF8E8C2),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -94,12 +93,8 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Icon(
-                          widget.recent
-                              ? FontAwesomeIcons.envelope
-                              : FontAwesomeIcons.envelopeOpen,
-                          color: widget.recent
-                              ? Color(0xffFFD037)
-                              : Color(0xffE1771D),
+                          widget.recent ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
+                          color: widget.recent ? Color(0xffFFD037) : Color(0xffE1771D),
                           size: screenHeight * 2.7,
                         ),
                         SizedBox(
@@ -110,16 +105,12 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           maxFontSize: 18,
                           minFontSize: 16,
                           style: TextStyle(
-                              color: widget.recent
-                                  ? Colors.white
-                                  : Color(0xffE1771D),
-                              fontWeight: FontWeight.w700),
+                              color: widget.recent ? Colors.white : Color(0xffE1771D), fontWeight: FontWeight.w700),
                         ),
                       ],
                     )),
                 Visibility(
-                  visible:
-                      widget.countMessages != null && widget.countMessages > 0,
+                  visible: widget.countMessages != null && widget.countMessages > 0,
                   child: Stack(overflow: Overflow.visible, children: <Widget>[
                     Container(
                       width: screenHeight * 3.5,
@@ -153,9 +144,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               "${widget.countMessages}",
                               maxFontSize: 12,
                               minFontSize: 10,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xffC45C04)),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffC45C04)),
                             ),
                           )),
                     ),
@@ -186,10 +175,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               minFontSize: 14,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: widget.recent
-                                      ? Colors.white
-                                      : Color(0xff666666),
-                                  fontWeight: FontWeight.w700),
+                                  color: widget.recent ? Colors.white : Color(0xff666666), fontWeight: FontWeight.w700),
                             ),
                             SizedBox(
                               height: screenHeight * 1.8,
@@ -198,16 +184,13 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               width: screenHeight * 36,
                               child: AutoSizeText(
                                 StringSupport.parseHtmlString(
-                                    StringSupport.truncateEndString(
-                                        widget.message.mensagem, 250)),
+                                    StringSupport.truncateEndString(widget.message.mensagem, 250)),
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 10,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  color: widget.recent
-                                      ? Colors.white
-                                      : Color(0xff666666),
+                                  color: widget.recent ? Colors.white : Color(0xff666666),
                                 ),
                               ),
                             ),
@@ -215,15 +198,12 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               height: screenHeight * 3,
                             ),
                             AutoSizeText(
-                              DateFormatSuport.formatStringDate(
-                                  widget.message.criadoEm, 'dd/MM/yyyy'),
+                              DateFormatSuport.formatStringDate(widget.message.criadoEm, 'dd/MM/yyyy'),
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: widget.recent
-                                      ? Colors.white
-                                      : Color(0xff666666),
+                                  color: widget.recent ? Colors.white : Color(0xff666666),
                                   fontWeight: FontWeight.w700,
                                   height: screenHeight * 0.5),
                             ),
@@ -234,8 +214,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           maxFontSize: 16,
                           minFontSize: 14,
                           maxLines: 2,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                         ),
                 )),
           ),
@@ -246,8 +225,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           ? null
                           : Color(0xffF3F3F3)
                       : Color(0xffC45C04),
-                  borderRadius: widget.message != null &&
-                          widget.countMessages > 0
+                  borderRadius: widget.message != null && widget.countMessages > 0
                       ? widget.recent
                           ? null
                           : BorderRadius.only(
@@ -277,8 +255,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                               width: screenHeight * 6,
                               height: screenHeight * 6,
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffC65D00), width: 1),
+                                border: Border.all(color: Color(0xffC65D00), width: 1),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(screenHeight * 3),
                                 ),
@@ -294,13 +271,12 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           child: Container(
                             height: screenHeight * 6,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffC65D00), width: 1),
+                              border: Border.all(color: Color(0xffC65D00), width: 1),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(screenHeight * 3),
                               ),
                             ),
-                            child: FlatButton(
+                            child: ElevatedButton(
                               onPressed: widget.outherRoutes,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -310,9 +286,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                                     "VER TODAS",
                                     maxFontSize: 16,
                                     minFontSize: 14,
-                                    style: TextStyle(
-                                        color: Color(0xffC65D00),
-                                        fontWeight: FontWeight.w700),
+                                    style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                                   ),
                                   SizedBox(
                                     width: screenHeight * 2,

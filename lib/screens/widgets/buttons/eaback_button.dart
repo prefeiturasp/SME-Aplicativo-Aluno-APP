@@ -25,9 +25,8 @@ class EABackButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: screenHeight * 6,
         decoration: BoxDecoration(
-            color: !disabled ? Color(0xffF2F1EE) : btnColor,
-            borderRadius: BorderRadius.circular(screenHeight * 3)),
-        child: FlatButton(
+            color: !disabled ? Color(0xffF2F1EE) : btnColor, borderRadius: BorderRadius.circular(screenHeight * 3)),
+        child: ElevatedButton(
             onPressed: !disabled ? null : onPress,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,9 +47,7 @@ class EABackButton extends StatelessWidget {
                   text,
                   maxFontSize: 16,
                   minFontSize: 14,
-                  style: TextStyle(
-                      color: !disabled ? Color(0xffC4C4C4) : Colors.white,
-                      fontWeight: FontWeight.w700),
+                  style: TextStyle(color: !disabled ? Color(0xffC4C4C4) : Colors.white, fontWeight: FontWeight.w700),
                 ),
               ],
             )));

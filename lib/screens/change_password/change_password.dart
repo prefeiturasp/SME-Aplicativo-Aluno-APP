@@ -99,13 +99,13 @@ class _ChangePasswordState extends State<ChangePassword> {
             title: Text("Atenção"),
             content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text("SIM"),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
               ),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);

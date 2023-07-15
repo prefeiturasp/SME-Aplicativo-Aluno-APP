@@ -89,14 +89,14 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
             title: Text("Atenção"),
             content: Text("Deseja sair do aplicativo?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text("SIM"),
                 onPressed: () {
                   Auth.logout(context, _usuarioStore.id, false);
                   Nav.pushReplacement(context, LoginView());
                 },
               ),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);

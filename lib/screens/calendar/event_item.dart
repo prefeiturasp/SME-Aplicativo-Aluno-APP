@@ -70,8 +70,7 @@ class EventItem extends StatelessWidget {
                           "Avaliação: ${formatDate.format(dataInicio)}",
                           overflow: TextOverflow.clip,
                           maxLines: 4,
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w600),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
@@ -87,9 +86,7 @@ class EventItem extends StatelessWidget {
                               "Componente Curricular",
                               overflow: TextOverflow.clip,
                               maxLines: 4,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
                               height: 12,
@@ -114,8 +111,7 @@ class EventItem extends StatelessWidget {
                     "Nome da Avaliação",
                     overflow: TextOverflow.clip,
                     maxLines: 4,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 12,
@@ -133,8 +129,7 @@ class EventItem extends StatelessWidget {
                     "Conteúdo",
                     overflow: TextOverflow.clip,
                     maxLines: 4,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 12,
@@ -147,7 +142,7 @@ class EventItem extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              new FlatButton(
+              ElevatedButton(
                 child: new Text("FECHAR"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -160,8 +155,7 @@ class EventItem extends StatelessWidget {
     }
 
     return Container(
-        padding:
-            EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
+        padding: EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
         child: Container(
           height: screenHeight * 6,
           child: InkWell(
@@ -200,10 +194,7 @@ class EventItem extends StatelessWidget {
                     dataInicio.day.toString(),
                     maxFontSize: 16,
                     minFontSize: 14,
-                    style: TextStyle(
-                        fontSize: screenHeight * 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: screenHeight * 2, color: Colors.white, fontWeight: FontWeight.w600),
                   )),
             ),
             onTap: () {

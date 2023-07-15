@@ -18,10 +18,7 @@ class ViewMessage extends StatefulWidget {
   final int codigoAlunoEol;
   final int userId;
 
-  ViewMessage(
-      {@required this.message,
-      @required this.codigoAlunoEol,
-      @required this.userId});
+  ViewMessage({@required this.message, @required this.codigoAlunoEol, @required this.userId});
 
   @override
   _ViewMessageState createState() => _ViewMessageState();
@@ -64,7 +61,7 @@ class _ViewMessageState extends State<ViewMessage> {
             title: Text("Atenção"),
             content: Text("Você tem certeza que deseja excluir esta mensagem?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () async {
                     await _removeMesageToStorage(
@@ -75,7 +72,7 @@ class _ViewMessageState extends State<ViewMessage> {
                     Navigator.of(context).pop(false);
                     Navigator.pop(context);
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -92,22 +89,20 @@ class _ViewMessageState extends State<ViewMessage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Atenção"),
-            content: Text(
-                "Você tem certeza que deseja marcar esta mensagem como não lida?"),
+            content: Text("Você tem certeza que deseja marcar esta mensagem como não lida?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
                     _viewMessageUpdate(false, true);
                     Navigator.of(context).pop(false);
-                    var snackbar = SnackBar(
-                        content: Text("Mensagem marcada como não lida"));
+                    var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
                     scaffoldKey.currentState.showSnackBar(snackbar);
                     setState(() {
                       messageIsRead = false;
                     });
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -142,8 +137,7 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   String _obterCodigoRelatorio(url) {
-    final regexp = RegExp(
-        r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
+    final regexp = RegExp(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
     return regexp.stringMatch(url);
   }
 
@@ -208,7 +202,7 @@ class _ViewMessageState extends State<ViewMessage> {
                       color: Colors.black,
                     ),
                   ),
-                  FlatButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -227,9 +221,7 @@ class _ViewMessageState extends State<ViewMessage> {
                           "ENTENDI",
                           maxFontSize: 14,
                           minFontSize: 12,
-                          style: TextStyle(
-                              color: Color(0xffd06d12),
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
@@ -251,8 +243,7 @@ class _ViewMessageState extends State<ViewMessage> {
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
-      var screenHeight =
-          (size.height - MediaQuery.of(context).padding.top) / 100;
+      var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xffE5E5E5),
@@ -272,8 +263,7 @@ class _ViewMessageState extends State<ViewMessage> {
                 ),
                 AutoSizeText(
                   "MENSAGEM",
-                  style: TextStyle(
-                      color: Color(0xffDE9524), fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Color(0xffDE9524), fontWeight: FontWeight.w500),
                 ),
                 CardMessage(
                   headerTitle: widget.message.categoriaNotificacao,
@@ -288,9 +278,7 @@ class _ViewMessageState extends State<ViewMessage> {
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 5,
-                        style: TextStyle(
-                            color: Color(0xff666666),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
                       ),
                     ),
                     SizedBox(
@@ -307,14 +295,11 @@ class _ViewMessageState extends State<ViewMessage> {
                       height: screenHeight * 3,
                     ),
                     AutoSizeText(
-                      DateFormatSuport.formatStringDate(
-                          widget.message.criadoEm, 'dd/MM/yyyy'),
+                      DateFormatSuport.formatStringDate(widget.message.criadoEm, 'dd/MM/yyyy'),
                       maxFontSize: 16,
                       minFontSize: 14,
                       maxLines: 2,
-                      style: TextStyle(
-                          color: Color(0xff666666),
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
                     ),
                   ],
                   footer: true,
@@ -328,8 +313,7 @@ class _ViewMessageState extends State<ViewMessage> {
                               color: Color(0xffC65D00),
                             ),
                             screenHeight: screenHeight,
-                            onPress: () =>
-                                _confirmDeleteMessage(widget.message.id),
+                            onPress: () => _confirmDeleteMessage(widget.message.id),
                           ),
                           SizedBox(
                             width: screenHeight * 2,
@@ -342,8 +326,7 @@ class _ViewMessageState extends State<ViewMessage> {
                                   color: Color(0xffC65D00),
                                 ),
                                 screenHeight: screenHeight,
-                                onPress: () => _confirmNotReadeMessage(
-                                    widget.message.id, scaffoldKey)),
+                                onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey)),
                           ),
                         ],
                       ),
@@ -352,13 +335,12 @@ class _ViewMessageState extends State<ViewMessage> {
                       child: Container(
                         height: screenHeight * 6,
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xffC65D00), width: 1),
+                          border: Border.all(color: Color(0xffC65D00), width: 1),
                           borderRadius: BorderRadius.all(
                             Radius.circular(screenHeight * 3),
                           ),
                         ),
-                        child: FlatButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -370,9 +352,7 @@ class _ViewMessageState extends State<ViewMessage> {
                                 "VOLTAR",
                                 maxFontSize: 16,
                                 minFontSize: 14,
-                                style: TextStyle(
-                                    color: Color(0xffC65D00),
-                                    fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 width: screenHeight * 1,

@@ -10,11 +10,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
   final int userId;
   final String modalidade;
   final String codigoGrupo;
-  EAResumoEstudanteCard(
-      {@required this.estudante,
-      this.modalidade,
-      this.userId,
-      this.codigoGrupo});
+  EAResumoEstudanteCard({@required this.estudante, this.modalidade, this.userId, this.codigoGrupo});
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +36,11 @@ class EAResumoEstudanteCard extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(
-                top: screenHeight * 2,
-                bottom: screenHeight * 2,
-                left: screenHeight * 2.5,
-                right: screenHeight * 2.5),
+                top: screenHeight * 2, bottom: screenHeight * 2, left: screenHeight * 2.5, right: screenHeight * 2.5),
             decoration: BoxDecoration(
                 color: Color(0xffEFB330),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -77,10 +69,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
             ),
           ),
           EAEstudanteInfo(
-            nome:
-                estudante.nomeSocial != null && estudante.nomeSocial.isNotEmpty
-                    ? estudante.nomeSocial
-                    : estudante.nome,
+            nome: estudante.nomeSocial.isNotEmpty ? estudante.nomeSocial : estudante.nome,
             ue: estudante.escola,
             tipoEscola: estudante.descricaoTipoEscola,
             dre: estudante.siglaDre,
@@ -103,7 +92,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
                   Radius.circular(screenHeight * 3),
                 ),
               ),
-              child: FlatButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -122,9 +111,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
                       "MAIS INFORMAÇÕES",
                       maxFontSize: 16,
                       minFontSize: 14,
-                      style: TextStyle(
-                          color: Color(0xffC65D00),
-                          fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
                       width: screenHeight * 3,

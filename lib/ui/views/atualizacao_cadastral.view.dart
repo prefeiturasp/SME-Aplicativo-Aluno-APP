@@ -126,13 +126,13 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
               "Ao confirmar você será desconectado do aplicado. Para voltar para esta etapa você deverá realizar o login novamente. Deseja realmente sair do aplicativo?",
             ),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text('NÃO'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
+              ElevatedButton(
                 child: Text('SIM'),
                 onPressed: () async {
                   await Auth.logout(context, usuarioStore.usuario.id, false);

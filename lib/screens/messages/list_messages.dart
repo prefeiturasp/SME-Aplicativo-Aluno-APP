@@ -52,7 +52,7 @@ class _ListMessageState extends State<ListMessages> {
             title: Text("Atenção"),
             content: Text("Você tem certeza que deseja excluir esta mensagem?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(
@@ -63,7 +63,7 @@ class _ListMessageState extends State<ListMessages> {
 
                     Navigator.of(context).pop(true);
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -175,7 +175,7 @@ class _ListMessageState extends State<ListMessages> {
                               Radius.circular(screenHeight * 3),
                             ),
                           ),
-                          child: FlatButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(
@@ -341,7 +341,7 @@ class _ListMessageState extends State<ListMessages> {
                             Radius.circular(screenHeight * 3),
                           ),
                         ),
-                        child: FlatButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             _navigateToMessage(context, _messagesController.messages.first);
                           },

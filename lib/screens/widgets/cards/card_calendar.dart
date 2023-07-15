@@ -51,13 +51,11 @@ class CardCalendar extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding:
-                isHeader ? EdgeInsets.all(screenHeight * 2.5) : EdgeInsets.zero,
+            padding: isHeader ? EdgeInsets.all(screenHeight * 2.5) : EdgeInsets.zero,
             decoration: BoxDecoration(
                 color: isHeader ? Color(0xffFFD037) : Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -76,9 +74,7 @@ class CardCalendar extends StatelessWidget {
                         title,
                         maxFontSize: 18,
                         minFontSize: 16,
-                        style: TextStyle(
-                            color: Color(0xffC45C04),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
                       )
                     : Container(),
               ],
@@ -96,28 +92,22 @@ class CardCalendar extends StatelessWidget {
                     month.toString().toUpperCase(),
                     maxFontSize: 18,
                     minFontSize: 16,
-                    style: TextStyle(
-                        color: Color(0xffC45C04), fontWeight: FontWeight.w700),
+                    style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
                     textAlign: TextAlign.center,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(screenHeight * 5)),
+                    borderRadius: BorderRadius.all(Radius.circular(screenHeight * 5)),
                     color: Color(0xFFF3F3F3),
                   ),
                 ),
                 SizedBox(
                   height: screenHeight * 2,
                 ),
-                Container(
-                    color: Colors.white,
-                    height: heightContainer,
-                    child: widget),
+                Container(color: Colors.white, height: heightContainer, child: widget),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(screenHeight * 2),
-                        bottomRight: Radius.circular(screenHeight * 2)),
+                        bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2)),
                   ),
                   padding: EdgeInsets.only(
                       left: screenHeight * 2.5,
@@ -133,9 +123,7 @@ class CardCalendar extends StatelessWidget {
                           totalEventos,
                           maxFontSize: 18,
                           minFontSize: 16,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xffCDCDCD)),
+                          style: TextStyle(fontWeight: FontWeight.w500, color: Color(0xffCDCDCD)),
                         ),
                       ],
                     ),
@@ -144,8 +132,7 @@ class CardCalendar extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(screenHeight * 2),
-                        bottomRight: Radius.circular(screenHeight * 2)),
+                        bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2)),
                   ),
                   padding: EdgeInsets.only(
                       left: screenHeight * 2.5,
@@ -161,7 +148,7 @@ class CardCalendar extends StatelessWidget {
                           Radius.circular(screenHeight * 3),
                         ),
                       ),
-                      child: FlatButton(
+                      child: ElevatedButton(
                         onPressed: onPress,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -171,9 +158,7 @@ class CardCalendar extends StatelessWidget {
                               "VER AGENDA COMPLETA",
                               maxFontSize: 16,
                               minFontSize: 14,
-                              style: TextStyle(
-                                  color: Color(0xffC65D00),
-                                  fontWeight: FontWeight.w700),
+                              style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                             ),
                             SizedBox(
                               width: screenHeight * 2,

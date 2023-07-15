@@ -40,12 +40,12 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
             title: Text("Atenção"),
             content: Text("Você tem certeza que deseja excluir esta mensagem?"),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
                     _removeMesageToStorage(id);
                   }),
-              FlatButton(
+              ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
                   Navigator.of(context).pop(false);
@@ -66,9 +66,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
     const colorUE = Color(0xff5151CF);
     const colorDRE = Color(0xff599E00);
     return Container(
-      width: widget.totalCateories == 1
-          ? MediaQuery.of(context).size.width
-          : screenHeight * 40,
+      width: widget.totalCateories == 1 ? MediaQuery.of(context).size.width : screenHeight * 40,
       margin: EdgeInsets.only(
         top: screenHeight * 1,
         right: widget.totalCateories == 1 ? 0.0 : screenHeight * 1.5,
@@ -105,8 +103,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                             ? colorDRE
                             : colorDRE.withOpacity(0.4),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -115,9 +112,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Icon(
-                      widget.recent
-                          ? FontAwesomeIcons.envelope
-                          : FontAwesomeIcons.envelopeOpen,
+                      widget.recent ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
                       color: widget.recent
                           ? Color(0xffFFD037)
                           : widget.message.categoriaNotificacao == "SME"
@@ -147,8 +142,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                   ],
                 )),
                 Visibility(
-                  visible:
-                      widget.countMessages != null && widget.countMessages > 0,
+                  visible: widget.countMessages != null && widget.countMessages > 0,
                   child: Stack(overflow: Overflow.visible, children: <Widget>[
                     Container(
                       width: screenHeight * 3.2,
@@ -166,12 +160,8 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                         ),
                       ),
                       child: Icon(
-                        widget.recent
-                            ? FontAwesomeIcons.envelope
-                            : FontAwesomeIcons.envelopeOpen,
-                        color: !widget.recent
-                            ? Color(0xffffffff)
-                            : Color(0xffC65D00),
+                        widget.recent ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
+                        color: !widget.recent ? Color(0xffffffff) : Color(0xffC65D00),
                         size: 10,
                       ),
                     ),
@@ -194,11 +184,9 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                               minFontSize: 10,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: widget.message.categoriaNotificacao ==
-                                          "SME"
+                                  color: widget.message.categoriaNotificacao == "SME"
                                       ? colorSME
-                                      : widget.message.categoriaNotificacao ==
-                                              "UE"
+                                      : widget.message.categoriaNotificacao == "UE"
                                           ? colorUE
                                           : colorDRE),
                             ),
@@ -232,18 +220,14 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 2,
-                                style: TextStyle(
-                                    color: Color(0xff666666),
-                                    fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Color(0xff666666), fontWeight: FontWeight.w700),
                               ),
                             ),
                             Container(
                               width: size.width / 1.2,
                               child: AutoSizeText(
                                 StringSupport.truncateEndString(
-                                    StringSupport.parseHtmlString(
-                                        widget.message.mensagem),
-                                    80),
+                                    StringSupport.parseHtmlString(widget.message.mensagem), 80),
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 maxLines: 10,
@@ -257,15 +241,12 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                               height: screenHeight * 3,
                             ),
                             AutoSizeText(
-                              DateFormatSuport.formatStringDate(
-                                  widget.message.criadoEm, 'dd/MM/yyyy'),
+                              DateFormatSuport.formatStringDate(widget.message.criadoEm, 'dd/MM/yyyy'),
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 2,
                               style: TextStyle(
-                                  color: Color(0xff666666),
-                                  fontWeight: FontWeight.w700,
-                                  height: screenHeight * 0.5),
+                                  color: Color(0xff666666), fontWeight: FontWeight.w700, height: screenHeight * 0.5),
                             ),
                           ],
                         )
@@ -274,26 +255,22 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                           maxFontSize: 16,
                           minFontSize: 14,
                           maxLines: 2,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                         ),
                 )),
           ),
           Container(
               decoration: BoxDecoration(
-                  color: widget.message != null && widget.countMessages > 0
-                      ? Color(0xffF3F3F3)
-                      : Color(0xffC45C04),
-                  borderRadius:
-                      widget.message != null && widget.countMessages > 0
-                          ? BorderRadius.only(
-                              bottomLeft: Radius.circular(screenHeight * 2),
-                              bottomRight: Radius.circular(screenHeight * 2),
-                            )
-                          : BorderRadius.only(
-                              bottomLeft: Radius.circular(screenHeight * 2),
-                              bottomRight: Radius.circular(screenHeight * 2),
-                            )),
+                  color: widget.message != null && widget.countMessages > 0 ? Color(0xffF3F3F3) : Color(0xffC45C04),
+                  borderRadius: widget.message != null && widget.countMessages > 0
+                      ? BorderRadius.only(
+                          bottomLeft: Radius.circular(screenHeight * 2),
+                          bottomRight: Radius.circular(screenHeight * 2),
+                        )
+                      : BorderRadius.only(
+                          bottomLeft: Radius.circular(screenHeight * 2),
+                          bottomRight: Radius.circular(screenHeight * 2),
+                        )),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,
                   right: screenHeight * 2.5,
@@ -313,8 +290,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                               width: screenHeight * 6,
                               height: screenHeight * 6,
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color(0xffC65D00), width: 1),
+                                border: Border.all(color: Color(0xffC65D00), width: 1),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(screenHeight * 3),
                                 ),
@@ -330,13 +306,12 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                           child: Container(
                             height: screenHeight * 6,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color(0xffC65D00), width: 1),
+                              border: Border.all(color: Color(0xffC65D00), width: 1),
                               borderRadius: BorderRadius.all(
                                 Radius.circular(screenHeight * 3),
                               ),
                             ),
-                            child: FlatButton(
+                            child: ElevatedButton(
                               onPressed: widget.outherRoutes,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -346,9 +321,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                                     "VER TODAS",
                                     maxFontSize: 16,
                                     minFontSize: 14,
-                                    style: TextStyle(
-                                        color: Color(0xffC65D00),
-                                        fontWeight: FontWeight.w700),
+                                    style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                                   ),
                                   SizedBox(
                                     width: screenHeight * 2,
