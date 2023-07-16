@@ -3,17 +3,15 @@ import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/repositories/terms_repository.dart';
 part 'terms.controller.g.dart';
 
-class TermsController = _TermsControllerBase with _$TermsController;
+class TermsController = TermsControllerBase with _$TermsController;
 
-abstract class _TermsControllerBase with Store {
+abstract class TermsControllerBase with Store {
   TermsRepository _termsRepository;
 
-  _TermsControllerBase() {
-    _termsRepository = TermsRepository();
-  }
+  TermsControllerBase(this._termsRepository);
 
   @observable
-  Term term;
+  late Term term;
 
   @observable
   bool loading = false;
@@ -36,8 +34,7 @@ abstract class _TermsControllerBase with Store {
   }
 
   @action
-  registerTerms(int termoDeUsoId, String cpf, String device, String ip,
-      double versao) async {
+  registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
     loading = true;
     await _termsRepository.registerTerms(termoDeUsoId, cpf, device, ip, versao);
     loading = false;

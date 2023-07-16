@@ -8,9 +8,9 @@ part of 'terms.controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$TermsController on _TermsControllerBase, Store {
+mixin _$TermsController on TermsControllerBase, Store {
   late final _$termAtom =
-      Atom(name: '_TermsControllerBase.term', context: context);
+      Atom(name: 'TermsControllerBase.term', context: context);
 
   @override
   Term get term {
@@ -26,7 +26,7 @@ mixin _$TermsController on _TermsControllerBase, Store {
   }
 
   late final _$loadingAtom =
-      Atom(name: '_TermsControllerBase.loading', context: context);
+      Atom(name: 'TermsControllerBase.loading', context: context);
 
   @override
   bool get loading {
@@ -42,7 +42,7 @@ mixin _$TermsController on _TermsControllerBase, Store {
   }
 
   late final _$isTermAtom =
-      Atom(name: '_TermsControllerBase.isTerm', context: context);
+      Atom(name: 'TermsControllerBase.isTerm', context: context);
 
   @override
   bool get isTerm {
@@ -58,7 +58,7 @@ mixin _$TermsController on _TermsControllerBase, Store {
   }
 
   late final _$fetchTermoAsyncAction =
-      AsyncAction('_TermsControllerBase.fetchTermo', context: context);
+      AsyncAction('TermsControllerBase.fetchTermo', context: context);
 
   @override
   Future fetchTermo(String cpf) {
@@ -66,7 +66,7 @@ mixin _$TermsController on _TermsControllerBase, Store {
   }
 
   late final _$fetchTermoCurrentUserAsyncAction = AsyncAction(
-      '_TermsControllerBase.fetchTermoCurrentUser',
+      'TermsControllerBase.fetchTermoCurrentUser',
       context: context);
 
   @override
@@ -76,7 +76,7 @@ mixin _$TermsController on _TermsControllerBase, Store {
   }
 
   late final _$registerTermsAsyncAction =
-      AsyncAction('_TermsControllerBase.registerTerms', context: context);
+      AsyncAction('TermsControllerBase.registerTerms', context: context);
 
   @override
   Future registerTerms(
