@@ -1,8 +1,8 @@
 class DataChangeEmailAndPhone {
-  bool ok;
-  List<String> erros;
-  ValidacaoErros validacaoErros;
-  String token;
+  bool? ok;
+  List<String>? erros;
+  ValidacaoErros? validacaoErros;
+  String? token;
 
   DataChangeEmailAndPhone({this.ok, this.erros, this.validacaoErros});
 
@@ -20,7 +20,7 @@ class DataChangeEmailAndPhone {
     data['ok'] = this.ok;
     data['erros'] = this.erros;
     if (this.validacaoErros != null) {
-      data['validacaoErros'] = this.validacaoErros.toJson();
+      data['validacaoErros'] = this.validacaoErros?.toJson();
     }
     data['data']['token'] = this.token;
     return data;
@@ -28,9 +28,9 @@ class DataChangeEmailAndPhone {
 }
 
 class ValidacaoErros {
-  List<String> additionalProp1;
-  List<String> additionalProp2;
-  List<String> additionalProp3;
+  List<String>? additionalProp1;
+  List<String>? additionalProp2;
+  List<String>? additionalProp3;
 
   ValidacaoErros(
       {this.additionalProp1, this.additionalProp2, this.additionalProp3});
