@@ -1,7 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Data {
-  late bool ok;
-  late List<String> erros;
-  late ValidacaoErros validacaoErros;
+  bool ok = false;
+  List<String> erros = [];
+  ValidacaoErros validacaoErros = ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []);
   Data({
     required this.ok,
     required this.erros,

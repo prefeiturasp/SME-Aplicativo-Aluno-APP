@@ -1,9 +1,9 @@
+import 'dart:developer';
+
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 
 class MessageService {
   final dbHelper = DBHelper();
@@ -11,15 +11,13 @@ class MessageService {
   Future create(Message model) async {
     final Database _db = await dbHelper.initDatabase();
     try {
-      await _db.insert(TB_MESSAGE, model.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      print("--------------------------");
-      print("DB LOCAL -> Mensagem criada com sucesso: ${model.toMap()}");
-      print("--------------------------");
+      await _db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      log("--------------------------");
+      log("DB LOCAL -> Mensagem criada com sucesso: ${model.toMap()}");
+      log("--------------------------");
     } catch (ex) {
-      print("Erro ao criar mensagem: $ex");
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
-      return;
+      log("Erro ao criar mensagem: $ex");
+      throw Exception(ex);
     }
   }
 
@@ -37,19 +35,18 @@ class MessageService {
             categoriaNotificacao: maps[i]['categoriaNotificacao'],
             criadoEm: maps[i]['criadoEm'],
             dataEnvio: maps[i]['dataEnvio'],
-            mensagemVisualizada:
-                maps[i]['mensagemVisualizada'] == 1 ? true : false,
+            mensagemVisualizada: maps[i]['mensagemVisualizada'] == 1 ? true : false,
             codigoEOL: maps[i]['codigoEOL'] ?? null,
           );
         },
       );
-      print("--------------------------");
-      print("DB LOCAL -> Lista de mensagens carregada: $messages}");
-      print("--------------------------");
+      log("--------------------------");
+      log("DB LOCAL -> Lista de mensagens carregada: $messages}");
+      log("--------------------------");
       return messages;
     } catch (ex) {
-      print(ex);
-      return new List<Message>();
+      log(ex.toString());
+      throw Exception(ex);
     }
   }
 
@@ -61,12 +58,12 @@ class MessageService {
         where: "id = ?",
         whereArgs: [id],
       );
-      print("DB LOCAL -> Usuário removido com sucesso: $id");
+      log("DB LOCAL -> Usuário removido com sucesso: $id");
     } catch (ex) {
-      print("<--------------------------");
-      print("Erro ao deletar usuário: $ex");
-      print("<--------------------------");
-      return;
+      log("<--------------------------");
+      log("Erro ao deletar usuário: $ex");
+      log("<--------------------------");
+      throw Exception(ex);
     }
   }
 }

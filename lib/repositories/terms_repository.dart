@@ -1,18 +1,17 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 
 class TermsRepository extends ITermsRepository {
   @override
   Future<dynamic> fetchTerms(String cpf) async {
     try {
-      var response = await http
-          .get("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
+      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
+      var response = await http.get(url);
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
@@ -20,21 +19,20 @@ class TermsRepository extends ITermsRepository {
       } else if (response.statusCode == 204) {
         return Term();
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+      throw Exception(e);
     }
   }
 
   @override
   Future<dynamic> fetchTermsCurrentUser() async {
     try {
-      var response =
-          await http.get("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
+      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
+      var response = await http.get(url);
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
@@ -42,22 +40,19 @@ class TermsRepository extends ITermsRepository {
       } else if (response.statusCode == 204) {
         return true;
       } else if (response.statusCode == 408) {
-        return UsuarioDataModel(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return UsuarioDataModel(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+      throw Exception(e);
     }
   }
 
   @override
-  Future<bool> registerTerms(int termoDeUsoId, String cpf, String device,
-      String ip, double versao) async {
+  Future<bool> registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
     Map data = {
       "termoDeUsoId": termoDeUsoId,
       "cpfUsuario": cpf,
@@ -69,8 +64,8 @@ class TermsRepository extends ITermsRepository {
     var body = json.encode(data);
 
     try {
-      var response = await http.post(
-          "${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite",
+      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite");
+      var response = await http.post(url,
           headers: {
             "Content-Type": "application/json",
           },
@@ -78,13 +73,13 @@ class TermsRepository extends ITermsRepository {
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+
+      throw Exception(e);
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +14,6 @@ import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
-import 'dart:developer' as developer;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -23,9 +24,9 @@ Future initializeAppConfig() async {
   try {
     await AppConfigReader.initialize();
   } catch (error) {
-    developer.log("Erro ao ler arquivo de configurações.");
-    developer.log("Verifique se seu projeto possui o arquivo config/app_config.json");
-    developer.log('$error');
+    log("Erro ao ler arquivo de configurações.");
+    log("Verifique se seu projeto possui o arquivo config/app_config.json");
+    log('$error');
   }
 }
 

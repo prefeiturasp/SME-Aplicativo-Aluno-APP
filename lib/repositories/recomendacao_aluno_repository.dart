@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/dtos/recomendacao_aluno.dto.dart';
@@ -17,8 +17,8 @@ class RecomendacaoAlunoRepository implements IRecomendacaoAluno {
     int semestre,
   ) async {
     var recomendacao = RecomendacaoAlunoDto();
-    var url =
-        "${AppConfigReader.getApiHost()}/Aluno/recomendacao-aluno?codigoAluno=$codigoAluno&codigoTurma=$codigoTurma&anoLetivo=$anoLetivo&semestre=$semestre&modalidade=$modalidade";
+    var url = Uri.https(
+        "${AppConfigReader.getApiHost()}/Aluno/recomendacao-aluno?codigoAluno=$codigoAluno&codigoTurma=$codigoTurma&anoLetivo=$anoLetivo&semestre=$semestre&modalidade=$modalidade");
     try {
       final response = await http.get(
         url,
@@ -28,15 +28,14 @@ class RecomendacaoAlunoRepository implements IRecomendacaoAluno {
         },
       );
       if (response.statusCode == 200) {
-        Map result = json.decode(response.body);
-        return RecomendacaoAlunoDto.fromJson(result);
+        return RecomendacaoAlunoDto.fromJson(response.body);
       } else {
         recomendacao.erro = false;
         recomendacao.mensagemAlerta = "Erro ao obter a recomendação do aluno";
         return recomendacao;
       }
     } catch (e) {
-      print('$e');
+      log('$e');
       recomendacao.erro = true;
       recomendacao.mensagemAlerta = "Erro ao obter a recomendação do aluno";
       return recomendacao;

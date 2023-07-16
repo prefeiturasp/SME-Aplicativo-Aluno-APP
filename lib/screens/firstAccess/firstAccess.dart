@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:device_info/device_info.dart';
@@ -128,8 +130,9 @@ class _FirstAccessState extends State<FirstAccess> {
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content:
-            _firstAccessController.data != null ? Text(_firstAccessController.data.erros[0]) : Text("Erro de serviço"));
+        content: _firstAccessController.data != null
+            ? Text(_firstAccessController.data.erros[0])
+            : Text("Erro de serviço"));
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
@@ -160,7 +163,7 @@ class _FirstAccessState extends State<FirstAccess> {
   changeStatusTerm() {
     setState(() {
       _statusTerm = true;
-      print(_statusTerm);
+      log(_statusTerm.toString());
     });
     Navigator.pop(context);
   }

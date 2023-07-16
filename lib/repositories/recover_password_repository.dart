@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
@@ -7,11 +8,9 @@ import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final UserService _userService = UserService();
 
   @override
@@ -23,8 +22,9 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     var body = json.encode(_data);
 
     try {
+      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token");
       final response = await http.put(
-        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token",
+        url,
         headers: {
           "Content-Type": "application/json",
         },
@@ -43,10 +43,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      print("[RecoverPassword] sendToken - Erro de requisição " +
-          stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log("[RecoverPassword] sendToken - Erro de requisição " + stacktrace.toString());
+      throw Exception(e);
     }
   }
 
@@ -57,8 +55,9 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     };
     var body = json.encode(_data);
     try {
+      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar");
       final response = await http.put(
-        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar",
+        url,
         headers: {
           "Content-Type": "application/json",
         },
@@ -74,22 +73,21 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      print("[RecoverPassword] validateToken - Erro de requisição " +
-          stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log("[RecoverPassword] validateToken - Erro de requisição " + stacktrace.toString());
+      throw Exception(e);
     }
   }
 
   @override
   Future<DataUser> redefinePassword(String password, String token) async {
-    String idDevice = await _firebaseMessaging.getToken();
+    String? idDevice = await _firebaseMessaging.getToken();
     Map _data = {"token": token, "senha": password, "dispositivoId": idDevice};
     var body = json.encode(_data);
 
     try {
+      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir");
       final response = await http.put(
-        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir",
+        url,
         headers: {
           "Content-Type": "application/json",
         },
@@ -108,10 +106,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      print("[RecoverPassword] redefinePassword - Erro de requisição " +
-          stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log("[RecoverPassword] redefinePassword - Erro de requisição " + stacktrace.toString());
+      throw Exception(e);
     }
   }
 }

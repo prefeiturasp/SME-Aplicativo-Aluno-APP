@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
 import 'package:sme_app_aluno/services/api.service.dart';
 
@@ -13,13 +14,12 @@ class UERepository {
         var ue = DadosUE.fromJson(response.data);
         return ue;
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.statusCode);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+      throw Exception(e);
     }
   }
 }

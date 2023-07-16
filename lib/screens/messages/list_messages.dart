@@ -20,13 +20,13 @@ class ListMessages extends StatefulWidget {
   final int codigoAlunoEol;
   final int userId;
 
-  ListMessages({@required this.codigoGrupo, @required this.codigoAlunoEol, @required this.userId});
+  ListMessages({required this.codigoGrupo, required this.codigoAlunoEol, required this.userId});
   _ListMessageState createState() => _ListMessageState();
 }
 
 class _ListMessageState extends State<ListMessages> {
-  MessagesController _messagesController;
-  List<Message> listOfmessages;
+  late MessagesController _messagesController;
+  late List<Message> listOfmessages;
   bool dreCheck = true;
   bool smeCheck = true;
   bool ueCheck = true;
@@ -45,33 +45,38 @@ class _ListMessageState extends State<ListMessages> {
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Atenção"),
-            content: Text("Você tem certeza que deseja excluir esta mensagem?"),
-            actions: <Widget>[
-              ElevatedButton(
-                  child: Text("SIM"),
-                  onPressed: () {
-                    _removeMesageToStorage(
-                      widget.codigoAlunoEol,
-                      id,
-                      widget.userId,
-                    );
-
-                    Navigator.of(context).pop(true);
-                  }),
-              ElevatedButton(
-                child: Text("NÃO"),
+    bool retorno = false;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Atenção"),
+          content: Text("Você tem certeza que deseja excluir esta mensagem?"),
+          actions: <Widget>[
+            ElevatedButton(
+                child: Text("SIM"),
                 onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              )
-            ],
-          );
-        });
+                  _removeMesageToStorage(
+                    widget.codigoAlunoEol,
+                    id,
+                    widget.userId,
+                  );
+
+                  Navigator.of(context).pop(true);
+                  retorno = true;
+                }),
+            ElevatedButton(
+              child: Text("NÃO"),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+                retorno = false;
+              },
+            )
+          ],
+        );
+      },
+    );
+    return retorno;
   }
 
   _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
@@ -215,7 +220,7 @@ class _ListMessageState extends State<ListMessages> {
             .toList());
   }
 
-  Widget _buildListMessages(BuildContext context, num screenHeight) {
+  Widget _buildListMessages(BuildContext context, double screenHeight) {
     return Observer(builder: (context) {
       if (_messagesController.isLoading) {
         return GFLoader(
@@ -496,9 +501,6 @@ class _ListMessageState extends State<ListMessages> {
   Widget build(BuildContext context) {
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;

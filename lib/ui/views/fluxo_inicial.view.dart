@@ -62,7 +62,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
         },
       );
     } catch (ex) {
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
+      exception: ex)
     }
   }
 

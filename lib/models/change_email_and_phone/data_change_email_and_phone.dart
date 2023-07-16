@@ -2,16 +2,14 @@ class DataChangeEmailAndPhone {
   bool? ok;
   List<String>? erros;
   ValidacaoErros? validacaoErros;
-  String? token;
+  String token = "";
 
   DataChangeEmailAndPhone({this.ok, this.erros, this.validacaoErros});
 
   DataChangeEmailAndPhone.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
     erros = json['erros'] != null ? json['erros'].cast<String>() : null;
-    validacaoErros = json['validacaoErros'] != null
-        ? new ValidacaoErros.fromJson(json['validacaoErros'])
-        : null;
+    validacaoErros = json['validacaoErros'] != null ? new ValidacaoErros.fromJson(json['validacaoErros']) : null;
     token = json['data']['token'];
   }
 
@@ -32,8 +30,7 @@ class ValidacaoErros {
   List<String>? additionalProp2;
   List<String>? additionalProp3;
 
-  ValidacaoErros(
-      {this.additionalProp1, this.additionalProp2, this.additionalProp3});
+  ValidacaoErros({this.additionalProp1, this.additionalProp2, this.additionalProp3});
 
   ValidacaoErros.fromJson(Map<String, dynamic> json) {
     additionalProp1 = json['additionalProp1'].cast<String>();

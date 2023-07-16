@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
@@ -24,8 +24,9 @@ class FirstAccessRepository implements IFirstAccessRepository {
 
     var body = json.encode(_data);
     try {
+      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/PrimeiroAcesso");
       final response = await http.post(
-        "${AppConfigReader.getApiHost()}/Autenticacao/PrimeiroAcesso",
+        url,
         headers: {
           "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
@@ -50,33 +51,27 @@ class FirstAccessRepository implements IFirstAccessRepository {
 
         return data;
       } else if (response.statusCode == 408) {
-        return Data(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: error);
-      return null;
+      log("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
+      return Data(ok: false, erros: [error.toString()]);
     }
   }
 
   @override
   Future<DataChangeEmailAndPhone> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) async {
-    Map _data = {
-      "id": userId,
-      "email": email ?? "",
-      "celular": phone ?? "",
-      "alterarSenha": changePassword
-    };
+    Map _data = {"id": userId, "email": email ?? "", "celular": phone ?? "", "alterarSenha": changePassword};
     var body = json.encode(_data);
     try {
+      final url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular");
       final response = await http.post(
-        "${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular",
+        url,
         headers: {
           "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
@@ -102,10 +97,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      print(
-          "[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: error);
-      return null;
+      log("[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
+      return DataChangeEmailAndPhone();
     }
   }
 }

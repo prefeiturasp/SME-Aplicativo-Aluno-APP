@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/dashboard/dashboard.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/widgets/tag/tag_custom.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
@@ -29,7 +30,7 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
   final _usuarioStore = GetIt.I.get<UsuarioStore>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
 
-  BackgroundFetchController _backgroundFetchController;
+  late BackgroundFetchController _backgroundFetchController;
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
 
   void _onBackgroundFetch(String taskId) async {
     bool responsibleHasStudent = await _backgroundFetchController.checkIfResponsibleHasStudent(_usuarioStore.id);
-    print('[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
+    log('[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
       Auth.logout(context, _usuarioStore.id, true);
     }
@@ -74,15 +75,16 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
 
   Widget _listStudents(
       List<EstudanteModel> students, BuildContext context, String groupSchool, int codigoGrupo, int userId) {
-    List<Widget> list = new List<Widget>();
+    List<Widget> list = [];
     for (var i = 0; i < students.length; i++) {
       list.add(_itemCardStudent(context, students[i], groupSchool, codigoGrupo, userId));
     }
     return new Column(children: list);
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
+  Future<bool> _onBackPress() async {
+    bool retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -93,18 +95,21 @@ class _EstudanteListaViewState extends State<EstudanteListaView> {
                 child: Text("SIM"),
                 onPressed: () {
                   Auth.logout(context, _usuarioStore.id, false);
-                  Nav.pushReplacement(context, LoginView());
+                  retorno = true;
+                  Nav.pushReplacement(context, LoginView(notice: ''));
                 },
               ),
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+    return retorno;
   }
 
   _loadingAllStudents() async {

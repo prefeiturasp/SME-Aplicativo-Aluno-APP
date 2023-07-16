@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:background_fetch/background_fetch.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/repositories/responsible_repository.dart';
@@ -7,9 +9,11 @@ part 'background_fetch.controller.g.dart';
 class BackgroundFetchController = BackgroundFetchControllerBase with _$BackgroundFetchController;
 
 abstract class BackgroundFetchControllerBase with Store {
-  final ResponsibleRepository _responsibleRepository;
+  late ResponsibleRepository _responsibleRepository;
 
-  BackgroundFetchControllerBase(this._responsibleRepository);
+  BackgroundFetchControllerBase() {
+    this._responsibleRepository = ResponsibleRepository();
+  }
 
   @observable
   late bool responsibleHasStudent;
@@ -35,9 +39,9 @@ abstract class BackgroundFetchControllerBase with Store {
             ),
             onBackgroundFetch)
         .then((int status) {
-      print('[BackgroundFetch] configure success: $status');
+      log('[BackgroundFetch] configure success: $status');
     }).catchError((e) {
-      print('[BackgroundFetch] configure ERROR: $e');
+      log('[BackgroundFetch] configure ERROR: $e');
     });
 
     try {
@@ -50,9 +54,9 @@ abstract class BackgroundFetchControllerBase with Store {
           stopOnTerminate: false,
           enableHeadless: true,
         ),
-      ).catchError(print);
+      ).catchError(log);
     } catch (ex) {
-      print(ex.toString());
+      log(ex.toString());
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
@@ -110,53 +112,53 @@ abstract class MessagesControllerBase with Store {
     if (smeCheck && ueCheck && dreCheck) {
       final condition1 = ObservableList<Message>.of(messages);
       condition1.forEach((element) {
-        print("condition1");
-        print(element);
-        print("condition1");
+        log("condition1");
+        log(element.toString());
+        log("condition1");
       });
       auxList = ObservableList<Message>.of(condition1);
     } else if (smeCheck && ueCheck && !dreCheck) {
       final condition2 = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao != "DRE").toList());
       condition2.forEach((element) {
-        print("condition2");
-        print(element);
-        print("condition2");
+        log("condition2");
+        log(element.toString());
+        log("condition2");
       });
       auxList = ObservableList<Message>.of(condition2);
     } else if (smeCheck && !ueCheck && dreCheck) {
       final condition3 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != "UE").toList();
       condition3.forEach((element) {
-        print("condition3");
-        print(element);
-        print("condition3");
+        log("condition3");
+        log(element.toString());
+        log("condition3");
       });
       auxList = ObservableList<Message>.of(condition3);
     } else if (smeCheck && !ueCheck && !dreCheck) {
       final condition4 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "SME").toList();
       condition4.forEach((element) {
-        print("condition4");
-        print(element);
-        print("condition4");
+        log("condition4");
+        log(element.toString());
+        log("condition4");
       });
       auxList = ObservableList<Message>.of(condition4);
     } else if (!smeCheck && ueCheck && dreCheck) {
       final condition5 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != "SME").toList();
       condition5.forEach((element) {
-        print("condition5");
-        print(element);
-        print("condition5");
+        log("condition5");
+        log(element.toString());
+        log("condition5");
       });
       auxList = ObservableList<Message>.of(condition5);
     } else if (!smeCheck && ueCheck && !dreCheck) {
       final condition6 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "UE").toList();
       condition6.forEach((element) {
-        print("condition6");
-        print(element);
-        print("condition6");
+        log("condition6");
+        log(element.toString());
+        log("condition6");
       });
       auxList = ObservableList<Message>.of(condition6);
     } else if (!smeCheck && !ueCheck && dreCheck) {
@@ -164,9 +166,9 @@ abstract class MessagesControllerBase with Store {
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "DRE").toList();
 
       condition7.forEach((element) {
-        print("condition7");
-        print(element);
-        print("condition7");
+        log("condition7");
+        log(element.toString());
+        log("condition7");
       });
 
       auxList = ObservableList<Message>.of(condition7);

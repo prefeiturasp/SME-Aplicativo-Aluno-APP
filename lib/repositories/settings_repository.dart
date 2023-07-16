@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:sme_app_aluno/interfaces/settings_repository_interface.dart';
@@ -15,8 +15,7 @@ class SettingsRepository implements ISettingsRepository {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
-  Future<Data> changePassword(
-      String password, String oldPassword, int userId) async {
+  Future<Data> changePassword(String password, String oldPassword, int userId) async {
     Map _data = {
       "novaSenha": password,
       "senhaAntiga": oldPassword,
@@ -25,8 +24,9 @@ class SettingsRepository implements ISettingsRepository {
     var body = json.encode(_data);
 
     try {
+      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Alterar");
       final response = await http.put(
-        "${AppConfigReader.getApiHost()}/Autenticacao/Senha/Alterar",
+        url,
         headers: {
           "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
@@ -43,23 +43,20 @@ class SettingsRepository implements ISettingsRepository {
           email: usuarioStore.usuario.email,
           celular: usuarioStore.usuario.celular,
           token: data.token,
-          primeiroAcesso: usuarioStore.usuario?.primeiroAcesso,
-          atualizarDadosCadastrais:
-              usuarioStore.usuario.atualizarDadosCadastrais,
+          primeiroAcesso: usuarioStore.usuario.primeiroAcesso,
+          atualizarDadosCadastrais: usuarioStore.usuario.atualizarDadosCadastrais,
         ));
         return data;
       } else if (response.statusCode == 408) {
-        return Data(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("[AlterarSenha] Erro de requisição " + stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: error);
-      return null;
+      log("[AlterarSenha] Erro de requisição " + stacktrace.toString());
+      throw Exception(error);
     }
   }
 }

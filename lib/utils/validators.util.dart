@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:intl/intl.dart';
 
@@ -64,16 +66,14 @@ class ValidatorsUtil {
       return "$nomeCampo não pode conter números";
     }
 
-    if (value.contains(".") || value.contains("@") || value.contains("."))
-      value = value.replaceAll(".", "");
+    if (value.contains(".") || value.contains("@") || value.contains(".")) value = value.replaceAll(".", "");
     var nomeValidador = value.split(" ");
     if (nomeValidador.length > 0) {
       for (var i = 0; i < nomeValidador.length; i++) {
-        if (nomeValidador[i].length == 1 &&
-            nomeValidador[i].toLowerCase() != "e") {
+        if (nomeValidador[i].length == 1 && nomeValidador[i].toLowerCase() != "e") {
           return "$nomeCampo não pode ser abreviado";
         }
-        print(nomeValidador[i].length);
+        log(nomeValidador[i].length.toString());
       }
     }
     return '';
@@ -90,9 +90,7 @@ class ValidatorsUtil {
       return "Data de nascimento com formato inválido";
     }
 
-    if (DateTime.tryParse(
-            "${dataSeparada[2]}${dataSeparada[1]}${dataSeparada[0]}") ==
-        null) {
+    if (DateTime.tryParse("${dataSeparada[2]}${dataSeparada[1]}${dataSeparada[0]}") == null) {
       return "Data de nascimento com formato inválido";
     }
 
