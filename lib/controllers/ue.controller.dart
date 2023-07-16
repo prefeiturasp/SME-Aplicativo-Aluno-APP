@@ -4,17 +4,15 @@ import 'package:sme_app_aluno/repositories/ue.repository.dart';
 
 part 'ue.controller.g.dart';
 
-class UEController = _UEControllerBase with _$UEController;
+class UEController = UEControllerBase with _$UEController;
 
-abstract class _UEControllerBase with Store {
-  UERepository _ueRepository;
+abstract class UEControllerBase with Store {
+  final UERepository _ueRepository;
 
-  _UEControllerBase() {
-    _ueRepository = UERepository();
-  }
+  UEControllerBase(this._ueRepository);
 
   @observable
-  DadosUE dadosUE;
+  late DadosUE dadosUE;
 
   @observable
   bool isLoading = false;
