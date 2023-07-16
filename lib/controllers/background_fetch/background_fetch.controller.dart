@@ -54,7 +54,7 @@ abstract class BackgroundFetchControllerBase with Store {
           stopOnTerminate: false,
           enableHeadless: true,
         ),
-      ).catchError(log);
+      );
     } catch (ex) {
       log(ex.toString());
     }

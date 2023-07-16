@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +19,7 @@ class AutenticacaoController {
   Future<UsuarioDataModel> authenticateUser(String cpf, String password) async {
     var data = await repository.loginUser(cpf, password);
 
-    if (data == null) {
+    if (!data.isNull) {
       return new UsuarioDataModel(data: UsuarioModel(), erros: [], ok: false);
     }
 
