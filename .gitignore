@@ -79,14 +79,10 @@ pubspec.lock
 *.last_build_id
 
 /config
-lib/controllers/terms/terms.controller.g.dart
-lib/controllers/settings/settings.controller.g.dart
-lib/controllers/messages/messages.controller.g.dart
-lib/controllers/event/event.controller.g.dart
-lib/controllers/auth/first_access.controller.g.dart
-lib/controllers/auth/recover_password.controller.g.dart
-lib/controllers/background_fetch/background_fetch.controller.g.dart
-lib/controllers/background_fetch/background_fetch.controller.g.dart
 lib/controllers/**.g.dart
 lib/controllers/*.g.dart
+lib/controllers/event/**.g.dart
+lib/controllers/event/*.g.dart
+lib/**.g.dart
+lib/*.g.dart
 pubspec.lock

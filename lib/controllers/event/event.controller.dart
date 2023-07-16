@@ -3,27 +3,26 @@ import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/repositories/event_repository.dart';
 part 'event.controller.g.dart';
 
-class EventController = _EventControllerBase with _$EventController;
+class EventController = EventControllerBase with _$EventController;
 
-abstract class _EventControllerBase with Store {
-  EventRepository _eventRepository;
+abstract class EventControllerBase with Store {
+  final EventRepository _eventRepository;
 
-  _EventControllerBase() {
-    _eventRepository = EventRepository();
+  EventControllerBase(this._eventRepository) {
     loadingCurrentMonth(currentDate.month);
   }
 
   @observable
-  Event event;
+  late Event event;
 
   @observable
-  ObservableList<Event> events;
+  late ObservableList<Event> events;
 
   @observable
-  ObservableList<Event> eventsSortDate;
+  late ObservableList<Event> eventsSortDate;
 
   @observable
-  ObservableList<Event> priorityEvents;
+  late ObservableList<Event> priorityEvents;
 
   @observable
   bool loading = false;
@@ -32,7 +31,7 @@ abstract class _EventControllerBase with Store {
   DateTime currentDate = DateTime.now();
 
   @observable
-  String currentMonth;
+  late String currentMonth;
 
   @action
   loadingCurrentMonth(month) {
@@ -86,9 +85,7 @@ abstract class _EventControllerBase with Store {
       userId,
     ));
 
-    var auxList = events
-      ..sort((a, b) =>
-          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+    var auxList = events..sort((a, b) => DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
 
     eventsSortDate = ObservableList<Event>.of(auxList);
 
@@ -117,24 +114,19 @@ abstract class _EventControllerBase with Store {
 
     var reversedList = eventsList.reversed.take(4).toList();
     var reversedListOrganized = reversedList
-      ..sort((a, b) =>
-          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+      ..sort((a, b) => DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
 
-    filterList = ObservableList<Event>.of(eventsList
-        .where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day)
-        .toList());
+    filterList =
+        ObservableList<Event>.of(eventsList.where((i) => DateTime.parse(i.dataInicio).day >= currentDate.day).toList());
 
-    provaList =
-        ObservableList<Event>.of(filterList.where((i) => i.tipoEvento == 0));
+    provaList = ObservableList<Event>.of(filterList.where((i) => i.tipoEvento == 0));
 
-    othersList =
-        ObservableList<Event>.of(filterList.where((i) => i.tipoEvento != 0));
+    othersList = ObservableList<Event>.of(filterList.where((i) => i.tipoEvento != 0));
 
     sortList = ObservableList<Event>.of(provaList + othersList);
 
-    auxList = ObservableList<Event>.of(eventsList
-        .where((i) => DateTime.parse(i.dataInicio).day < currentDate.day)
-        .toList());
+    auxList =
+        ObservableList<Event>.of(eventsList.where((i) => DateTime.parse(i.dataInicio).day < currentDate.day).toList());
 
     var takeAuxReversed = sortList.length == 3
         ? auxList.reversed.take(1).toList()
@@ -144,12 +136,10 @@ abstract class _EventControllerBase with Store {
                 ? auxList.reversed.take(3).toList()
                 : auxList.reversed.take(0).toList();
 
-    takeAuxReversedList =
-        ObservableList<Event>.of(othersList + takeAuxReversed);
+    takeAuxReversedList = ObservableList<Event>.of(othersList + takeAuxReversed);
 
     var auxListOrganized = takeAuxReversedList
-      ..sort((a, b) =>
-          DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
+      ..sort((a, b) => DateTime.parse(a.dataInicio).compareTo(DateTime.parse(b.dataInicio)));
 
     completeList = ObservableList<Event>.of(provaList + auxListOrganized);
 
