@@ -7,12 +7,14 @@ import 'package:sme_app_aluno/services/user.service.dart';
 
 part 'first_access.controller.g.dart';
 
-class FirstAccessController = _FirstAccessControllerBase with _$FirstAccessController;
+class FirstAccessController = FirstAccessControllerBase with _$FirstAccessController;
 
-abstract class _FirstAccessControllerBase with Store {
-  late FirstAccessRepository firstAccessRepository;
+abstract class FirstAccessControllerBase with Store {
+  late final FirstAccessRepository firstAccessRepository;
   final UserService _userService = UserService();
-  _FirstAccessControllerBase({required this.firstAccessRepository});
+  FirstAccessControllerBase() {
+    this.firstAccessRepository = FirstAccessRepository();
+  }
 
   @observable
   late Data data;

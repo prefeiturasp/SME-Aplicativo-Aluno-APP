@@ -6,9 +6,11 @@ part 'terms.controller.g.dart';
 class TermsController = TermsControllerBase with _$TermsController;
 
 abstract class TermsControllerBase with Store {
-  TermsRepository _termsRepository;
+  late final TermsRepository _termsRepository;
 
-  TermsControllerBase(this._termsRepository);
+  TermsControllerBase() {
+    this._termsRepository = TermsRepository();
+  }
 
   @observable
   late Term term;

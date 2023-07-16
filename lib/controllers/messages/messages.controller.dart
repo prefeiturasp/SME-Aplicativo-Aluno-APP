@@ -8,9 +8,11 @@ part 'messages.controller.g.dart';
 class MessagesController = MessagesControllerBase with _$MessagesController;
 
 abstract class MessagesControllerBase with Store {
-  final MessageRepository _messagesRepository;
+  late final MessageRepository _messagesRepository;
 
-  MessagesControllerBase(this._messagesRepository);
+  MessagesControllerBase() {
+    this._messagesRepository = MessageRepository();
+  }
 
   @observable
   late Message message;

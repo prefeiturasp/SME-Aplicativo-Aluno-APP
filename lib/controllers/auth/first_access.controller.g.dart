@@ -8,9 +8,9 @@ part of 'first_access.controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
+mixin _$FirstAccessController on FirstAccessControllerBase, Store {
   late final _$dataAtom =
-      Atom(name: '_FirstAccessControllerBase.data', context: context);
+      Atom(name: 'FirstAccessControllerBase.data', context: context);
 
   @override
   Data get data {
@@ -26,7 +26,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$dataEmailOrPhoneAtom = Atom(
-      name: '_FirstAccessControllerBase.dataEmailOrPhone', context: context);
+      name: 'FirstAccessControllerBase.dataEmailOrPhone', context: context);
 
   @override
   DataChangeEmailAndPhone get dataEmailOrPhone {
@@ -42,7 +42,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$currentEmailAtom =
-      Atom(name: '_FirstAccessControllerBase.currentEmail', context: context);
+      Atom(name: 'FirstAccessControllerBase.currentEmail', context: context);
 
   @override
   String get currentEmail {
@@ -58,7 +58,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$currentPhoneAtom =
-      Atom(name: '_FirstAccessControllerBase.currentPhone', context: context);
+      Atom(name: 'FirstAccessControllerBase.currentPhone', context: context);
 
   @override
   String get currentPhone {
@@ -74,7 +74,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$changeNewPasswordAsyncAction = AsyncAction(
-      '_FirstAccessControllerBase.changeNewPassword',
+      'FirstAccessControllerBase.changeNewPassword',
       context: context);
 
   @override
@@ -84,7 +84,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$changeEmailAndPhoneAsyncAction = AsyncAction(
-      '_FirstAccessControllerBase.changeEmailAndPhone',
+      'FirstAccessControllerBase.changeEmailAndPhone',
       context: context);
 
   @override
@@ -95,7 +95,7 @@ mixin _$FirstAccessController on _FirstAccessControllerBase, Store {
   }
 
   late final _$loadUserForStorageAsyncAction = AsyncAction(
-      '_FirstAccessControllerBase.loadUserForStorage',
+      'FirstAccessControllerBase.loadUserForStorage',
       context: context);
 
   @override
