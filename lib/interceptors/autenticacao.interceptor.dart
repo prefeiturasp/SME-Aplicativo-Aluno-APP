@@ -6,12 +6,11 @@ class AutenticacaoInterceptor extends Interceptor {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
-  Future onRequest(RequestOptions options) {
-    if (usuarioStore.token != null) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (usuarioStore.token.isNotEmpty) {
       var headerToken = 'Bearer ${usuarioStore.token}';
       options.headers['Authorization'] = headerToken;
+      handler.next(options);
     }
-
-    return super.onRequest(options);
   }
 }
