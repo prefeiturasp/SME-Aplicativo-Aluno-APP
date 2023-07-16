@@ -1,14 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:mobx/mobx.dart';
+
 import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/repositories/recover_password_repository.dart';
 
 part 'recover_password.controller.g.dart';
 
-class RecoverPasswordController = _RecoverPasswordControllerBase
-    with _$RecoverPasswordController;
+class RecoverPasswordController = _RecoverPasswordControllerBase with _$RecoverPasswordController;
 
-RecoverPasswordRepository _recoverPasswordRepository;
+late RecoverPasswordRepository _recoverPasswordRepository;
 
 abstract class _RecoverPasswordControllerBase with Store {
   _RecoverPasswordControllerBase() {
@@ -16,13 +17,13 @@ abstract class _RecoverPasswordControllerBase with Store {
   }
 
   @observable
-  Data data;
+  late Data data;
 
   @observable
-  DataUser dataUser;
+  late DataUser dataUser;
 
   @observable
-  String email;
+  late String email;
 
   @observable
   bool loading = false;
@@ -44,8 +45,7 @@ abstract class _RecoverPasswordControllerBase with Store {
   @action
   redefinePassword(String password, String token) async {
     loading = true;
-    dataUser =
-        await _recoverPasswordRepository.redefinePassword(password, token);
+    dataUser = await _recoverPasswordRepository.redefinePassword(password, token);
     loading = false;
   }
 }
