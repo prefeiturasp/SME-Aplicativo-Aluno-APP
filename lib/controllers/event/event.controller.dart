@@ -13,7 +13,7 @@ abstract class EventControllerBase with Store {
   }
 
   @observable
-  late Event event;
+  late Event event; 
 
   @observable
   late ObservableList<Event> events;
