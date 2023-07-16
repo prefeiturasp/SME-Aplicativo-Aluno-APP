@@ -1,36 +1,28 @@
 class Data {
-  bool ok;
-  List<String> erros;
-  ValidacaoErros validacaoErros;
-
-  Data({this.ok, this.erros, this.validacaoErros});
+  late bool ok;
+  late List<String> erros;
+  late ValidacaoErros validacaoErros;
+  Data({
+    required this.ok,
+    required this.erros,
+    required this.validacaoErros,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
-    erros = json['erros'] != null ? json['erros'].cast<String>() : null;
     validacaoErros = json['validacaoErros'] != null
-        ? new ValidacaoErros.fromJson(json['validacaoErros'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ok'] = this.ok;
-    data['erros'] = this.erros;
-    if (this.validacaoErros != null) {
-      data['validacaoErros'] = this.validacaoErros.toJson();
-    }
-    return data;
+        ? ValidacaoErros.fromJson(json['validacaoErros'])
+        : ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []);
+    erros = json['erros'].cast<String>();
   }
 }
 
 class ValidacaoErros {
-  List<String> additionalProp1;
-  List<String> additionalProp2;
-  List<String> additionalProp3;
+  late List<String> additionalProp1;
+  late List<String> additionalProp2;
+  late List<String> additionalProp3;
 
-  ValidacaoErros(
-      {this.additionalProp1, this.additionalProp2, this.additionalProp3});
+  ValidacaoErros({required this.additionalProp1, required this.additionalProp2, required this.additionalProp3});
 
   ValidacaoErros.fromJson(Map<String, dynamic> json) {
     additionalProp1 = json['additionalProp1'].cast<String>();
