@@ -26,7 +26,7 @@ class ValidatorsUtil {
     if (regExp.hasMatch(value) || value.length < 11) {
       return "O telefone está incorreto";
     }
-    return null;
+    return "";
   }
 
   static String nome(String value, String nomeCampo) {
@@ -76,7 +76,7 @@ class ValidatorsUtil {
         print(nomeValidador[i].length);
       }
     }
-    return null;
+    return '';
   }
 
   static String dataNascimento(String value) {
@@ -106,7 +106,7 @@ class ValidatorsUtil {
       return "Data não pode ser superior a data atual";
     }
 
-    return null;
+    return '';
   }
 
   static String email(String value) {
@@ -118,7 +118,7 @@ class ValidatorsUtil {
       return 'E-mail inválido';
     }
 
-    return null;
+    return '';
   }
 
   static bool dataValida(String dataString) {
