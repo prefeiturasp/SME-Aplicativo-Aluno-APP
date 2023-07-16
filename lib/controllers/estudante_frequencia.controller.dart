@@ -10,9 +10,11 @@ part 'estudante_frequencia.controller.g.dart';
 class EstudanteFrequenciaController = EstudanteFrequenciaControllerBase with _$EstudanteFrequenciaController;
 
 abstract class EstudanteFrequenciaControllerBase with Store {
-  late EstudanteFrequenciaRepository _estudanteFrequenciaRepository;
+  late final EstudanteFrequenciaRepository _estudanteFrequenciaRepository;
 
-  EstudanteFrequenciaControllerBase(this._estudanteFrequenciaRepository);
+  EstudanteFrequenciaControllerBase() {
+    this._estudanteFrequenciaRepository = EstudanteFrequenciaRepository();
+  }
 
   @observable
   Frequency? frequency;

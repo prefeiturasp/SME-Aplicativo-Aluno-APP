@@ -1,7 +1,7 @@
 class ResponseDTO {
-  bool ok;
-  List<String> erros;
-  Object data;
+  bool? ok;
+  List<String>? erros;
+  Object? data;
 
   ResponseDTO({this.ok, this.erros, this.data});
 

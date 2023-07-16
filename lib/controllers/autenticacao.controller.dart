@@ -9,10 +9,10 @@ import 'package:sme_app_aluno/repositories/authenticate_repository.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 
 class AutenticacaoController {
-  AuthenticateRepository repository;
-  AutenticacaoController({
-    required this.repository,
-  });
+  late final AuthenticateRepository repository;
+  AutenticacaoController() {
+    this.repository = AuthenticateRepository();
+  }
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   Future<UsuarioDataModel> authenticateUser(String cpf, String password) async {

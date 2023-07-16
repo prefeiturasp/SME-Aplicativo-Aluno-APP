@@ -1,11 +1,11 @@
 class RecomendacaoAlunoDto {
-  String alunoCodigo;
-  String turmaCodigo;
-  String anotacoesPedagogicas;
-  String recomendacoesAluno;
-  String recomendacoesFamilia;
-  String mensagemAlerta;
-  bool erro;
+  String? alunoCodigo;
+  String? turmaCodigo;
+  String? anotacoesPedagogicas;
+  String? recomendacoesAluno;
+  String? recomendacoesFamilia;
+  String? mensagemAlerta;
+  bool? erro;
 
   RecomendacaoAlunoDto({
     this.alunoCodigo,

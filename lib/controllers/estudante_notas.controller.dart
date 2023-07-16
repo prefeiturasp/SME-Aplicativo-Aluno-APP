@@ -9,9 +9,11 @@ part 'estudante_notas.controller.g.dart';
 class EstudanteNotasController = EstudanteNotasControllerBase with _$EstudanteNotasController;
 
 abstract class EstudanteNotasControllerBase with Store {
-  final EstudanteNotasRepository _listNotesRepository;
+  late EstudanteNotasRepository _listNotesRepository;
 
-  EstudanteNotasControllerBase(this._listNotesRepository);
+  EstudanteNotasControllerBase() {
+    this._listNotesRepository = EstudanteNotasRepository();
+  }
 
   @observable
   late ListNotes bUm;
