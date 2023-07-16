@@ -1,14 +1,10 @@
 class Note {
-  String componenteCurricular;
-  String nota;
-  String notaDescricao;
-  String corNotaAluno;
+  String? componenteCurricular;
+  String? nota;
+  String? notaDescricao;
+  String? corNotaAluno;
 
-  Note(
-      {this.componenteCurricular,
-      this.nota,
-      this.notaDescricao,
-      this.corNotaAluno});
+  Note({this.componenteCurricular, this.nota, this.notaDescricao, this.corNotaAluno});
 
   Note.fromJson(Map<String, dynamic> json) {
     componenteCurricular = json['componenteCurricular'];

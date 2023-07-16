@@ -1,24 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:sme_app_aluno/models/note/note.dart';
 
 class ListNotes {
-  int anoLetivo;
-  String codigoUe;
-  String codigoTurma;
-  String alunoCodigo;
-  int bimestre;
-  String recomendacoesFamilia;
-  String recomendacoesAluno;
-  List<Note> notasPorComponenteCurricular;
+  int? anoLetivo;
+  String? codigoUe;
+  String? codigoTurma;
+  String? alunoCodigo;
+  int? bimestre;
+  String? recomendacoesFamilia;
+  String? recomendacoesAluno;
+  List<Note> notasPorComponenteCurricular = [];
 
-  ListNotes(
-      {this.anoLetivo,
-      this.codigoUe,
-      this.codigoTurma,
-      this.alunoCodigo,
-      this.bimestre,
-      this.recomendacoesFamilia,
-      this.recomendacoesAluno,
-      this.notasPorComponenteCurricular});
+  ListNotes({
+    this.anoLetivo,
+    this.codigoUe,
+    this.codigoTurma,
+    this.alunoCodigo,
+    this.bimestre,
+    this.recomendacoesFamilia,
+    this.recomendacoesAluno,
+    required this.notasPorComponenteCurricular,
+  });
 
   ListNotes.fromJson(Map<String, dynamic> json) {
     anoLetivo = json['anoLetivo'];
@@ -29,7 +31,7 @@ class ListNotes {
     recomendacoesFamilia = json['recomendacoesFamilia'];
     recomendacoesAluno = json['recomendacoesAluno'];
     if (json['notasPorComponenteCurricular'] != null) {
-      notasPorComponenteCurricular = new List<Note>();
+      notasPorComponenteCurricular = [];
       json['notasPorComponenteCurricular'].forEach((v) {
         notasPorComponenteCurricular.add(new Note.fromJson(v));
       });
@@ -45,25 +47,23 @@ class ListNotes {
     data['bimestre'] = this.bimestre;
     data['recomendacoesFamilia'] = this.recomendacoesFamilia;
     data['recomendacoesAluno'] = this.recomendacoesAluno;
-    if (this.notasPorComponenteCurricular != null) {
-      data['notasPorComponenteCurricular'] =
-          this.notasPorComponenteCurricular.map((v) => v.toJson()).toList();
-    }
+    data['notasPorComponenteCurricular'] = this.notasPorComponenteCurricular.map((v) => v.toJson()).toList();
     return data;
   }
 }
 
 class NotasPorComponenteCurricular {
-  String componenteCurricular;
-  String nota;
-  Null notaDescricao;
-  String corNotaAluno;
+  late String componenteCurricular;
+  late String nota;
+  late Null notaDescricao;
+  late String corNotaAluno;
 
-  NotasPorComponenteCurricular(
-      {this.componenteCurricular,
-      this.nota,
-      this.notaDescricao,
-      this.corNotaAluno});
+  NotasPorComponenteCurricular({
+    required this.componenteCurricular,
+    required this.nota,
+    required this.notaDescricao,
+    required this.corNotaAluno,
+  });
 
   NotasPorComponenteCurricular.fromJson(Map<String, dynamic> json) {
     componenteCurricular = json['componenteCurricular'];

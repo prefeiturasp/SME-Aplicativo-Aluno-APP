@@ -7,24 +7,21 @@ import 'package:sme_app_aluno/repositories/estudante_frequencia.repository.dart'
 
 part 'estudante_frequencia.controller.g.dart';
 
-class EstudanteFrequenciaController = _EstudanteFrequenciaControllerBase
-    with _$EstudanteFrequenciaController;
+class EstudanteFrequenciaController = EstudanteFrequenciaControllerBase with _$EstudanteFrequenciaController;
 
-abstract class _EstudanteFrequenciaControllerBase with Store {
-  EstudanteFrequenciaRepository _estudanteFrequenciaRepository;
+abstract class EstudanteFrequenciaControllerBase with Store {
+  late EstudanteFrequenciaRepository _estudanteFrequenciaRepository;
 
-  _EstudanteFrequenciaControllerBase() {
-    _estudanteFrequenciaRepository = EstudanteFrequenciaRepository();
-  }
+  EstudanteFrequenciaControllerBase(this._estudanteFrequenciaRepository);
 
   @observable
-  Frequency frequency;
+  Frequency? frequency;
 
   @observable
-  EstudanteFrequenciaGlobalDTO frequencia;
+  EstudanteFrequenciaGlobalDTO? frequencia;
 
   @observable
-  CurricularComponent curricularComponent;
+  CurricularComponent? curricularComponent;
 
   @observable
   bool loadingFrequency = false;
@@ -41,8 +38,8 @@ abstract class _EstudanteFrequenciaControllerBase with Store {
 
   @action
   Future<void> showCard(int index) async {
-    frequency.componentesCurricularesDoAluno[index].isExpanded =
-        !frequency.componentesCurricularesDoAluno[index].isExpanded;
+    frequency?.componentesCurricularesDoAluno[index].isExpanded =
+        frequency!.componentesCurricularesDoAluno[index].isExpanded;
   }
 
   @action
@@ -65,43 +62,21 @@ abstract class _EstudanteFrequenciaControllerBase with Store {
   }
 
   @action
-  fetchCurricularComponent(
-      int anoLetivo,
-      String codigoUE,
-      String codigoTurma,
-      String codigoAluno,
-      String codigoComponenteCurricular,
-      List<int> bimestres) async {
+  fetchCurricularComponent(int anoLetivo, String codigoUE, String codigoTurma, String codigoAluno,
+      String codigoComponenteCurricular, List<int> bimestres) async {
     loadingCurricularComponent = true;
-    var frequencias =
-        await _estudanteFrequenciaRepository.fetchCurricularComponent(
-            anoLetivo,
-            codigoUE,
-            codigoTurma,
-            codigoAluno,
-            codigoComponenteCurricular,
-            bimestres);
+    var frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
+        anoLetivo, codigoUE, codigoTurma, codigoAluno, codigoComponenteCurricular, bimestres);
     //curricularComponent =
     loadingCurricularComponent = false;
     return frequencias;
   }
 
-  Future<List<EstudanteFrequenciaModel>> obterFrequenciasEstudante(
-      int anoLetivo,
-      String codigoUE,
-      String codigoTurma,
-      String codigoAluno,
-      String codigoComponenteCurricular,
-      List<int> bimestres) async {
+  Future<List<EstudanteFrequenciaModel>> obterFrequenciasEstudante(int anoLetivo, String codigoUE, String codigoTurma,
+      String codigoAluno, String codigoComponenteCurricular, List<int> bimestres) async {
     loadingCurricularComponent = true;
-    var frequencias =
-        await _estudanteFrequenciaRepository.fetchCurricularComponent(
-            anoLetivo,
-            codigoUE,
-            codigoTurma,
-            codigoAluno,
-            codigoComponenteCurricular,
-            bimestres);
+    var frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
+        anoLetivo, codigoUE, codigoTurma, codigoAluno, codigoComponenteCurricular, bimestres);
     loadingCurricularComponent = false;
     return frequencias;
   }

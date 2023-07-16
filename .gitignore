@@ -4,6 +4,7 @@
 
 ### Flutter ###
 # Flutter/Dart/Pub related
+**.g.dart
 *.g.dart
 **/doc/api/
 .dart_tool/
@@ -86,4 +87,6 @@ lib/controllers/auth/first_access.controller.g.dart
 lib/controllers/auth/recover_password.controller.g.dart
 lib/controllers/background_fetch/background_fetch.controller.g.dart
 lib/controllers/background_fetch/background_fetch.controller.g.dart
+lib/controllers/**.g.dart
+lib/controllers/*.g.dart
 pubspec.lock
