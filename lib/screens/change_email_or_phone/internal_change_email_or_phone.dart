@@ -234,7 +234,7 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
                                     return null;
                                   },
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
+                                    FilteringTextInputFormatter.digitsOnly,
                                     TelefoneInputFormatter(),
                                     LengthLimitingTextInputFormatter(15)
                                   ],

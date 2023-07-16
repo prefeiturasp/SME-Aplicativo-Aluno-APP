@@ -164,7 +164,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                       });
                                     },
                                     validator: (value) {
-                                      if (value.isNotEmpty) {
+                                      if (value!.isNotEmpty) {
                                         if (spaceNull.hasMatch(value)) {
                                           return "Senha não pode ter espaço em branco";
                                         }
@@ -234,7 +234,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (value.isNotEmpty) {
+                                    if (value!.isNotEmpty) {
                                       if (value != _password) {
                                         return "Senhas não correspondem";
                                       }

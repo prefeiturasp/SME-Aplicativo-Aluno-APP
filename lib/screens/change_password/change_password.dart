@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/settings/settings.controller.dart';
@@ -172,7 +170,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       });
                                     },
                                     validator: (value) {
-                                      if (value.isNotEmpty) {
+                                      if (value!.isNotEmpty) {
                                         if (spaceNull.hasMatch(value)) {
                                           return "Senha não pode ter espaço em branco";
                                         }
@@ -222,7 +220,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                       });
                                     },
                                     validator: (value) {
-                                      if (value.isNotEmpty) {
+                                      if (value!.isNotEmpty) {
                                         if (spaceNull.hasMatch(value)) {
                                           return "Senha não pode ter espaço em branco";
                                         }
@@ -292,7 +290,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    if (value.isNotEmpty) {
+                                    if (value!.isNotEmpty) {
                                       if (value != _password) {
                                         return "Senhas não correspondem";
                                       }

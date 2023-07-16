@@ -78,7 +78,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
         content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
       );
 
-      _scaffoldKey.currentState.showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
     return response.ok;

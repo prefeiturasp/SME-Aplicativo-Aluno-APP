@@ -149,7 +149,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     });
                                   },
                                   validator: (value) {
-                                    if (value.isNotEmpty) {
+                                    if (value!.isNotEmpty) {
                                       if (!CPFValidator.isValid(_cpf)) {
                                         return 'CPF inválido';
                                       }
@@ -158,7 +158,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                     return null;
                                   },
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
+                                    FilteringTextInputFormatter.digitsOnly,
                                     CpfInputFormatter(),
                                   ],
                                   keyboardType: TextInputType.number,

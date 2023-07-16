@@ -103,7 +103,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
         content: Text("Ocorreu um erro ao atualizar os dados"),
       );
 
-      _scaffoldKey.currentState.showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
     if (!response.ok) {
@@ -112,7 +112,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
         content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
       );
 
-      _scaffoldKey.currentState.showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 

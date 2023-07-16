@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,13 +13,12 @@ import 'package:sme_app_aluno/screens/recover_password/recover_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class LoginView extends StatefulWidget {
   final String notice;
 
-  LoginView({this.notice});
+  LoginView({required this.notice});
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -30,7 +28,7 @@ class _LoginViewState extends State<LoginView> {
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -68,7 +66,7 @@ class _LoginViewState extends State<LoginView> {
         content: usuario.erros != null ? Text(usuario.erros[0]) : Text("Erro de serviço"),
       );
 
-      _scaffoldKey.currentState.showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       if (usuarioStore.usuario.primeiroAcesso) {
         Nav.push(
@@ -164,7 +162,7 @@ class _LoginViewState extends State<LoginView> {
                                     });
                                   },
                                   validator: (value) {
-                                    if (value.isNotEmpty) {
+                                    if (value!.isNotEmpty) {
                                       if (!CPFValidator.isValid(_cpf)) {
                                         return 'CPF inválido';
                                       }
@@ -173,7 +171,7 @@ class _LoginViewState extends State<LoginView> {
                                     return null;
                                   },
                                   inputFormatters: [
-                                    WhitelistingTextInputFormatter.digitsOnly,
+                                    FilteringTextInputFormatter.digitsOnly,
                                     CpfInputFormatter(),
                                   ],
                                   keyboardType: TextInputType.number,
@@ -207,7 +205,7 @@ class _LoginViewState extends State<LoginView> {
                                     });
                                   },
                                   validator: (value) {
-                                    if (value.isNotEmpty) {
+                                    if (value!.isNotEmpty) {
                                       if (value.length <= 7) {
                                         return 'Sua senha deve conter no mínimo 8 caracteres';
                                       }
@@ -284,7 +282,7 @@ class _LoginViewState extends State<LoginView> {
                                       btnColor: Color(0xffd06d12),
                                       disabled: CPFValidator.isValid(_cpf) && _password.length >= 7,
                                       onPress: () {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState!.validate()) {
                                           _handleSignIn(_cpf, _password);
                                         } else {
                                           setState(() {
