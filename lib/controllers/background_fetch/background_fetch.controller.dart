@@ -1,23 +1,18 @@
 import 'package:background_fetch/background_fetch.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/repositories/responsible_repository.dart';
 
 part 'background_fetch.controller.g.dart';
 
-class BackgroundFetchController = _BackgroundFetchControllerBase
-    with _$BackgroundFetchController;
+class BackgroundFetchController = BackgroundFetchControllerBase with _$BackgroundFetchController;
 
-abstract class _BackgroundFetchControllerBase with Store {
-  ResponsibleRepository _responsibleRepository;
+abstract class BackgroundFetchControllerBase with Store {
+  final ResponsibleRepository _responsibleRepository;
 
-  _BackgroundFetchControllerBase() {
-    _responsibleRepository = ResponsibleRepository();
-  }
+  BackgroundFetchControllerBase(this._responsibleRepository);
 
   @observable
-  bool responsibleHasStudent;
+  late bool responsibleHasStudent;
 
   @action
   Future<void> initPlatformState(
@@ -63,8 +58,7 @@ abstract class _BackgroundFetchControllerBase with Store {
 
   @action
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
-    responsibleHasStudent =
-        await _responsibleRepository.checkIfResponsibleHasStudent(userId);
+    responsibleHasStudent = await _responsibleRepository.checkIfResponsibleHasStudent(userId);
     return responsibleHasStudent;
   }
 }
