@@ -57,6 +57,7 @@ abstract class BackgroundFetchControllerBase with Store {
       );
     } catch (ex) {
       log(ex.toString());
+      throw Exception(ex);
     }
   }
 
