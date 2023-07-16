@@ -7,7 +7,7 @@ import 'package:sme_app_aluno/services/group_messages.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 
 class EstudanteController {
-  FirebaseMessaging _firebaseMessaging;
+  late final FirebaseMessaging _firebaseMessaging;
   final _groupMessageService = GroupMessageService();
   final _estudanteRepository = GetIt.I.get<EstudanteRepository>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
@@ -17,79 +17,77 @@ class EstudanteController {
   }
 
   subscribeGroupIdToFirebase() {
-    if (_estudanteStore.gruposEstudantes != null) {
-      _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {
-        _firebaseMessaging.subscribeToTopic("MODALIDADE-${element.codigoGrupo}");
-        _groupMessageService.create(Group(codigo: "MODALIDADE-${element.codigoGrupo}"));
+    _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {
+      _firebaseMessaging.subscribeToTopic("MODALIDADE-${element.codigoGrupo}");
+      _groupMessageService.create(Group(codigo: "MODALIDADE-${element.codigoGrupo}"));
 
-        element.estudantes.asMap().forEach((index, estudante) {
-          _firebaseMessaging.subscribeToTopic("TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(codigo: "TE-${estudante.codigoTipoEscola}"));
+      element.estudantes.asMap().forEach((index, estudante) {
+        _firebaseMessaging.subscribeToTopic("TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(Group(codigo: "TE-${estudante.codigoTipoEscola}"));
 
-          _firebaseMessaging.subscribeToTopic("MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService
-              .create(Group(codigo: "MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
+        _firebaseMessaging.subscribeToTopic("MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService
+            .create(Group(codigo: "MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
 
-          _firebaseMessaging.subscribeToTopic("DRE-${estudante.codigoDre}");
-          _groupMessageService.create(Group(codigo: "DRE-${estudante.codigoDre}"));
-          print("DRE-${estudante.codigoDre}");
+        _firebaseMessaging.subscribeToTopic("DRE-${estudante.codigoDre}");
+        _groupMessageService.create(Group(codigo: "DRE-${estudante.codigoDre}"));
+        print("DRE-${estudante.codigoDre}");
 
-          _firebaseMessaging.subscribeToTopic("DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(codigo: "DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}"));
-          print("DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
+        _firebaseMessaging.subscribeToTopic("DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(Group(codigo: "DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}"));
+        print("DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
 
-          _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}");
-          _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}"));
-          print("UE-${estudante.codigoEscola}");
+        _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}");
+        _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}"));
+        print("UE-${estudante.codigoEscola}");
 
-          _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}"));
-          print("UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}");
+        _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}"));
+        print("UE-${estudante.codigoEscola}-TE-${estudante.codigoTipoEscola}");
 
-          _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}");
-          _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}"));
-          print("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}");
+        _firebaseMessaging.subscribeToTopic("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}");
+        _groupMessageService.create(Group(codigo: "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}"));
+        print("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}");
 
-          _firebaseMessaging.subscribeToTopic(
-              "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(
-              codigo: "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
-          print("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
+        _firebaseMessaging.subscribeToTopic(
+            "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(
+            Group(codigo: "UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
+        print("UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
 
-          _firebaseMessaging.subscribeToTopic("TUR-${estudante.codigoTurma}");
-          _groupMessageService.create(Group(codigo: "TUR-${estudante.codigoTurma}"));
-          print("TUR-${estudante.codigoTurma}");
+        _firebaseMessaging.subscribeToTopic("TUR-${estudante.codigoTurma}");
+        _groupMessageService.create(Group(codigo: "TUR-${estudante.codigoTurma}"));
+        print("TUR-${estudante.codigoTurma}");
 
-          _firebaseMessaging.subscribeToTopic("ALU-${estudante.codigoEol}");
-          _groupMessageService.create(Group(codigo: "ALU-${estudante.codigoEol}"));
-          print("ALU-${estudante.codigoEol}");
+        _firebaseMessaging.subscribeToTopic("ALU-${estudante.codigoEol}");
+        _groupMessageService.create(Group(codigo: "ALU-${estudante.codigoEol}"));
+        print("ALU-${estudante.codigoEol}");
 
-          _firebaseMessaging.subscribeToTopic("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}");
-          _groupMessageService
-              .create(Group(codigo: "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}"));
-          print("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}");
+        _firebaseMessaging.subscribeToTopic("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}");
+        _groupMessageService
+            .create(Group(codigo: "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}"));
+        print("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}");
 
-          _firebaseMessaging.subscribeToTopic(
-              "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(
-              codigo:
-                  "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
-          print("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
+        _firebaseMessaging.subscribeToTopic(
+            "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(Group(
+            codigo:
+                "SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}"));
+        print("SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}");
 
-          _firebaseMessaging.subscribeToTopic("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}");
-          _groupMessageService
-              .create(Group(codigo: "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}"));
-          print("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}");
+        _firebaseMessaging.subscribeToTopic("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}");
+        _groupMessageService
+            .create(Group(codigo: "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}"));
+        print("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}");
 
-          _firebaseMessaging.subscribeToTopic(
-              "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
-          _groupMessageService.create(Group(
-              codigo:
-                  "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}"));
-          print("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
-        });
+        _firebaseMessaging.subscribeToTopic(
+            "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
+        _groupMessageService.create(Group(
+            codigo:
+                "SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}"));
+        print("SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}");
       });
-    }
+    });
   }
 
   obterEstudantes() async {
