@@ -10,7 +10,7 @@ class EAEstudanteCard extends StatelessWidget {
   final String schooType;
   final String dreName;
   final String studentGrade;
-  final Function onPress;
+  final VoidCallback onPress;
   final Image avatar;
 
   EAEstudanteCard(

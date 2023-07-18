@@ -9,8 +9,13 @@ class CardAlert extends StatelessWidget {
   final double textSize;
   final bool isHeader;
 
-  CardAlert(
-      {this.title, this.icon, this.text, this.isHeader = true, this.textSize});
+  CardAlert({
+    required this.title,
+    required this.icon,
+    required this.text,
+    this.isHeader = true,
+    required this.textSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +40,11 @@ class CardAlert extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding:
-                isHeader ? EdgeInsets.all(screenHeight * 2.5) : EdgeInsets.zero,
+            padding: isHeader ? EdgeInsets.all(screenHeight * 2.5) : EdgeInsets.zero,
             decoration: BoxDecoration(
                 color: isHeader ? Color(0xffFFD037) : Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -60,9 +63,7 @@ class CardAlert extends StatelessWidget {
                         title,
                         maxFontSize: 18,
                         minFontSize: 16,
-                        style: TextStyle(
-                            color: Color(0xffC45C04),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
                       )
                     : Container(),
               ],

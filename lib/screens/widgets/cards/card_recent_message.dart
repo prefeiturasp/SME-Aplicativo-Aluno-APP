@@ -12,7 +12,7 @@ class CardRecentMessage extends StatefulWidget {
   final int codigoGrupo;
   final bool deleteBtn;
   final bool recent;
-  final Function onPress;
+  final VoidCallback onPress;
   final Function outherRoutes;
 
   CardRecentMessage(

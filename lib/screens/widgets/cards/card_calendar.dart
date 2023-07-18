@@ -8,7 +8,7 @@ class CardCalendar extends StatelessWidget {
   final String text;
   final double textSize;
   final bool isHeader;
-  final Function onPress;
+  final VoidCallback onPress;
   final Widget widget;
   final String totalEventos;
   final int lenght;

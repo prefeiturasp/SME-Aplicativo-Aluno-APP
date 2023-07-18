@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class EAButton extends StatelessWidget {
   final String text;
   final Color btnColor;
-  final IconData icon;
-  final Color iconColor;
-  final Function onPress;
+  final IconData? icon;
+  final Color? iconColor;
+  final VoidCallback onPress;
   final bool disabled;
 
   EAButton(

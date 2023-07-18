@@ -6,8 +6,8 @@ class TileItem extends StatelessWidget {
   final List<Widget> body;
 
   TileItem({
-    this.header,
-    this.body,
+    required this.header,
+    required this.body,
   });
 
   @override

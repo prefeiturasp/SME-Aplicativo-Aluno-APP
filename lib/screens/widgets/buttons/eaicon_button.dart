@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EAIconButton extends StatelessWidget {
-  final Function onPress;
+  final VoidCallback onPress;
   final double screenHeight;
   final Icon iconBtn;
 

@@ -6,7 +6,7 @@ import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 
 class TermsView extends StatefulWidget {
   final Term term;
-  final Function changeStatusTerm;
+  final VoidCallback changeStatusTerm;
   final String cpf;
   final bool showBtn;
   TermsView({required this.term, required this.changeStatusTerm, required this.cpf, this.showBtn = true});

@@ -10,7 +10,7 @@ class TermsUse extends StatefulWidget {
 }
 
 class _TermsUseState extends State<TermsUse> {
-  TermsController _termsController;
+  late TermsController _termsController;
 
   @override
   void initState() {
@@ -32,9 +32,13 @@ class _TermsUseState extends State<TermsUse> {
         width: MediaQuery.of(context).size.width,
         // child: TermsView(term: _termsController.term),
         child: Observer(builder: (context) {
-          if (_termsController.term != null &&
-              _termsController.term.termosDeUso != null) {
-            return TermsView(term: _termsController.term, showBtn: false);
+          if (_termsController.term.termosDeUso != null) {
+            return TermsView(
+              term: _termsController.term,
+              showBtn: false,
+              changeStatusTerm: () {},
+              cpf: '',
+            );
           } else {
             return GFLoader(
               type: GFLoaderType.square,

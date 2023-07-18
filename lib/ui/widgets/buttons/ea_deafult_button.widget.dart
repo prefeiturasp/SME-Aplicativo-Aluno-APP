@@ -6,7 +6,7 @@ class EADefaultButton extends StatelessWidget {
   final Color btnColor;
   final IconData icon;
   final Color iconColor;
-  final Function onPress;
+  final VoidCallback onPress;
   final bool enabled;
 
   EADefaultButton(

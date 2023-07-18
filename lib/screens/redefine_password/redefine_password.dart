@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -34,7 +36,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   final accentUppercase = RegExp(r'[À-Ú]');
   final spaceNull = RegExp(r"[/\s/]");
 
-  RecoverPasswordController _recoverPasswordController;
+  late RecoverPasswordController _recoverPasswordController;
 
   bool _showNewPassword = true;
   bool _showConfirmPassword = true;
@@ -70,36 +72,41 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: _recoverPasswordController.dataUser != null
+        content: !_recoverPasswordController.dataUser.isNull
             ? Text(_recoverPasswordController.dataUser.erros[0])
             : Text("Erro de serviço"));
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Atenção"),
-            content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
-            actions: <Widget>[
-              ElevatedButton(
-                child: Text("SIM"),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              ),
-              ElevatedButton(
-                child: Text("NÃO"),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              )
-            ],
-          );
-        });
+  Future<bool> _onBackPress() async {
+    bool retorno = false;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Atenção"),
+          content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
+          actions: <Widget>[
+            ElevatedButton(
+              child: Text("SIM"),
+              onPressed: () {
+                retorno = true;
+                Navigator.of(context).pop(true);
+              },
+            ),
+            ElevatedButton(
+              child: Text("NÃO"),
+              onPressed: () {
+                retorno = false;
+                Navigator.of(context).pop(false);
+              },
+            )
+          ],
+        );
+      },
+    );
+    return retorno;
   }
 
   @override

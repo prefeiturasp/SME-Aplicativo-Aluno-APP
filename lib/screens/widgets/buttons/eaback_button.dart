@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class EABackButton extends StatelessWidget {
   final String text;
   final Color btnColor;
-  final IconData icon;
-  final Color iconColor;
-  final Function onPress;
+  IconData? icon;
+  Color? iconColor;
+  VoidCallback onPress;
   final bool disabled;
 
   EABackButton(
@@ -27,7 +27,7 @@ class EABackButton extends StatelessWidget {
         decoration: BoxDecoration(
             color: !disabled ? Color(0xffF2F1EE) : btnColor, borderRadius: BorderRadius.circular(screenHeight * 3)),
         child: ElevatedButton(
-            onPressed: !disabled ? null : onPress,
+            onPressed: disabled ? () {} : onPress,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

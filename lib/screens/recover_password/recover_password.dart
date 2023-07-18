@@ -29,7 +29,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
 
   String _cpf = '';
 
-  RecoverPasswordController _recoverPasswordController;
+  late RecoverPasswordController _recoverPasswordController;
 
   @override
   void initState() {
@@ -180,6 +180,8 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                         context,
                                         ShowInfo(
                                           hasToken: true,
+                                          email: _recoverPasswordController.data.email,
+                                          cpf: _cpf,
                                         ));
                                   },
                                   child: AutoSizeText(
@@ -209,10 +211,8 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                       btnColor: Color(0xffd06d12),
                                       disabled: CPFValidator.isValid(_cpf),
                                       onPress: () {
-                                        if (_formKey.currentState.validate()) {
+                                        if (_formKey.currentState!.validate()) {
                                           _onPressGetToken(_cpf, context);
-                                        } else {
-                                          return null;
                                         }
                                       },
                                     ),

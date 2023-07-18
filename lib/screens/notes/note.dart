@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -9,7 +11,12 @@ class Note extends StatelessWidget {
   final bool current;
   final Color color;
 
-  Note({this.name, this.noteValue, this.description, this.current, this.color});
+  Note(
+      {required this.name,
+      required this.noteValue,
+      required this.description,
+      required this.current,
+      required this.color});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -72,7 +79,7 @@ class Note extends StatelessWidget {
                         : Color(0xFFEDEDED)),
             width: screenHeight * 8,
           ),
-          onTap: description != null && description.isNotEmpty && description.length > 5
+          onTap: !description.isNull && description.isNotEmpty && description.length > 5
               ? () {
                   viewEvent();
                 }

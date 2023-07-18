@@ -28,7 +28,7 @@ class ViewMessageNotification extends StatefulWidget {
 }
 
 class _ViewMessageNotificationState extends State<ViewMessageNotification> {
-  MessagesController _messagesController;
+  late MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   bool messageIsRead = true;
   final UserService _userService = UserService();
@@ -62,7 +62,8 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
-    return showDialog(
+    bool retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -72,6 +73,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
               ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
+                    retorno = true;
                     _viewMessageUpdate(true, true);
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
@@ -83,17 +85,20 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+
+    return retorno;
   }
 
   _launchURL(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }

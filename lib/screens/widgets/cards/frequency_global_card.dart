@@ -42,7 +42,7 @@ class FrequencyGlobalCard extends StatelessWidget {
                 lineWidth: 6.0,
                 animation: true,
                 animationDuration: 3000,
-                percent: frequencia.frequencia / 100,
+                percent: frequencia.frequencia! / 100,
                 animateFromLastPercent: true,
                 center: AutoSizeText(
                   "${frequencia.frequencia}%",
@@ -53,7 +53,7 @@ class FrequencyGlobalCard extends StatelessWidget {
                   ),
                 ),
                 circularStrokeCap: CircularStrokeCap.round,
-                progressColor: HexColor(frequencia.corDaFrequencia),
+                progressColor: HexColor(frequencia.corDaFrequencia ?? ''),
                 backgroundColor: Color(0xffF1F0F5),
                 reverse: true),
           ),
