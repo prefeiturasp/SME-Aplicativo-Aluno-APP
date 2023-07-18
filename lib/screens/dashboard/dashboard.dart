@@ -35,8 +35,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  MessagesController _messagesController;
-  EventController _eventController;
+  late MessagesController _messagesController;
+  late EventController _eventController;
 
   @override
   void initState() {
@@ -100,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
     List<Event> events,
     BuildContext context,
   ) {
-    List<Widget> list = new List<Widget>();
+    List<Widget> list = [];
     for (int i = 0; i < events.length; i++) {
       String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() + (events[i].diaSemana).substring(1);
 
