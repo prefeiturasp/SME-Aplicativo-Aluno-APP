@@ -77,7 +77,7 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
         content:
             _firstAccessController.data != null ? Text(_firstAccessController.data.erros[0]) : Text("Erro de serviço"));
 
-    _scaffoldKey.currentState!.showSnackBar(snackbar);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   _onSuccess() {
@@ -99,8 +99,9 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
     }
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
+  Future<bool> _onBackPress() async {
+    var retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -110,18 +111,21 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
               ElevatedButton(
                 child: Text("SIM"),
                 onPressed: () {
+                  retorno = true;
                   Navigator.of(context).pop(true);
                 },
               ),
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+    return retorno;
   }
 
   @override
@@ -173,7 +177,7 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
                                 ),
                                 child: TextFormField(
                                   initialValue: _email,
-                                  autovalidateMode: _email.isEmpty || _emailData != "",
+                                  autovalidateMode: AutovalidateMode.always,
                                   style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'E-mail',
@@ -183,7 +187,7 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
                                   ),
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
-                                    return ValidatorsUtil.email(value);
+                                    return ValidatorsUtil.email(value!);
                                   },
                                   onChanged: (value) {
                                     setState(() {
@@ -216,7 +220,7 @@ class _InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone>
                                 ),
                                 child: TextFormField(
                                   initialValue: _phone,
-                                  autovalidate: _phone.isNotEmpty || _phoneData.isNotEmpty,
+                                  autovalidateMode: AutovalidateMode.always,
                                   style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                   decoration: InputDecoration(
                                     labelText: 'Número de Telefone',

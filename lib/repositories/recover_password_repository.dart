@@ -5,9 +5,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/models/recover_password/data.dart';
-import 'package:sme_app_aluno/models/recover_password/data_user.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
+
+import '../dtos/validacao_erro_dto.dart';
+import '../models/recover_password/data_user.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -36,7 +38,10 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         var data = Data.fromJson(decodeJson);
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(
+            ok: false,
+            erros: [AppConfigReader.getErrorMessageTimeOut()],
+            validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []), email: '');
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);

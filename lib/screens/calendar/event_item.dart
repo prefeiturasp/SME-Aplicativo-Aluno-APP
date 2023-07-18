@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -14,13 +16,13 @@ class EventItem extends StatelessWidget {
   final String componenteCurricular;
 
   EventItem({
-    this.tipoEvento,
-    this.customTitle,
-    this.titleEvent,
-    this.desc,
-    this.dia,
-    this.eventDesc,
-    this.componenteCurricular,
+    required this.tipoEvento,
+    required this.customTitle,
+    required this.titleEvent,
+    required this.desc,
+    required this.dia,
+    required this.eventDesc,
+    required this.componenteCurricular,
   });
 
   @override
@@ -75,7 +77,7 @@ class EventItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  componenteCurricular != null
+                  !componenteCurricular.isNull
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -173,7 +175,7 @@ class EventItem extends StatelessWidget {
                   ),
                   tipoEvento == 0
                       ? Icon(
-                          FontAwesomeIcons.solidStickyNote,
+                          FontAwesomeIcons.solidNoteSticky,
                           color: Color(0xFF086397),
                           size: screenHeight * 2.2,
                         )

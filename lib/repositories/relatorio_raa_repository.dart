@@ -10,14 +10,15 @@ class RelatorioRaaRepository implements IRelatorioRaaRepository {
 
   @override
   Future<bool> solicitarRelatorioRaa(
-      {String dreCodigo,
-      String ueCodigo,
-      int semestre,
-      String turmaCodigo,
-      int anoLetivo,
-      int modalidadeCodigo,
-      String alunoCodigo}) async {
-    var url = "${AppConfigReader.getApiHost()}/Relatorio/raa";
+      {
+      required String dreCodigo,
+      required String ueCodigo,
+      required int semestre,
+      required String turmaCodigo,
+      required int anoLetivo,
+      required int modalidadeCodigo,
+      required String alunoCodigo}) async {
+    var url = Uri.https("${AppConfigReader.getApiHost()}/Relatorio/raa");
     Map _parametros = {
       "dreCodigo": dreCodigo,
       "ueCodigo": ueCodigo,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,16 +14,16 @@ abstract class _UsuarioStoreBase with Store {
   bool carregando = false;
 
   @observable
-  int id;
+  late int id;
 
   @observable
-  String cpf;
+  late String cpf;
 
   @observable
-  UsuarioModel usuario = new UsuarioModel();
+  late UsuarioModel usuario;
 
   @observable
-  String token;
+  late String token;
 
   @action
   carregarUsuario() async {
@@ -31,21 +32,21 @@ abstract class _UsuarioStoreBase with Store {
     var prefsUsuario = prefs.getString("eaUsuario");
     if (prefsUsuario != null) {
       usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
-      id = usuario?.id;
-      cpf = usuario?.cpf;
-      token = usuario?.token;
+      id = usuario.id;
+      cpf = usuario.cpf;
+      token = usuario.token;
     }
     carregando = false;
   }
 
   @action
-  atualizarDados(String email, DateTime dataNascimento, String nomeMae,
-      String telefone, DateTime ultimaAtualizacao) async {
+  atualizarDados(
+      String email, DateTime dataNascimento, String nomeMae, String telefone, DateTime ultimaAtualizacao) async {
     carregando = true;
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (usuario != null) {
+    if (!usuario.isNull) {
       usuario.email = email;
       usuario.dataNascimento = dataNascimento;
       usuario.nomeMae = nomeMae;
@@ -62,7 +63,7 @@ abstract class _UsuarioStoreBase with Store {
   @action
   Future<void> atualizaPrimeiroAcesso(bool primeiroAcesso) async {
     final prefs = await SharedPreferences.getInstance();
-    if (usuario != null) {
+    if (!usuario.isNull) {
       usuario.primeiroAcesso = primeiroAcesso;
       await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
     }
@@ -71,8 +72,8 @@ abstract class _UsuarioStoreBase with Store {
   @action
   Future<void> limparUsuario() async {
     final prefs = await SharedPreferences.getInstance();
-    usuario = null;
-    token = null;
+    usuario.clear();
+    token = '';
     prefs.clear();
   }
 }

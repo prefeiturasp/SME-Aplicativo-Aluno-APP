@@ -9,16 +9,16 @@ class BoletimAlunoRepository implements IBoletimRepository {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   @override
   Future<bool> solicitarBoletim({
-    String dreCodigo,
-    String ueCodigo,
-    int semestre,
-    String turmaCodigo,
-    int anoLetivo,
-    int modalidadeCodigo,
-    int modelo,
-    String alunoCodigo,
+    required String dreCodigo,
+    required String ueCodigo,
+    required int semestre,
+    required String turmaCodigo,
+    required int anoLetivo,
+    required int modalidadeCodigo,
+    required int modelo,
+    required String alunoCodigo,
   }) async {
-    var url = "${AppConfigReader.getApiHost()}/Relatorio/boletim";
+    var url = Uri.https("${AppConfigReader.getApiHost()}/Relatorio/boletim");
     Map _data = {
       "dreCodigo": dreCodigo,
       "ueCodigo": ueCodigo,
@@ -34,7 +34,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       var response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
           "Content-Type": "application/json",
         },
         body: body,

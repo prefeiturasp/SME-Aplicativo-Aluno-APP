@@ -6,14 +6,15 @@ part 'event.controller.g.dart';
 class EventController = EventControllerBase with _$EventController;
 
 abstract class EventControllerBase with Store {
-  final EventRepository _eventRepository;
+  late final EventRepository _eventRepository;
 
-  EventControllerBase(this._eventRepository) {
+  EventControllerBase() {
+    this._eventRepository = EventRepository();
     loadingCurrentMonth(currentDate.month);
   }
 
   @observable
-  late Event event; 
+  late Event event;
 
   @observable
   late ObservableList<Event> events;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -5,17 +7,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
-import 'package:sentry/sentry.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -26,10 +25,12 @@ class FluxoInicialView extends StatefulWidget {
 
 class _FluxoInicialViewState extends State<FluxoInicialView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final Stream<RemoteMessage> _firebaseonMessage = FirebaseMessaging.onMessage;
+  final Stream<RemoteMessage> _firebaseonOnMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp;
 
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
-  MessagesController _messagesController;
+  late final MessagesController _messagesController;
 
   @override
   initState() {
@@ -47,22 +48,23 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
 
   _initPushNotificationHandlers() {
     try {
-      _firebaseMessaging.requestNotificationPermissions();
+      _firebaseMessaging.requestPermission();
       _firebaseMessaging.getToken().then(print);
       _firebaseMessaging.subscribeToTopic("AppAluno");
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          _popUpNotification(message);
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          await _navigateToMessageView(message);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          await _navigateToMessageView(message);
-        },
-      );
+      _firebaseMessaging.getInitialMessage().then((message) async {
+        if (message != null) {
+          await _navigateToMessageView(message.data);
+        }
+      });
+      _firebaseonMessage.listen((RemoteMessage message) {
+        _popUpNotification(message.data);
+      });
+      _firebaseonOnMessageOpenedApp.listen((event) async {
+        await _navigateToMessageView(event.data);
+      });
     } catch (ex) {
-      exception: ex)
+      log(ex.toString());
+      throw Exception(ex);
     }
   }
 
@@ -70,8 +72,8 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
     AwesomeDialog(
         context: context,
         headerAnimationLoop: true,
-        dialogType: DialogType.SUCCES,
-        animType: AnimType.BOTTOMSLIDE,
+        dialogType: DialogType.success,
+        animType: AnimType.bottomSlide,
         title: "NOTIFICAÇÃO - ${message["data"]["categoriaNotificacao"]}",
         desc: "Você acaba de receber uma \n mensagem.",
         btnOkOnPress: () {
@@ -89,6 +91,9 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       criadoEm: message["data"]["CriadoEm"],
       codigoEOL: message["data"]["CodigoEOL"] != null ? int.parse(message["data"]["CodigoEOL"]) : 0,
       categoriaNotificacao: message["data"]["categoriaNotificacao"],
+      dataEnvio: message["data"]["DataEnvio"],
+      alteradoEm: message["data"]["AlteradoEm"],
+      mensagemVisualizada: message["data"]["MensagemVisualizada"],
     );
 
     await _messagesController.loadById(_message.id, usuarioStore.usuario.id);
@@ -135,9 +140,16 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       return NotInteernet();
     } else {
       return Observer(
-          builder: (context) => usuarioStore.usuario == null
-              ? LoginView()
-              : (usuarioStore.usuario.primeiroAcesso == null ? LoginView() : fluxoLogin()));
+        builder: (context) => usuarioStore.usuario == null
+            ? LoginView(
+                notice: '',
+              )
+            : (usuarioStore.usuario.primeiroAcesso == null
+                ? LoginView(
+                    notice: '',
+                  )
+                : fluxoLogin()),
+      );
     }
   }
 }

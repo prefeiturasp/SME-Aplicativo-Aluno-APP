@@ -1,25 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:sme_app_aluno/models/frequency/ausencias.dart';
 
 class BoxFrequency extends StatelessWidget {
-  final String title;
-  final String idbox;
-  final bool fail;
-  final List<Ausencias> ausencias;
+  String title;
+  String idbox;
+  bool fail = false;
+  List<Ausencias> ausencias = [];
 
   BoxFrequency({
-    @required this.title,
-    @required this.idbox,
     this.fail = false,
-    this.ausencias,
+    required this.ausencias,
+    required this.title,
+    required this.idbox,
   });
 
   final dataPorExtenso = DateFormat("d 'de' MMMM 'de' y", "pt_BR");
 
   Widget _listDateAusencias(List<Ausencias> data, double screenHeight) {
-    List<Widget> list = new List<Widget>();
+    List<Widget> list = [];
     for (var i = 0; i < ausencias.length; i++) {
       list.add(Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +63,7 @@ class BoxFrequency extends StatelessWidget {
   }
 
   void displayBottomSheet(BuildContext context, double screenHeight) {
-    if (ausencias == null || ausencias.length == 0) {
+    if (ausencias.length == 0) {
       return;
     }
 
@@ -150,10 +152,7 @@ class BoxFrequency extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(screenHeight * 0.8),
                 ),
-                border: fail
-                    ? Border.all(
-                        color: Color(0xffC65D00), width: screenHeight * 0.2)
-                    : null,
+                border: fail ? Border.all(color: Color(0xffC65D00), width: screenHeight * 0.2) : null,
               ),
               child: Center(
                 child: AutoSizeText(

@@ -19,14 +19,15 @@ class EstudanteRepository {
         final dataEstudents = DataStudent.fromJson(response.data);
         return dataEstudents;
       } else if (response.statusCode == 408) {
-        return DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        log(AppConfigReader.getErrorMessageTimeOut());
+        return DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []);
       } else {
         var dataError = DataStudent.fromJson(response.data);
         return dataError;
       }
     } catch (e, stacktrace) {
       log("Erro ao carregar lista de Estudantes " + stacktrace.toString());
-      return DataStudent();
+      throw Exception(e);
     }
   }
 
@@ -45,7 +46,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       log("Erro ao carregar lista de Bimestres disponíveis " + stacktrace.toString());
-      return [];
+      throw Exception(e);
     }
   }
 
@@ -61,7 +62,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       log("Erro ao carregar lista de Bimestres disponíveis " + stacktrace.toString());
-      return [];
+      throw Exception(e);
     }
   }
 }

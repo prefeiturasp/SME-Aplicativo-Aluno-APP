@@ -11,6 +11,8 @@ import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
+import '../dtos/validacao_erro_dto.dart';
+
 class FirstAccessRepository implements IFirstAccessRepository {
   final UserService _userService = UserService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
@@ -18,7 +20,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<Data> changeNewPassword(int id, String password) async {
     Map _data = {
-      "id": usuarioStore.usuario.id,
+      "id": usuarioStore.usuario?.id,
       "novaSenha": password,
     };
 
@@ -28,7 +30,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -39,19 +41,25 @@ class FirstAccessRepository implements IFirstAccessRepository {
         await usuarioStore.atualizaPrimeiroAcesso(false);
 
         await _userService.update(UserModel.User(
-          id: usuarioStore.usuario.id,
-          nome: usuarioStore.usuario.nome,
-          cpf: usuarioStore.usuario.cpf,
-          email: usuarioStore.usuario.email,
-          celular: usuarioStore.usuario.celular,
-          token: usuarioStore.usuario.token,
+          id: usuarioStore.usuario!.id,
+          nome: usuarioStore.usuario!.nome,
+          cpf: usuarioStore.usuario!.cpf,
+          email: usuarioStore.usuario!.email,
+          celular: usuarioStore.usuario!.celular,
+          token: usuarioStore.usuario!.token,
+          nomeMae: usuarioStore.usuario!.nomeMae,
+          dataNascimento: usuarioStore.usuario!.dataNascimento,
+          senha: usuarioStore.usuario!.senha,
           primeiroAcesso: false,
           atualizarDadosCadastrais: true,
         ));
 
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(
+            ok: false,
+            erros: [AppConfigReader.getErrorMessageTimeOut()],
+            validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []));
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
@@ -59,21 +67,21 @@ class FirstAccessRepository implements IFirstAccessRepository {
       }
     } catch (error, stacktrace) {
       log("[fetchFirstAccess] Erro de requisição " + stacktrace.toString());
-      return Data(ok: false, erros: [error.toString()]);
+      throw Exception(error);
     }
   }
 
   @override
   Future<DataChangeEmailAndPhone> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) async {
-    Map _data = {"id": userId, "email": email ?? "", "celular": phone ?? "", "alterarSenha": changePassword};
+    Map _data = {"id": userId, "email": email, "celular": phone, "alterarSenha": changePassword};
     var body = json.encode(_data);
     try {
       final url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular");
       final response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -83,22 +91,25 @@ class FirstAccessRepository implements IFirstAccessRepository {
         var data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(UserModel.User(
             id: userId,
-            nome: usuarioStore.usuario.nome,
-            cpf: usuarioStore.usuario.cpf,
+            nome: usuarioStore.usuario!.nome,
+            cpf: usuarioStore.usuario!.cpf,
             email: email,
             celular: phone,
             token: data.token,
             primeiroAcesso: false,
+            nomeMae: usuarioStore.usuario!.nomeMae,
+            dataNascimento: usuarioStore.usuario!.dataNascimento,
+            senha: usuarioStore.usuario!.senha,
             atualizarDadosCadastrais: false));
         return data;
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = DataChangeEmailAndPhone.fromJson(decodeError);
-        return dataError;
+        throw Exception(dataError);
       }
     } catch (error, stacktrace) {
       log("[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
-      return DataChangeEmailAndPhone();
+      throw Exception(error);
     }
   }
 }

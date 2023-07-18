@@ -6,8 +6,8 @@ class LabelEvent extends StatelessWidget {
   final Color labelColor;
 
   LabelEvent({
-    @required this.labelName,
-    @required this.labelColor,
+    required this.labelName,
+    required this.labelColor,
   });
 
   @override

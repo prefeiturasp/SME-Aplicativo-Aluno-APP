@@ -7,8 +7,8 @@ class TitleEvent extends StatelessWidget {
   final String title;
 
   TitleEvent({
-    @required this.dayOfWeek,
-    @required this.title,
+    required this.dayOfWeek,
+    required this.title,
   });
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,7 @@ class TitleEvent extends StatelessWidget {
             minFontSize: 12,
             maxLines: 1,
             style: TextStyle(
-                color: dayOfWeek == "Sab" || dayOfWeek == "Dom"
-                    ? Colors.red
-                    : Colors.black,
+                color: dayOfWeek == "Sab" || dayOfWeek == "Dom" ? Colors.red : Colors.black,
                 fontWeight: FontWeight.w500),
           ),
         ),

@@ -24,11 +24,11 @@ class EstudanteFrequenciaRepository {
         final frequency = Frequency.fromJson(response.data);
         return frequency;
       } else {
-        return Frequency();
+        throw Exception(response.statusCode);
       }
     } catch (e) {
       log('$e');
-      return Frequency();
+      throw Exception(e);
     }
   }
 
@@ -44,11 +44,11 @@ class EstudanteFrequenciaRepository {
         return retorno;
       } else {
         log("Erro ao obter a frequencia do aluno");
-        return [];
+        throw Exception(response.statusCode);
       }
     } catch (e) {
       log('$e');
-      return [];
+      throw Exception(e);
     }
   }
 
@@ -62,11 +62,11 @@ class EstudanteFrequenciaRepository {
         return EstudanteFrequenciaGlobalDTO.fromJson(response.data);
       } else {
         log("Erro ao obter a frequencia do aluno");
-        return EstudanteFrequenciaGlobalDTO();
+        throw Exception(response.statusCode);
       }
     } catch (e) {
       log('$e');
-      return EstudanteFrequenciaGlobalDTO();
+      throw Exception(e);
     }
   }
 }

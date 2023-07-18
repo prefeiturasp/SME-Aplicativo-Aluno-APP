@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -16,17 +18,17 @@ class ListEvents extends StatefulWidget {
   final int userId;
 
   ListEvents({
-    @required this.student,
-    @required this.userId,
+    required this.student,
+    required this.userId,
   });
   @override
   _ListEventsState createState() => _ListEventsState();
 }
 
 class _ListEventsState extends State<ListEvents> {
-  EventController _eventController;
+  late EventController _eventController;
 
-  int _currentMonth;
+  int _currentMonth = 0;
 
   @override
   void initState() {
@@ -55,7 +57,7 @@ class _ListEventsState extends State<ListEvents> {
               title: event.nome,
             ),
             titleEvent: event.nome,
-            desc: event.descricao != null ? (event.descricao.length > 3 ? true : false) : false,
+            desc: !event.descricao.isNull ? (event.descricao.length > 3 ? true : false) : false,
             eventDesc: event.descricao,
             dia: event.dataInicio,
             tipoEvento: event.tipoEvento,

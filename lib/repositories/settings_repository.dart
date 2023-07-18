@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/dtos/validacao_erro_dto.dart';
 
 import 'package:sme_app_aluno/interfaces/settings_repository_interface.dart';
 import 'package:sme_app_aluno/models/settings/data.dart';
@@ -37,18 +38,24 @@ class SettingsRepository implements ISettingsRepository {
         var decodeJson = jsonDecode(response.body);
         var data = Data.fromJson(decodeJson);
         await _userService.update(UserModel.User(
-          id: usuarioStore.usuario.id,
-          nome: usuarioStore.usuario.nome,
-          cpf: usuarioStore.usuario.cpf,
-          email: usuarioStore.usuario.email,
-          celular: usuarioStore.usuario.celular,
-          token: data.token,
-          primeiroAcesso: usuarioStore.usuario.primeiroAcesso,
-          atualizarDadosCadastrais: usuarioStore.usuario.atualizarDadosCadastrais,
-        ));
+            id: usuarioStore.usuario.id,
+            nome: usuarioStore.usuario.nome,
+            cpf: usuarioStore.usuario.cpf,
+            email: usuarioStore.usuario.email,
+            celular: usuarioStore.usuario.celular,
+            token: data.token,
+            primeiroAcesso: usuarioStore.usuario.primeiroAcesso,
+            atualizarDadosCadastrais: usuarioStore.usuario.atualizarDadosCadastrais,
+            nomeMae: usuarioStore.usuario.nomeMae,
+            dataNascimento: usuarioStore.usuario.dataNascimento,
+            senha: usuarioStore.usuario.senha));
         return data;
       } else if (response.statusCode == 408) {
-        return Data(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return Data(
+            ok: false,
+            erros: [AppConfigReader.getErrorMessageTimeOut()],
+            token: '',
+            validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []));
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);

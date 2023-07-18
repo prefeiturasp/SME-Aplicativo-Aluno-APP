@@ -40,15 +40,16 @@ class AuthenticateRepository implements IAuthenticateRepository {
         var user = UsuarioDataModel.fromJson(decodeJson);
         return user;
       } else if (response.statusCode == 408) {
-        return UsuarioDataModel(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        log("Erro ao tentar se autenticar");
+        throw Exception(response.statusCode);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = UsuarioDataModel.fromJson(decodeError);
-        return dataError;
+        throw Exception(dataError);
       }
     } catch (error, stacktrace) {
       log("Erro ao tentar se autenticar " + stacktrace.toString());
-      return UsuarioDataModel();
+      throw Exception(error);
     }
   }
 }

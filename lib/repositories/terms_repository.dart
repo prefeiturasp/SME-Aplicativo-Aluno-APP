@@ -8,7 +8,7 @@ import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
 class TermsRepository extends ITermsRepository {
   @override
-  Future<dynamic> fetchTerms(String cpf) async {
+  Future<Term> fetchTerms(String cpf) async {
     try {
       var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
       var response = await http.get(url);
@@ -17,7 +17,7 @@ class TermsRepository extends ITermsRepository {
         final termo = Term.fromJson(decodeJson);
         return termo;
       } else if (response.statusCode == 204) {
-        return Term();
+        return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       } else {
         log('Erro ao obter dados');
         throw Exception(response.reasonPhrase);
@@ -40,7 +40,10 @@ class TermsRepository extends ITermsRepository {
       } else if (response.statusCode == 204) {
         return true;
       } else if (response.statusCode == 408) {
-        return UsuarioDataModel(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return UsuarioDataModel(
+            ok: false,
+            erros: [AppConfigReader.getErrorMessageTimeOut()],
+            data: UsuarioModel.clear());
       } else {
         log('Erro ao obter dados');
         throw Exception(response.reasonPhrase);
