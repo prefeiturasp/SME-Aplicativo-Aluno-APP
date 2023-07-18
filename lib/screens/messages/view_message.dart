@@ -25,7 +25,7 @@ class ViewMessage extends StatefulWidget {
 }
 
 class _ViewMessageState extends State<ViewMessage> {
-  MessagesController _messagesController;
+  late MessagesController _messagesController;
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool messageIsRead = true;
@@ -54,7 +54,8 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   Future<bool> _confirmDeleteMessage(int id) async {
-    return showDialog(
+    bool retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -64,6 +65,7 @@ class _ViewMessageState extends State<ViewMessage> {
               ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () async {
+                    retorno = true;
                     await _removeMesageToStorage(
                       widget.codigoAlunoEol,
                       id,
@@ -75,16 +77,20 @@ class _ViewMessageState extends State<ViewMessage> {
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+
+    return retorno;
   }
 
   Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
-    return showDialog(
+    bool retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -94,6 +100,7 @@ class _ViewMessageState extends State<ViewMessage> {
               ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
+                    retorno = true;
                     _viewMessageUpdate(false, true);
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
@@ -105,12 +112,15 @@ class _ViewMessageState extends State<ViewMessage> {
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+
+    return retorno;
   }
 
   _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
@@ -118,11 +128,11 @@ class _ViewMessageState extends State<ViewMessage> {
   }
 
   _launchURL(url) async {
-    if (await canLaunch(url)) {
+    if (await canLaunchUrl(url)) {
       var codigo = _obterCodigoRelatorio(url);
       bool relatorioExiste = await _relatorioExiste(codigo);
       if (relatorioExiste) {
-        await launch(url);
+        await launchUrl(url);
       } else {
         _modalInfo();
       }
@@ -136,9 +146,9 @@ class _ViewMessageState extends State<ViewMessage> {
     return await outroServicoRepositorio.verificarSeRelatorioExiste(codigo);
   }
 
-  String _obterCodigoRelatorio(url) {
+  String _obterCodigoRelatorio(String url) {
     final regexp = RegExp(r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
-    return regexp.stringMatch(url);
+    return regexp.stringMatch(url) ?? '';
   }
 
   _modalInfo() {
@@ -206,13 +216,17 @@ class _ViewMessageState extends State<ViewMessage> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Color(0xffd06d12),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                        borderRadius: BorderRadius.circular(50)),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Color(0xffd06d12),
+                              width: 1,
+                              style: BorderStyle.solid,
+                            ),
+                            borderRadius: BorderRadius.circular(50)),
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -309,7 +323,7 @@ class _ViewMessageState extends State<ViewMessage> {
                         children: <Widget>[
                           EAIconButton(
                             iconBtn: Icon(
-                              FontAwesomeIcons.trashAlt,
+                              FontAwesomeIcons.trashCan,
                               color: Color(0xffC65D00),
                             ),
                             screenHeight: screenHeight,

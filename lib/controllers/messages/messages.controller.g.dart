@@ -219,14 +219,12 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       {required int notificacaoId,
       required int usuarioId,
       required int codigoAlunoEol,
-      required bool mensagemVisualia,
-      required EstudanteModel estudante}) {
+      required bool mensagemVisualia}) {
     return _$updateMessageAsyncAction.run(() => super.updateMessage(
         notificacaoId: notificacaoId,
         usuarioId: usuarioId,
         codigoAlunoEol: codigoAlunoEol,
-        mensagemVisualia: mensagemVisualia,
-        estudante: estudante));
+        mensagemVisualia: mensagemVisualia));
   }
 
   late final _$MessagesControllerBaseActionController =

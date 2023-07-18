@@ -188,7 +188,6 @@ abstract class MessagesControllerBase with Store {
     required int usuarioId,
     required int codigoAlunoEol,
     required bool mensagemVisualia,
-    required EstudanteModel estudante,
   }) async {
     await _messagesRepository.readMessage(notificacaoId, usuarioId, codigoAlunoEol, mensagemVisualia);
   }
