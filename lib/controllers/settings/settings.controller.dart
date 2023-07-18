@@ -7,9 +7,11 @@ part 'settings.controller.g.dart';
 class SettingsController = SettingsControllerBase with _$SettingsController;
 
 abstract class SettingsControllerBase with Store {
-  final SettingsRepository _settingsRepository;
+  late final SettingsRepository _settingsRepository;
 
-  SettingsControllerBase(this._settingsRepository);
+  SettingsControllerBase() {
+    this._settingsRepository = SettingsRepository();
+  }
 
   @observable
   late Data data;

@@ -12,7 +12,7 @@ class ChangePassword extends StatefulWidget {
   final String cpf;
   final int id;
 
-  ChangePassword({@required this.cpf, @required this.id});
+  ChangePassword({required this.cpf, required this.id});
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -30,7 +30,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final accentUppercase = RegExp(r'[À-Ú]');
   final spaceNull = RegExp(r"[/\s/]");
 
-  SettingsController _settingsController;
+  late SettingsController _settingsController;
 
   bool _showOldPassword = true;
   bool _showNewPassword = true;
@@ -86,11 +86,12 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: Colors.red,
         content: _settingsController.data != null ? Text(_settingsController.data.erros[0]) : Text("Erro de serviço"));
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
+  Future<bool> _onBackPress() async {
+    bool retorno = false;
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -100,18 +101,22 @@ class _ChangePasswordState extends State<ChangePassword> {
               ElevatedButton(
                 child: Text("SIM"),
                 onPressed: () {
+                  retorno = true;
                   Navigator.of(context).pop(true);
                 },
               ),
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+
+    return retorno;
   }
 
   @override
