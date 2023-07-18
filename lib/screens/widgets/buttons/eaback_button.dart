@@ -10,9 +10,9 @@ class EABackButton extends StatelessWidget {
   final bool disabled;
 
   EABackButton(
-      {@required this.text,
-      @required this.btnColor,
-      @required this.onPress,
+      {required this.text,
+      required this.btnColor,
+      required this.onPress,
       this.icon,
       this.iconColor,
       this.disabled = false});

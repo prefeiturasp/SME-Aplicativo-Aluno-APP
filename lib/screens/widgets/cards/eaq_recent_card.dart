@@ -25,7 +25,7 @@ class EAQRecentCardMessage extends StatefulWidget {
       this.deleteBtn = true,
       this.recent = false,
       this.onPress,
-      @required this.totalCateories});
+      required this.totalCateories});
 
   @override
   _EAQRecentCardMessageState createState() => _EAQRecentCardMessageState();
@@ -142,8 +142,8 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                   ],
                 )),
                 Visibility(
-                  visible: widget.countMessages != null && widget.countMessages > 0,
-                  child: Stack(overflow: Overflow.visible, children: <Widget>[
+                  visible: widget.countMessages > 0,
+                  child: Stack(clipBehavior: Clip.none, children: <Widget>[
                     Container(
                       width: screenHeight * 3.2,
                       height: screenHeight * 3.2,
@@ -199,9 +199,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
           ),
           GestureDetector(
             onTap: () {
-              if (widget.message != null) {
-                widget.onPress();
-              }
+              widget.onPress();
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -261,8 +259,8 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
           ),
           Container(
               decoration: BoxDecoration(
-                  color: widget.message != null && widget.countMessages > 0 ? Color(0xffF3F3F3) : Color(0xffC45C04),
-                  borderRadius: widget.message != null && widget.countMessages > 0
+                  color: widget.countMessages > 0 ? Color(0xffF3F3F3) : Color(0xffC45C04),
+                  borderRadius: widget.countMessages > 0
                       ? BorderRadius.only(
                           bottomLeft: Radius.circular(screenHeight * 2),
                           bottomRight: Radius.circular(screenHeight * 2),
@@ -276,7 +274,7 @@ class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                   right: screenHeight * 2.5,
                   top: screenHeight * 1.5,
                   bottom: screenHeight * 1.5),
-              child: widget.message != null && widget.countMessages > 0
+              child: widget.countMessages > 0
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[

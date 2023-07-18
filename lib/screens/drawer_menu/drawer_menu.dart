@@ -8,12 +8,10 @@ import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/terms/terms_use.dart';
-import 'package:sme_app_aluno/ui/views/meus_dados.view.dart';
+import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/ui/views/outros_servicos_lista.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
@@ -25,11 +23,7 @@ class DrawerMenu extends StatefulWidget {
   final int userId;
   final String groupSchool;
 
-  DrawerMenu(
-      {@required this.estudante,
-      @required this.codigoGrupo,
-      @required this.userId,
-      @required this.groupSchool});
+  DrawerMenu({required this.estudante, required this.codigoGrupo, required this.userId, required this.groupSchool});
   @override
   _DrawerMenuState createState() => _DrawerMenuState();
 }
@@ -70,8 +64,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
     if (usuarioStore.usuario != null) {
       Nav.push(context, EstudanteListaView());
     } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginView()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginView()));
     }
   }
 
@@ -83,10 +76,9 @@ class _DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var textoBotaoRelatorio =
-        widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
-            ? MensagemSistema.MenuLabelFrequenciaRelatorio
-            : MensagemSistema.MenuLabelFrequenciaBoletim;
+    var textoBotaoRelatorio = widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
+        ? MensagemSistema.MenuLabelFrequenciaRelatorio
+        : MensagemSistema.MenuLabelFrequenciaBoletim;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -98,8 +90,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(
-                        right: screenHeight * 3, bottom: screenHeight * 3),
+                    margin: EdgeInsets.only(right: screenHeight * 3, bottom: screenHeight * 3),
                     child: ClipOval(
                       child: Image.asset(
                         MensagemSistema.CaminhoImagemUsuario,
@@ -115,16 +106,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
                         "${usuarioStore.usuario.nome}",
                         maxFontSize: 16,
                         minFontSize: 14,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                       );
                     } else {
                       return AutoSizeText(
                         MensagemSistema.MenuLabelNaoCarregado,
                         maxFontSize: 16,
                         minFontSize: 14,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                       );
                     }
                   }),
@@ -211,8 +200,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ListEvents(
-                          student: widget.estudante, userId: widget.userId)));
+                      builder: (context) => ListEvents(student: widget.estudante, userId: widget.userId)));
             },
           ),
           Divider(),

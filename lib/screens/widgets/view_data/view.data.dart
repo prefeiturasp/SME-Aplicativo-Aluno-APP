@@ -6,7 +6,7 @@ class ViewData extends StatelessWidget {
   final String text;
   final Color backgroundColor;
 
-  ViewData({@required this.label, @required this.text, this.backgroundColor});
+  ViewData({required this.label, required this.text, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,7 @@ class ViewData extends StatelessWidget {
               ),
             ),
             padding: EdgeInsets.only(
-                left: screenHeight * 3,
-                top: screenHeight * 1.5,
-                right: screenHeight * 3,
-                bottom: screenHeight * 1.5),
+                left: screenHeight * 3, top: screenHeight * 1.5, right: screenHeight * 3, bottom: screenHeight * 1.5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

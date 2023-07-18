@@ -24,7 +24,7 @@ class CardCalendar extends StatelessWidget {
     this.widget,
     this.totalEventos,
     this.lenght,
-    @required this.heightContainer,
+    required this.heightContainer,
   });
 
   @override

@@ -5,9 +5,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
-import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/screens/redefine_password/redefine_password.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
+import 'package:sme_app_aluno/ui/views/login.view.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 import 'package:sme_app_aluno/utils/string_support.dart';
 
@@ -16,7 +16,7 @@ class ShowInfo extends StatefulWidget {
   final String email;
   final bool hasToken;
 
-  ShowInfo({this.email, this.hasToken = false, this.cpf});
+  ShowInfo({required this.email, this.hasToken = false, required this.cpf});
 
   @override
   _ShowInfoState createState() => _ShowInfoState();
@@ -26,7 +26,7 @@ class _ShowInfoState extends State<ShowInfo> {
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  RecoverPasswordController _recoverPasswordController;
+  late RecoverPasswordController _recoverPasswordController;
 
   String _token = "";
 
@@ -57,7 +57,7 @@ class _ShowInfoState extends State<ShowInfo> {
             ? Text(_recoverPasswordController.data.erros[0])
             : Text("Erro de serviço"));
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   @override
@@ -76,7 +76,11 @@ class _ShowInfoState extends State<ShowInfo> {
             Icons.arrow_back_ios,
             color: Color(0xffF36621),
           ),
-          onPressed: () => Nav.push(context, LoginView()),
+          onPressed: () => Nav.push(
+              context,
+              LoginView(
+                notice: '',
+              )),
         ),
       ),
       body: SingleChildScrollView(

@@ -2,15 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sme_app_aluno/models/ue/data_ue.dart';
-import 'package:sme_app_aluno/stores/index.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UEBody extends StatelessWidget {
   final DadosUE dadosUE;
 
-  UEBody({this.dadosUE});
+  UEBody({required this.dadosUE});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +24,7 @@ class UEBody extends StatelessWidget {
       }
     }
 
-    Widget itemClipBoard(BuildContext context, String infoName, String infoData,
-        double screenHeight) {
+    Widget itemClipBoard(BuildContext context, String infoName, String infoData, double screenHeight) {
       return InkWell(
         child: Container(
           child: Column(
@@ -46,12 +43,10 @@ class UEBody extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(color: Colors.white),
                 child: AutoSizeText(
-                  infoData != null && infoData.isNotEmpty
-                      ? infoData
-                      : 'Informação não disponível.',
+                  infoData.isNotEmpty ? infoData : 'Informação não disponível.',
                   maxFontSize: 20,
                   minFontSize: 18,
-                  style: infoData != null && infoData.isNotEmpty
+                  style: infoData.isNotEmpty
                       ? TextStyle(
                           color: Color(0xff2096FA),
                           decoration: TextDecoration.underline,
@@ -65,13 +60,11 @@ class UEBody extends StatelessWidget {
             ],
           ),
         ),
-        onTap: infoData != null && infoData.isNotEmpty
+        onTap: infoData.isNotEmpty
             ? () async {
-                await Clipboard.setData(new ClipboardData(text: infoData))
-                    .then((_) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content:
-                        Text(infoName + " copiado para área de transferência!"),
+                await Clipboard.setData(new ClipboardData(text: infoData)).then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(infoName + " copiado para área de transferência!"),
                   ));
                 });
               }
@@ -79,8 +72,7 @@ class UEBody extends StatelessWidget {
       );
     }
 
-    Widget itemCall(BuildContext context, String infoName, String infoData,
-        double screenHeight) {
+    Widget itemCall(BuildContext context, String infoName, String infoData, double screenHeight) {
       return InkWell(
         child: Container(
           child: Column(
@@ -98,7 +90,7 @@ class UEBody extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(color: Colors.white),
-                child: infoData != null && infoData.isNotEmpty
+                child: infoData.isNotEmpty
                     ? (int.tryParse(infoData) != null
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +127,7 @@ class UEBody extends StatelessWidget {
             ],
           ),
         ),
-        onTap: infoData != null && infoData.isNotEmpty
+        onTap: infoData.isNotEmpty
             ? (int.tryParse(infoData) != null
                 ? () {
                     fazerLigacao(infoData);
@@ -168,14 +160,12 @@ class UEBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-                bottom: screenHeight * 3, top: screenHeight * 1),
+            padding: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 1),
             child: AutoSizeText(
               'Dados da Unidade Escolar',
               maxFontSize: 18,
               minFontSize: 16,
-              style: TextStyle(
-                  color: Color(0xFFC65D00), fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color(0xFFC65D00), fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
             ),
           ),

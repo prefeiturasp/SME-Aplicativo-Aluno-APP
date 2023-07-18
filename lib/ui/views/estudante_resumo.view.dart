@@ -19,10 +19,10 @@ class EstudanteResumoView extends StatefulWidget {
   final String modalidade;
   final String grupoCodigo;
   EstudanteResumoView({
-    @required this.estudante,
+    required this.estudante,
     this.modalidade,
     this.userId,
-    @required this.grupoCodigo,
+    required this.grupoCodigo,
   });
 
   @override
@@ -34,12 +34,9 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaBoletim = false;
   bool abaFrequencia = false;
 
-  content(BuildContext context, double screenHeight, EstudanteModel data,
-      GlobalKey<ScaffoldState> scaffoldkey) {
-    String dateFormatted =
-        DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
-    String dateSituacaoMatricula = DateFormatSuport.formatStringDate(
-        data.dataSituacaoMatricula, 'dd/MM/yyyy');
+  content(BuildContext context, double screenHeight, EstudanteModel data, GlobalKey<ScaffoldState> scaffoldkey) {
+    String dateFormatted = DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
+    String dateSituacaoMatricula = DateFormatSuport.formatStringDate(data.dataSituacaoMatricula, 'dd/MM/yyyy');
 
     if (abaDados) {
       return Container(
@@ -88,16 +85,14 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
       return NotInteernet();
     } else {
       var size = MediaQuery.of(context).size;
-      var screenHeight =
-          (size.height - MediaQuery.of(context).padding.top) / 100;
+      var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
         key: keyScaffod,
         backgroundColor: Color(0xffE5E5E5),
         appBar: AppBar(
           title: Text(
             "Informações do estudante",
-            style: TextStyle(
-                color: Color(0xff333333), fontWeight: FontWeight.w500),
+            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w500),
           ),
           backgroundColor: Color(0xffEEC25E),
         ),
@@ -114,12 +109,9 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                       padding: EdgeInsets.all(screenHeight * 2.5),
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Color(0xffC5C5C5), width: 0.5))),
+                          border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5))),
                       child: EAEstudanteInfo(
-                        nome: widget.estudante.nomeSocial != null &&
-                                widget.estudante.nomeSocial.isNotEmpty
+                        nome: widget.estudante.nomeSocial != null && widget.estudante.nomeSocial.isNotEmpty
                             ? widget.estudante.nomeSocial
                             : widget.estudante.nome,
                         ue: widget.estudante.escola,
@@ -141,19 +133,13 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
+                            padding: EdgeInsets.only(top: screenHeight * 2.2, bottom: screenHeight * 2.2),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border(
-                                  bottom: BorderSide(
-                                      color: abaDados
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                  bottom:
+                                      BorderSide(color: abaDados ? Color(0xffC65D00) : Color(0xffCECECE), width: 2)),
                             ),
                             child: Center(
                               child: AutoSizeText(
@@ -161,9 +147,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaDados
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
+                                    color: abaDados ? Color(0xffC65D00) : Color(0xff9f9f9f),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -178,32 +162,23 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
+                            padding: EdgeInsets.only(top: screenHeight * 2.2, bottom: screenHeight * 2.2),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border(
-                                  bottom: BorderSide(
-                                      color: abaBoletim
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                  bottom:
+                                      BorderSide(color: abaBoletim ? Color(0xffC65D00) : Color(0xffCECECE), width: 2)),
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                widget.grupoCodigo ==
-                                        ModalidadeTipo.EducacaoInfantil
+                                widget.grupoCodigo == ModalidadeTipo.EducacaoInfantil
                                     ? MensagemSistema.AbaLabelRelatorio
                                     : MensagemSistema.AbaLabelBoletim,
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaBoletim
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
+                                    color: abaBoletim ? Color(0xffC65D00) : Color(0xff9f9f9f),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -218,8 +193,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
                             padding: EdgeInsets.only(
                               top: screenHeight * 2.2,
                               bottom: screenHeight * 2.2,
@@ -228,10 +202,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                               color: Colors.white,
                               border: Border(
                                   bottom: BorderSide(
-                                      color: abaFrequencia
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                      color: abaFrequencia ? Color(0xffC65D00) : Color(0xffCECECE), width: 2)),
                             ),
                             child: Center(
                               child: AutoSizeText(
@@ -239,9 +210,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaFrequencia
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
+                                    color: abaFrequencia ? Color(0xffC65D00) : Color(0xff9f9f9f),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),

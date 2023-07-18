@@ -10,9 +10,9 @@ class EADefaultButton extends StatelessWidget {
   final bool enabled;
 
   EADefaultButton(
-      {@required this.text,
-      @required this.btnColor,
-      @required this.onPress,
+      {required this.text,
+      required this.btnColor,
+      required this.onPress,
       this.icon,
       this.iconColor,
       this.enabled = true});

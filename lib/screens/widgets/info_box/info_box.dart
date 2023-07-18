@@ -4,14 +4,14 @@ class InfoBox extends StatelessWidget {
   final List<Widget> content;
   final IconData icon;
 
-  InfoBox({@required this.content, this.icon});
+  InfoBox({required this.content, this.icon});
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Stack(
-      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,

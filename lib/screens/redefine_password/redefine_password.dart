@@ -1,12 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -18,7 +15,7 @@ class RedefinePassword extends StatefulWidget {
   final String cpf;
   final String token;
 
-  RedefinePassword({@required this.cpf, @required this.token});
+  RedefinePassword({required this.cpf, required this.token});
 
   @override
   _RedefinePasswordState createState() => _RedefinePasswordState();
@@ -77,7 +74,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
             ? Text(_recoverPasswordController.dataUser.erros[0])
             : Text("Erro de serviço"));
 
-    scaffoldKey.currentState.showSnackBar(snackbar);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   Future<bool> _onBackPress() {

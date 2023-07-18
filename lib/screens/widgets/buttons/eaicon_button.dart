@@ -6,9 +6,9 @@ class EAIconButton extends StatelessWidget {
   final Icon iconBtn;
 
   EAIconButton({
-    @required this.onPress,
-    @required this.screenHeight,
-    @required this.iconBtn,
+    required this.onPress,
+    required this.screenHeight,
+    required this.iconBtn,
   });
 
   @override

@@ -151,8 +151,7 @@ class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard>
 class OutrosLinksInfoWidget extends StatelessWidget {
   final double screenHeight;
   final OutroServicoModel outroServicoModel;
-  const OutrosLinksInfoWidget({Key key, @required this.screenHeight, @required this.outroServicoModel})
-      : super(key: key);
+  const OutrosLinksInfoWidget({Key key, required this.screenHeight, required this.outroServicoModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

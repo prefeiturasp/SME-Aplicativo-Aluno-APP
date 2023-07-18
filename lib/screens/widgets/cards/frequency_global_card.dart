@@ -8,7 +8,7 @@ class FrequencyGlobalCard extends StatelessWidget {
   final EstudanteFrequenciaGlobalDTO frequencia;
 
   FrequencyGlobalCard({
-    @required this.frequencia,
+    required this.frequencia,
   });
 
   @override

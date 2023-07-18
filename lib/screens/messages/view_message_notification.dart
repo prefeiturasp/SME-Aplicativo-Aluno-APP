@@ -6,13 +6,12 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/ui/views/estudante_lista.view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaicon_button.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/stores/index.dart';
+import 'package:sme_app_aluno/ui/views/estudante_lista.view.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/date_format.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
@@ -22,7 +21,7 @@ class ViewMessageNotification extends StatefulWidget {
   final Message message;
   final int userId;
 
-  ViewMessageNotification({@required this.message, @required this.userId});
+  ViewMessageNotification({required this.message, required this.userId});
 
   @override
   _ViewMessageNotificationState createState() => _ViewMessageNotificationState();
@@ -76,7 +75,7 @@ class _ViewMessageNotificationState extends State<ViewMessageNotification> {
                     _viewMessageUpdate(true, true);
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
-                    scaffoldKey.currentState.showSnackBar(snackbar);
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     setState(() {
                       messageIsRead = !messageIsRead;
                     });

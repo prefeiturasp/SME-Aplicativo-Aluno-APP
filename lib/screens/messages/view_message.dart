@@ -18,7 +18,7 @@ class ViewMessage extends StatefulWidget {
   final int codigoAlunoEol;
   final int userId;
 
-  ViewMessage({@required this.message, @required this.codigoAlunoEol, @required this.userId});
+  ViewMessage({required this.message, required this.codigoAlunoEol, required this.userId});
 
   @override
   _ViewMessageState createState() => _ViewMessageState();
@@ -97,7 +97,7 @@ class _ViewMessageState extends State<ViewMessage> {
                     _viewMessageUpdate(false, true);
                     Navigator.of(context).pop(false);
                     var snackbar = SnackBar(content: Text("Mensagem marcada como não lida"));
-                    scaffoldKey.currentState.showSnackBar(snackbar);
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     setState(() {
                       messageIsRead = false;
                     });

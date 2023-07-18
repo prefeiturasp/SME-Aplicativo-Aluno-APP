@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
@@ -10,11 +9,7 @@ class TermsView extends StatefulWidget {
   final Function changeStatusTerm;
   final String cpf;
   final bool showBtn;
-  TermsView(
-      {@required this.term,
-      this.changeStatusTerm,
-      this.cpf,
-      this.showBtn = true});
+  TermsView({required this.term, required this.changeStatusTerm, required this.cpf, this.showBtn = true});
 
   @override
   _TermsViewState createState() => _TermsViewState();
