@@ -2,12 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/ue.controller.dart';
 import 'package:sme_app_aluno/screens/data_student/student_body.dart';
 import 'package:sme_app_aluno/screens/data_student/ue_body.dart';
-import 'package:sme_app_aluno/stores/index.dart';
 
 class DataStudent extends StatefulWidget {
   final String dataNasc;
@@ -15,14 +13,14 @@ class DataStudent extends StatefulWidget {
   final String situacao;
   final String codigoUe;
 
-  DataStudent({this.dataNasc, this.codigoEOL, this.situacao, this.codigoUe});
+  DataStudent({required this.dataNasc, required this.codigoEOL, required this.situacao, required this.codigoUe});
 
   @override
   _DataStudentState createState() => _DataStudentState();
 }
 
 class _DataStudentState extends State<DataStudent> {
-  UEController _ueController;
+  late UEController _ueController;
 
   @override
   void initState() {
@@ -72,9 +70,7 @@ class _DataStudentState extends State<DataStudent> {
                 child: Container(
                   padding: EdgeInsets.all(screenHeight * 2.5),
                   decoration: BoxDecoration(
-                      color: Color(0xffFFD037),
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(screenHeight * 2))),
+                      color: Color(0xffFFD037), borderRadius: BorderRadius.all(Radius.circular(screenHeight * 2))),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -90,9 +86,7 @@ class _DataStudentState extends State<DataStudent> {
                         'Dados da Unidade Escolar não disponível',
                         maxFontSize: 18,
                         minFontSize: 16,
-                        style: TextStyle(
-                            color: Color(0xffC45C04),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
                       )
                     ],
                   ),

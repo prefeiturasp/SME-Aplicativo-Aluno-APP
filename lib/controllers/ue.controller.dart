@@ -7,9 +7,11 @@ part 'ue.controller.g.dart';
 class UEController = UEControllerBase with _$UEController;
 
 abstract class UEControllerBase with Store {
-  final UERepository _ueRepository;
+  late final UERepository _ueRepository;
 
-  UEControllerBase(this._ueRepository);
+  UEControllerBase() {
+    this._ueRepository = UERepository();
+  }
 
   @observable
   late DadosUE dadosUE;
