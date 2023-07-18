@@ -32,7 +32,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
 
-  MessagesController _messagesController;
+  late MessagesController _messagesController;
 
   @override
   void initState() {
@@ -64,7 +64,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
     if (usuarioStore.usuario != null) {
       Nav.push(context, EstudanteListaView());
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginView()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginView(
+                    notice: '',
+                  )));
     }
   }
 
