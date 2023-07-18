@@ -31,16 +31,16 @@ class Expansion extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldState;
 
   Expansion({
-    this.codigoUe,
-    this.codigoTurma,
-    this.codigoAluno,
-    this.groupSchool,
-    this.scaffoldState,
-    this.codigoDre,
-    this.semestre,
-    this.modelo,
-    this.anoLetivo,
-    this.codigoModalidade,
+    required this.codigoUe,
+    required this.codigoTurma,
+    required this.codigoAluno,
+    required this.groupSchool,
+    required this.scaffoldState,
+    required this.codigoDre,
+    required this.semestre,
+    required this.modelo,
+    required this.anoLetivo,
+    required this.codigoModalidade,
   });
 
   @override
@@ -53,7 +53,7 @@ class _ExpansionState extends State<Expansion> {
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
   final _repositorioRecomandacao = RecomendacaoAlunoRepository();
-  DateTime _dateTime;
+  late final DateTime _dateTime;
   var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
@@ -73,37 +73,37 @@ class _ExpansionState extends State<Expansion> {
   }
 
   _buildNotesDescUm(index) {
-    return _estudanteNotasController.listNotesUm != null && _estudanteNotasController.listNotesUm.isNotEmpty
+    return _estudanteNotasController.listNotesUm.isNotEmpty
         ? _estudanteNotasController.listNotesUm[index].notaDescricao
         : '';
   }
 
   _buildNotesDescDois(index) {
-    return _estudanteNotasController.listNotesDois != null && _estudanteNotasController.listNotesDois.isNotEmpty
+    return _estudanteNotasController.listNotesDois.isNotEmpty
         ? _estudanteNotasController.listNotesDois[index].notaDescricao
         : '';
   }
 
   _buildNotesDescTres(index) {
-    return _estudanteNotasController.listNotesTres != null && _estudanteNotasController.listNotesTres.isNotEmpty
+    return _estudanteNotasController.listNotesTres.isNotEmpty
         ? _estudanteNotasController.listNotesTres[index].notaDescricao
         : '';
   }
 
   _buildNotesDescQuatro(index) {
-    return _estudanteNotasController.listNotesQuatro != null && _estudanteNotasController.listNotesQuatro.isNotEmpty
+    return _estudanteNotasController.listNotesQuatro.isNotEmpty
         ? _estudanteNotasController.listNotesQuatro[index].notaDescricao
         : '';
   }
 
   _buildNotesDescFinal(index) {
-    return _estudanteNotasController.listNotesFinal != null && _estudanteNotasController.listNotesFinal.isNotEmpty
+    return _estudanteNotasController.listNotesFinal.isNotEmpty
         ? _estudanteNotasController.listNotesFinal[index].notaDescricao
         : '';
   }
 
   String _obterNota(int index, int bimestre) {
-    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos
+    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos!
         .where((element) => element.bimestre == bimestre);
     var qtdRegistros = notaConceito.length;
     if (qtdRegistros > 0) {
@@ -117,7 +117,7 @@ class _ExpansionState extends State<Expansion> {
   }
 
   Color _obterCor(int index, int bimestre) {
-    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos
+    var notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos!
         .where((element) => element.bimestre == bimestre);
     var qtdRegistros = notaConceito.length;
     if (qtdRegistros > 0) {
@@ -240,13 +240,18 @@ class _ExpansionState extends State<Expansion> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Color(0xffd06d12),
-                          width: 1,
-                          style: BorderStyle.solid,
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Color(0xffd06d12),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                        borderRadius: BorderRadius.circular(50)),
+                      ),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -334,13 +339,18 @@ class _ExpansionState extends State<Expansion> {
                   _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
                 }
               },
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Color(0xffd06d12),
-                    width: 1,
-                    style: BorderStyle.solid,
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Color(0xffd06d12),
+                      width: 1,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  borderRadius: BorderRadius.circular(50)),
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,7 +365,7 @@ class _ExpansionState extends State<Expansion> {
                     width: screenHeight * 3,
                   ),
                   Icon(
-                    FontAwesomeIcons.edit,
+                    FontAwesomeIcons.penToSquare,
                     color: Color(0xffffd037),
                     size: screenHeight * 3,
                   )
@@ -383,13 +393,17 @@ class _ExpansionState extends State<Expansion> {
                   _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
                 }
               },
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Color(0xffd06d12),
-                  width: 1,
-                  style: BorderStyle.solid,
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Color(0xffd06d12),
+                      width: 1,
+                      style: BorderStyle.solid,
+                    ),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(50),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -405,7 +419,7 @@ class _ExpansionState extends State<Expansion> {
                     width: screenHeight * 3,
                   ),
                   Icon(
-                    FontAwesomeIcons.edit,
+                    FontAwesomeIcons.penToSquare,
                     color: Color(0xffffd037),
                     size: screenHeight * 3,
                   )
@@ -452,8 +466,7 @@ class _ExpansionState extends State<Expansion> {
               return _buildLoader(screenHeight);
             }
 
-            if (_estudanteNotasController.componentesCurricularesNotasConceitos != null &&
-                widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
+            if (widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
               return Container(
                 child: Column(
                   children: [
@@ -490,7 +503,7 @@ class _ExpansionState extends State<Expansion> {
             return CardAlert(
               title: "NOTAS",
               icon: Icon(
-                FontAwesomeIcons.calendarAlt,
+                FontAwesomeIcons.calendar,
                 color: Color(0xffFFD037),
                 size: screenHeight * 6,
               ),
