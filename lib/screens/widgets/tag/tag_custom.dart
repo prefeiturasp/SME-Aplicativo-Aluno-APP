@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class TagCustom extends StatelessWidget {
   final String text;
   final Color color;
-  final Color textColor;
+  final Color? textColor;
 
   TagCustom({required this.text, required this.color, this.textColor});
 
