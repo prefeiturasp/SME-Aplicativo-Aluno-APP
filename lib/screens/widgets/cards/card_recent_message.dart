@@ -7,31 +7,29 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 
 class CardRecentMessage extends StatefulWidget {
   final Message message;
-  final int countMessages;
-  final String token;
-  final int codigoGrupo;
+  late final int countMessages;
   final bool deleteBtn;
   final bool recent;
-  final VoidCallback onPress;
-  final Function outherRoutes;
+  final Function onPress;
+  VoidCallback outherRoutes;
 
-  CardRecentMessage(
-      {this.message,
-      this.countMessages,
-      this.token,
-      this.codigoGrupo,
-      this.outherRoutes,
-      this.deleteBtn = true,
-      this.recent = false,
-      this.onPress});
+  CardRecentMessage({
+    this.deleteBtn = true,
+    this.recent = false,
+    required this.message,
+    required this.countMessages,
+    required this.outherRoutes,
+    required this.onPress,
+  });
 
   @override
   _CardRecentMessageState createState() => _CardRecentMessageState();
 }
 
 class _CardRecentMessageState extends State<CardRecentMessage> {
-  Future<bool> _confirmDeleteMessage(int id) {
-    return showDialog(
+  bool retorno = false;
+  Future<bool> _confirmDeleteMessage(int id) async {
+    showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -41,20 +39,22 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
               ElevatedButton(
                   child: Text("SIM"),
                   onPressed: () {
-                    // _removeMesageToStorage(id);
+                    retorno = true;
                   }),
               ElevatedButton(
                 child: Text("NÃO"),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop(false);
                 },
               )
             ],
           );
         });
+    return retorno;
   }
 
-  _removeMesageToStorage(int id) async {}
+  //_removeMesageToStorage(int id) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +110,8 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                       ],
                     )),
                 Visibility(
-                  visible: widget.countMessages != null && widget.countMessages > 0,
-                  child: Stack(overflow: Overflow.visible, children: <Widget>[
+                  visible: widget.countMessages > 0,
+                  child: Stack(clipBehavior: Clip.none, children: <Widget>[
                     Container(
                       width: screenHeight * 3.5,
                       height: screenHeight * 3.5,
@@ -155,9 +155,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
           ),
           GestureDetector(
             onTap: () {
-              if (widget.message != null) {
-                widget.onPress();
-              }
+              widget.onPress();
             },
             child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -220,12 +218,12 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
           ),
           Container(
               decoration: BoxDecoration(
-                  color: widget.message != null && widget.countMessages > 0
+                  color: widget.countMessages > 0
                       ? widget.recent
                           ? null
                           : Color(0xffF3F3F3)
                       : Color(0xffC45C04),
-                  borderRadius: widget.message != null && widget.countMessages > 0
+                  borderRadius: widget.countMessages > 0
                       ? widget.recent
                           ? null
                           : BorderRadius.only(
@@ -241,7 +239,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                   right: screenHeight * 2.5,
                   top: screenHeight * 1.5,
                   bottom: screenHeight * 1.5),
-              child: widget.message != null && widget.countMessages > 0
+              child: widget.countMessages > 0
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -261,7 +259,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                                 ),
                               ),
                               child: Icon(
-                                FontAwesomeIcons.times,
+                                FontAwesomeIcons.xmark,
                                 color: Color(0xffC65D00),
                               ),
                             ),
