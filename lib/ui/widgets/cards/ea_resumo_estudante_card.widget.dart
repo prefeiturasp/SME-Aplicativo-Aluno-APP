@@ -6,10 +6,9 @@ import 'package:sme_app_aluno/ui/index.dart';
 
 class EAResumoEstudanteCard extends StatelessWidget {
   final EstudanteModel estudante;
-  final int userId;
   final String modalidade;
   final String codigoGrupo;
-  EAResumoEstudanteCard({required this.estudante, this.modalidade, this.userId, this.codigoGrupo});
+  EAResumoEstudanteCard({required this.estudante, required this.modalidade, required this.codigoGrupo});
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +93,15 @@ class EAResumoEstudanteCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EstudanteResumoView(
-                              estudante: estudante,
-                              modalidade: modalidade,
-                              grupoCodigo: this.codigoGrupo,
-                              userId: userId)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EstudanteResumoView(
+                        estudante: estudante,
+                        modalidade: modalidade,
+                        grupoCodigo: this.codigoGrupo,
+                      ),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
