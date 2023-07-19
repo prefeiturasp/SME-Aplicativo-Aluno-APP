@@ -3,23 +3,23 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
+import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
+import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/estudante.model.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/list_events.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
+import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/screens/messages/list_messages.dart';
 import 'package:sme_app_aluno/screens/messages/view_message.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/card_calendar.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/eaq_recent_card.dart';
 import 'package:sme_app_aluno/screens/widgets/cards/index.dart';
-import 'package:sme_app_aluno/screens/drawer_menu/drawer_menu.dart';
 import 'package:sme_app_aluno/ui/widgets/cards/ea_resumo_outros_servico_card.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:sme_app_aluno/controllers/event/event.controller.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
 class Dashboard extends StatefulWidget {
