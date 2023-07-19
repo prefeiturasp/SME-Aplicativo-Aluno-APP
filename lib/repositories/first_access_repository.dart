@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:sme_app_aluno/interfaces/first_access_repository_interface.dart';
 import 'package:sme_app_aluno/models/change_email_and_phone/data_change_email_and_phone.dart';
 import 'package:sme_app_aluno/models/first_access/data.dart';
@@ -20,7 +20,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
   @override
   Future<Data> changeNewPassword(int id, String password) async {
     Map _data = {
-      "id": usuarioStore.usuario?.id,
+      "id": usuarioStore.usuario.id,
       "novaSenha": password,
     };
 
@@ -30,7 +30,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -41,15 +41,15 @@ class FirstAccessRepository implements IFirstAccessRepository {
         await usuarioStore.atualizaPrimeiroAcesso(false);
 
         await _userService.update(UserModel.User(
-          id: usuarioStore.usuario!.id,
-          nome: usuarioStore.usuario!.nome,
-          cpf: usuarioStore.usuario!.cpf,
-          email: usuarioStore.usuario!.email,
-          celular: usuarioStore.usuario!.celular,
-          token: usuarioStore.usuario!.token,
-          nomeMae: usuarioStore.usuario!.nomeMae,
-          dataNascimento: usuarioStore.usuario!.dataNascimento,
-          senha: usuarioStore.usuario!.senha,
+          id: usuarioStore.usuario.id,
+          nome: usuarioStore.usuario.nome,
+          cpf: usuarioStore.usuario.cpf,
+          email: usuarioStore.usuario.email,
+          celular: usuarioStore.usuario.celular,
+          token: usuarioStore.usuario.token,
+          nomeMae: usuarioStore.usuario.nomeMae,
+          dataNascimento: usuarioStore.usuario.dataNascimento,
+          senha: usuarioStore.usuario.senha,
           primeiroAcesso: false,
           atualizarDadosCadastrais: true,
         ));
@@ -81,7 +81,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
       final response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,
@@ -91,15 +91,15 @@ class FirstAccessRepository implements IFirstAccessRepository {
         var data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(UserModel.User(
             id: userId,
-            nome: usuarioStore.usuario!.nome,
-            cpf: usuarioStore.usuario!.cpf,
+            nome: usuarioStore.usuario.nome,
+            cpf: usuarioStore.usuario.cpf,
             email: email,
             celular: phone,
             token: data.token,
             primeiroAcesso: false,
-            nomeMae: usuarioStore.usuario!.nomeMae,
-            dataNascimento: usuarioStore.usuario!.dataNascimento,
-            senha: usuarioStore.usuario!.senha,
+            nomeMae: usuarioStore.usuario.nomeMae,
+            dataNascimento: usuarioStore.usuario.dataNascimento,
+            senha: usuarioStore.usuario.senha,
             atualizarDadosCadastrais: false));
         return data;
       } else {

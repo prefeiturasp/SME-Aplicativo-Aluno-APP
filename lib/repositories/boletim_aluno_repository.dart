@@ -1,7 +1,8 @@
 import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
-import 'package:sme_app_aluno/interfaces/boletim_aluno_repository_interface.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/interfaces/boletim_aluno_repository_interface.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 
@@ -34,7 +35,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       var response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario.token}",
           "Content-Type": "application/json",
         },
         body: body,

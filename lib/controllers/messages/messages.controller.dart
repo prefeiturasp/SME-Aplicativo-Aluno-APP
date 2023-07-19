@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/repositories/message_repository.dart';
 

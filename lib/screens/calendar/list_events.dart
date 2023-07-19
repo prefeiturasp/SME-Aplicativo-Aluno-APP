@@ -4,14 +4,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sme_app_aluno/controllers/event/event.controller.dart';
-import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/models/estudante.model.dart';
+import 'package:sme_app_aluno/models/event/event.dart';
 import 'package:sme_app_aluno/screens/calendar/event_item.dart';
 import 'package:sme_app_aluno/screens/calendar/label_event.dart';
 import 'package:sme_app_aluno/screens/calendar/title_event.dart';
 import 'package:sme_app_aluno/ui/index.dart';
-import 'package:getwidget/getwidget.dart';
 
 class ListEvents extends StatefulWidget {
   final EstudanteModel student;

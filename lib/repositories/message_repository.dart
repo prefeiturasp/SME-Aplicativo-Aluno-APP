@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
-import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/services/message.service.dart';
 import 'package:sme_app_aluno/services/user.service.dart';

@@ -7,7 +7,7 @@ class AutenticacaoInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (usuarioStore.token!.isNotEmpty) {
+    if (usuarioStore.token.isNotEmpty) {
       var headerToken = 'Bearer ${usuarioStore.token}';
       options.headers['Authorization'] = headerToken;
       handler.next(options);

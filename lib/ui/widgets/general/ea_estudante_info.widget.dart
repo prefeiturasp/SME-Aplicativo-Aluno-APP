@@ -10,7 +10,7 @@ class EAEstudanteInfo extends StatelessWidget {
   final int? codigoEOL;
   final Widget? avatar;
   final String? modalidade;
-  final EdgeInsets padding;
+  final EdgeInsets? padding;
 
   EAEstudanteInfo({
     required this.nome,
@@ -21,7 +21,7 @@ class EAEstudanteInfo extends StatelessWidget {
     this.grade,
     this.avatar,
     this.modalidade,
-    required this.padding,
+    this.padding,
   });
 
   @override
