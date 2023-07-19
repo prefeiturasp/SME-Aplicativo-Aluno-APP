@@ -228,7 +228,6 @@ class _DashboardState extends State<Dashboard> {
                             heightContainer: screenHeight * 48,
                             title: "AGENDA",
                             month: _eventController.currentMonth,
-                            lenght: _eventController.events.length,
                             totalEventos:
                                 "+ ${(_eventController.events.length >= 4 ? _eventController.events.length - 4 : _eventController.events.length - _eventController.events.length).toString()} eventos esse mês",
                             widget: Observer(builder: (_) {
