@@ -31,7 +31,6 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaDados = true;
   bool abaBoletim = false;
   bool abaFrequencia = false;
-  bool teste = false;
 
   content(BuildContext context, double screenHeight, EstudanteModel data, GlobalKey<ScaffoldState> scaffoldkey) {
     String dateFormatted = DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
