@@ -13,18 +13,18 @@ class EAQRecentCardMessage extends StatefulWidget {
   final bool deleteBtn;
   final bool recent;
   final VoidCallback onPress;
-  final Function outherRoutes;
+  final VoidCallback outherRoutes;
   final int totalCateories;
 
   EAQRecentCardMessage(
-      {this.message,
-      this.countMessages,
-      this.token,
-      this.codigoGrupo,
-      this.outherRoutes,
+      {required this.message,
+      required this.countMessages,
+      required this.token,
+      required this.codigoGrupo,
+      required this.outherRoutes,
       this.deleteBtn = true,
       this.recent = false,
-      this.onPress,
+      required this.onPress,
       required this.totalCateories});
 
   @override
@@ -32,7 +32,7 @@ class EAQRecentCardMessage extends StatefulWidget {
 }
 
 class _EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
-  Future<bool> _confirmDeleteMessage(int id) {
+  Future<void> _confirmDeleteMessage(int id) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
