@@ -4,26 +4,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CardCalendar extends StatelessWidget {
   final String title;
-  final String month;
-  final String text;
-  final double textSize;
+  final String? month;
   final bool isHeader;
-  final VoidCallback onPress;
-  final Widget widget;
+  final VoidCallback? onPress;
+  final Widget? widget;
   final String totalEventos;
-  final int lenght;
   final double heightContainer;
 
   CardCalendar({
-    this.title,
     this.month,
-    this.text,
     this.isHeader = true,
-    this.textSize,
     this.onPress,
     this.widget,
-    this.totalEventos,
-    this.lenght,
+    required this.title,
+    required this.totalEventos,
     required this.heightContainer,
   });
 
