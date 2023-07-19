@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ViewData extends StatelessWidget {
   final String label;
   final String text;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   ViewData({required this.label, required this.text, this.backgroundColor});
 
