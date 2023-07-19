@@ -7,22 +7,21 @@ class Message {
   String titulo;
   String dataEnvio;
   String criadoEm;
-  String alteradoEm;
+  String? alteradoEm;
   bool mensagemVisualizada;
   String categoriaNotificacao;
   int codigoEOL;
   Message({
+    this.alteradoEm,
     required this.id,
     required this.mensagem,
     required this.titulo,
     required this.dataEnvio,
     required this.criadoEm,
-    required this.alteradoEm,
     required this.mensagemVisualizada,
     required this.categoriaNotificacao,
     required this.codigoEOL,
   });
-
 
   Message copyWith({
     int? id,
@@ -88,29 +87,28 @@ class Message {
   @override
   bool operator ==(covariant Message other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.mensagem == mensagem &&
-      other.titulo == titulo &&
-      other.dataEnvio == dataEnvio &&
-      other.criadoEm == criadoEm &&
-      other.alteradoEm == alteradoEm &&
-      other.mensagemVisualizada == mensagemVisualizada &&
-      other.categoriaNotificacao == categoriaNotificacao &&
-      other.codigoEOL == codigoEOL;
+
+    return other.id == id &&
+        other.mensagem == mensagem &&
+        other.titulo == titulo &&
+        other.dataEnvio == dataEnvio &&
+        other.criadoEm == criadoEm &&
+        other.alteradoEm == alteradoEm &&
+        other.mensagemVisualizada == mensagemVisualizada &&
+        other.categoriaNotificacao == categoriaNotificacao &&
+        other.codigoEOL == codigoEOL;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      mensagem.hashCode ^
-      titulo.hashCode ^
-      dataEnvio.hashCode ^
-      criadoEm.hashCode ^
-      alteradoEm.hashCode ^
-      mensagemVisualizada.hashCode ^
-      categoriaNotificacao.hashCode ^
-      codigoEOL.hashCode;
+        mensagem.hashCode ^
+        titulo.hashCode ^
+        dataEnvio.hashCode ^
+        criadoEm.hashCode ^
+        alteradoEm.hashCode ^
+        mensagemVisualizada.hashCode ^
+        categoriaNotificacao.hashCode ^
+        codigoEOL.hashCode;
   }
 }
