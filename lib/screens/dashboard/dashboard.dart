@@ -171,6 +171,10 @@ class _DashboardState extends State<Dashboard> {
                           child: Visibility(
                               visible: _messagesController.messages.isEmpty,
                               child: CardRecentMessage(
+                                message: _messagesController.message,
+                                countMessages: _messagesController.countMessage,
+                                outherRoutes: () {},
+                                onPress: () {},
                                 recent: true,
                               )),
                         );

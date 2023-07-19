@@ -168,7 +168,7 @@ class _CardRecentMessageState extends State<CardRecentMessage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             AutoSizeText(
-                              widget.message.titulo,
+                              widget.message?.titulo ?? '',
                               maxFontSize: 16,
                               minFontSize: 14,
                               maxLines: 2,
