@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class EADefaultButton extends StatelessWidget {
   final String text;
   final Color btnColor;
-  final IconData icon;
+  final IconData? icon;
   final Color iconColor;
   final VoidCallback onPress;
   final bool enabled;
@@ -14,7 +14,7 @@ class EADefaultButton extends StatelessWidget {
       required this.btnColor,
       required this.onPress,
       this.icon,
-      this.iconColor,
+      required this.iconColor,
       this.enabled = true});
 
   @override
