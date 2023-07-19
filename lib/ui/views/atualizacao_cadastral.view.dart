@@ -1,15 +1,14 @@
+import 'dart:js_interop';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/index.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
 import 'package:sme_app_aluno/stores/index.dart';
@@ -41,14 +40,14 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
 
   MaskedTextController _telefoneCtrl = new MaskedTextController(mask: '(00) 00000-0000');
 
-  ReactionDisposer disposer;
+  late ReactionDisposer disposer;
 
   bool _busy = false;
   bool _declaracao = false;
   String _email = "";
   String _telefone = "";
   String _nomeMae = "";
-  DateTime _dataNascimento;
+  late DateTime _dataNascimento;
 
   @override
   void initState() {
@@ -109,15 +108,16 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
+        content: response.erros != null ? Text(response.erros![0]) : Text("Erro de serviço"),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
-  Future<bool> _onBackPress() {
-    return showDialog(
+  Future<bool> _onBackPress() async {
+    bool retorno = false;
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -129,18 +129,22 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
               ElevatedButton(
                 child: Text('NÃO'),
                 onPressed: () {
+                  retorno = false;
                   Navigator.of(context).pop();
                 },
               ),
               ElevatedButton(
                 child: Text('SIM'),
                 onPressed: () async {
+                  retorno = true;
                   await Auth.logout(context, usuarioStore.usuario.id, false);
                 },
               )
             ],
           );
         });
+
+    return retorno;
   }
 
   @override
@@ -303,7 +307,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    return ValidatorsUtil.dataNascimento(value);
+                                    return ValidatorsUtil.dataNascimento(value!);
                                   },
                                   keyboardType: TextInputType.datetime,
                                 ),
@@ -324,7 +328,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   onChanged: (value) {
                                     setState(() {
                                       _nomeMae = value;
-                                      _formKey.currentState.validate();
+                                      _formKey.currentState?.validate();
                                     });
                                   },
                                   decoration: InputDecoration(
@@ -337,7 +341,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return ValidatorsUtil.nome(value, "Nome do responsável legal");
+                                      return ValidatorsUtil.nome(value!, "Nome do responsável legal");
                                     } else
                                       return null;
                                   },
@@ -372,7 +376,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     border: InputBorder.none,
                                   ),
                                   validator: (value) {
-                                    return ValidatorsUtil.email(value);
+                                    return ValidatorsUtil.email(value!);
                                   },
                                   keyboardType: TextInputType.multiline,
                                   minLines: 1,
@@ -399,7 +403,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     });
                                   },
                                   validator: (value) {
-                                    return ValidatorsUtil.telefone(value);
+                                    return ValidatorsUtil.telefone(value!);
                                   },
                                   decoration: InputDecoration(
                                     labelText: 'Telefone celular do responsável',
@@ -434,8 +438,8 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                         activeColor: ColorsUtil.laranja01,
                                         onChanged: (newValue) {
                                           setState(() {
-                                            _formKey.currentState.validate();
-                                            _declaracao = newValue;
+                                            _formKey.currentState?.validate();
+                                            _declaracao = newValue!;
                                           });
                                         },
                                       )
@@ -457,7 +461,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                           btnColor: Color(0xffd06d12),
                                           enabled: habilitaBotaoCadastro(),
                                           onPress: () {
-                                            if (_formKey.currentState.validate()) {
+                                            if (_formKey.currentState!.validate()) {
                                               onClickFinalizarCadastro();
                                             }
                                           },
@@ -500,7 +504,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
   }
 
   bool habilitaBotaoCadastro() {
-    if (_nomeMae == null) {
+    if (_nomeMae.isNull) {
       return false;
     }
     if (_telefone.isEmpty || _nomeMae.isEmpty) {

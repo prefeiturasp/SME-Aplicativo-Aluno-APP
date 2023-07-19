@@ -10,7 +10,7 @@ abstract class _EstudanteStoreBase with Store {
   bool carregando = false;
 
   @observable
-  List<GrupoEstudanteModel> gruposEstudantes;
+  late List<GrupoEstudanteModel> gruposEstudantes;
 
   @action
   void carregarGrupos(List<GrupoEstudanteModel> grupos) {

@@ -1,9 +1,9 @@
 class ResponseDTO {
-  bool? ok;
+  bool ok = false;
   List<String>? erros;
   Object? data;
 
-  ResponseDTO({this.ok, this.erros, this.data});
+  ResponseDTO({this.ok = false, this.erros, this.data});
 
   ResponseDTO.fromJson(Map<String, dynamic> json) {
     ok = json['ok'];
