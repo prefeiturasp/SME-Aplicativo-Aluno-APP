@@ -8,7 +8,6 @@ import 'package:sme_app_aluno/utils/string_support.dart';
 class EAQRecentCardMessage extends StatefulWidget {
   final Message message;
   final int countMessages;
-  final String token;
   final int codigoGrupo;
   final bool deleteBtn;
   final bool recent;
@@ -19,7 +18,6 @@ class EAQRecentCardMessage extends StatefulWidget {
   EAQRecentCardMessage(
       {required this.message,
       required this.countMessages,
-      required this.token,
       required this.codigoGrupo,
       required this.outherRoutes,
       this.deleteBtn = true,
