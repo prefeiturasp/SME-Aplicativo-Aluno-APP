@@ -15,13 +15,11 @@ import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
 
 class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
-  final int userId;
   final String modalidade;
   final String grupoCodigo;
   EstudanteResumoView({
     required this.estudante,
-    this.modalidade,
-    this.userId,
+    required this.modalidade,
     required this.grupoCodigo,
   });
 
@@ -33,6 +31,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaDados = true;
   bool abaBoletim = false;
   bool abaFrequencia = false;
+  bool teste = false;
 
   content(BuildContext context, double screenHeight, EstudanteModel data, GlobalKey<ScaffoldState> scaffoldkey) {
     String dateFormatted = DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
@@ -111,7 +110,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                           color: Colors.white,
                           border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5))),
                       child: EAEstudanteInfo(
-                        nome: widget.estudante.nomeSocial != null && widget.estudante.nomeSocial.isNotEmpty
+                        nome: widget.estudante.nomeSocial.isNotEmpty
                             ? widget.estudante.nomeSocial
                             : widget.estudante.nome,
                         ue: widget.estudante.escola,
