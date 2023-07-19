@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class InfoBox extends StatelessWidget {
   final List<Widget> content;
-  final IconData icon;
+  final IconData? icon;
 
   InfoBox({required this.content, this.icon});
 
