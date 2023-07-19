@@ -19,6 +19,7 @@ class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard>
     var outroServicosRepository = OutrosServicosRepository();
     var size = MediaQuery.of(context).size;
     var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    List<OutroServicoModel> valorInicial = [];
     return Container(
       margin: EdgeInsets.only(top: screenHeight * 1),
       decoration: BoxDecoration(
@@ -37,8 +38,9 @@ class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard>
       ),
       child: FutureBuilder(
           future: outroServicosRepository.obterLinksPioritario(),
-          initialData: [],
-          builder: (context, snapshot) {
+          initialData: valorInicial,
+          //builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
+          builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
             return Column(
               children: <Widget>[
                 Container(
@@ -85,11 +87,11 @@ class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard>
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: List.generate(
-                    snapshot.data.length,
+                    snapshot.data!.length,
                     (index) {
                       return OutrosLinksInfoWidget(
                         screenHeight: screenHeight,
-                        outroServicoModel: snapshot.data[index],
+                        outroServicoModel: snapshot.data![index],
                       );
                     },
                   ),
@@ -151,7 +153,8 @@ class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard>
 class OutrosLinksInfoWidget extends StatelessWidget {
   final double screenHeight;
   final OutroServicoModel outroServicoModel;
-  const OutrosLinksInfoWidget({Key key, required this.screenHeight, required this.outroServicoModel}) : super(key: key);
+  const OutrosLinksInfoWidget({Key? key, required this.screenHeight, required this.outroServicoModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

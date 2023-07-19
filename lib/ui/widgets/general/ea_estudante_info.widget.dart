@@ -6,22 +6,23 @@ class EAEstudanteInfo extends StatelessWidget {
   final String ue;
   final String tipoEscola;
   final String dre;
-  final String grade;
-  final int codigoEOL;
-  final Widget avatar;
-  final String modalidade;
+  final String? grade;
+  final int? codigoEOL;
+  final Widget? avatar;
+  final String? modalidade;
   final EdgeInsets padding;
 
-  EAEstudanteInfo(
-      {required this.nome,
-      required this.ue,
-      required this.tipoEscola,
-      required this.dre,
-      this.codigoEOL,
-      this.grade,
-      this.avatar,
-      this.modalidade,
-      this.padding});
+  EAEstudanteInfo({
+    required this.nome,
+    required this.ue,
+    required this.tipoEscola,
+    required this.dre,
+    this.codigoEOL,
+    this.grade,
+    this.avatar,
+    this.modalidade,
+    required this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ),
                 modalidade != null
                     ? AutoSizeText(
-                        "${modalidade.toUpperCase()}",
+                        "${modalidade!.toUpperCase()}",
                         maxFontSize: 12,
                         minFontSize: 10,
                         style: TextStyle(
