@@ -6,15 +6,15 @@ class CardAlert extends StatelessWidget {
   final String title;
   final Icon icon;
   final String text;
-  final double textSize;
+  double textSize = 0;
   final bool isHeader;
 
   CardAlert({
     required this.title,
     required this.icon,
     required this.text,
+    this.textSize = 0,
     this.isHeader = true,
-    required this.textSize,
   });
 
   @override
@@ -86,8 +86,8 @@ class CardAlert extends StatelessWidget {
                         child: Center(
                           child: AutoSizeText(
                             text,
-                            maxFontSize: textSize != null ? textSize : 16,
-                            minFontSize: textSize != null ? textSize - 2 : 14,
+                            maxFontSize: textSize != 0 ? textSize : 16,
+                            minFontSize: textSize != 0 ? textSize - 2 : 14,
                             maxLines: 10,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,

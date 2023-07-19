@@ -244,7 +244,7 @@ class _DashboardState extends State<Dashboard> {
                         return CardAlert(
                           title: "AGENDA",
                           icon: Icon(
-                            FontAwesomeIcons.calendarAlt,
+                            FontAwesomeIcons.calendarDay,
                             color: Color(0xffFFD037),
                             size: screenHeight * 6,
                           ),
