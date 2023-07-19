@@ -182,7 +182,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 MaterialPageRoute(
                   builder: (context) => EstudanteResumoView(
                     estudante: widget.estudante,
-                    userId: widget.userId,
                     modalidade: widget.groupSchool,
                     grupoCodigo: widget.codigoGrupo.toString(),
                   ),

@@ -36,7 +36,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   String _email = "";
   String _telefone = "";
   String _nomeMae = "";
-  DateTime _dataNascimento;
+  late DateTime _dataNascimento;
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: response.erros != null ? Text(response.erros[0]) : Text("Erro de serviço"),
+        content: response.erros != null ? Text(response.erros![0]) : Text("Erro de serviço"),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -206,7 +206,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.dataNascimento(value);
+                                  return ValidatorsUtil.dataNascimento(value!);
                                 },
                                 keyboardType: TextInputType.datetime,
                               ),
@@ -238,7 +238,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.nome(value, "Nome do responsável legal");
+                                  return ValidatorsUtil.nome(value!, "Nome do responsável legal");
                                 },
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
@@ -271,7 +271,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.email(value);
+                                  return ValidatorsUtil.email(value!);
                                 },
                                 keyboardType: TextInputType.multiline,
                                 minLines: 1,
@@ -305,7 +305,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
-                                  return ValidatorsUtil.telefone(value);
+                                  return ValidatorsUtil.telefone(value!);
                                 },
                                 keyboardType: TextInputType.number,
                               ),
@@ -333,8 +333,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                       activeColor: ColorsUtil.laranja01,
                                       onChanged: (newValue) {
                                         setState(() {
-                                          _formKey.currentState.validate();
-                                          _declaracao = newValue;
+                                          _formKey.currentState!.validate();
+                                          _declaracao = newValue!;
                                         });
                                       },
                                     )
@@ -355,7 +355,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                         btnColor: Color(0xffd06d12),
                                         enabled: habilitaBotaoCadastro(),
                                         onPress: () async {
-                                          if (_formKey.currentState.validate()) {
+                                          if (_formKey.currentState!.validate()) {
                                             var retorno = await onClickFinalizarCadastro();
                                             if (retorno) {
                                               Navigator.pop(context);

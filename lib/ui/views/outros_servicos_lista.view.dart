@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:grouped_list/grouped_list.dart';
+
+import '../../models/outros_servicos/outro_servico.model.dart';
 
 class OutrosServicosLista extends StatefulWidget {
-  const OutrosServicosLista({Key key}) : super(key: key);
+  const OutrosServicosLista({Key? key}) : super(key: key);
 
   @override
   _OutrosServicosListaState createState() => _OutrosServicosListaState();
@@ -15,6 +16,7 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
   @override
   Widget build(BuildContext context) {
     var outroServicosRepository = OutrosServicosRepository();
+    List<OutroServicoModel> valorInicial = [];
     return Scaffold(
       appBar: AppBar(
         title: Text("Outros Serviços"),
@@ -22,14 +24,13 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
       body: Container(
         child: FutureBuilder(
           future: outroServicosRepository.obterTodosLinks(),
-          initialData: [],
-          builder: (context, snapshot) {
+          initialData: valorInicial,
+          builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
             return GroupedListView<dynamic, String>(
-              elements: snapshot.data.toList(),
+              elements: snapshot.data!.toList(),
               groupBy: (servico) => servico.categoria,
               groupComparator: (value2, value1) => value1.compareTo(value2),
-              itemComparator: (item2, item1) =>
-                  item1.titulo.compareTo(item2.titulo),
+              itemComparator: (item2, item1) => item1.titulo.compareTo(item2.titulo),
               order: GroupedListOrder.DESC,
               useStickyGroupSeparators: true,
               groupSeparatorBuilder: (String value) => Padding(
@@ -43,11 +44,9 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
               itemBuilder: (c, servico) {
                 return Card(
                   elevation: 8.0,
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
+                  margin: new EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
                   child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     leading: Image.network(servico.icone),
                     title: Text(
                       servico.titulo,
@@ -57,7 +56,7 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
                     ),
                     subtitle: Text(servico.descricao),
                     onTap: () {
-                      launch(servico.urlSite);
+                      launchUrl(servico.urlSite);
                     },
                   ),
                 );
