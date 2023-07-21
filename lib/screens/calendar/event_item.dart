@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -77,7 +75,7 @@ class EventItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  !componenteCurricular.isNull
+                  componenteCurricular != null
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

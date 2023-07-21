@@ -1,7 +1,8 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class DeviceINFO {
   static Map<String, dynamic> readAndroidBuildData(AndroidDeviceInfo build) {
+    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     return <String, dynamic>{
       'version.securityPatch': build.version.securityPatch,
       'version.sdkInt': build.version.sdkInt,
@@ -28,7 +29,7 @@ class DeviceINFO {
       'tags': build.tags,
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
-      'androidId': build.androidId,
+      'androidId': deviceInfoPlugin.androidInfo,
       'systemFeatures': build.systemFeatures,
     };
   }

@@ -114,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              widget.notice != null
+                              widget.notice.isNotEmpty
                                   ? Container(
                                       decoration: BoxDecoration(
                                         color: Colors.red,

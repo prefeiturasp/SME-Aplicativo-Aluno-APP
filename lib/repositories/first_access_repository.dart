@@ -15,7 +15,7 @@ import '../dtos/validacao_erro_dto.dart';
 
 class FirstAccessRepository implements IFirstAccessRepository {
   final UserService _userService = UserService();
-  final usuarioStore = GetIt.I.get<UsuarioStore>();
+  UsuarioStore usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
   Future<Data> changeNewPassword(int id, String password) async {
@@ -26,7 +26,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
 
     var body = json.encode(_data);
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/PrimeiroAcesso");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/PrimeiroAcesso");
       final response = await http.post(
         url,
         headers: {
@@ -77,7 +77,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
     Map _data = {"id": userId, "email": email, "celular": phone, "alterarSenha": changePassword};
     var body = json.encode(_data);
     try {
-      final url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular");
+      final url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/AlterarEmailCelular");
       final response = await http.post(
         url,
         headers: {
@@ -109,7 +109,8 @@ class FirstAccessRepository implements IFirstAccessRepository {
       }
     } catch (error, stacktrace) {
       log("[changeEmailAndPhone] Erro de requisição " + stacktrace.toString());
-      throw Exception(error);
+      return DataChangeEmailAndPhone();
+      //throw Exception(error);
     }
   }
 }

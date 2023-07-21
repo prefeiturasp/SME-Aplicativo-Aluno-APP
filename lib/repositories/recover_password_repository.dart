@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/interfaces/recover_password_interface.dart';
 import 'package:sme_app_aluno/models/recover_password/data.dart';
 import 'package:sme_app_aluno/services/user.service.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
@@ -24,7 +24,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     var body = json.encode(_data);
 
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token");
       final response = await http.put(
         url,
         headers: {
@@ -41,7 +41,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return Data(
             ok: false,
             erros: [AppConfigReader.getErrorMessageTimeOut()],
-            validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []), email: '');
+            validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []),
+            email: '');
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = Data.fromJson(decodeError);
@@ -60,7 +61,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     };
     var body = json.encode(_data);
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar");
       final response = await http.put(
         url,
         headers: {
@@ -90,7 +91,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     var body = json.encode(_data);
 
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir");
       final response = await http.put(
         url,
         headers: {

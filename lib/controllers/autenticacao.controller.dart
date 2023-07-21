@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/repositories/authenticate_repository.dart';
 import 'package:sme_app_aluno/stores/usuario.store.dart';
@@ -25,7 +24,23 @@ class AutenticacaoController {
       return data;
     } catch (e) {
       log(e.toString());
-      throw Exception(e);
+      return UsuarioDataModel(
+          ok: false,
+          erros: [e.toString()],
+          data: UsuarioModel(
+              id: 0,
+              nome: '',
+              nomeMae: '',
+              cpf: cpf,
+              email: '',
+              token: '',
+              primeiroAcesso: false,
+              atualizarDadosCadastrais: false,
+              celular: '',
+              dataNascimento: DateTime.now(),
+              ultimaAtualizacao: DateTime.now(),
+              senha: ''));
+      //throw Exception(e);
     }
   }
 }

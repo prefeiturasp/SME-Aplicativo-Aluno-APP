@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
@@ -504,7 +502,7 @@ class _AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
   }
 
   bool habilitaBotaoCadastro() {
-    if (_nomeMae.isNull) {
+    if (_nomeMae == null) {
       return false;
     }
     if (_telefone.isEmpty || _nomeMae.isEmpty) {

@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/dtos/validacao_erro_dto.dart';
-
 import 'package:sme_app_aluno/interfaces/settings_repository_interface.dart';
 import 'package:sme_app_aluno/models/settings/data.dart';
 import 'package:sme_app_aluno/models/user/user.dart' as UserModel;
@@ -25,7 +25,7 @@ class SettingsRepository implements ISettingsRepository {
     var body = json.encode(_data);
 
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Alterar");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Autenticacao/Senha/Alterar");
       final response = await http.put(
         url,
         headers: {

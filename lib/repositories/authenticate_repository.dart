@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
@@ -11,9 +12,11 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
   @override
   Future<UsuarioDataModel> loginUser(String cpf, String password) async {
-    late final String idDevice;
+    final String idDevice = 'id_device3243';
 
-    idDevice = (await _firebaseMessaging.getToken())!;
+    //final fcmToken = await FirebaseMessaging.instance.getToken();
+
+    //idDevice = await _firebaseMessaging.getToken();
 
     log("FIREBASE TOKEN: $idDevice");
 
@@ -26,7 +29,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
     var body = json.encode(_data);
 
     try {
-      final url = Uri.https('${AppConfigReader.getApiHost()}/Autenticacao');
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao');
       final response = await http.post(
         url,
         headers: {
@@ -37,6 +40,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
+        //Erro AQUI
         var user = UsuarioDataModel.fromJson(decodeJson);
         return user;
       } else if (response.statusCode == 408) {

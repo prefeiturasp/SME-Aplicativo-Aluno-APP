@@ -5,16 +5,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
 import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
 import 'package:sme_app_aluno/models/message/message.dart';
 import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
-import 'package:sme_app_aluno/stores/usuario.store.dart';
-import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
 import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
+import 'package:sme_app_aluno/stores/usuario.store.dart';
+import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
 import 'package:sme_app_aluno/utils/navigator.dart';
 
@@ -24,13 +26,13 @@ class FluxoInicialView extends StatefulWidget {
 }
 
 class _FluxoInicialViewState extends State<FluxoInicialView> {
-  final usuarioStore = GetIt.I.get<UsuarioStore>();
+  UsuarioStore usuarioStore = GetIt.I.get<UsuarioStore>();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final Stream<RemoteMessage> _firebaseonMessage = FirebaseMessaging.onMessage;
   final Stream<RemoteMessage> _firebaseonOnMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp;
 
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
-  late final MessagesController _messagesController;
+  MessagesController _messagesController = MessagesController();
 
   @override
   initState() {
@@ -46,7 +48,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
     super.dispose();
   }
 
-  _initPushNotificationHandlers() {
+  _initPushNotificationHandlers() async {
     try {
       _firebaseMessaging.requestPermission();
       _firebaseMessaging.getToken().then(print);
@@ -64,7 +66,7 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       });
     } catch (ex) {
       log(ex.toString());
-      throw Exception(ex);
+      //throw Exception(ex);
     }
   }
 
@@ -114,9 +116,10 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       );
     } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
       return AtualizacaoCadastralView();
-    } else {
-      return EstudanteListaView();
     }
+    // else {
+    //   return EstudanteListaView();
+    // }
 
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
@@ -140,11 +143,11 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
       return NotInteernet();
     } else {
       return Observer(
-        builder: (context) => usuarioStore.usuario == null
+        builder: (context) => usuarioStore.usuario.id == 0
             ? LoginView(
                 notice: '',
               )
-            : (usuarioStore.usuario.primeiroAcesso == null
+            : (usuarioStore.usuario.primeiroAcesso != false
                 ? LoginView(
                     notice: '',
                   )

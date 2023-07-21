@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:get_it/get_it.dart';
 import 'package:sme_app_aluno/dtos/response.dto.dart';
 import 'package:sme_app_aluno/repositories/usuario.repository.dart';
@@ -25,9 +23,7 @@ class UsuarioController {
   Future<void> obterDadosUsuario() async {
     var usuario = await usuarioRepository.obterDadosUsuario();
 
-    if (!usuario.isNull) {
-      usuarioStore.atualizarDados(
-          usuario.email, usuario.dataNascimento, usuario.nomeMae, usuario.celular, usuario.ultimaAtualizacao);
-    }
+    usuarioStore.atualizarDados(
+        usuario.email, usuario.dataNascimento, usuario.nomeMae, usuario.celular, usuario.ultimaAtualizacao);
   }
 }

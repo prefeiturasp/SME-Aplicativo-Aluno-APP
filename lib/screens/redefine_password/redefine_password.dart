@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -72,7 +70,7 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: !_recoverPasswordController.dataUser.isNull
+        content: _recoverPasswordController.dataUser != null
             ? Text(_recoverPasswordController.dataUser.erros[0])
             : Text("Erro de serviço"));
 

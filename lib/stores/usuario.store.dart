@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js_interop';
 
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,16 +13,29 @@ abstract class _UsuarioStoreBase with Store {
   bool carregando = false;
 
   @observable
-  late int id;
+  int id = 0;
 
   @observable
-  late String cpf;
+  String cpf = '';
 
   @observable
-  late UsuarioModel usuario;
+  UsuarioModel usuario = UsuarioModel(
+    id: 0,
+    nome: '',
+    nomeMae: '',
+    cpf: '',
+    email: '',
+    token: '',
+    primeiroAcesso: false,
+    atualizarDadosCadastrais: false,
+    celular: '',
+    dataNascimento: DateTime.now(),
+    ultimaAtualizacao: DateTime.now(),
+    senha: '',
+  );
 
   @observable
-  late String token;
+  String token = '';
 
   @action
   carregarUsuario() async {
@@ -46,16 +58,14 @@ abstract class _UsuarioStoreBase with Store {
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (!usuario.isNull) {
-      usuario.email = email;
-      usuario.dataNascimento = dataNascimento;
-      usuario.nomeMae = nomeMae;
-      usuario.celular = telefone;
-      usuario.primeiroAcesso = false;
-      usuario.atualizarDadosCadastrais = false;
-      usuario.ultimaAtualizacao = ultimaAtualizacao;
-      await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
-    }
+    usuario.email = email;
+    usuario.dataNascimento = dataNascimento;
+    usuario.nomeMae = nomeMae;
+    usuario.celular = telefone;
+    usuario.primeiroAcesso = false;
+    usuario.atualizarDadosCadastrais = false;
+    usuario.ultimaAtualizacao = ultimaAtualizacao;
+    await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
 
     carregando = false;
   }
@@ -63,10 +73,8 @@ abstract class _UsuarioStoreBase with Store {
   @action
   Future<void> atualizaPrimeiroAcesso(bool primeiroAcesso) async {
     final prefs = await SharedPreferences.getInstance();
-    if (!usuario.isNull) {
-      usuario.primeiroAcesso = primeiroAcesso;
-      await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
-    }
+    usuario.primeiroAcesso = primeiroAcesso;
+    await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
   }
 
   @action

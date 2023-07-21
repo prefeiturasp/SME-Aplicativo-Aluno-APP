@@ -21,7 +21,7 @@ class MessageRepository implements IMessageRepository {
       var messageRecent = messagesDB[0].criadoEm;
       var dateFormaet = messageRecent.replaceAll(':', '%3A');
 
-      final url = Uri.https("${AppConfigReader.getApiHost()}/Mensagens/$codigoEol/desde/$dateFormaet");
+      final url = Uri.parse("${AppConfigReader.getApiHost()}/Mensagens/$codigoEol/desde/$dateFormaet");
       final response = await http.get(url, headers: {
         "Authorization": "Bearer ${usuarioStore.usuario.token}",
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ class MessageRepository implements IMessageRepository {
   @override
   Future<Message> getMessageById(int messageId, int userId) async {
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Mensagens/$messageId");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Mensagens/$messageId");
       final response = await http.get(url, headers: {"Authorization": "Bearer ${usuarioStore.usuario.token}"});
 
       if (response.statusCode == 200) {
@@ -73,7 +73,7 @@ class MessageRepository implements IMessageRepository {
         var response = await fetchNewMessages(codigoEol);
         return response;
       } else {
-        final url = Uri.https("${AppConfigReader.getApiHost()}/Notificacao/$codigoEol");
+        final url = Uri.parse("${AppConfigReader.getApiHost()}/Notificacao/$codigoEol");
         final response = await http.get(url, headers: {"Authorization": "Bearer ${usuarioStore.usuario.token}"});
 
         if (response.statusCode == 200) {
@@ -121,7 +121,7 @@ class MessageRepository implements IMessageRepository {
     var body = json.encode(data);
 
     try {
-      final url = Uri.https("${AppConfigReader.getApiHost()}/UsuarioNotificacaoLeitura");
+      final url = Uri.parse("${AppConfigReader.getApiHost()}/UsuarioNotificacaoLeitura");
       final response = await http.post(
         url,
         headers: {
@@ -146,7 +146,7 @@ class MessageRepository implements IMessageRepository {
   Future<bool> deleteMessage(int codigoEol, int idNotificacao, int userId) async {
     List<Message> messagesDB = await _messageService.all();
     try {
-      final url = Uri.https("${AppConfigReader.getApiHost()}/Mensagens/$idNotificacao/$codigoEol");
+      final url = Uri.parse("${AppConfigReader.getApiHost()}/Mensagens/$idNotificacao/$codigoEol");
       final response = await http.delete(url, headers: {
         "Authorization": "Bearer ${usuarioStore.usuario.token}",
         "Content-Type": "application/json",

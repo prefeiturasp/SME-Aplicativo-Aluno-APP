@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:sme_app_aluno/interfaces/event_repository_interface.dart';
 import 'package:sme_app_aluno/models/event/event.dart' as EventModel;
 import 'package:sme_app_aluno/stores/index.dart';
@@ -14,11 +14,11 @@ class EventRepository extends IEventRepository {
   @override
   Future<List<EventModel.Event>> fetchEvent(int codigoAluno, int mes, int ano, int userId) async {
     try {
-      var url = Uri.https(
+      var url =Uri.parse(
           "${AppConfigReader.getApiHost()}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}");
       var response = await http.get(
         url,
-        headers: {"Authorization": "Bearer ${usuarioStore.usuario.token}", "Content-Type": "application/json"},
+        headers: {"Authorization": "Bearer ${usuarioStore.usuario?.token}", "Content-Type": "application/json"},
       );
       if (response.statusCode == 200) {
         List<dynamic> eventResponse = jsonDecode(response.body);

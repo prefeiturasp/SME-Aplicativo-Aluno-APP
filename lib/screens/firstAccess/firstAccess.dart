@@ -1,25 +1,23 @@
 import 'dart:developer';
+import 'dart:io' show Platform;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'dart:io' show Platform;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
-
 import 'package:sme_app_aluno/controllers/auth/first_access.controller.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/screens/terms/terms_view.dart';
 import 'package:sme_app_aluno/screens/widgets/buttons/eaback_button.dart';
-
 import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
 import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
 import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
@@ -27,8 +25,8 @@ import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
 import 'package:sme_app_aluno/utils/auth.dart';
 
 class FirstAccess extends StatefulWidget {
-  final int id;
-  final String cpf;
+  int id = 0;
+  String cpf = '';
 
   FirstAccess({required this.id, required this.cpf});
 
@@ -130,9 +128,8 @@ class _FirstAccessState extends State<FirstAccess> {
   onError() {
     var snackbar = SnackBar(
         backgroundColor: Colors.red,
-        content: _firstAccessController.data != null
-            ? Text(_firstAccessController.data.erros[0])
-            : Text("Erro de serviço"));
+        content:
+            _firstAccessController.data != null ? Text(_firstAccessController.data.erros[0]) : Text("Erro de serviço"));
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }

@@ -1,19 +1,21 @@
 import 'dart:developer';
 
 import 'package:background_fetch/background_fetch.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 import 'package:provider/provider.dart';
 import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
 import 'package:sme_app_aluno/ioc/dependencias.ioc.dart';
 import 'package:sme_app_aluno/ui/index.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
 import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
-import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 
 /// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
@@ -32,6 +34,7 @@ Future initializeAppConfig() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await initializeAppConfig();
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:sme_app_aluno/dtos/response.dto.dart';
 import 'package:sme_app_aluno/interfaces/repositories/iusuario.repository.dart';
 import 'package:sme_app_aluno/models/index.dart';
@@ -23,7 +23,7 @@ class UsuarioRepository extends IUsuarioRepository {
     });
 
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Usuario");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Usuario");
       final response = await http.put(
         url,
         headers: {
@@ -57,7 +57,7 @@ class UsuarioRepository extends IUsuarioRepository {
   @override
   Future<UsuarioModel> obterDadosUsuario() async {
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/Usuario/${usuarioStore.usuario.cpf}");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/Usuario/${usuarioStore.usuario.cpf}");
       final response = await http.get(url, headers: {
         "Authorization": "Bearer ${usuarioStore.usuario.token}",
         "Content-Type": "application/json",

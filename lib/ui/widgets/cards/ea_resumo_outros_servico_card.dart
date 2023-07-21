@@ -179,7 +179,7 @@ class OutrosLinksInfoWidget extends StatelessWidget {
               ),
             ),
             onTap: () {
-              var urls = Uri.https(outroServicoModel.urlSite);
+              var urls =Uri.parse(outroServicoModel.urlSite);
               launchUrl(urls);
             },
           ),

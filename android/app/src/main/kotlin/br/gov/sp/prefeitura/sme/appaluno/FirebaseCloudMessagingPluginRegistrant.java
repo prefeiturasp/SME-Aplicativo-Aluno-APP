@@ -1,14 +1,14 @@
 package br.gov.sp.prefeitura.sme.appaluno;
 
 import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
+//import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
 
 public final class FirebaseCloudMessagingPluginRegistrant{
     public static void registerWith(PluginRegistry registry) {
         if (alreadyRegisteredWith(registry)) {
             return;
         }
-        FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
+        //FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
     }
 
     private static boolean alreadyRegisteredWith(PluginRegistry registry) {
