@@ -13,12 +13,15 @@ import '../../models/message/message.dart';
 import '../../ui/widgets/appbar/app_bar_escola_aqui.dart';
 import '../../ui/widgets/cards/ea_resumo_outros_servico_card.dart';
 import '../../utils/conection.dart';
+import '../../utils/navigator.dart';
 import '../calendar/event_item.dart';
+import '../calendar/list_events.dart';
 import '../calendar/title_event.dart';
 import '../drawer_menu/drawer_menu.dart';
 import '../messages/list_messages.dart';
 import '../messages/view_message.dart';
 import '../not_internet/not_internet.dart';
+import '../widgets/cards/card_calendar.dart';
 import '../widgets/cards/eaq_recent_card.dart';
 import '../widgets/cards/index.dart';
 
@@ -137,6 +140,41 @@ class DashboardState extends State<Dashboard> {
     return Column(children: list);
   }
 
+  Widget _listEvents(
+    List<Event> events,
+    BuildContext context,
+  ) {
+    final List<Widget> list = [];
+
+    for (int i = 0; i < events.length; i++) {
+      final String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() + (events[i].diaSemana).substring(1);
+
+      list.add(
+        Column(
+          children: [
+            EventItem(
+              customTitle: TitleEvent(
+                dayOfWeek: diaSemana,
+                title: events[i].nome,
+              ),
+              titleEvent: events[i].nome,
+              desc: events[i].descricao != null ? (events[i].descricao.length > 3 ? true : false) : false,
+              eventDesc: events[i].descricao,
+              dia: events[i].dataInicio,
+              tipoEvento: events[i].tipoEvento,
+              componenteCurricular: events[i].componenteCurricular,
+            ),
+            const Divider(
+              color: Color(0xffCDCDCD),
+            )
+          ],
+        ),
+      );
+    }
+
+    return Column(children: list);
+  }
+
   @override
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
@@ -216,64 +254,50 @@ class DashboardState extends State<Dashboard> {
                           );
                         }
                       } else {
-                        return const GFLoader(
+                        return const SizedBox();
+                      }
+                    }
+                  },
+                ),
+                Observer(
+                  builder: (context) {
+                    if (_eventController.loading) {
+                      return Container(
+                        margin: EdgeInsets.all(screenHeight * 1.5),
+                        child: const GFLoader(
                           type: GFLoaderType.square,
                           loaderColorOne: Color(0xffDE9524),
                           loaderColorTwo: Color(0xffC65D00),
                           loaderColorThree: Color(0xffC65D00),
                           size: GFSize.LARGE,
+                        ),
+                      );
+                    } else {
+                      if (_eventController.priorityEvents != null) {
+                        return CardCalendar(
+                          heightContainer: screenHeight * 48,
+                          title: 'AGENDA',
+                          month: _eventController.currentMonth,
+                          totalEventos:
+                              '+ ${(_eventController.events!.length >= 4 ? _eventController.events!.length - 4 : _eventController.events!.length - _eventController.events!.length).toString()} eventos esse mês',
+                          widget: Observer(
+                            builder: (_) {
+                              return _listEvents(
+                                _eventController.priorityEvents as List<Event>,
+                                context,
+                              );
+                            },
+                          ),
+                          onPress: () {
+                            Nav.push(context, ListEvents(student: widget.estudante, userId: widget.userId));
+                          },
                         );
+                      } else {
+                        return const SizedBox();
                       }
                     }
                   },
                 ),
-                // Observer(
-                //   builder: (context) {
-                //     if (_eventController.loading) {
-                //       return Container(
-                //         margin: EdgeInsets.all(screenHeight * 1.5),
-                //         child: const GFLoader(
-                //           type: GFLoaderType.square,
-                //           loaderColorOne: Color(0xffDE9524),
-                //           loaderColorTwo: Color(0xffC65D00),
-                //           loaderColorThree: Color(0xffC65D00),
-                //           size: GFSize.LARGE,
-                //         ),
-                //       );
-                //     } else {
-                //       if (_eventController.priorityEvents != null) {
-                //         return CardCalendar(
-                //           heightContainer: screenHeight * 48,
-                //           title: 'AGENDA',
-                //           month: _eventController.currentMonth,
-                //           totalEventos:
-                //               '+ ${(_eventController.events!.length >= 4 ? _eventController.events!.length - 4 : _eventController.events!.length - _eventController.events!.length).toString()} eventos esse mês',
-                //           widget: Observer(
-                //             builder: (_) {
-                //               return _listEvents(
-                //                 _eventController.priorityEvents as List<Event>,
-                //                 context,
-                //               );
-                //             },
-                //           ),
-                //           onPress: () {
-                //             Nav.push(context, ListEvents(student: widget.estudante, userId: widget.userId));
-                //           },
-                //         );
-                //       } else {
-                //         return CardAlert(
-                //           title: 'AGENDA',
-                //           icon: Icon(
-                //             FontAwesomeIcons.calendarDay,
-                //             color: const Color(0xffFFD037),
-                //             size: screenHeight * 6,
-                //           ),
-                //           text: 'Não foi encontrado nenhum evento para este estudante.',
-                //         );
-                //       }
-                //     }
-                //   },
-                // ),
                 const EAResumoOutrosServicosCard(),
               ],
             ),
