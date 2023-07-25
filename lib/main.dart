@@ -13,7 +13,7 @@ import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
 import 'controllers/terms/terms.controller.dart';
 import 'ioc/dependencias.ioc.dart';
-import 'ui/index.dart';
+import 'ui/views/fluxo_inicial.view.dart';
 import 'utils/app_config_reader.dart';
 import 'utils/conection.dart';
 
@@ -59,7 +59,6 @@ class MyApp extends StatelessWidget {
     date_symbol_data_local.initializeDateFormatting();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

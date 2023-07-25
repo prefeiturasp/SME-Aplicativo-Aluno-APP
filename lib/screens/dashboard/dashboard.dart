@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/event/event.controller.dart';
@@ -33,28 +37,26 @@ class Dashboard extends StatefulWidget {
   });
 
   @override
-  _DashboardState createState() => _DashboardState();
+  DashboardState createState() => DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  late MessagesController _messagesController;
-  late EventController _eventController;
+class DashboardState extends State<Dashboard> {
+  final MessagesController _messagesController = MessagesController();
+  final EventController _eventController = EventController();
 
   @override
   void initState() {
     super.initState();
-    _loadingBackRecentMessage();
+    loadingBackRecentMessage();
     _loadingCalendar();
   }
 
-  _loadingBackRecentMessage() async {
+  void loadingBackRecentMessage() async {
     setState(() {});
-    _messagesController = MessagesController();
     _messagesController.loadMessages(widget.estudante.codigoEol, widget.userId);
   }
 
-  _loadingCalendar() async {
-    _eventController = EventController();
+  void _loadingCalendar() async {
     _eventController.fetchEvento(
       widget.estudante.codigoEol,
       _eventController.currentDate.month,
@@ -85,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
               codigoAlunoEol: widget.estudante.codigoEol,
             ),
           ),
-        ).whenComplete(() => _loadingBackRecentMessage());
+        ).whenComplete(() => loadingBackRecentMessage());
       },
       outherRoutes: () {
         Navigator.push(
@@ -97,16 +99,16 @@ class _DashboardState extends State<Dashboard> {
               codigoAlunoEol: widget.estudante.codigoEol,
             ),
           ),
-        ).whenComplete(() => _loadingBackRecentMessage());
+        ).whenComplete(() => loadingBackRecentMessage());
       },
     );
   }
 
-  Widget _listEvents(
+  Widget listEvents(
     List<Event> events,
     BuildContext context,
   ) {
-    List<Widget> list = [];
+    final List<Widget> list = [];
     for (int i = 0; i < events.length; i++) {
       final String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() + (events[i].diaSemana).substring(1);
 
@@ -119,7 +121,7 @@ class _DashboardState extends State<Dashboard> {
                 title: events[i].nome,
               ),
               titleEvent: events[i].nome,
-              desc: events[i].descricao != null ? (events[i].descricao.length > 3 ? true : false) : false,
+              desc: events[i].descricao.isNotEmpty ? (events[i].descricao.length > 3 ? true : false) : false,
               eventDesc: events[i].descricao,
               dia: events[i].dataInicio,
               tipoEvento: events[i].tipoEvento,
@@ -158,73 +160,73 @@ class _DashboardState extends State<Dashboard> {
                   modalidade: widget.groupSchool,
                   codigoGrupo: widget.codigoGrupo.toString(),
                 ),
-                // Observer(
-                //   builder: (context) {
-                //     if (_messagesController.isLoading) {
-                //       return const GFLoader(
-                //         type: GFLoaderType.square,
-                //         loaderColorOne: Color(0xffDE9524),
-                //         loaderColorTwo: Color(0xffC65D00),
-                //         loaderColorThree: Color(0xffC65D00),
-                //         size: GFSize.LARGE,
-                //       );
-                //     } else {
-                //       if (_messagesController.messages != null) {
-                //         _messagesController.loadRecentMessagesPorCategory();
+                Observer(
+                  builder: (context) {
+                    if (_messagesController.isLoading) {
+                      return const GFLoader(
+                        type: GFLoaderType.square,
+                        loaderColorOne: Color(0xffDE9524),
+                        loaderColorTwo: Color(0xffC65D00),
+                        loaderColorThree: Color(0xffC65D00),
+                        size: GFSize.LARGE,
+                      );
+                    } else {
+                      if (_messagesController.messages.isNotEmpty) {
+                        _messagesController.loadRecentMessagesPorCategory();
 
-                //         if (_messagesController.messages.isEmpty) {
-                //           return Visibility(
-                //             visible: _messagesController.messages.isEmpty,
-                //             child: CardRecentMessage(
-                //               message: _messagesController.message,
-                //               countMessages: _messagesController.countMessage,
-                //               outherRoutes: () {},
-                //               onPress: () {},
-                //               recent: true,
-                //             ),
-                //           );
-                //         } else {
-                //           return Observer(
-                //             builder: (_) {
-                //               if (_messagesController.recentMessages != null) {
-                //                 return Container(
-                //                   height: screenHeight * 48,
-                //                   margin: EdgeInsets.only(top: screenHeight * 3),
-                //                   child: Visibility(
-                //                     visible: _messagesController.recentMessages.length > 1,
-                //                     replacement: _buildItemMEssage(
-                //                       _messagesController.recentMessages[0],
-                //                       _messagesController.recentMessages.length,
-                //                       context,
-                //                     ),
-                //                     child: ListView.builder(
-                //                       itemCount: _messagesController.recentMessages.length,
-                //                       scrollDirection: Axis.horizontal,
-                //                       itemBuilder: (context, index) {
-                //                         final dados = _messagesController.recentMessages;
-                //                         return _buildItemMEssage(dados[index], dados.length, context);
-                //                       },
-                //                     ),
-                //                   ),
-                //                 );
-                //               } else {
-                //                 return Container();
-                //               }
-                //             },
-                //           );
-                //         }
-                //       } else {
-                //         return const GFLoader(
-                //           type: GFLoaderType.square,
-                //           loaderColorOne: Color(0xffDE9524),
-                //           loaderColorTwo: Color(0xffC65D00),
-                //           loaderColorThree: Color(0xffC65D00),
-                //           size: GFSize.LARGE,
-                //         );
-                //       }
-                //     }
-                //   },
-                // ),
+                        if (_messagesController.messages.isEmpty) {
+                          return Visibility(
+                            visible: _messagesController.messages.isEmpty,
+                            child: CardRecentMessage(
+                              message: _messagesController.message,
+                              countMessages: _messagesController.countMessage,
+                              outherRoutes: () {},
+                              onPress: () {},
+                              recent: true,
+                            ),
+                          );
+                        } else {
+                          return Observer(
+                            builder: (_) {
+                              if (_messagesController.recentMessages.isNotEmpty) {
+                                return Container(
+                                  height: screenHeight * 48,
+                                  margin: EdgeInsets.only(top: screenHeight * 3),
+                                  child: Visibility(
+                                    visible: _messagesController.recentMessages.length > 1,
+                                    replacement: _buildItemMEssage(
+                                      _messagesController.recentMessages[0],
+                                      _messagesController.recentMessages.length,
+                                      context,
+                                    ),
+                                    child: ListView.builder(
+                                      itemCount: _messagesController.recentMessages.length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        final dados = _messagesController.recentMessages;
+                                        return _buildItemMEssage(dados[index], dados.length, context);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          );
+                        }
+                      } else {
+                        return const GFLoader(
+                          type: GFLoaderType.square,
+                          loaderColorOne: Color(0xffDE9524),
+                          loaderColorTwo: Color(0xffC65D00),
+                          loaderColorThree: Color(0xffC65D00),
+                          size: GFSize.LARGE,
+                        );
+                      }
+                    }
+                  },
+                ),
                 // Observer(
                 //   builder: (context) {
                 //     if (_eventController.loading) {

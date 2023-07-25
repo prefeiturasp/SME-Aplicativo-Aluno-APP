@@ -11,7 +11,6 @@ import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
 import '../../screens/firstAccess/firstAccess.dart';
 import '../../screens/recover_password/recover_password.dart';
-import '../../screens/widgets/buttons/eabutton.dart';
 import '../../stores/usuario.store.dart';
 import '../../utils/navigator.dart';
 import '../index.dart';
@@ -22,10 +21,10 @@ class LoginView extends StatefulWidget {
   const LoginView({super.key, required this.notice});
 
   @override
-  _LoginViewState createState() => _LoginViewState();
+  LoginViewState createState() => LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class LoginViewState extends State<LoginView> {
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
@@ -67,9 +66,11 @@ class _LoginViewState extends State<LoginView> {
         content: usuario.erros != null ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     } else {
-      if (usuarioStore.usuario.primeiroAcesso) {
+      if (usuarioStore.usuario.primeiroAcesso && context.mounted) {
         Nav.push(
           context,
           FirstAccess(
@@ -80,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
       } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
         Nav.push(context, const AtualizacaoCadastralView());
       } else {
-        Nav.push(context, EstudanteListaView());
+        Nav.push(context, const EstudanteListaView());
       }
     }
   }
@@ -281,12 +282,12 @@ class _LoginViewState extends State<LoginView> {
                                   loaderColorThree: Color(0xffC65D00),
                                   size: GFSize.LARGE,
                                 )
-                              : EAButton(
+                              : EADefaultButton(
                                   text: 'ENTRAR',
                                   icon: FontAwesomeIcons.chevronRight,
                                   iconColor: const Color(0xffffd037),
                                   btnColor: const Color(0xffd06d12),
-                                  disabled: CPFValidator.isValid(_cpf) && _password.length >= 7,
+                                  enabled: CPFValidator.isValid(_cpf) && _password.length >= 7,
                                   onPress: () {
                                     if (_formKey.currentState!.validate()) {
                                       _handleSignIn(_cpf, _password);

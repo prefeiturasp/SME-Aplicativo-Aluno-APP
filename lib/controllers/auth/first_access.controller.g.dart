@@ -13,13 +13,13 @@ mixin _$FirstAccessController on FirstAccessControllerBase, Store {
       Atom(name: 'FirstAccessControllerBase.data', context: context);
 
   @override
-  Data get data {
+  Data? get data {
     _$dataAtom.reportRead();
     return super.data;
   }
 
   @override
-  set data(Data value) {
+  set data(Data? value) {
     _$dataAtom.reportWrite(value, super.data, () {
       super.data = value;
     });
@@ -78,7 +78,7 @@ mixin _$FirstAccessController on FirstAccessControllerBase, Store {
       context: context);
 
   @override
-  Future changeNewPassword(int id, String password) {
+  Future<void> changeNewPassword(int id, String password) {
     return _$changeNewPasswordAsyncAction
         .run(() => super.changeNewPassword(id, password));
   }
@@ -88,7 +88,7 @@ mixin _$FirstAccessController on FirstAccessControllerBase, Store {
       context: context);
 
   @override
-  Future changeEmailAndPhone(
+  Future<void> changeEmailAndPhone(
       String email, String phone, int userId, bool changePassword) {
     return _$changeEmailAndPhoneAsyncAction.run(
         () => super.changeEmailAndPhone(email, phone, userId, changePassword));
@@ -99,7 +99,7 @@ mixin _$FirstAccessController on FirstAccessControllerBase, Store {
       context: context);
 
   @override
-  Future loadUserForStorage(int userId) {
+  Future<void> loadUserForStorage(int userId) {
     return _$loadUserForStorageAsyncAction
         .run(() => super.loadUserForStorage(userId));
   }

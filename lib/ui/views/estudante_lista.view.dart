@@ -31,12 +31,11 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
   final _usuarioStore = GetIt.I.get<UsuarioStore>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
 
-  late BackgroundFetchController _backgroundFetchController;
+  final BackgroundFetchController _backgroundFetchController = BackgroundFetchController();
 
   @override
   void initState() {
     super.initState();
-    _backgroundFetchController = BackgroundFetchController();
     _loadingAllStudents();
     _backgroundFetchController.initPlatformState(
       _onBackgroundFetch,

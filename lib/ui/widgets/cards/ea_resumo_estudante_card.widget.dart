@@ -63,7 +63,7 @@ class EAResumoEstudanteCard extends StatelessWidget {
                       margin: EdgeInsets.only(right: screenHeight * 1),
                       child: Center(
                         child: Icon(
-                          FontAwesomeIcons.userCircle,
+                          FontAwesomeIcons.circleUser,
                           size: screenHeight * 3,
                         ),
                       ),
@@ -104,15 +104,13 @@ class EAResumoEstudanteCard extends StatelessWidget {
                   Radius.circular(screenHeight * 3),
                 ),
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(screenHeight * 3),
-                  ),
-                ),
-                onPressed: () {
+              child: EADefaultButton(
+                btnColor: Colors.white,
+                iconColor: const Color(0xffffd037),
+                icon: FontAwesomeIcons.chevronRight,
+                text: 'MAIS INFORMAÇÕES',
+                styleAutoSize: const TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                onPress: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -124,26 +122,6 @@ class EAResumoEstudanteCard extends StatelessWidget {
                     ),
                   );
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const AutoSizeText(
-                      'MAIS INFORMAÇÕES',
-                      maxFontSize: 16,
-                      minFontSize: 14,
-                      style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(
-                      width: screenHeight * 3,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.chevronRight,
-                      color: const Color(0xffffd037),
-                      size: screenHeight * 3,
-                    )
-                  ],
-                ),
               ),
             ),
           ),

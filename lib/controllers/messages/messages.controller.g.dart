@@ -13,13 +13,13 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       Atom(name: 'MessagesControllerBase.message', context: context);
 
   @override
-  Message get message {
+  Message? get message {
     _$messageAtom.reportRead();
     return super.message;
   }
 
   @override
-  set message(Message value) {
+  set message(Message? value) {
     _$messageAtom.reportWrite(value, super.message, () {
       super.message = value;
     });
@@ -189,7 +189,7 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       AsyncAction('MessagesControllerBase.loadMessages', context: context);
 
   @override
-  Future loadMessages(int codigoAlunoEol, int userId) {
+  Future<void> loadMessages(int codigoAlunoEol, int userId) {
     return _$loadMessagesAsyncAction
         .run(() => super.loadMessages(codigoAlunoEol, userId));
   }
@@ -198,7 +198,7 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       AsyncAction('MessagesControllerBase.loadById', context: context);
 
   @override
-  Future loadById(int messageId, int userId) {
+  Future<void> loadById(int messageId, int userId) {
     return _$loadByIdAsyncAction.run(() => super.loadById(messageId, userId));
   }
 
@@ -206,7 +206,7 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       AsyncAction('MessagesControllerBase.deleteMessage', context: context);
 
   @override
-  Future deleteMessage(int codigoEol, int idNotificacao, int userId) {
+  Future<void> deleteMessage(int codigoEol, int idNotificacao, int userId) {
     return _$deleteMessageAsyncAction
         .run(() => super.deleteMessage(codigoEol, idNotificacao, userId));
   }
@@ -215,7 +215,7 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       AsyncAction('MessagesControllerBase.updateMessage', context: context);
 
   @override
-  Future updateMessage(
+  Future<void> updateMessage(
       {required int notificacaoId,
       required int usuarioId,
       required int codigoAlunoEol,
@@ -231,7 +231,7 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       ActionController(name: 'MessagesControllerBase', context: context);
 
   @override
-  dynamic loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
+  void loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
     final _$actionInfo = _$MessagesControllerBaseActionController.startAction(
         name: 'MessagesControllerBase.loadMessageToFilters');
     try {

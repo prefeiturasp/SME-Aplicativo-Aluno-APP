@@ -1,7 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:sme_app_aluno/dtos/response.dto.dart';
-import 'package:sme_app_aluno/repositories/usuario.repository.dart';
-import 'package:sme_app_aluno/stores/index.dart';
+
+import '../dtos/response.dto.dart';
+import '../repositories/usuario.repository.dart';
+import '../stores/index.dart';
 
 class UsuarioController {
   bool carregando = false;
@@ -15,15 +16,20 @@ class UsuarioController {
     String telefone,
   ) async {
     carregando = true;
-    var response = await usuarioRepository.atualizar(nomeMae, dataNascimento, email, telefone);
+    final response = await usuarioRepository.atualizar(nomeMae, dataNascimento, email, telefone);
     carregando = false;
     return response;
   }
 
   Future<void> obterDadosUsuario() async {
-    var usuario = await usuarioRepository.obterDadosUsuario();
+    final usuario = await usuarioRepository.obterDadosUsuario();
 
     usuarioStore.atualizarDados(
-        usuario.email, usuario.dataNascimento, usuario.nomeMae, usuario.celular, usuario.ultimaAtualizacao);
+      usuario.email,
+      usuario.dataNascimento,
+      usuario.nomeMae,
+      usuario.celular,
+      usuario.ultimaAtualizacao,
+    );
   }
 }

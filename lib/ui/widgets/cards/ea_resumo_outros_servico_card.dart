@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../models/outros_servicos/outro_servico.model.dart';
 import '../../../repositories/outros_servicos_repository.dart';
 import '../../views/outros_servicos_lista.view.dart';
+import '../buttons/ea_deafult_button.widget.dart';
 
 class EAResumoOutrosServicosCard extends StatefulWidget {
   const EAResumoOutrosServicosCard({super.key});
@@ -114,15 +115,13 @@ class EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> 
                       Radius.circular(screenHeight * 3),
                     ),
                   ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(screenHeight * 3),
-                      ),
-                    ),
-                    onPressed: () {
+                  child: EADefaultButton(
+                    btnColor: Colors.white,
+                    iconColor: const Color(0xffffd037),
+                    icon: FontAwesomeIcons.chevronRight,
+                    text: 'MAIS SERVIÇOS',
+                    styleAutoSize: const TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                    onPress: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -130,26 +129,6 @@ class EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> 
                         ),
                       );
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        const AutoSizeText(
-                          'MAIS SERVIÇOS',
-                          maxFontSize: 16,
-                          minFontSize: 14,
-                          style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(
-                          width: screenHeight * 3,
-                        ),
-                        Icon(
-                          FontAwesomeIcons.chevronRight,
-                          color: const Color(0xffffd037),
-                          size: screenHeight * 3,
-                        )
-                      ],
-                    ),
                   ),
                 ),
               ),

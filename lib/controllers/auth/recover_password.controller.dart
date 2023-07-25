@@ -1,49 +1,45 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:mobx/mobx.dart';
 
-import 'package:sme_app_aluno/models/recover_password/data.dart';
-import 'package:sme_app_aluno/models/recover_password/data_user.dart';
-import 'package:sme_app_aluno/repositories/recover_password_repository.dart';
+import '../../models/recover_password/data.dart';
+import '../../models/recover_password/data_user.dart';
+import '../../repositories/recover_password_repository.dart';
 
 part 'recover_password.controller.g.dart';
 
-class RecoverPasswordController = _RecoverPasswordControllerBase with _$RecoverPasswordController;
+class RecoverPasswordController = RecoverPasswordControllerBase with _$RecoverPasswordController;
 
-late RecoverPasswordRepository _recoverPasswordRepository;
+RecoverPasswordRepository _recoverPasswordRepository = RecoverPasswordRepository();
 
-abstract class _RecoverPasswordControllerBase with Store {
-  _RecoverPasswordControllerBase() {
-    _recoverPasswordRepository = RecoverPasswordRepository();
-  }
+abstract class RecoverPasswordControllerBase with Store {
+  @observable
+  Data? data;
 
   @observable
-  late Data data;
+  DataUser? dataUser;
 
   @observable
-  late DataUser dataUser;
-
-  @observable
-  late String email;
+  String email = '';
 
   @observable
   bool loading = false;
 
   @action
-  sendToken(String cpf) async {
+  Future<void> sendToken(String cpf) async {
     loading = true;
     data = await _recoverPasswordRepository.sendToken(cpf);
     loading = false;
   }
 
   @action
-  validateToken(String token) async {
+  Future<void> validateToken(String token) async {
     loading = true;
     data = await _recoverPasswordRepository.validateToken(token);
     loading = false;
   }
 
   @action
-  redefinePassword(String password, String token) async {
+  Future<void> redefinePassword(String password, String token) async {
     loading = true;
     dataUser = await _recoverPasswordRepository.redefinePassword(password, token);
     loading = false;

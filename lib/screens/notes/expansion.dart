@@ -13,6 +13,7 @@ import '../../enumeradores/modalidade_tipo.dart';
 import '../../repositories/boletim_aluno_repository.dart';
 import '../../repositories/recomendacao_aluno_repository.dart';
 import '../../repositories/relatorio_raa_repository.dart';
+import '../../ui/widgets/buttons/ea_deafult_button.widget.dart';
 import '../../utils/mensagem_sistema.dart';
 import '../widgets/cards/card_alert.dart';
 import 'corpo_notas.dart';
@@ -46,16 +47,16 @@ class Expansion extends StatefulWidget {
   });
 
   @override
-  _ExpansionState createState() => _ExpansionState();
+  ExpansionState createState() => ExpansionState();
 }
 
-class _ExpansionState extends State<Expansion> {
+class ExpansionState extends State<Expansion> {
   final _estudanteNotasController = GetIt.I.get<EstudanteNotasController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
   final _repositorioRecomandacao = RecomendacaoAlunoRepository();
-  late final DateTime _dateTime;
+  DateTime? _dateTime;
   var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
@@ -65,7 +66,7 @@ class _ExpansionState extends State<Expansion> {
     _buscarRecomandacao();
   }
 
-  carregarNotas() async {
+  Future<void> carregarNotas() async {
     final bimestres = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
     if (bimestres != null) {
       _estudanteNotasController.obterNotasConceito(bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
@@ -334,8 +335,13 @@ class _ExpansionState extends State<Expansion> {
         widget.codigoModalidade == ModalidadeTipo.Medio ||
         widget.codigoModalidade == ModalidadeTipo.Fundamental) {
       return mostrarBotao
-          ? ElevatedButton(
-              onPressed: () async {
+          ? EADefaultButton(
+              btnColor: Colors.white,
+              iconColor: const Color(0xffffd037),
+              icon: FontAwesomeIcons.penToSquare,
+              text: MensagemSistema.labelBotaoGerarPDF,
+              styleAutoSize: const TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+              onPress: () async {
                 ocultarButao();
                 final solicitacao = await _solicitarBoletim();
                 if (solicitacao) {
@@ -346,38 +352,6 @@ class _ExpansionState extends State<Expansion> {
                   _modalInfo(screenHeight, MensagemSistema.avisoErroInterno);
                 }
               },
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: Color(0xffd06d12),
-                      width: 1,
-                      style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const AutoSizeText(
-                    MensagemSistema.labelBotaoGerarPDF,
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    width: screenHeight * 3,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.penToSquare,
-                    color: const Color(0xffffd037),
-                    size: screenHeight * 3,
-                  )
-                ],
-              ),
             )
           : const SizedBox();
     } else {
@@ -388,7 +362,26 @@ class _ExpansionState extends State<Expansion> {
   Widget _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
     if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
       return mostrarBotao
-          ? ElevatedButton(
+          ? EADefaultButton(
+              btnColor: Colors.white,
+              iconColor: const Color(0xffffd037),
+              icon: FontAwesomeIcons.penToSquare,
+              text: MensagemSistema.labelBotaoGerarRelatorio,
+              styleAutoSize: const TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+              onPress: () async {
+                ocultarButao();
+                final solicitacao = await _solicitarRelatorioRaa();
+                if (solicitacao) {
+                  exibirBotao();
+                  _modalInfo(screenHeight, MensagemSistema.avisoSolicitacaoRaa);
+                } else {
+                  exibirBotao();
+                  _modalInfo(screenHeight, MensagemSistema.avisoErroInterno);
+                }
+              },
+            )
+          /*
+          ElevatedButton(
               onPressed: () async {
                 ocultarButao();
                 final solicitacao = await _solicitarRelatorioRaa();
@@ -433,6 +426,7 @@ class _ExpansionState extends State<Expansion> {
                 ],
               ),
             )
+            */
           : const SizedBox();
     } else {
       return const SizedBox();

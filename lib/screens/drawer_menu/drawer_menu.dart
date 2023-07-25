@@ -39,7 +39,7 @@ class DrawerMenuState extends State<DrawerMenu> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
 
-  late MessagesController _messagesController;
+  final MessagesController _messagesController = MessagesController();
 
   @override
   void initState() {
@@ -47,7 +47,6 @@ class DrawerMenuState extends State<DrawerMenu> {
   }
 
   _loadingBackRecentMessage() {
-    _messagesController = MessagesController();
     _messagesController.loadMessages(
       widget.estudante.codigoEol,
       usuarioStore.usuario.id,

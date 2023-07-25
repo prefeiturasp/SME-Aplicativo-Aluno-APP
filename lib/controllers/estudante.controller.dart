@@ -10,14 +10,10 @@ import '../services/group_messages.service.dart';
 import '../stores/index.dart';
 
 class EstudanteController {
-  late final FirebaseMessaging _firebaseMessaging;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final _groupMessageService = GroupMessageService();
   final _estudanteRepository = GetIt.I.get<EstudanteRepository>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
-
-  EstudanteController() {
-    _firebaseMessaging = FirebaseMessaging.instance;
-  }
 
   void subscribeGroupIdToFirebase() {
     _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {

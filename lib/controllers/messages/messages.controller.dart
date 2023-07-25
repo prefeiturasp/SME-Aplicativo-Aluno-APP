@@ -1,64 +1,61 @@
 import 'dart:developer';
 
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/repositories/message_repository.dart';
+
+import '../../models/message/message.dart';
+import '../../repositories/message_repository.dart';
 
 part 'messages.controller.g.dart';
 
 class MessagesController = MessagesControllerBase with _$MessagesController;
 
 abstract class MessagesControllerBase with Store {
-  late final MessageRepository _messagesRepository;
-
-  MessagesControllerBase() {
-    this._messagesRepository = MessageRepository();
-  }
+  final MessageRepository _messagesRepository = MessageRepository();
 
   @observable
-  late Message message;
+  Message? message;
 
   @observable
-  late ObservableList<Message> messages;
+  ObservableList<Message> messages = ObservableList<Message>();
 
   @observable
-  late ObservableList<Message> recentMessages;
+  ObservableList<Message> recentMessages = ObservableList<Message>();
 
   @observable
-  late ObservableList<Message> auxList = ObservableList<Message>();
+  ObservableList<Message> auxList = ObservableList<Message>();
 
   @observable
-  late ObservableList<Message> filteredList = ObservableList<Message>();
+  ObservableList<Message> filteredList = ObservableList<Message>();
 
   @observable
   bool isLoading = false;
 
   @observable
-  late int countMessage;
+  int countMessage = 0;
 
   @observable
-  late int countMessageSME;
+  int countMessageSME = 0;
 
   @observable
-  late int countMessageUE;
+  int countMessageUE = 0;
 
   @observable
-  late int countMessageDRE;
+  int countMessageDRE = 0;
 
   @observable
   bool messageIsRead = false;
 
   @action
-  loadMessages(int codigoAlunoEol, int userId) async {
+  Future<void> loadMessages(int codigoAlunoEol, int userId) async {
     isLoading = true;
-    var retorno = await _messagesRepository.fetchMessages(codigoAlunoEol, userId);
+    final retorno = await _messagesRepository.fetchMessages(codigoAlunoEol, userId);
     messages = ObservableList<Message>.of(retorno);
 
     isLoading = false;
   }
 
   @action
-  loadById(int messageId, int userId) async {
+  Future<void> loadById(int messageId, int userId) async {
     isLoading = true;
     final messageReceived = await _messagesRepository.getMessageById(messageId, userId);
     message = messageReceived;
@@ -66,12 +63,12 @@ abstract class MessagesControllerBase with Store {
   }
 
   @action
-  loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
+  void loadMessageToFilters(bool dreCheck, bool smeCheck, bool ueCheck) {
     filterItems(dreCheck, smeCheck, ueCheck);
   }
 
   @action
-  deleteMessage(int codigoEol, int idNotificacao, int userId) async {
+  Future<void> deleteMessage(int codigoEol, int idNotificacao, int userId) async {
     isLoading = true;
     _messagesRepository.deleteMessage(codigoEol, idNotificacao, userId);
     isLoading = false;
@@ -79,13 +76,13 @@ abstract class MessagesControllerBase with Store {
 
   @action
   void loadRecentMessagesPorCategory() {
-    final messagesUe = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == "UE").toList());
+    final messagesUe = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'UE').toList());
     countMessageUE = messagesUe.length;
 
-    final messagesSME = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == "SME").toList());
+    final messagesSME = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'SME').toList());
     countMessageSME = messagesSME.length;
 
-    final messagesDRE = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == "DRE").toList());
+    final messagesDRE = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'DRE').toList());
     countMessageDRE = messagesDRE.length;
 
     final list = ObservableList<Message>();
@@ -110,65 +107,65 @@ abstract class MessagesControllerBase with Store {
     var auxList = ObservableList<Message>();
     if (smeCheck && ueCheck && dreCheck) {
       final condition1 = ObservableList<Message>.of(messages);
-      condition1.forEach((element) {
-        log("condition1");
+      for (var element in condition1) {
+        log('condition1');
         log(element.toString());
-        log("condition1");
-      });
+        log('condition1');
+      }
       auxList = ObservableList<Message>.of(condition1);
     } else if (smeCheck && ueCheck && !dreCheck) {
-      final condition2 = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao != "DRE").toList());
-      condition2.forEach((element) {
-        log("condition2");
+      final condition2 = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao != 'DRE').toList());
+      for (var element in condition2) {
+        log('condition2');
         log(element.toString());
-        log("condition2");
-      });
+        log('condition2');
+      }
       auxList = ObservableList<Message>.of(condition2);
     } else if (smeCheck && !ueCheck && dreCheck) {
       final condition3 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != "UE").toList();
-      condition3.forEach((element) {
-        log("condition3");
+          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'UE').toList();
+      for (var element in condition3) {
+        log('condition3');
         log(element.toString());
-        log("condition3");
-      });
+        log('condition3');
+      }
       auxList = ObservableList<Message>.of(condition3);
     } else if (smeCheck && !ueCheck && !dreCheck) {
       final condition4 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "SME").toList();
-      condition4.forEach((element) {
-        log("condition4");
+          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'SME').toList();
+      for (var element in condition4) {
+        log('condition4');
         log(element.toString());
-        log("condition4");
-      });
+        log('condition4');
+      }
       auxList = ObservableList<Message>.of(condition4);
     } else if (!smeCheck && ueCheck && dreCheck) {
       final condition5 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != "SME").toList();
-      condition5.forEach((element) {
-        log("condition5");
+          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'SME').toList();
+      for (var element in condition5) {
+        log('condition5');
         log(element.toString());
-        log("condition5");
-      });
+        log('condition5');
+      }
       auxList = ObservableList<Message>.of(condition5);
     } else if (!smeCheck && ueCheck && !dreCheck) {
       final condition6 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "UE").toList();
-      condition6.forEach((element) {
-        log("condition6");
+          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'UE').toList();
+      for (var element in condition6) {
+        log('condition6');
         log(element.toString());
-        log("condition6");
-      });
+        log('condition6');
+      }
       auxList = ObservableList<Message>.of(condition6);
     } else if (!smeCheck && !ueCheck && dreCheck) {
       final condition7 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == "DRE").toList();
+          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'DRE').toList();
 
-      condition7.forEach((element) {
-        log("condition7");
+      for (var element in condition7) {
+        log('condition7');
         log(element.toString());
-        log("condition7");
-      });
+        log('condition7');
+      }
 
       auxList = ObservableList<Message>.of(condition7);
     } else if (!smeCheck && !ueCheck && !dreCheck) {
@@ -182,7 +179,7 @@ abstract class MessagesControllerBase with Store {
   }
 
   @action
-  updateMessage({
+  Future<void> updateMessage({
     required int notificacaoId,
     required int usuarioId,
     required int codigoAlunoEol,

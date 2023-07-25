@@ -39,7 +39,7 @@ abstract class _UsuarioStoreBase with Store {
   String token = '';
 
   @action
-  carregarUsuario() async {
+  Future<void> carregarUsuario() async {
     carregando = true;
     final prefs = await SharedPreferences.getInstance();
     final prefsUsuario = prefs.getString('eaUsuario');
@@ -53,7 +53,7 @@ abstract class _UsuarioStoreBase with Store {
   }
 
   @action
-  atualizarDados(
+  Future<void> atualizarDados(
     String email,
     DateTime dataNascimento,
     String nomeMae,

@@ -8,7 +8,7 @@ part 'event.controller.g.dart';
 class EventController = EventControllerBase with _$EventController;
 
 abstract class EventControllerBase with Store {
-  late final EventRepository _eventRepository = EventRepository();
+  final EventRepository _eventRepository = EventRepository();
 
   EventControllerBase() {
     loadingCurrentMonth(currentDate.month);
@@ -100,13 +100,13 @@ abstract class EventControllerBase with Store {
   }
 
   @action
-  changeCurrentMonth(int month, int codigoEol, int userId) async {
+  Future<void> changeCurrentMonth(int month, int codigoEol, int userId) async {
     loadingCurrentMonth(month);
     await fetchEvento(codigoEol, month, currentDate.year, userId);
   }
 
   @action
-  listPriorityEvents(eventsList) {
+  void listPriorityEvents(eventsList) {
     var filterList = ObservableList<Event>.of([]);
     var sortList = ObservableList<Event>.of([]);
     var takeList = ObservableList<Event>.of([]);

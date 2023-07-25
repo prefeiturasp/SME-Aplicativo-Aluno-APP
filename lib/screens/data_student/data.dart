@@ -27,7 +27,7 @@ class DataStudent extends StatefulWidget {
 }
 
 class DataStudentState extends State<DataStudent> {
-  late UEController _ueController;
+  final UEController _ueController = UEController();
 
   @override
   void initState() {
@@ -36,7 +36,6 @@ class DataStudentState extends State<DataStudent> {
   }
 
   void loadUE() async {
-    _ueController = UEController();
     _ueController.loadingUE(widget.codigoUe);
   }
 

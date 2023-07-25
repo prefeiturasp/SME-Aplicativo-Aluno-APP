@@ -10,11 +10,7 @@ part 'background_fetch.controller.g.dart';
 class BackgroundFetchController = BackgroundFetchControllerBase with _$BackgroundFetchController;
 
 abstract class BackgroundFetchControllerBase with Store {
-  late ResponsibleRepository _responsibleRepository;
-
-  BackgroundFetchControllerBase() {
-    _responsibleRepository = ResponsibleRepository();
-  }
+  final ResponsibleRepository _responsibleRepository = ResponsibleRepository();
 
   @observable
   bool responsibleHasStudent = false;

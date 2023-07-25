@@ -22,11 +22,11 @@ class ListEvents extends StatefulWidget {
     required this.userId,
   });
   @override
-  _ListEventsState createState() => _ListEventsState();
+  ListEventsState createState() => ListEventsState();
 }
 
-class _ListEventsState extends State<ListEvents> {
-  late EventController _eventController;
+class ListEventsState extends State<ListEvents> {
+  EventController _eventController = EventController();
 
   int _currentMonth = 0;
 

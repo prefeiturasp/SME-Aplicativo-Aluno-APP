@@ -5,14 +5,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
-import 'package:sme_app_aluno/controllers/index.dart';
-import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/utils/colors.util.dart';
-import 'package:sme_app_aluno/utils/validators.util.dart';
+
+import '../../controllers/index.dart';
+import '../../screens/widgets/info_box/info_box.dart';
+import '../../stores/index.dart';
+import '../../utils/colors.util.dart';
+import '../../utils/validators.util.dart';
+import '../index.dart';
 
 class MeusDadosEditarView extends StatefulWidget {
+  const MeusDadosEditarView({super.key});
+
   @override
   _MeusDadosEditarViewState createState() => _MeusDadosEditarViewState();
 }
@@ -20,40 +23,38 @@ class MeusDadosEditarView extends StatefulWidget {
 class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TextEditingController _emailCtrl = new TextEditingController();
-  TextEditingController _nomeMaeCtrl = new TextEditingController();
-  MaskedTextController _dataNascimentoCtrl = new MaskedTextController(mask: '00/00/0000');
-  MaskedTextController _cpfCtrl = new MaskedTextController(mask: '000.000.000-00');
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _nomeMaeCtrl = TextEditingController();
+  final MaskedTextController _dataNascimentoCtrl = MaskedTextController(mask: '00/00/0000');
+  final MaskedTextController _cpfCtrl = MaskedTextController(mask: '000.000.000-00');
 
-  MaskedTextController _telefoneCtrl = new MaskedTextController(mask: '(00) 00000-0000');
+  final MaskedTextController _telefoneCtrl = MaskedTextController(mask: '(00) 00000-0000');
 
   final _formKey = GlobalKey<FormState>();
 
   bool _busy = false;
   bool _declaracao = false;
-  String _email = "";
-  String _telefone = "";
-  String _nomeMae = "";
-  late DateTime _dataNascimento;
+  String _telefone = '';
+  String _nomeMae = '';
+  DateTime _dataNascimento = DateTime.now();
 
   @override
   void initState() {
     super.initState();
 
     _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
-        ? DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.dataNascimento)
-        : "";
+        ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario.dataNascimento)
+        : '';
 
-    _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : "";
-    _telefoneCtrl.text = usuarioStore.usuario.celular != null ? usuarioStore.usuario.celular : "";
+    _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : '';
+    _telefoneCtrl.text = usuarioStore.usuario.celular ?? '';
     _emailCtrl.text = usuarioStore.usuario.email;
     _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
 
     _dataNascimento = usuarioStore.usuario.dataNascimento;
     _telefone = _telefoneCtrl.text;
-    _email = _emailCtrl.text;
     _nomeMae = _nomeMaeCtrl.text;
   }
 
@@ -62,11 +63,15 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
       _busy = true;
     });
 
-    var data = _dataNascimentoCtrl.text.split("/");
+    final data = _dataNascimentoCtrl.text.split('/');
     _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
 
-    var response = await usuarioController.atualizarDados(
-        _nomeMaeCtrl.text.trim(), _dataNascimento, _emailCtrl.text.trim(), _telefoneCtrl.text);
+    final response = await usuarioController.atualizarDados(
+      _nomeMaeCtrl.text.trim(),
+      _dataNascimento,
+      _emailCtrl.text.trim(),
+      _telefoneCtrl.text,
+    );
 
     setState(() {
       _busy = false;
@@ -75,7 +80,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     if (!response.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: response.erros != null ? Text(response.erros![0]) : Text("Erro de serviço"),
+        content: response.erros != null ? Text(response.erros![0]) : const Text('Erro de serviço'),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -86,14 +91,14 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Color(0xffFFFFFF),
+      backgroundColor: const Color(0xffFFFFFF),
       appBar: AppBar(
-        title: Text("Editar dados do responsável"),
-        backgroundColor: Color(0xffEEC25E),
+        title: const Text('Editar dados do responsável'),
+        backgroundColor: const Color(0xffEEC25E),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -101,11 +106,11 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              AutoSizeText(
-                "Dados do responsável",
+              const AutoSizeText(
+                'Dados do responsável',
                 maxFontSize: 18,
                 minFontSize: 16,
                 textAlign: TextAlign.start,
@@ -114,7 +119,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                   color: ColorsUtil.laranja02,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -130,8 +135,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                           ),
                           child: TextFormField(
                             initialValue: usuarioStore.usuario.nome,
-                            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                            decoration: InputDecoration(
+                            style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                            decoration: const InputDecoration(
                               labelText: 'Nome completo do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                               errorStyle: TextStyle(fontWeight: FontWeight.w700),
@@ -155,8 +160,8 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                           child: TextFormField(
                             controller: _cpfCtrl,
                             enabled: false,
-                            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                            decoration: InputDecoration(
+                            style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                            decoration: const InputDecoration(
                               labelText: 'CPF do responsável',
                               labelStyle: TextStyle(color: Color(0xff8e8e8e)),
                               errorStyle: TextStyle(fontWeight: FontWeight.w700),
@@ -175,204 +180,206 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                       key: _formKey,
                       // autovalidate: true,
                       child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
-                              ),
-                              child: TextFormField(
-                                controller: _dataNascimentoCtrl,
-                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(
-                                    () {
-                                      if (value.isNotEmpty) {
-                                        var data = value.split("/");
-                                        _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
-                                      }
-                                    },
-                                  );
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Data de nascimento do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.dataNascimento(value!);
-                                },
-                                keyboardType: TextInputType.datetime,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                               ),
                             ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
+                            child: TextFormField(
+                              controller: _dataNascimentoCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(
+                                  () {
+                                    if (value.isNotEmpty) {
+                                      final data = value.split('/');
+                                      _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
+                                    }
+                                  },
+                                );
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Data de nascimento do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
                               ),
-                              child: TextFormField(
-                                controller: _nomeMaeCtrl,
-                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nomeMae = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Filiação do responsável legal',
-                                  hintText: 'Preferencialmente nome da mãe',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.nome(value!, "Nome do responsável legal");
-                                },
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                              ),
+                              validator: (value) {
+                                return ValidatorsUtil.dataNascimento(value!);
+                              },
+                              keyboardType: TextInputType.datetime,
                             ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                    bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39)),
-                              ),
-                              child: TextFormField(
-                                controller: _emailCtrl,
-                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _email = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'E-mail do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.email(value!);
-                                },
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                               ),
                             ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
-                                ),
+                            child: TextFormField(
+                              controller: _nomeMaeCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {
+                                  _nomeMae = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Filiação do responsável legal',
+                                hintText: 'Preferencialmente nome da mãe',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
                               ),
-                              child: TextFormField(
-                                controller: _telefoneCtrl,
-                                style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _telefone = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Telefone celular do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.telefone(value!);
-                                },
-                                keyboardType: TextInputType.number,
+                              validator: (value) {
+                                return ValidatorsUtil.nome(value!, 'Nome do responsável legal');
+                              },
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                               ),
                             ),
-                            SizedBox(
-                              height: screenHeight * 1,
+                            child: TextFormField(
+                              controller: _emailCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'E-mail do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                return ValidatorsUtil.email(value!);
+                              },
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
                             ),
-                            InfoBox(
-                              icon: FontAwesomeIcons.exclamationTriangle,
-                              content: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width / 1.5,
-                                      child: AutoSizeText(
-                                        "Declaro que as informações acima são verdadeiras",
-                                        maxFontSize: 18,
-                                        minFontSize: 16,
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
-                                      ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
+                              ),
+                            ),
+                            child: TextFormField(
+                              controller: _telefoneCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {
+                                  _telefone = value;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Telefone celular do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                return ValidatorsUtil.telefone(value!);
+                              },
+                              keyboardType: TextInputType.number,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 1,
+                          ),
+                          InfoBox(
+                            icon: FontAwesomeIcons.exclamationTriangle,
+                            content: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.5,
+                                    child: const AutoSizeText(
+                                      'Declaro que as informações acima são verdadeiras',
+                                      maxFontSize: 18,
+                                      minFontSize: 16,
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
                                     ),
-                                    Checkbox(
-                                      value: _declaracao,
-                                      activeColor: ColorsUtil.laranja01,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _formKey.currentState!.validate();
-                                          _declaracao = newValue!;
-                                        });
+                                  ),
+                                  Checkbox(
+                                    value: _declaracao,
+                                    activeColor: ColorsUtil.laranja01,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _formKey.currentState!.validate();
+                                        _declaracao = newValue!;
+                                      });
+                                    },
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: screenHeight * 5,
+                          ),
+                          !_busy
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    EADefaultButton(
+                                      text: 'SALVAR CADASTRO',
+                                      iconColor: const Color(0xffffd037),
+                                      btnColor: const Color(0xffd06d12),
+                                      enabled: habilitaBotaoCadastro(),
+                                      onPress: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          final retorno = await onClickFinalizarCadastro();
+                                          if (retorno) {
+                                            Navigator.pop(context);
+                                          }
+                                        }
                                       },
-                                    )
+                                    ),
                                   ],
                                 )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight * 5,
-                            ),
-                            !_busy
-                                ? Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      EADefaultButton(
-                                        text: "SALVAR CADASTRO",
-                                        iconColor: Color(0xffffd037),
-                                        btnColor: Color(0xffd06d12),
-                                        enabled: habilitaBotaoCadastro(),
-                                        onPress: () async {
-                                          if (_formKey.currentState!.validate()) {
-                                            var retorno = await onClickFinalizarCadastro();
-                                            if (retorno) {
-                                              Navigator.pop(context);
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                : GFLoader(
-                                    type: GFLoaderType.square,
-                                    loaderColorOne: Color(0xffDE9524),
-                                    loaderColorTwo: Color(0xffC65D00),
-                                    loaderColorThree: Color(0xffC65D00),
-                                    size: GFSize.LARGE,
-                                  ),
-                          ]),
+                              : const GFLoader(
+                                  type: GFLoaderType.square,
+                                  loaderColorOne: Color(0xffDE9524),
+                                  loaderColorTwo: Color(0xffC65D00),
+                                  loaderColorThree: Color(0xffC65D00),
+                                  size: GFSize.LARGE,
+                                ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

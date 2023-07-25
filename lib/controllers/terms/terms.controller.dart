@@ -1,19 +1,17 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/terms/term.dart';
-import 'package:sme_app_aluno/repositories/terms_repository.dart';
+
+import '../../models/terms/term.dart';
+import '../../repositories/terms_repository.dart';
+
 part 'terms.controller.g.dart';
 
 class TermsController = TermsControllerBase with _$TermsController;
 
 abstract class TermsControllerBase with Store {
-  late final TermsRepository _termsRepository;
-
-  TermsControllerBase() {
-    this._termsRepository = TermsRepository();
-  }
+  final TermsRepository _termsRepository = TermsRepository();
 
   @observable
-  late Term term;
+  Term? term;
 
   @observable
   bool loading = false;
@@ -22,21 +20,21 @@ abstract class TermsControllerBase with Store {
   bool isTerm = false;
 
   @action
-  fetchTermo(String cpf) async {
+  Future<void> fetchTermo(String cpf) async {
     loading = true;
     term = await _termsRepository.fetchTerms(cpf);
     loading = false;
   }
 
   @action
-  fetchTermoCurrentUser() async {
+  Future<void> fetchTermoCurrentUser() async {
     loading = true;
     term = await _termsRepository.fetchTermsCurrentUser();
     loading = false;
   }
 
   @action
-  registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
+  Future<void> registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
     loading = true;
     await _termsRepository.registerTerms(termoDeUsoId, cpf, device, ip, versao);
     loading = false;

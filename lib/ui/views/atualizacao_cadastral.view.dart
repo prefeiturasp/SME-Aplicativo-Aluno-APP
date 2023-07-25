@@ -43,10 +43,9 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
 
   bool _busy = false;
   bool _declaracao = false;
-  String _email = '';
   String _telefone = '';
   String _nomeMae = '';
-  late DateTime _dataNascimento;
+  DateTime _dataNascimento = DateTime.now();
 
   @override
   void initState() {
@@ -65,7 +64,6 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       _telefoneCtrl.text = usuarioStore.usuario.celular.isNotEmpty ? usuarioStore.usuario.celular : '';
       _emailCtrl.text = usuarioStore.usuario.email;
       _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
-      _email = usuarioStore.usuario.email;
 
       _nomeMae = usuarioStore.usuario.nomeMae;
       _telefone = _telefoneCtrl.text;
@@ -379,9 +377,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                 controller: _emailCtrl,
                                 style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                                 onChanged: (value) {
-                                  setState(() {
-                                    _email = value;
-                                  });
+                                  setState(() {});
                                 },
                                 decoration: const InputDecoration(
                                   labelText: 'E-mail do responsável',
