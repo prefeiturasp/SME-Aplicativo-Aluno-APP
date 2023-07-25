@@ -12,8 +12,8 @@ class UsuarioModel {
   bool atualizarDadosCadastrais;
   String celular;
   DateTime dataNascimento;
-  DateTime ultimaAtualizacao;
-  String senha;
+  DateTime? ultimaAtualizacao;
+  String? senha;
 
   UsuarioModel({
     required this.id,
@@ -26,8 +26,8 @@ class UsuarioModel {
     required this.atualizarDadosCadastrais,
     required this.celular,
     required this.dataNascimento,
-    required this.ultimaAtualizacao,
-    required this.senha,
+    this.ultimaAtualizacao,
+    this.senha,
   });
 
   UsuarioModel copyWith({
@@ -71,14 +71,14 @@ class UsuarioModel {
       'primeiroAcesso': primeiroAcesso,
       'atualizarDadosCadastrais': atualizarDadosCadastrais,
       'celular': celular,
-      'dataNascimento': dataNascimento.millisecondsSinceEpoch,
-      'ultimaAtualizacao': ultimaAtualizacao.millisecondsSinceEpoch,
+      'dataNascimento': dataNascimento.toIso8601String(),
+      'ultimaAtualizacao': ultimaAtualizacao?.toIso8601String(),
       'senha': senha,
     };
   }
 
   factory UsuarioModel.fromMap(Map<String, dynamic> map) {
-    return UsuarioModel(
+    final usr = UsuarioModel(
       id: map['id'] as int,
       nome: map['nome'] as String,
       nomeMae: map['nomeMae'] as String,
@@ -88,10 +88,11 @@ class UsuarioModel {
       primeiroAcesso: map['primeiroAcesso'] as bool,
       atualizarDadosCadastrais: map['atualizarDadosCadastrais'] as bool,
       celular: map['celular'] as String,
-      dataNascimento: DateTime.fromMillisecondsSinceEpoch(map['dataNascimento'] as int),
-      ultimaAtualizacao: DateTime.fromMillisecondsSinceEpoch(map['ultimaAtualizacao'] as int),
-      senha: map['senha'] as String,
+      dataNascimento: DateTime.parse(map['dataNascimento']),
+      ultimaAtualizacao: DateTime.parse(map['ultimaAtualizacao']),
+      senha: map['senha'],
     );
+    return usr;
   }
 
   String toJson() => json.encode(toMap());
@@ -138,18 +139,18 @@ class UsuarioModel {
   }
 
   clear() {
-    this.id = 0;
-    this.nome = '';
-    this.nomeMae = '';
-    this.cpf = '';
-    this.email = '';
-    this.token = '';
-    this.primeiroAcesso = false;
-    this.atualizarDadosCadastrais = false;
-    this.celular = '';
-    this.dataNascimento = DateTime.now();
-    this.ultimaAtualizacao = DateTime.now();
-    this.senha = '';
+    id = 0;
+    nome = '';
+    nomeMae = '';
+    cpf = '';
+    email = '';
+    token = '';
+    primeiroAcesso = false;
+    atualizarDadosCadastrais = false;
+    celular = '';
+    dataNascimento = DateTime.now();
+    ultimaAtualizacao = null;
+    senha = '';
   }
 
   factory UsuarioModel.clear() {
@@ -164,7 +165,7 @@ class UsuarioModel {
       atualizarDadosCadastrais: false,
       celular: '',
       dataNascimento: DateTime.now(),
-      ultimaAtualizacao: DateTime.now(),
+      ultimaAtualizacao: null,
       senha: '',
     );
   }

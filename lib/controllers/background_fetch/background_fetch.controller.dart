@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:background_fetch/background_fetch.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/repositories/responsible_repository.dart';
+
+import '../../repositories/responsible_repository.dart';
 
 part 'background_fetch.controller.g.dart';
 
@@ -12,11 +13,11 @@ abstract class BackgroundFetchControllerBase with Store {
   late ResponsibleRepository _responsibleRepository;
 
   BackgroundFetchControllerBase() {
-    this._responsibleRepository = ResponsibleRepository();
+    _responsibleRepository = ResponsibleRepository();
   }
 
   @observable
-  late bool responsibleHasStudent;
+  bool responsibleHasStudent = false;
 
   @action
   Future<void> initPlatformState(
@@ -25,20 +26,20 @@ abstract class BackgroundFetchControllerBase with Store {
     int delay,
   ) async {
     BackgroundFetch.configure(
-            BackgroundFetchConfig(
-              minimumFetchInterval: 2,
-              forceAlarmManager: false,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              enableHeadless: true,
-              requiresBatteryNotLow: false,
-              requiresCharging: false,
-              requiresStorageNotLow: false,
-              requiresDeviceIdle: false,
-              requiredNetworkType: NetworkType.NONE,
-            ),
-            onBackgroundFetch)
-        .then((int status) {
+      BackgroundFetchConfig(
+        minimumFetchInterval: 2,
+        forceAlarmManager: false,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: NetworkType.NONE,
+      ),
+      onBackgroundFetch,
+    ).then((int status) {
       log('[BackgroundFetch] configure success: $status');
     }).catchError((e) {
       log('[BackgroundFetch] configure ERROR: $e');

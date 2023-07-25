@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:sme_app_aluno/models/grupo_estudante.model.dart';
+import '../grupo_estudante.model.dart';
 
 class DataStudent {
   bool ok;
@@ -36,20 +36,24 @@ class DataStudent {
   }
 
   factory DataStudent.fromMap(Map<String, dynamic> map) {
-    return DataStudent(
-      ok: map['ok'] as bool,
-      erros: List<String>.from((map['erros'] as List<String>)),
+    final estudandeMap = DataStudent(
+      ok: map['ok'],
+      erros: List<String>.from((map['erros'])),
       data: List<GrupoEstudanteModel>.from(
-        (map['data'] as List<int>).map<GrupoEstudanteModel>(
+        (map['data'] as List<dynamic>).map<GrupoEstudanteModel>(
           (x) => GrupoEstudanteModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
     );
+    return estudandeMap;
   }
-
   String toJson() => json.encode(toMap());
 
-  factory DataStudent.fromJson(String source) => DataStudent.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DataStudent.fromJson(String source) {
+    final jsonString = json.decode(source);
+    final estudandte = DataStudent.fromMap(jsonString as Map<String, dynamic>);
+    return estudandte;
+  }
 
   @override
   String toString() => 'DataStudent(ok: $ok, erros: $erros, data: $data)';

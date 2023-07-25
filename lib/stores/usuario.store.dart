@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/models/index.dart';
+
+import '../models/index.dart';
 
 part 'usuario.store.g.dart';
 
@@ -41,7 +42,7 @@ abstract class _UsuarioStoreBase with Store {
   carregarUsuario() async {
     carregando = true;
     final prefs = await SharedPreferences.getInstance();
-    var prefsUsuario = prefs.getString("eaUsuario");
+    final prefsUsuario = prefs.getString('eaUsuario');
     if (prefsUsuario != null) {
       usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
       id = usuario.id;
@@ -53,7 +54,12 @@ abstract class _UsuarioStoreBase with Store {
 
   @action
   atualizarDados(
-      String email, DateTime dataNascimento, String nomeMae, String telefone, DateTime ultimaAtualizacao) async {
+    String email,
+    DateTime dataNascimento,
+    String nomeMae,
+    String telefone,
+    DateTime? ultimaAtualizacao,
+  ) async {
     carregando = true;
 
     final prefs = await SharedPreferences.getInstance();

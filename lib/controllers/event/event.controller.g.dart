@@ -13,13 +13,13 @@ mixin _$EventController on EventControllerBase, Store {
       Atom(name: 'EventControllerBase.event', context: context);
 
   @override
-  Event get event {
+  Event? get event {
     _$eventAtom.reportRead();
     return super.event;
   }
 
   @override
-  set event(Event value) {
+  set event(Event? value) {
     _$eventAtom.reportWrite(value, super.event, () {
       super.event = value;
     });
@@ -29,13 +29,13 @@ mixin _$EventController on EventControllerBase, Store {
       Atom(name: 'EventControllerBase.events', context: context);
 
   @override
-  ObservableList<Event> get events {
+  ObservableList<Event>? get events {
     _$eventsAtom.reportRead();
     return super.events;
   }
 
   @override
-  set events(ObservableList<Event> value) {
+  set events(ObservableList<Event>? value) {
     _$eventsAtom.reportWrite(value, super.events, () {
       super.events = value;
     });
@@ -45,13 +45,13 @@ mixin _$EventController on EventControllerBase, Store {
       Atom(name: 'EventControllerBase.eventsSortDate', context: context);
 
   @override
-  ObservableList<Event> get eventsSortDate {
+  ObservableList<Event>? get eventsSortDate {
     _$eventsSortDateAtom.reportRead();
     return super.eventsSortDate;
   }
 
   @override
-  set eventsSortDate(ObservableList<Event> value) {
+  set eventsSortDate(ObservableList<Event>? value) {
     _$eventsSortDateAtom.reportWrite(value, super.eventsSortDate, () {
       super.eventsSortDate = value;
     });
@@ -61,13 +61,13 @@ mixin _$EventController on EventControllerBase, Store {
       Atom(name: 'EventControllerBase.priorityEvents', context: context);
 
   @override
-  ObservableList<Event> get priorityEvents {
+  ObservableList<Event>? get priorityEvents {
     _$priorityEventsAtom.reportRead();
     return super.priorityEvents;
   }
 
   @override
-  set priorityEvents(ObservableList<Event> value) {
+  set priorityEvents(ObservableList<Event>? value) {
     _$priorityEventsAtom.reportWrite(value, super.priorityEvents, () {
       super.priorityEvents = value;
     });
@@ -109,13 +109,13 @@ mixin _$EventController on EventControllerBase, Store {
       Atom(name: 'EventControllerBase.currentMonth', context: context);
 
   @override
-  String get currentMonth {
+  String? get currentMonth {
     _$currentMonthAtom.reportRead();
     return super.currentMonth;
   }
 
   @override
-  set currentMonth(String value) {
+  set currentMonth(String? value) {
     _$currentMonthAtom.reportWrite(value, super.currentMonth, () {
       super.currentMonth = value;
     });
@@ -125,7 +125,7 @@ mixin _$EventController on EventControllerBase, Store {
       AsyncAction('EventControllerBase.fetchEvento', context: context);
 
   @override
-  Future fetchEvento(int codigoAluno, int mes, int ano, int userId) {
+  Future<void> fetchEvento(int codigoAluno, int mes, int ano, int userId) {
     return _$fetchEventoAsyncAction
         .run(() => super.fetchEvento(codigoAluno, mes, ano, userId));
   }
@@ -143,7 +143,7 @@ mixin _$EventController on EventControllerBase, Store {
       ActionController(name: 'EventControllerBase', context: context);
 
   @override
-  dynamic loadingCurrentMonth(dynamic month) {
+  void loadingCurrentMonth(dynamic month) {
     final _$actionInfo = _$EventControllerBaseActionController.startAction(
         name: 'EventControllerBase.loadingCurrentMonth');
     try {

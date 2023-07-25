@@ -7,17 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/controllers/terms/terms.controller.dart';
-import 'package:sme_app_aluno/ioc/dependencias.ioc.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
-import 'package:sme_app_aluno/utils/conection.dart';
 
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
+import 'controllers/terms/terms.controller.dart';
+import 'ioc/dependencias.ioc.dart';
+import 'ui/index.dart';
+import 'utils/app_config_reader.dart';
+import 'utils/conection.dart';
 
-/// This "Headless Task" is run when app is terminated.
 void backgroundFetchHeadlessTask(String taskId) async {
   BackgroundFetch.finish(taskId);
 }
@@ -26,8 +25,8 @@ Future initializeAppConfig() async {
   try {
     await AppConfigReader.initialize();
   } catch (error) {
-    log("Erro ao ler arquivo de configurações.");
-    log("Verifique se seu projeto possui o arquivo config/app_config.json");
+    log('Erro ao ler arquivo de configurações.');
+    log('Verifique se seu projeto possui o arquivo config/app_config.json');
     log('$error');
   }
 }
@@ -37,10 +36,12 @@ void main() async {
   await Firebase.initializeApp();
   await initializeAppConfig();
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color(0xffde9524),
-    statusBarBrightness: Brightness.dark,
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Color(0xffde9524),
+      statusBarBrightness: Brightness.dark,
+    ),
+  );
 
   final ioc = DependenciasIoC();
 
@@ -54,7 +55,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp() {
+  MyApp({super.key}) {
     date_symbol_data_local.initializeDateFormatting();
   }
 
@@ -68,14 +69,18 @@ class MyApp extends StatelessWidget {
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         Provider<TermsController>.value(value: TermsController()),
         StreamProvider<ConnectivityStatus>(
-            initialData: ConnectivityStatus.Celular,
-            create: (context) => ConnectivityService().connectionStatusController.stream),
+          initialData: ConnectivityStatus.Celular,
+          create: (context) => ConnectivityService().connectionStatusController.stream,
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SME Aplicativo do Aluno',
-        theme: ThemeData(primaryColor: Color(0xFFEEC25E)),
-        home: FluxoInicialView(),
+        color: const Color(0xffEEC25E),
+        theme: ThemeData(
+          primaryColor: const Color(0xFFEEC25E),
+        ),
+        home: const FluxoInicialView(),
         builder: EasyLoading.init(),
       ),
     );

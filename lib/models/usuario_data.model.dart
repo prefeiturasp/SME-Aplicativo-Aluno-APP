@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:sme_app_aluno/models/index.dart';
+import 'index.dart';
 
 class UsuarioDataModel {
   bool ok;
@@ -35,18 +35,22 @@ class UsuarioDataModel {
     };
   }
 
-  factory UsuarioDataModel.fromMap(Map<String, dynamic> map) {
-    return UsuarioDataModel(
-      ok: map['ok'] as bool,
-      erros: List<String>.from((map['erros'] as List<String>)),
-      data: UsuarioModel.fromMap(map['data'] as Map<String, dynamic>),
+  factory UsuarioDataModel.fromMap(Map<dynamic, dynamic> map) {
+    final usr = UsuarioDataModel(
+      ok: map['ok'],
+      erros: List<String>.from((map['erros'])),
+      data: UsuarioModel.fromMap(map['data']),
     );
+    return usr;
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UsuarioDataModel.fromJson(String source) =>
-      UsuarioDataModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UsuarioDataModel.fromJson(String source) {
+    final jsonString = json.decode(source);
+    final usr = UsuarioDataModel.fromMap(jsonString as Map<dynamic, dynamic>);
+    return usr;
+  }
 
   @override
   String toString() => 'UsuarioDataModel(ok: $ok, erros: $erros, data: $data)';

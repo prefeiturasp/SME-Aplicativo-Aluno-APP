@@ -1,52 +1,50 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/dtos/componente_curricular_nota.dto.dart';
-import 'package:sme_app_aluno/models/note/list_notes.dart';
-import 'package:sme_app_aluno/models/note/note.dart';
-import 'package:sme_app_aluno/repositories/index.dart';
+
+import '../dtos/componente_curricular_nota.dto.dart';
+import '../models/note/list_notes.dart';
+import '../models/note/note.dart';
+import '../repositories/index.dart';
 
 part 'estudante_notas.controller.g.dart';
 
 class EstudanteNotasController = EstudanteNotasControllerBase with _$EstudanteNotasController;
 
 abstract class EstudanteNotasControllerBase with Store {
-  late EstudanteNotasRepository _listNotesRepository;
-
-  EstudanteNotasControllerBase() {
-    this._listNotesRepository = EstudanteNotasRepository();
-  }
+  final EstudanteNotasRepository _listNotesRepository = EstudanteNotasRepository();
 
   @observable
-  late ListNotes bUm;
+  ListNotes? bUm;
 
   @observable
-  late ListNotes bDois;
+  ListNotes? bDois;
 
   @observable
-  late ListNotes bTres;
+  ListNotes? bTres;
 
   @observable
-  late ListNotes bQuatro;
+  ListNotes? bQuatro;
 
   @observable
-  late ListNotes bFinal;
+  ListNotes? bFinal;
 
   @observable
-  late ObservableList<Note> listNotesUm;
+  ObservableList<Note>? listNotesUm;
 
   @observable
-  late ObservableList<Note> listNotesDois;
+  ObservableList<Note>? listNotesDois;
 
   @observable
-  late ObservableList<Note> listNotesTres;
+  ObservableList<Note>? listNotesTres;
 
   @observable
-  late ObservableList<Note> listNotesQuatro;
+  ObservableList<Note>? listNotesQuatro;
 
   @observable
-  late ObservableList<Note> listNotesFinal;
+  ObservableList<Note>? listNotesFinal;
 
   @observable
-  late ObservableList<ComponenteCurricularNotaDTO> componentesCurricularesNotasConceitos;
+  ObservableList<ComponenteCurricularNotaDTO> componentesCurricularesNotasConceitos =
+      ObservableList<ComponenteCurricularNotaDTO>();
 
   @observable
   var tamanho;
@@ -55,7 +53,7 @@ abstract class EstudanteNotasControllerBase with Store {
   bool loading = false;
 
   @action
-  limparNotas() {
+  void limparNotas() {
     bUm = ListNotes(notasPorComponenteCurricular: []);
     bDois = ListNotes(notasPorComponenteCurricular: []);
     bTres = ListNotes(notasPorComponenteCurricular: []);
@@ -70,19 +68,23 @@ abstract class EstudanteNotasControllerBase with Store {
   }
 
   @action
-  obterNotasConceito(List<int> bimestres, String codigoUe, String codigoTurma, String alunoCodigo) async {
+  Future<void> obterNotasConceito(List<int> bimestres, String codigoUe, String codigoTurma, String alunoCodigo) async {
     loading = true;
-    var retorno = await _listNotesRepository.obterNotasConceitos(codigoUe, codigoTurma, alunoCodigo, bimestres);
+    final retorno = await _listNotesRepository.obterNotasConceitos(codigoUe, codigoTurma, alunoCodigo, bimestres);
 
-    var componentes = retorno.map((element) => element.componenteCurricularCodigo).toSet().toList();
-    List<ComponenteCurricularNotaDTO> novaLista = [];
+    final componentes = retorno.map((element) => element.componenteCurricularCodigo).toSet().toList();
+    final List<ComponenteCurricularNotaDTO> novaLista = [];
     for (var i = 0; i < componentes.length; i++) {
-      var componenteCurricular = retorno.firstWhere((element) => element.componenteCurricularCodigo == componentes[i]);
+      final componenteCurricular =
+          retorno.firstWhere((element) => element.componenteCurricularCodigo == componentes[i]);
 
-      novaLista.add(new ComponenteCurricularNotaDTO(
+      novaLista.add(
+        ComponenteCurricularNotaDTO(
           componenteCurricularId: componentes[i],
           componenteCurricularNome: componenteCurricular.componenteCurricularNome,
-          notasConceitos: retorno.where((element) => element.componenteCurricularCodigo == componentes[i]).toList()));
+          notasConceitos: retorno.where((element) => element.componenteCurricularCodigo == componentes[i]).toList(),
+        ),
+      );
     }
 
     componentesCurricularesNotasConceitos = ObservableList<ComponenteCurricularNotaDTO>.of(novaLista);

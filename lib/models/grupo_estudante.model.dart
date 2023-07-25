@@ -1,9 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:sme_app_aluno/models/estudante.model.dart';
+import 'estudante.model.dart';
 
 class GrupoEstudanteModel {
   String grupo;
@@ -36,17 +35,15 @@ class GrupoEstudanteModel {
   }
 
   factory GrupoEstudanteModel.fromMap(Map<String, dynamic> map) {
-    return GrupoEstudanteModel(
-      grupo: map['grupo'] as String,
-      codigoGrupo: map['codigoGrupo'] as int,
+    final grupo = GrupoEstudanteModel(
+      grupo: map['modalidade'] as String,
+      codigoGrupo: map['modalidadeCodigo'] as int,
       estudantes: List<EstudanteModel>.from(
-        (map['estudantes'] as List<int>).map<EstudanteModel>(
-          (x) => EstudanteModel.fromMap(x as Map<String, dynamic>),
-        ),
+        map['alunos']!.map((x) => EstudanteModel.fromMap(x)),
       ),
     );
+    return grupo;
   }
-
   String toJson() => json.encode(toMap());
 
   factory GrupoEstudanteModel.fromJson(String source) =>
