@@ -12,7 +12,7 @@ class User {
   bool atualizarDadosCadastrais;
   String celular;
   DateTime dataNascimento;
-  String senha;
+  String? senha;
   User({
     required this.id,
     required this.nome,
@@ -24,9 +24,8 @@ class User {
     required this.atualizarDadosCadastrais,
     required this.celular,
     required this.dataNascimento,
-    required this.senha,
+    this.senha,
   });
-
 
   User copyWith({
     int? id,
@@ -83,8 +82,8 @@ class User {
       primeiroAcesso: map['primeiroAcesso'] as bool,
       atualizarDadosCadastrais: map['atualizarDadosCadastrais'] as bool,
       celular: map['celular'] as String,
-      dataNascimento: DateTime.fromMillisecondsSinceEpoch(map['dataNascimento'] as int),
-      senha: map['senha'] as String,
+      dataNascimento: DateTime.parse(map['dataNascimento']),
+      senha: map['senha'],
     );
   }
 
@@ -100,33 +99,32 @@ class User {
   @override
   bool operator ==(covariant User other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.nome == nome &&
-      other.nomeMae == nomeMae &&
-      other.cpf == cpf &&
-      other.email == email &&
-      other.token == token &&
-      other.primeiroAcesso == primeiroAcesso &&
-      other.atualizarDadosCadastrais == atualizarDadosCadastrais &&
-      other.celular == celular &&
-      other.dataNascimento == dataNascimento &&
-      other.senha == senha;
+
+    return other.id == id &&
+        other.nome == nome &&
+        other.nomeMae == nomeMae &&
+        other.cpf == cpf &&
+        other.email == email &&
+        other.token == token &&
+        other.primeiroAcesso == primeiroAcesso &&
+        other.atualizarDadosCadastrais == atualizarDadosCadastrais &&
+        other.celular == celular &&
+        other.dataNascimento == dataNascimento &&
+        other.senha == senha;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      nome.hashCode ^
-      nomeMae.hashCode ^
-      cpf.hashCode ^
-      email.hashCode ^
-      token.hashCode ^
-      primeiroAcesso.hashCode ^
-      atualizarDadosCadastrais.hashCode ^
-      celular.hashCode ^
-      dataNascimento.hashCode ^
-      senha.hashCode;
+        nome.hashCode ^
+        nomeMae.hashCode ^
+        cpf.hashCode ^
+        email.hashCode ^
+        token.hashCode ^
+        primeiroAcesso.hashCode ^
+        atualizarDadosCadastrais.hashCode ^
+        celular.hashCode ^
+        dataNascimento.hashCode ^
+        senha.hashCode;
   }
 }

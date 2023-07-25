@@ -1,31 +1,29 @@
 import 'dart:developer';
 
-import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/services/db.service.dart';
-import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../models/message/message.dart';
+import '../utils/db/db_settings.dart';
+import 'db.service.dart';
 
 class MessageService {
   final dbHelper = DBHelper();
 
   Future create(Message model) async {
-    final Database _db = await dbHelper.initDatabase();
+    final Database db = await dbHelper.initDatabase();
     try {
-      await _db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-      log("--------------------------");
-      log("DB LOCAL -> Mensagem criada com sucesso: ${model.toMap()}");
-      log("--------------------------");
+      await db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (ex) {
-      log("Erro ao criar mensagem: $ex");
+      log('Erro ao criar mensagem: $ex');
       throw Exception(ex);
     }
   }
 
   Future<List<Message>> all() async {
-    final Database _db = await dbHelper.initDatabase();
+    final Database db = await dbHelper.initDatabase();
     try {
-      final List<Map<String, dynamic>> maps = await _db.query(TB_MESSAGE);
-      var messages = List.generate(
+      final List<Map<String, dynamic>> maps = await db.query(TB_MESSAGE);
+      final messages = List.generate(
         maps.length,
         (i) {
           return Message(
@@ -36,13 +34,10 @@ class MessageService {
             criadoEm: maps[i]['criadoEm'],
             dataEnvio: maps[i]['dataEnvio'],
             mensagemVisualizada: maps[i]['mensagemVisualizada'] == 1 ? true : false,
-            codigoEOL: maps[i]['codigoEOL'] ?? null,
+            codigoEOL: maps[i]['codigoEOL'],
           );
         },
       );
-      log("--------------------------");
-      log("DB LOCAL -> Lista de mensagens carregada: $messages}");
-      log("--------------------------");
       return messages;
     } catch (ex) {
       log(ex.toString());
@@ -51,18 +46,15 @@ class MessageService {
   }
 
   Future delete(int id) async {
-    final Database _db = await dbHelper.initDatabase();
+    final Database db = await dbHelper.initDatabase();
     try {
-      await _db.delete(
+      await db.delete(
         TB_MESSAGE,
-        where: "id = ?",
+        where: 'id = ?',
         whereArgs: [id],
       );
-      log("DB LOCAL -> Usuário removido com sucesso: $id");
     } catch (ex) {
-      log("<--------------------------");
-      log("Erro ao deletar usuário: $ex");
-      log("<--------------------------");
+      log('Erro ao deletar usuário: $ex');
       throw Exception(ex);
     }
   }

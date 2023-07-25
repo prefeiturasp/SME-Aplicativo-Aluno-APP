@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/IRelatorioRaaRepository.dart';
@@ -10,15 +11,14 @@ class RelatorioRaaRepository implements IRelatorioRaaRepository {
 
   @override
   Future<bool> solicitarRelatorioRaa(
-      {
-      required String dreCodigo,
+      {required String dreCodigo,
       required String ueCodigo,
       required int semestre,
       required String turmaCodigo,
       required int anoLetivo,
       required int modalidadeCodigo,
       required String alunoCodigo}) async {
-    var url = Uri.https("${AppConfigReader.getApiHost()}/Relatorio/raa");
+    var url = Uri.parse("${AppConfigReader.getApiHost()}/Relatorio/raa");
     Map _parametros = {
       "dreCodigo": dreCodigo,
       "ueCodigo": ueCodigo,

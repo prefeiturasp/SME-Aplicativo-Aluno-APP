@@ -1,26 +1,23 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/ue/data_ue.dart';
-import 'package:sme_app_aluno/repositories/ue.repository.dart';
+
+import '../models/ue/data_ue.dart';
+import '../repositories/ue.repository.dart';
 
 part 'ue.controller.g.dart';
 
 class UEController = UEControllerBase with _$UEController;
 
 abstract class UEControllerBase with Store {
-  late final UERepository _ueRepository;
-
-  UEControllerBase() {
-    this._ueRepository = UERepository();
-  }
+  final UERepository _ueRepository = UERepository();
 
   @observable
-  late DadosUE dadosUE;
+  DadosUE? dadosUE;
 
   @observable
   bool isLoading = false;
 
   @action
-  loadingUE(String codigoUe) async {
+  Future<void> loadingUE(String codigoUe) async {
     isLoading = true;
     dadosUE = await _ueRepository.obterPorCodigo(codigoUe);
     isLoading = false;

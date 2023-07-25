@@ -13,13 +13,13 @@ mixin _$TermsController on TermsControllerBase, Store {
       Atom(name: 'TermsControllerBase.term', context: context);
 
   @override
-  Term get term {
+  Term? get term {
     _$termAtom.reportRead();
     return super.term;
   }
 
   @override
-  set term(Term value) {
+  set term(Term? value) {
     _$termAtom.reportWrite(value, super.term, () {
       super.term = value;
     });
@@ -61,7 +61,7 @@ mixin _$TermsController on TermsControllerBase, Store {
       AsyncAction('TermsControllerBase.fetchTermo', context: context);
 
   @override
-  Future fetchTermo(String cpf) {
+  Future<void> fetchTermo(String cpf) {
     return _$fetchTermoAsyncAction.run(() => super.fetchTermo(cpf));
   }
 
@@ -70,7 +70,7 @@ mixin _$TermsController on TermsControllerBase, Store {
       context: context);
 
   @override
-  Future fetchTermoCurrentUser() {
+  Future<void> fetchTermoCurrentUser() {
     return _$fetchTermoCurrentUserAsyncAction
         .run(() => super.fetchTermoCurrentUser());
   }
@@ -79,7 +79,7 @@ mixin _$TermsController on TermsControllerBase, Store {
       AsyncAction('TermsControllerBase.registerTerms', context: context);
 
   @override
-  Future registerTerms(
+  Future<void> registerTerms(
       int termoDeUsoId, String cpf, String device, String ip, double versao) {
     return _$registerTermsAsyncAction
         .run(() => super.registerTerms(termoDeUsoId, cpf, device, ip, versao));

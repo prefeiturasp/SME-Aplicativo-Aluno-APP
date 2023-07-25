@@ -8,41 +8,41 @@ part of 'recover_password.controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
+mixin _$RecoverPasswordController on RecoverPasswordControllerBase, Store {
   late final _$dataAtom =
-      Atom(name: '_RecoverPasswordControllerBase.data', context: context);
+      Atom(name: 'RecoverPasswordControllerBase.data', context: context);
 
   @override
-  Data get data {
+  Data? get data {
     _$dataAtom.reportRead();
     return super.data;
   }
 
   @override
-  set data(Data value) {
+  set data(Data? value) {
     _$dataAtom.reportWrite(value, super.data, () {
       super.data = value;
     });
   }
 
   late final _$dataUserAtom =
-      Atom(name: '_RecoverPasswordControllerBase.dataUser', context: context);
+      Atom(name: 'RecoverPasswordControllerBase.dataUser', context: context);
 
   @override
-  DataUser get dataUser {
+  DataUser? get dataUser {
     _$dataUserAtom.reportRead();
     return super.dataUser;
   }
 
   @override
-  set dataUser(DataUser value) {
+  set dataUser(DataUser? value) {
     _$dataUserAtom.reportWrite(value, super.dataUser, () {
       super.dataUser = value;
     });
   }
 
   late final _$emailAtom =
-      Atom(name: '_RecoverPasswordControllerBase.email', context: context);
+      Atom(name: 'RecoverPasswordControllerBase.email', context: context);
 
   @override
   String get email {
@@ -58,7 +58,7 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
   }
 
   late final _$loadingAtom =
-      Atom(name: '_RecoverPasswordControllerBase.loading', context: context);
+      Atom(name: 'RecoverPasswordControllerBase.loading', context: context);
 
   @override
   bool get loading {
@@ -74,28 +74,28 @@ mixin _$RecoverPasswordController on _RecoverPasswordControllerBase, Store {
   }
 
   late final _$sendTokenAsyncAction =
-      AsyncAction('_RecoverPasswordControllerBase.sendToken', context: context);
+      AsyncAction('RecoverPasswordControllerBase.sendToken', context: context);
 
   @override
-  Future sendToken(String cpf) {
+  Future<void> sendToken(String cpf) {
     return _$sendTokenAsyncAction.run(() => super.sendToken(cpf));
   }
 
   late final _$validateTokenAsyncAction = AsyncAction(
-      '_RecoverPasswordControllerBase.validateToken',
+      'RecoverPasswordControllerBase.validateToken',
       context: context);
 
   @override
-  Future validateToken(String token) {
+  Future<void> validateToken(String token) {
     return _$validateTokenAsyncAction.run(() => super.validateToken(token));
   }
 
   late final _$redefinePasswordAsyncAction = AsyncAction(
-      '_RecoverPasswordControllerBase.redefinePassword',
+      'RecoverPasswordControllerBase.redefinePassword',
       context: context);
 
   @override
-  Future redefinePassword(String password, String token) {
+  Future<void> redefinePassword(String password, String token) {
     return _$redefinePasswordAsyncAction
         .run(() => super.redefinePassword(password, token));
   }

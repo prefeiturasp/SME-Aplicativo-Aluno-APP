@@ -1,63 +1,60 @@
-import 'dart:js_interop';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:sme_app_aluno/controllers/auth/recover_password.controller.dart';
-import 'package:sme_app_aluno/screens/widgets/buttons/eabutton.dart';
-import 'package:sme_app_aluno/screens/widgets/check_line/check_line.dart';
-import 'package:sme_app_aluno/screens/widgets/info_box/info_box.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/utils/navigator.dart';
+
+import '../../controllers/auth/recover_password.controller.dart';
+import '../../services/user.service.dart';
+import '../../ui/index.dart';
+import '../../utils/navigator.dart';
+import '../widgets/check_line/check_line.dart';
+import '../widgets/info_box/info_box.dart';
 
 class RedefinePassword extends StatefulWidget {
   final String cpf;
   final String token;
 
-  RedefinePassword({required this.cpf, required this.token});
+  const RedefinePassword({super.key, required this.cpf, required this.token});
 
   @override
-  _RedefinePasswordState createState() => _RedefinePasswordState();
+  RedefinePasswordState createState() => RedefinePasswordState();
 }
 
-class _RedefinePasswordState extends State<RedefinePassword> {
+class RedefinePasswordState extends State<RedefinePassword> {
   final UserService _userService = UserService();
   final _formKey = GlobalKey<FormState>();
-  final scaffoldKey = new GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final numeric = RegExp(r"[0-9]");
+  final numeric = RegExp(r'[0-9]');
   final symbols = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
-  final upperCaseChar = RegExp(r"[A-Z]");
-  final lowCaseChar = RegExp(r"[a-z]");
+  final upperCaseChar = RegExp(r'[A-Z]');
+  final lowCaseChar = RegExp(r'[a-z]');
   final accentLowcase = RegExp(r'[à-ú]');
   final accentUppercase = RegExp(r'[À-Ú]');
-  final spaceNull = RegExp(r"[/\s/]");
+  final spaceNull = RegExp(r'[/\s/]');
 
-  late RecoverPasswordController _recoverPasswordController;
+  final RecoverPasswordController _recoverPasswordController = RecoverPasswordController();
 
   bool _showNewPassword = true;
   bool _showConfirmPassword = true;
 
-  bool _passwordIsError = false;
+  final bool _passwordIsError = false;
 
-  String _oldPassword = '';
+  final String _oldPassword = '';
   String _password = '';
   String _confirmPassword = '';
 
   @override
   void initState() {
     super.initState();
-    _recoverPasswordController = RecoverPasswordController();
   }
 
   _navigateToScreen() async {
-    if (_recoverPasswordController.dataUser.ok) {
+    if (_recoverPasswordController.dataUser!.ok) {
       Nav.push(
         context,
-        EstudanteListaView(),
+        const EstudanteListaView(),
       );
     } else {
       onError();
@@ -70,11 +67,12 @@ class _RedefinePasswordState extends State<RedefinePassword> {
   }
 
   onError() {
-    var snackbar = SnackBar(
-        backgroundColor: Colors.red,
-        content: !_recoverPasswordController.dataUser.isNull
-            ? Text(_recoverPasswordController.dataUser.erros[0])
-            : Text("Erro de serviço"));
+    final snackbar = SnackBar(
+      backgroundColor: Colors.red,
+      content: _recoverPasswordController.dataUser != null
+          ? Text(_recoverPasswordController.dataUser!.erros[0])
+          : const Text('Erro de serviço'),
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
@@ -85,18 +83,18 @@ class _RedefinePasswordState extends State<RedefinePassword> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Atenção"),
-          content: Text("Você não confirmou as suas alterações, deseja descartá-las?"),
+          title: const Text('Atenção'),
+          content: const Text('Você não confirmou as suas alterações, deseja descartá-las?'),
           actions: <Widget>[
             ElevatedButton(
-              child: Text("SIM"),
+              child: const Text('SIM'),
               onPressed: () {
                 retorno = true;
                 Navigator.of(context).pop(true);
               },
             ),
             ElevatedButton(
-              child: Text("NÃO"),
+              child: const Text('NÃO'),
               onPressed: () {
                 retorno = false;
                 Navigator.of(context).pop(false);
@@ -111,14 +109,14 @@ class _RedefinePasswordState extends State<RedefinePassword> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Alteração de senha"),
-        backgroundColor: Color(0xffEEC25E),
+        title: const Text('Alteração de senha'),
+        backgroundColor: const Color(0xffEEC25E),
       ),
       body: WillPopScope(
         onWillPop:
@@ -133,169 +131,179 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                          margin: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 3),
-                          child: AutoSizeText(
-                            "Confirme a nova senha abaixo",
-                            maxFontSize: 18,
-                            minFontSize: 16,
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
-                          )),
+                        margin: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 3),
+                        child: const AutoSizeText(
+                          'Confirme a nova senha abaixo',
+                          maxFontSize: 18,
+                          minFontSize: 16,
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
+                        ),
+                      ),
                       Form(
                         autovalidateMode: AutovalidateMode.always,
                         key: _formKey,
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: screenHeight * 4,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: screenHeight * 2),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
-                                          width: screenHeight * 0.39)),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(
+                              height: screenHeight * 4,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: screenHeight * 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xfff0f0f0),
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
+                                    width: screenHeight * 0.39,
+                                  ),
                                 ),
-                                child: TextFormField(
-                                    obscureText: _showNewPassword,
-                                    style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                    onChanged: (value) {
+                              ),
+                              child: TextFormField(
+                                obscureText: _showNewPassword,
+                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _password = value;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (spaceNull.hasMatch(value)) {
+                                      return 'Senha não pode ter espaço em branco';
+                                    }
+                                  }
+
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: _showNewPassword
+                                        ? const Icon(FontAwesomeIcons.eye)
+                                        : const Icon(FontAwesomeIcons.eyeSlash),
+                                    color: const Color(0xff6e6e6e),
+                                    iconSize: screenHeight * 3.0,
+                                    onPressed: () {
                                       setState(() {
-                                        _password = value;
+                                        _showNewPassword = !_showNewPassword;
                                       });
                                     },
-                                    validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        if (spaceNull.hasMatch(value)) {
-                                          return "Senha não pode ter espaço em branco";
-                                        }
-                                      }
-
-                                      return null;
+                                  ),
+                                  labelText: 'Nova senha',
+                                  labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: const TextStyle(fontWeight: FontWeight.w700),
+                                  // hintText: "Data de nascimento do aluno",
+                                  border: InputBorder.none,
+                                ),
+                                keyboardType: TextInputType.text,
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenHeight * 4,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: screenHeight * 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xfff0f0f0),
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
+                                    width: screenHeight * 0.39,
+                                  ),
+                                ),
+                              ),
+                              child: TextFormField(
+                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                                obscureText: _showConfirmPassword,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _confirmPassword = value;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: _showConfirmPassword
+                                        ? const Icon(FontAwesomeIcons.eye)
+                                        : const Icon(FontAwesomeIcons.eyeSlash),
+                                    color: const Color(0xff6e6e6e),
+                                    iconSize: screenHeight * 3.0,
+                                    onPressed: () {
+                                      setState(() {
+                                        _showConfirmPassword = !_showConfirmPassword;
+                                      });
                                     },
-                                    decoration: InputDecoration(
-                                      suffixIcon: IconButton(
-                                        icon: _showNewPassword
-                                            ? Icon(FontAwesomeIcons.eye)
-                                            : Icon(FontAwesomeIcons.eyeSlash),
-                                        color: Color(0xff6e6e6e),
-                                        iconSize: screenHeight * 3.0,
-                                        onPressed: () {
-                                          setState(() {
-                                            _showNewPassword = !_showNewPassword;
-                                          });
-                                        },
-                                      ),
-                                      labelText: 'Nova senha',
-                                      labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                      errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                      // hintText: "Data de nascimento do aluno",
-                                      border: InputBorder.none,
-                                    ),
-                                    keyboardType: TextInputType.text),
-                              ),
-                              SizedBox(
-                                height: screenHeight * 4,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: screenHeight * 2),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: _passwordIsError ? Colors.red : Color(0xffD06D12),
-                                          width: screenHeight * 0.39)),
-                                ),
-                                child: TextFormField(
-                                  style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                  obscureText: _showConfirmPassword,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _confirmPassword = value;
-                                    });
-                                  },
-                                  decoration: InputDecoration(
-                                    suffixIcon: IconButton(
-                                      icon: _showConfirmPassword
-                                          ? Icon(FontAwesomeIcons.eye)
-                                          : Icon(FontAwesomeIcons.eyeSlash),
-                                      color: Color(0xff6e6e6e),
-                                      iconSize: screenHeight * 3.0,
-                                      onPressed: () {
-                                        setState(() {
-                                          _showConfirmPassword = !_showConfirmPassword;
-                                        });
-                                      },
-                                    ),
-
-                                    labelText: 'Confirmar a nova senha',
-                                    labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                    errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                    // hintText: "Data de nascimento do aluno",
-                                    border: InputBorder.none,
                                   ),
-                                  validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      if (value != _password) {
-                                        return "Senhas não correspondem";
-                                      }
+
+                                  labelText: 'Confirmar a nova senha',
+                                  labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
+                                  errorStyle: const TextStyle(fontWeight: FontWeight.w700),
+                                  // hintText: "Data de nascimento do aluno",
+                                  border: InputBorder.none,
+                                ),
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    if (value != _password) {
+                                      return 'Senhas não correspondem';
                                     }
+                                  }
 
-                                    return null;
-                                  },
-                                  keyboardType: TextInputType.text,
+                                  return null;
+                                },
+                                keyboardType: TextInputType.text,
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenHeight * 1,
+                            ),
+                            InfoBox(
+                              icon: FontAwesomeIcons.exclamationTriangle,
+                              content: <Widget>[
+                                const AutoSizeText(
+                                  'Requisitos para sua nova senha!',
+                                  maxFontSize: 18,
+                                  minFontSize: 16,
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
                                 ),
-                              ),
-                              SizedBox(
-                                height: screenHeight * 1,
-                              ),
-                              InfoBox(
-                                icon: FontAwesomeIcons.exclamationTriangle,
-                                content: <Widget>[
-                                  AutoSizeText(
-                                    "Requisitos para sua nova senha!",
-                                    maxFontSize: 18,
-                                    minFontSize: 16,
-                                    style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
-                                  ),
-                                  SizedBox(
-                                    height: screenHeight * 2,
-                                  ),
-                                  CheckLine(
-                                      screenHeight: screenHeight,
-                                      text: "Uma letra maiúscula",
-                                      checked: upperCaseChar.hasMatch(_password)),
-                                  CheckLine(
-                                      screenHeight: screenHeight,
-                                      text: "Uma letra minúscula",
-                                      checked: lowCaseChar.hasMatch(_password)),
-                                  CheckLine(
-                                    screenHeight: screenHeight,
-                                    text: "Um algarismo (número) ou um símbolo (caractere especial)",
-                                    checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
-                                  ),
-                                  CheckLine(
-                                    screenHeight: screenHeight,
-                                    text: "Não pode permitir caracteres acentuados",
-                                    checked: _password.length > 0 &&
-                                        !accentUppercase.hasMatch(_password) &&
-                                        !accentLowcase.hasMatch(_password),
-                                  ),
-                                  CheckLine(
-                                      screenHeight: screenHeight,
-                                      text: "Deve ter no mínimo 8 e no máximo 12 caracteres.",
-                                      checked: _password.length >= 8 && _password.length <= 12),
-                                ],
-                              ),
-                              SizedBox(
-                                height: screenHeight * 3,
-                              ),
-                              Observer(builder: (context) {
+                                SizedBox(
+                                  height: screenHeight * 2,
+                                ),
+                                CheckLine(
+                                  screenHeight: screenHeight,
+                                  text: 'Uma letra maiúscula',
+                                  checked: upperCaseChar.hasMatch(_password),
+                                ),
+                                CheckLine(
+                                  screenHeight: screenHeight,
+                                  text: 'Uma letra minúscula',
+                                  checked: lowCaseChar.hasMatch(_password),
+                                ),
+                                CheckLine(
+                                  screenHeight: screenHeight,
+                                  text: 'Um algarismo (número) ou um símbolo (caractere especial)',
+                                  checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
+                                ),
+                                CheckLine(
+                                  screenHeight: screenHeight,
+                                  text: 'Não pode permitir caracteres acentuados',
+                                  checked: _password.isNotEmpty &&
+                                      !accentUppercase.hasMatch(_password) &&
+                                      !accentLowcase.hasMatch(_password),
+                                ),
+                                CheckLine(
+                                  screenHeight: screenHeight,
+                                  text: 'Deve ter no mínimo 8 e no máximo 12 caracteres.',
+                                  checked: _password.length >= 8 && _password.length <= 12,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight * 3,
+                            ),
+                            Observer(
+                              builder: (context) {
                                 if (_recoverPasswordController.loading) {
-                                  return GFLoader(
+                                  return const GFLoader(
                                     type: GFLoaderType.square,
                                     loaderColorOne: Color(0xffDE9524),
                                     loaderColorTwo: Color(0xffC65D00),
@@ -303,12 +311,12 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                     size: GFSize.LARGE,
                                   );
                                 } else {
-                                  return EAButton(
-                                    text: "CONFIRMAR ALTERAÇÃO",
+                                  return EADefaultButton(
+                                    text: 'CONFIRMAR ALTERAÇÃO',
                                     icon: FontAwesomeIcons.chevronRight,
-                                    iconColor: Color(0xffffd037),
-                                    btnColor: Color(0xffd06d12),
-                                    disabled: (_password.isNotEmpty &&
+                                    iconColor: const Color(0xffffd037),
+                                    btnColor: const Color(0xffd06d12),
+                                    enabled: (_password.isNotEmpty &&
                                             _confirmPassword.isNotEmpty &&
                                             !spaceNull.hasMatch(_password)) &&
                                         (_confirmPassword == _password),
@@ -317,8 +325,10 @@ class _RedefinePasswordState extends State<RedefinePassword> {
                                     },
                                   );
                                 }
-                              })
-                            ]),
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

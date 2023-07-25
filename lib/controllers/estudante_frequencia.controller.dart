@@ -1,20 +1,17 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/dtos/estudante_frequencia_global.dto.dart';
-import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
-import 'package:sme_app_aluno/models/frequency/frequency.dart';
-import 'package:sme_app_aluno/models/index.dart';
-import 'package:sme_app_aluno/repositories/estudante_frequencia.repository.dart';
+
+import '../dtos/estudante_frequencia_global.dto.dart';
+import '../models/frequency/curricular_component.dart';
+import '../models/frequency/frequency.dart';
+import '../models/index.dart';
+import '../repositories/estudante_frequencia.repository.dart';
 
 part 'estudante_frequencia.controller.g.dart';
 
 class EstudanteFrequenciaController = EstudanteFrequenciaControllerBase with _$EstudanteFrequenciaController;
 
 abstract class EstudanteFrequenciaControllerBase with Store {
-  late final EstudanteFrequenciaRepository _estudanteFrequenciaRepository;
-
-  EstudanteFrequenciaControllerBase() {
-    this._estudanteFrequenciaRepository = EstudanteFrequenciaRepository();
-  }
+  final EstudanteFrequenciaRepository _estudanteFrequenciaRepository = EstudanteFrequenciaRepository();
 
   @observable
   Frequency? frequency;
@@ -32,7 +29,7 @@ abstract class EstudanteFrequenciaControllerBase with Store {
   bool loadingCurricularComponent = false;
 
   @action
-  limpar() {
+  void limpar() {
     frequency = null;
     frequencia = null;
     curricularComponent = null;
@@ -45,7 +42,7 @@ abstract class EstudanteFrequenciaControllerBase with Store {
   }
 
   @action
-  fetchFrequency(
+  Future<void> fetchFrequency(
     int anoLetivo,
     String codigoUe,
     String codigoTurma,
@@ -64,27 +61,51 @@ abstract class EstudanteFrequenciaControllerBase with Store {
   }
 
   @action
-  fetchCurricularComponent(int anoLetivo, String codigoUE, String codigoTurma, String codigoAluno,
-      String codigoComponenteCurricular, List<int> bimestres) async {
+  Future<List<EstudanteFrequenciaModel>> fetchCurricularComponent(
+    int anoLetivo,
+    String codigoUE,
+    String codigoTurma,
+    String codigoAluno,
+    String codigoComponenteCurricular,
+    List<int> bimestres,
+  ) async {
     loadingCurricularComponent = true;
-    var frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
-        anoLetivo, codigoUE, codigoTurma, codigoAluno, codigoComponenteCurricular, bimestres);
+    final frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
+      anoLetivo,
+      codigoUE,
+      codigoTurma,
+      codigoAluno,
+      codigoComponenteCurricular,
+      bimestres,
+    );
     //curricularComponent =
     loadingCurricularComponent = false;
     return frequencias;
   }
 
-  Future<List<EstudanteFrequenciaModel>> obterFrequenciasEstudante(int anoLetivo, String codigoUE, String codigoTurma,
-      String codigoAluno, String codigoComponenteCurricular, List<int> bimestres) async {
+  Future<List<EstudanteFrequenciaModel>> obterFrequenciasEstudante(
+    int anoLetivo,
+    String codigoUE,
+    String codigoTurma,
+    String codigoAluno,
+    String codigoComponenteCurricular,
+    List<int> bimestres,
+  ) async {
     loadingCurricularComponent = true;
-    var frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
-        anoLetivo, codigoUE, codigoTurma, codigoAluno, codigoComponenteCurricular, bimestres);
+    final frequencias = await _estudanteFrequenciaRepository.fetchCurricularComponent(
+      anoLetivo,
+      codigoUE,
+      codigoTurma,
+      codigoAluno,
+      codigoComponenteCurricular,
+      bimestres,
+    );
     loadingCurricularComponent = false;
     return frequencias;
   }
 
   @action
-  obterFrequenciaGlobal(String codigoTurma, String codigoAluno) async {
+  Future<void> obterFrequenciaGlobal(String codigoTurma, String codigoAluno) async {
     loadingCurricularComponent = true;
     frequencia = await _estudanteFrequenciaRepository.obterFrequenciaGlobal(
       codigoTurma,

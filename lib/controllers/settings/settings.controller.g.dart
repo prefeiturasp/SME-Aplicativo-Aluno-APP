@@ -13,13 +13,13 @@ mixin _$SettingsController on SettingsControllerBase, Store {
       Atom(name: 'SettingsControllerBase.data', context: context);
 
   @override
-  Data get data {
+  Data? get data {
     _$dataAtom.reportRead();
     return super.data;
   }
 
   @override
-  set data(Data value) {
+  set data(Data? value) {
     _$dataAtom.reportWrite(value, super.data, () {
       super.data = value;
     });
@@ -45,7 +45,7 @@ mixin _$SettingsController on SettingsControllerBase, Store {
       AsyncAction('SettingsControllerBase.changePassword', context: context);
 
   @override
-  Future changePassword(String password, String oldPassword, int userId) {
+  Future<void> changePassword(String password, String oldPassword, int userId) {
     return _$changePasswordAsyncAction
         .run(() => super.changePassword(password, oldPassword, userId));
   }

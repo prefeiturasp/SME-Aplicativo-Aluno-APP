@@ -19,7 +19,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
     required int modelo,
     required String alunoCodigo,
   }) async {
-    var url = Uri.https("${AppConfigReader.getApiHost()}/Relatorio/boletim");
+    var url = Uri.parse("${AppConfigReader.getApiHost()}/Relatorio/boletim");
     Map _data = {
       "dreCodigo": dreCodigo,
       "ueCodigo": ueCodigo,
@@ -35,7 +35,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       var response = await http.post(
         url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
+          "Authorization": "Bearer ${usuarioStore.usuario?.token}",
           "Content-Type": "application/json",
         },
         body: body,

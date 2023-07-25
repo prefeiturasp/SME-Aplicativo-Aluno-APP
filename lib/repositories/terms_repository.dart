@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
 import 'package:sme_app_aluno/models/index.dart';
 import 'package:sme_app_aluno/models/terms/term.dart';
 import 'package:sme_app_aluno/utils/app_config_reader.dart';
@@ -10,7 +11,7 @@ class TermsRepository extends ITermsRepository {
   @override
   Future<Term> fetchTerms(String cpf) async {
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
@@ -31,7 +32,7 @@ class TermsRepository extends ITermsRepository {
   @override
   Future<dynamic> fetchTermsCurrentUser() async {
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decodeJson = jsonDecode(response.body);
@@ -41,9 +42,7 @@ class TermsRepository extends ITermsRepository {
         return true;
       } else if (response.statusCode == 408) {
         return UsuarioDataModel(
-            ok: false,
-            erros: [AppConfigReader.getErrorMessageTimeOut()],
-            data: UsuarioModel.clear());
+            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: UsuarioModel.clear());
       } else {
         log('Erro ao obter dados');
         throw Exception(response.reasonPhrase);
@@ -67,7 +66,7 @@ class TermsRepository extends ITermsRepository {
     var body = json.encode(data);
 
     try {
-      var url = Uri.https("${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite");
+      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite");
       var response = await http.post(url,
           headers: {
             "Content-Type": "application/json",

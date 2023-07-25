@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:connectivity/connectivity.dart';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 enum ConnectivityStatus { WiFi, Celular, Offline }
 
 class ConnectivityService {
   // Crie nosso controlador público
-  StreamController<ConnectivityStatus> connectionStatusController =
-      StreamController<ConnectivityStatus>();
+  StreamController<ConnectivityStatus> connectionStatusController = StreamController<ConnectivityStatus>();
   ConnectivityService() {
     // Assine a conectividade Steam alterado
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {

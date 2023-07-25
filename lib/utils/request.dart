@@ -7,7 +7,7 @@ class Request {
   //START GET
   static getURL(String endPoint, Map<String, String> headers, param2) async {
     try {
-      var uri = Uri.https(AppConfigReader.getApiHost() + endPoint);
+      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
       log('HTTP Request GET: ' + uri.toString());
 
@@ -29,7 +29,7 @@ class Request {
   //START POST
   static postURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
     try {
-      var uri = Uri.https(AppConfigReader.getApiHost() + endPoint);
+      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
       log('HTTP Request POST: ' + uri.toString());
 
@@ -48,7 +48,7 @@ class Request {
   //START PUT
   static putURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
     try {
-      var uri = Uri.https(AppConfigReader.getApiHost() + endPoint);
+      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
       log('HTTP Request POST: ' + uri.toString());
 

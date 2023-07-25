@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/dtos/recomendacao_aluno.dto.dart';
@@ -17,7 +18,7 @@ class RecomendacaoAlunoRepository implements IRecomendacaoAluno {
     int semestre,
   ) async {
     var recomendacao = RecomendacaoAlunoDto();
-    var url = Uri.https(
+    var url = Uri.parse(
         "${AppConfigReader.getApiHost()}/Aluno/recomendacao-aluno?codigoAluno=$codigoAluno&codigoTurma=$codigoTurma&anoLetivo=$anoLetivo&semestre=$semestre&modalidade=$modalidade");
     try {
       final response = await http.get(

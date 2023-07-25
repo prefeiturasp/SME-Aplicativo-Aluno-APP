@@ -58,20 +58,20 @@ class EstudanteModel {
   factory EstudanteModel.fromMap(Map<String, dynamic> map) {
     return EstudanteModel(
       codigoEol: map['codigoEol'] as int,
-      nome: map['nome'] as String,
-      nomeSocial: map['nomeSocial'] as String,
-      escola: map['escola'] as String,
+      nome: map['nome'] ?? '',
+      nomeSocial: map['nomeSocial'] ?? '',
+      escola: map['escola'] ?? '',
       codigoTipoEscola: map['codigoTipoEscola'] as int,
-      descricaoTipoEscola: map['descricaoTipoEscola'] as String,
-      siglaDre: map['siglaDre'] as String,
-      turma: map['turma'] as String,
-      situacaoMatricula: map['situacaoMatricula'] as String,
-      dataNascimento: map['dataNascimento'] as String,
-      dataSituacaoMatricula: map['dataSituacaoMatricula'] as String,
-      codigoDre: map['codigoDre'] as String,
-      codigoEscola: map['codigoEscola'] as String,
+      descricaoTipoEscola: map['descricaoTipoEscola'] ?? '',
+      siglaDre: map['siglaDre'] ?? '',
+      turma: map['turma'] ?? '',
+      situacaoMatricula: map['situacaoMatricula'] ?? '',
+      dataNascimento: map['dataNascimento'] ?? '',
+      dataSituacaoMatricula: map['dataSituacaoMatricula'] ?? '',
+      codigoDre: map['codigoDre'] ?? '',
+      codigoEscola: map['codigoEscola'] ?? '',
       codigoTurma: map['codigoTurma'] as int,
-      serieResumida: map['serieResumida'] as String,
+      serieResumida: map['serieResumida'] ?? '',
     );
   }
 
