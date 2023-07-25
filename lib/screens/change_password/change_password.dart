@@ -51,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   _navigateToScreen() async {
-    if (_settingsController.data.ok) {
+    if (_settingsController.data!.ok) {
       AwesomeDialog(
         context: context,
         headerAnimationLoop: false,
@@ -85,7 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     final snackbar = SnackBar(
       backgroundColor: Colors.red,
       content:
-          _settingsController.data != null ? Text(_settingsController.data.erros[0]) : const Text('Erro de serviço'),
+          _settingsController.data != null ? Text(_settingsController.data!.erros[0]) : const Text('Erro de serviço'),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);

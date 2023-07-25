@@ -35,9 +35,9 @@ class TermsUseState extends State<TermsUse> {
         // child: TermsView(term: _termsController.term),
         child: Observer(
           builder: (context) {
-            if (_termsController.term.termosDeUso != null) {
+            if (_termsController.term?.termosDeUso != null) {
               return TermsView(
-                term: _termsController.term,
+                term: _termsController.term!,
                 showBtn: false,
                 changeStatusTerm: () {},
                 cpf: '',

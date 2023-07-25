@@ -124,11 +124,11 @@ class FirstAccessState extends State<FirstAccess> {
     }
 
     await _termsController.registerTerms(
-      _termsController.term.id,
+      _termsController.term!.id,
       widget.cpf,
       deviceId,
       _ip,
-      _termsController.term.versao,
+      _termsController.term!.versao,
     );
   }
 
@@ -407,7 +407,7 @@ class FirstAccessState extends State<FirstAccess> {
                             ),
                             Observer(
                               builder: (context) {
-                                if (_termsController.term.termosDeUso != null) {
+                                if (_termsController.term!.termosDeUso != null) {
                                   return GestureDetector(
                                     child: InfoBox(
                                       icon: FontAwesomeIcons.exclamationTriangle,
@@ -454,7 +454,7 @@ class FirstAccessState extends State<FirstAccess> {
                                         )
                                       ],
                                     ),
-                                    onTap: () => howModalBottomSheetTerm(_termsController.term),
+                                    onTap: () => howModalBottomSheetTerm(_termsController.term!),
                                   );
                                 } else {
                                   return const SizedBox.shrink();

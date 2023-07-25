@@ -134,7 +134,7 @@ mixin _$EventController on EventControllerBase, Store {
       AsyncAction('EventControllerBase.changeCurrentMonth', context: context);
 
   @override
-  Future changeCurrentMonth(int month, int codigoEol, int userId) {
+  Future<void> changeCurrentMonth(int month, int codigoEol, int userId) {
     return _$changeCurrentMonthAsyncAction
         .run(() => super.changeCurrentMonth(month, codigoEol, userId));
   }
@@ -154,7 +154,7 @@ mixin _$EventController on EventControllerBase, Store {
   }
 
   @override
-  dynamic listPriorityEvents(dynamic eventsList) {
+  void listPriorityEvents(dynamic eventsList) {
     final _$actionInfo = _$EventControllerBaseActionController.startAction(
         name: 'EventControllerBase.listPriorityEvents');
     try {
