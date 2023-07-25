@@ -25,7 +25,6 @@ class AutenticacaoController {
       return data;
     } catch (e) {
       log(e.toString());
-      // TODO: error remover esse return UsuarioDataModel antes de mandar para release e criar mensagem de erro
       return UsuarioDataModel(
         ok: false,
         erros: [e.toString()],

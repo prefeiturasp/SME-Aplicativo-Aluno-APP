@@ -54,7 +54,7 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
   _initPushNotificationHandlers() async {
     try {
       _firebaseMessaging.requestPermission();
-      _firebaseMessaging.getToken().then(print);
+      _firebaseMessaging.getToken();
       _firebaseMessaging.subscribeToTopic('AppAluno');
       _firebaseMessaging.getInitialMessage().then((message) async {
         if (message != null) {
