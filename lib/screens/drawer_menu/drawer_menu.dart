@@ -3,19 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sme_app_aluno/controllers/index.dart';
-import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
-import 'package:sme_app_aluno/enumeradores/modalidade_tipo.dart';
-import 'package:sme_app_aluno/models/estudante.model.dart';
-import 'package:sme_app_aluno/screens/calendar/list_events.dart';
-import 'package:sme_app_aluno/screens/messages/list_messages.dart';
-import 'package:sme_app_aluno/screens/terms/terms_use.dart';
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/outros_servicos_lista.view.dart';
-import 'package:sme_app_aluno/utils/auth.dart';
-import 'package:sme_app_aluno/utils/mensagem_sistema.dart';
-import 'package:sme_app_aluno/utils/navigator.dart';
+
+import '../../controllers/index.dart';
+import '../../controllers/messages/messages.controller.dart';
+import '../../enumeradores/modalidade_tipo.dart';
+import '../../models/estudante.model.dart';
+import '../../stores/index.dart';
+import '../../ui/index.dart';
+import '../../ui/views/outros_servicos_lista.view.dart';
+import '../../utils/auth.dart';
+import '../../utils/mensagem_sistema.dart';
+import '../../utils/navigator.dart';
+import '../calendar/list_events.dart';
+import '../messages/list_messages.dart';
+import '../terms/terms_use.dart';
 
 class DrawerMenu extends StatefulWidget {
   final EstudanteModel estudante;
@@ -23,12 +24,18 @@ class DrawerMenu extends StatefulWidget {
   final int userId;
   final String groupSchool;
 
-  DrawerMenu({required this.estudante, required this.codigoGrupo, required this.userId, required this.groupSchool});
+  const DrawerMenu({
+    super.key,
+    required this.estudante,
+    required this.codigoGrupo,
+    required this.userId,
+    required this.groupSchool,
+  });
   @override
-  _DrawerMenuState createState() => _DrawerMenuState();
+  DrawerMenuState createState() => DrawerMenuState();
 }
 
-class _DrawerMenuState extends State<DrawerMenu> {
+class DrawerMenuState extends State<DrawerMenu> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
 
@@ -62,14 +69,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   navigateToListStudents(BuildContext context) async {
     if (usuarioStore.usuario != null) {
-      Nav.push(context, EstudanteListaView());
+      Nav.push(context, const EstudanteListaView());
     } else {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LoginView(
-                    notice: '',
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginView(
+            notice: '',
+          ),
+        ),
+      );
     }
   }
 
@@ -79,18 +88,21 @@ class _DrawerMenuState extends State<DrawerMenu> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var textoBotaoRelatorio = widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
-        ? MensagemSistema.MenuLabelFrequenciaRelatorio
-        : MensagemSistema.MenuLabelFrequenciaBoletim;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final textoBotaoRelatorio = widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
+        ? MensagemSistema.menuLabelFrequenciaRelatorio
+        : MensagemSistema.menuLabelFrequenciaBoletim;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Container(
+          SizedBox(
             height: screenHeight * 30,
             child: DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -98,48 +110,47 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     margin: EdgeInsets.only(right: screenHeight * 3, bottom: screenHeight * 3),
                     child: ClipOval(
                       child: Image.asset(
-                        MensagemSistema.CaminhoImagemUsuario,
+                        MensagemSistema.caminhoImagemUsuario,
                         width: screenHeight * 8,
                         height: screenHeight * 8,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                  Observer(builder: (context) {
-                    if (usuarioStore.usuario != null) {
-                      return AutoSizeText(
-                        "${usuarioStore.usuario.nome}",
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-                      );
-                    } else {
-                      return AutoSizeText(
-                        MensagemSistema.MenuLabelNaoCarregado,
-                        maxFontSize: 16,
-                        minFontSize: 14,
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-                      );
-                    }
-                  }),
-                  AutoSizeText(
-                    MensagemSistema.MenuLabelStatusAtivo,
+                  Observer(
+                    builder: (context) {
+                      if (usuarioStore.usuario != null) {
+                        return AutoSizeText(
+                          usuarioStore.usuario.nome,
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                        );
+                      } else {
+                        return const AutoSizeText(
+                          MensagemSistema.menuLabelNaoCarregado,
+                          maxFontSize: 16,
+                          minFontSize: 14,
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                        );
+                      }
+                    },
+                  ),
+                  const AutoSizeText(
+                    MensagemSistema.menuLabelStatusAtivo,
                     maxFontSize: 14,
                     minFontSize: 12,
                     style: TextStyle(color: Color(0xffC4C4C4)),
                   ),
                 ],
               ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
             ),
           ),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelEstudantes),
+            title: const Text(MensagemSistema.menuLabelEstudantes),
             leading: CircleAvatar(
               // radius: screenHeight * 2,
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.user,
                 color: Colors.white,
@@ -150,11 +161,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
               navigateToListStudents(context);
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelMensagens),
+            title: const Text(MensagemSistema.menuLabelMensagens),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.envelopeOpen,
                 color: Colors.white,
@@ -165,11 +176,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
               navigateToListMessages(context);
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             title: Text(textoBotaoRelatorio),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.copy,
                 color: Colors.white,
@@ -189,11 +200,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelAgenda),
+            title: const Text(MensagemSistema.menuLabelAgenda),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.calendarAlt,
                 color: Colors.white,
@@ -202,16 +213,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ListEvents(student: widget.estudante, userId: widget.userId)));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ListEvents(student: widget.estudante, userId: widget.userId),
+                ),
+              );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelMeusDados),
+            title: const Text(MensagemSistema.menuLabelMeusDados),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.slidersH,
                 color: Colors.white,
@@ -221,15 +234,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
             onTap: () async {
               await usuarioController.obterDadosUsuario();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MeusDadosView()),
+                MaterialPageRoute(builder: (context) => const MeusDadosView()),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelOutrosServicos),
+            title: const Text(MensagemSistema.menuLabelTermoUso),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.fileAlt,
                 color: Colors.white,
@@ -240,11 +253,11 @@ class _DrawerMenuState extends State<DrawerMenu> {
               _navigateToTerms(context);
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelOutrosServicos),
+            title: const Text(MensagemSistema.menuLabelOutrosServicos),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.alignJustify,
                 color: Colors.white,
@@ -255,16 +268,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => OutrosServicosLista(),
+                  builder: (context) => const OutrosServicosLista(),
                 ),
               );
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            title: Text(MensagemSistema.MenuLabelSairSistema),
+            title: const Text(MensagemSistema.menuLabelSairSistema),
             leading: CircleAvatar(
-              backgroundColor: Color(0xffEA9200),
+              backgroundColor: const Color(0xffEA9200),
               child: Icon(
                 FontAwesomeIcons.signOutAlt,
                 color: Colors.white,

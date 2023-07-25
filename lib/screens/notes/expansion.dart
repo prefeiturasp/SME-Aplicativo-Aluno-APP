@@ -340,10 +340,10 @@ class _ExpansionState extends State<Expansion> {
                 final solicitacao = await _solicitarBoletim();
                 if (solicitacao) {
                   exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoBoletim);
+                  _modalInfo(screenHeight, MensagemSistema.avisoSolicitacaoBoletim);
                 } else {
                   exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
+                  _modalInfo(screenHeight, MensagemSistema.avisoErroInterno);
                 }
               },
               style: ButtonStyle(
@@ -363,7 +363,7 @@ class _ExpansionState extends State<Expansion> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const AutoSizeText(
-                    MensagemSistema.LabelBotaoGerarPDF,
+                    MensagemSistema.labelBotaoGerarPDF,
                     maxFontSize: 16,
                     minFontSize: 14,
                     style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
@@ -394,10 +394,10 @@ class _ExpansionState extends State<Expansion> {
                 final solicitacao = await _solicitarRelatorioRaa();
                 if (solicitacao) {
                   exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.AvisoSolicitacaoRaa);
+                  _modalInfo(screenHeight, MensagemSistema.avisoSolicitacaoRaa);
                 } else {
                   exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.AvisoErroInterno);
+                  _modalInfo(screenHeight, MensagemSistema.avisoErroInterno);
                 }
               },
               style: ButtonStyle(
@@ -417,7 +417,7 @@ class _ExpansionState extends State<Expansion> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const AutoSizeText(
-                    MensagemSistema.LabelBotaoGerarRelatorio,
+                    MensagemSistema.labelBotaoGerarRelatorio,
                     maxFontSize: 16,
                     minFontSize: 14,
                     style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
@@ -490,7 +490,7 @@ class _ExpansionState extends State<Expansion> {
                 return Column(
                   children: [
                     Text(
-                      MensagemSistema.TextoTelaSolicitacaoRaa,
+                      MensagemSistema.textoTelaSolicitacaoRaa,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
