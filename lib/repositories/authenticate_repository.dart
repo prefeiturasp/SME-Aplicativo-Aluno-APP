@@ -44,13 +44,11 @@ class AuthenticateRepository implements IAuthenticateRepository {
         log('Erro ao tentar se autenticar');
         throw Exception(response.statusCode);
       } else {
-        final decodeError = jsonDecode(response.body);
-        final dataError = UsuarioDataModel.fromJson(decodeError);
-        throw Exception(dataError);
+        return UsuarioDataModel.fromJson(response.body);
       }
     } catch (error, stacktrace) {
       log('Erro ao tentar se autenticar $stacktrace');
-      throw Exception(error);
+      return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());
     }
   }
 }
