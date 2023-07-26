@@ -41,6 +41,9 @@ class EstudanteRepository {
   ) async {
     try {
       final bimestresJoin = bimestres.join('&bimestres=');
+      if (bimestresJoin.isEmpty) {
+        return List<ComponenteCurricularDTO>() = [];
+      }
       final response = await _api.dio.get(
         '/Aluno/ues/$codigoUe/turmas/$codigoTurma/alunos/$alunoCodigo/componentes-curriculares?bimestres=$bimestresJoin',
       );
@@ -59,7 +62,8 @@ class EstudanteRepository {
 
   Future<List<int>> obterBimestresDisponiveisParaVisualizacao(String turmaCodigo) async {
     try {
-      final response = await _api.dio.get('/Aluno/turmas/$turmaCodigo/boletins/liberacoes/bimestres');
+      final url = '/Aluno/turmas/$turmaCodigo/boletins/liberacoes/bimestres';
+      final response = await _api.dio.get(url);
 
       if (response.statusCode == 200) {
         final bimestres = response.data;
