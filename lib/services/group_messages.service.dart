@@ -1,9 +1,9 @@
+import 'dart:developer';
+
 import 'package:sme_app_aluno/models/message/group.dart';
 import 'package:sme_app_aluno/services/db.service.dart';
 import 'package:sme_app_aluno/utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 
 class GroupMessageService {
   final dbHelper = DBHelper(versionDB: 2);
@@ -11,15 +11,13 @@ class GroupMessageService {
   Future create(Group model) async {
     final Database _db = await dbHelper.initDatabase();
     try {
-      await _db.insert(TB_GROUP_MESSAGE, model.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      print("--------------------------");
-      print("Grupo de menssagem criado com sucesso: ${model.toMap()}");
-      print("--------------------------");
+      await _db.insert(TB_GROUP_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      log("--------------------------");
+      log("Grupo de menssagem criado com sucesso: ${model.toMap()}");
+      log("--------------------------");
     } catch (ex) {
-      print("Erro ao criar mensagem: $ex");
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
-      return;
+      log("Erro ao criar mensagem: $ex");
+      throw Exception(ex);
     }
   }
 
@@ -36,14 +34,13 @@ class GroupMessageService {
           );
         },
       );
-      print("--------------------------");
-      print("Lista de grupos de mensagens: ${groups.cast()}");
-      print("--------------------------");
+      log("--------------------------");
+      log("Lista de grupos de mensagens: ${groups.cast()}");
+      log("--------------------------");
       return groups;
     } catch (ex) {
-      print(ex);
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
-      return new List<Group>();
+      log(ex.toString());
+      throw Exception(ex);
     }
   }
 
@@ -55,13 +52,12 @@ class GroupMessageService {
         where: "id = ?",
         whereArgs: [id],
       );
-      print("Grupo de Mensagem removida com sucesso: $id");
+      log("Grupo de Mensagem removida com sucesso: $id");
     } catch (ex) {
-      print("<--------------------------");
-      print("Erro ao deletar usuário: $ex");
-      print("<--------------------------");
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
-      return;
+      log("<--------------------------");
+      log("Erro ao deletar usuário: $ex");
+      log("<--------------------------");
+      throw Exception(ex);
     }
   }
 }

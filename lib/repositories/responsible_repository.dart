@@ -1,38 +1,35 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
 import 'package:http/http.dart' as http;
-import 'package:sme_app_aluno/interfaces/responsible_repository_interface.dart';
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+
+import '../interfaces/responsible_repository_interface.dart';
+import '../stores/index.dart';
+import '../utils/app_config_reader.dart';
 
 class ResponsibleRepository implements IResponsibleRepository {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   @override
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
-    // Autenticacao/usuario/responsavel?cpf=40861153871
     try {
+      final url =
+          Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario.cpf}');
       final response = await http.get(
-        "${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario.cpf}",
-        headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
-          "Content-Type": "application/json"
-        },
+        url,
+        headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}', 'Content-Type': 'application/json'},
       );
 
-      print(
-          "Request: ${response.statusCode} - ${response.request} | ${response.body} ");
+      log('Request: ${response.statusCode} - ${response.request} | ${response.body} ');
 
       if (response.statusCode == 200) {
-        return response.body == "true" ? true : false;
+        return response.body == 'true' ? true : false;
       } else {
-        return true;
+        return false;
       }
     } catch (error, stacktrace) {
-      print("Erro ao verificar se resposável tem aluno: " +
-          stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: error);
-      return true;
+      log('Erro ao verificar se resposável tem aluno: $stacktrace');
+      return false;
     }
   }
 }
