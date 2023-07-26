@@ -117,19 +117,17 @@ class CardCalendar extends StatelessWidget {
                     top: screenHeight * 1.5,
                     bottom: screenHeight * 1.5,
                   ),
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        AutoSizeText(
-                          totalEventos,
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: const TextStyle(fontWeight: FontWeight.w500, color: Color(0xffCDCDCD)),
-                        ),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      AutoSizeText(
+                        totalEventos,
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: const TextStyle(fontWeight: FontWeight.w500, color: Color(0xffCDCDCD)),
+                      ),
+                    ],
                   ),
                 ),
                 Container(

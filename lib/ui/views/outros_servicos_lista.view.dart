@@ -54,7 +54,7 @@ class OutrosServicosListaState extends State<OutrosServicosLista> {
                   ),
                   subtitle: Text(servico.descricao),
                   onTap: () {
-                    launchUrl(servico.urlSite);
+                    launchUrl(Uri.parse(servico.urlSite));
                   },
                 ),
               );
