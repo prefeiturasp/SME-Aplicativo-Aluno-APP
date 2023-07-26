@@ -57,7 +57,7 @@ class ListEventsState extends State<ListEvents> {
             title: event.nome,
           ),
           titleEvent: event.nome,
-          desc: event.descricao != null ? (event.descricao.length > 3 ? true : false) : false,
+          desc: event.descricao.isNotEmpty ? (event.descricao.length > 3 ? true : false) : false,
           eventDesc: event.descricao,
           dia: event.dataInicio,
           tipoEvento: event.tipoEvento,
@@ -99,7 +99,7 @@ class ListEventsState extends State<ListEvents> {
                       border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5)),
                     ),
                     child: EAEstudanteInfo(
-                      nome: widget.student.nomeSocial ?? widget.student.nome,
+                      nome: widget.student.nomeSocial,
                       ue: widget.student.escola,
                       tipoEscola: widget.student.descricaoTipoEscola,
                       dre: widget.student.siglaDre,
@@ -267,36 +267,34 @@ class ListEventsState extends State<ListEvents> {
   Widget legenda(String nomeLegenda, Color corLegenda) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: corLegenda,
-              borderRadius: BorderRadius.all(
-                Radius.circular(screenHeight * 2),
-              ),
-            ),
-            width: screenHeight * 2.5,
-            height: screenHeight * 2.5,
-            margin: EdgeInsets.only(bottom: screenHeight * 0.5, top: screenHeight * 0.5),
-          ),
-          SizedBox(
-            width: screenHeight * 1,
-          ),
-          AutoSizeText(
-            nomeLegenda,
-            maxFontSize: 18,
-            minFontSize: 16,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: Colors.black,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: corLegenda,
+            borderRadius: BorderRadius.all(
+              Radius.circular(screenHeight * 2),
             ),
           ),
-        ],
-      ),
+          width: screenHeight * 2.5,
+          height: screenHeight * 2.5,
+          margin: EdgeInsets.only(bottom: screenHeight * 0.5, top: screenHeight * 0.5),
+        ),
+        SizedBox(
+          width: screenHeight * 1,
+        ),
+        AutoSizeText(
+          nomeLegenda,
+          maxFontSize: 18,
+          minFontSize: 16,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -46,14 +46,14 @@ class DrawerMenuState extends State<DrawerMenu> {
     super.initState();
   }
 
-  _loadingBackRecentMessage() {
+  void loadingBackRecentMessage() {
     _messagesController.loadMessages(
       widget.estudante.codigoEol,
       usuarioStore.usuario.id,
     );
   }
 
-  navigateToListMessages(BuildContext context) async {
+  void navigateToListMessages(BuildContext context) async {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -63,11 +63,11 @@ class DrawerMenuState extends State<DrawerMenu> {
           codigoAlunoEol: widget.estudante.codigoEol,
         ),
       ),
-    ).whenComplete(() => _loadingBackRecentMessage());
+    ).whenComplete(() => loadingBackRecentMessage());
   }
 
-  navigateToListStudents(BuildContext context) async {
-    if (usuarioStore.usuario != null) {
+  void navigateToListStudents(BuildContext context) async {
+    if (usuarioStore.usuario.nome.isNotEmpty) {
       Nav.push(context, const EstudanteListaView());
     } else {
       Navigator.pushReplacement(
@@ -81,8 +81,8 @@ class DrawerMenuState extends State<DrawerMenu> {
     }
   }
 
-  _navigateToTerms(BuildContext context) {
-    Nav.push(context, TermsUse());
+  void navigateToTerms(BuildContext context) {
+    Nav.push(context, const TermsUse());
   }
 
   @override
@@ -118,7 +118,7 @@ class DrawerMenuState extends State<DrawerMenu> {
                   ),
                   Observer(
                     builder: (context) {
-                      if (usuarioStore.usuario != null) {
+                      if (usuarioStore.usuario.nome.isNotEmpty) {
                         return AutoSizeText(
                           usuarioStore.usuario.nome,
                           maxFontSize: 16,
@@ -205,7 +205,7 @@ class DrawerMenuState extends State<DrawerMenu> {
             leading: CircleAvatar(
               backgroundColor: const Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.calendarAlt,
+                FontAwesomeIcons.calendarDays,
                 color: Colors.white,
                 size: screenHeight * 2,
               ),
@@ -225,16 +225,18 @@ class DrawerMenuState extends State<DrawerMenu> {
             leading: CircleAvatar(
               backgroundColor: const Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.slidersH,
+                FontAwesomeIcons.sliders,
                 color: Colors.white,
                 size: screenHeight * 2,
               ),
             ),
             onTap: () async {
               await usuarioController.obterDadosUsuario();
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const MeusDadosView()),
-              );
+              if (context.mounted) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MeusDadosView()),
+                );
+              }
             },
           ),
           const Divider(),
@@ -243,13 +245,13 @@ class DrawerMenuState extends State<DrawerMenu> {
             leading: CircleAvatar(
               backgroundColor: const Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.fileAlt,
+                FontAwesomeIcons.fileLines,
                 color: Colors.white,
                 size: screenHeight * 2,
               ),
             ),
             onTap: () {
-              _navigateToTerms(context);
+              navigateToTerms(context);
             },
           ),
           const Divider(),
@@ -278,7 +280,7 @@ class DrawerMenuState extends State<DrawerMenu> {
             leading: CircleAvatar(
               backgroundColor: const Color(0xffEA9200),
               child: Icon(
-                FontAwesomeIcons.signOutAlt,
+                FontAwesomeIcons.rightFromBracket,
                 color: Colors.white,
                 size: screenHeight * 2,
               ),

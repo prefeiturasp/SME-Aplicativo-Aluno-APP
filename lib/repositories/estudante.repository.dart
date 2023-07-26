@@ -53,7 +53,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       log('Erro ao carregar lista de Bimestres disponíveis $stacktrace');
-      throw Exception(e);
+      return List<ComponenteCurricularDTO>() = [];
     }
   }
 
@@ -69,7 +69,7 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       log('Erro ao carregar lista de Bimestres disponíveis $stacktrace');
-      throw Exception(e);
+      return [];
     }
   }
 }

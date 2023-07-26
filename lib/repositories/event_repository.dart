@@ -1,37 +1,32 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 
 import '../interfaces/event_repository_interface.dart';
-import '../models/event/event.dart' as EventModel;
+import '../models/event/event.dart' as eventmodel;
+import '../services/api.service.dart';
 import '../stores/index.dart';
-import '../utils/app_config_reader.dart';
 
 class EventRepository extends IEventRepository {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final api = GetIt.I.get<ApiService>();
 
   @override
-  Future<List<EventModel.Event>> fetchEvent(int codigoAluno, int mes, int ano, int userId) async {
+  Future<List<eventmodel.Event>> fetchEvent(int codigoAluno, int mes, int ano, int userId) async {
     try {
-      final url = Uri.parse(
-        '${AppConfigReader.getApiHost()}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}',
-      );
-      final response = await http.get(
-        url,
-        headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}', 'Content-Type': 'application/json'},
-      );
+      final List<eventmodel.Event> retorno = [];
+      final response = await api.dio.get('/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}');
       if (response.statusCode == 200) {
-        List<dynamic> eventResponse = jsonDecode(response.body);
-        final eventos = eventResponse.map((m) => EventModel.Event.fromJson(m)).toList();
-        return eventos;
+        for (var i = 0; i < response.data.length; i++) {
+          retorno.add(eventmodel.Event.fromMap(response.data[i]));
+        }
+        return retorno;
       } else {
-        log('Erro ao obter dados');
-        return [];
+        log('Erro ao obter eventos ${response.statusCode}');
+        return retorno;
       }
     } catch (e) {
-      log('$e');
+      log('Erro ao obter eventos $e');
       return [];
     }
   }

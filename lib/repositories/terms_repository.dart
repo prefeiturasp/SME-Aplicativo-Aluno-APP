@@ -1,20 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
-import 'package:sme_app_aluno/models/index.dart';
-import 'package:sme_app_aluno/models/terms/term.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+
+import '../interfaces/terms_repository_interface.dart';
+import '../models/terms/term.dart';
+import '../services/api.service.dart';
+import '../utils/app_config_reader.dart';
 
 class TermsRepository extends ITermsRepository {
+  final api = GetIt.I.get<ApiService>();
   @override
   Future<Term> fetchTerms(String cpf) async {
     try {
-      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
-      var response = await http.get(url);
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf');
+      final response = await http.get(url);
       if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
+        final decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
         return termo;
       } else if (response.statusCode == 204) {
@@ -30,48 +33,43 @@ class TermsRepository extends ITermsRepository {
   }
 
   @override
-  Future<dynamic> fetchTermsCurrentUser() async {
+  Future<Term> fetchTermsCurrentUser() async {
     try {
-      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
-      var response = await http.get(url);
+      final response = await api.dio.get('/TermosDeUso/logado');
       if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
-        final termo = Term.fromJson(decodeJson);
+        final termo = Term.fromMap(response.data);
         return termo;
-      } else if (response.statusCode == 204) {
-        return true;
-      } else if (response.statusCode == 408) {
-        return UsuarioDataModel(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: UsuarioModel.clear());
       } else {
-        log('Erro ao obter dados');
-        throw Exception(response.reasonPhrase);
+        log('Erro ao obter dados fetchTermsCurrentUser');
+        return Term.clear();
       }
     } catch (e) {
-      log('$e');
-      throw Exception(e);
+      log('Erro ao obter dados fetchTermsCurrentUser $e');
+      return Term.clear();
     }
   }
 
   @override
   Future<bool> registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
-    Map data = {
-      "termoDeUsoId": termoDeUsoId,
-      "cpfUsuario": cpf,
-      "device": device,
-      "ip": ip,
-      "versao": versao,
+    final Map data = {
+      'termoDeUsoId': termoDeUsoId,
+      'cpfUsuario': cpf,
+      'device': device,
+      'ip': ip,
+      'versao': versao,
     };
 
-    var body = json.encode(data);
+    final body = json.encode(data);
 
     try {
-      var url = Uri.parse("${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite");
-      var response = await http.post(url,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: body);
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
       } else {

@@ -1,5 +1,7 @@
 class MensagemSistema {
   static const String avisoErroInterno = 'Ocorreu um erro interno. Favor contatar o Suporte';
+  static const String semDadosParaExibir = 'Sem Dados Para Exibir';
+  static const String labelFrequencia = 'Frequência global do estudante';
   static const String avisoSolicitacaoRaa =
       'Em breve o Relatório de Acompanhamento de Aprendizagem(RAA) estará disponível para download. Quando isso acontecer, avisaremos através de uma notificação';
   static const String avisoSolicitacaoBoletim =
@@ -19,6 +21,7 @@ class MensagemSistema {
   static const String menuLabelNaoCarregado = 'Não carregado';
   static const String caminhoImagemUsuario = 'assets/images/avatar_estudante.png';
   static const String labelBotaoGerarRelatorio = 'GERAR RELATÓRIO';
+  static const String labelBotaoEntendi = 'ENTENDI';
   static const String labelBotaoGerarPDF = 'GERAR PDF';
   static const String textoTelaSolicitacaoRaa =
       'Clique no botão abaixo para gerar o Relatório de Acompanhamento de Aprendizagem(RAA).';

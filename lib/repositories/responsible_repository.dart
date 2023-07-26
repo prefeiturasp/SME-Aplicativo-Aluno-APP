@@ -29,7 +29,7 @@ class ResponsibleRepository implements IResponsibleRepository {
       }
     } catch (error, stacktrace) {
       log('Erro ao verificar se resposável tem aluno: $stacktrace');
-      throw Exception(error);
+      return false;
     }
   }
 }

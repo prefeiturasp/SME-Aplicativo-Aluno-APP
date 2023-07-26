@@ -376,9 +376,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                               child: TextFormField(
                                 controller: _emailCtrl,
                                 style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {});
-                                },
+                                onChanged: (value) {},
                                 decoration: const InputDecoration(
                                   labelText: 'E-mail do responsável',
                                   labelStyle: TextStyle(color: Color(0xff8e8e8e)),

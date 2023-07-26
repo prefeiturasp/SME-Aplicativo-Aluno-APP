@@ -239,34 +239,18 @@ class ExpansionState extends State<Expansion> {
                       color: Colors.black,
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  EADefaultButton(
+                    text: MensagemSistema.labelBotaoEntendi,
+                    iconColor: Colors.white,
+                    btnColor: const Color(0xffffd037),
+                    enabled: true,
+                    styleAutoSize: const TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
+                    onPress: () {
                       Navigator.of(context).pop();
                     },
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          side: const BorderSide(
-                            color: Color(0xffd06d12),
-                            width: 1,
-                            style: BorderStyle.solid,
-                          ),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        AutoSizeText(
-                          'ENTENDI',
-                          maxFontSize: 13,
-                          minFontSize: 11,
-                          style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -380,53 +364,6 @@ class ExpansionState extends State<Expansion> {
                 }
               },
             )
-          /*
-          ElevatedButton(
-              onPressed: () async {
-                ocultarButao();
-                final solicitacao = await _solicitarRelatorioRaa();
-                if (solicitacao) {
-                  exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.avisoSolicitacaoRaa);
-                } else {
-                  exibirBotao();
-                  _modalInfo(screenHeight, MensagemSistema.avisoErroInterno);
-                }
-              },
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    side: const BorderSide(
-                      color: Color(0xffd06d12),
-                      width: 1,
-                      style: BorderStyle.solid,
-                    ),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const AutoSizeText(
-                    MensagemSistema.labelBotaoGerarRelatorio,
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    style: TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(
-                    width: screenHeight * 3,
-                  ),
-                  Icon(
-                    FontAwesomeIcons.penToSquare,
-                    color: const Color(0xffffd037),
-                    size: screenHeight * 3,
-                  )
-                ],
-              ),
-            )
-            */
           : const SizedBox();
     } else {
       return const SizedBox();

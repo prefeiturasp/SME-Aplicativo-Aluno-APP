@@ -35,14 +35,14 @@ class Event {
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
-      nome: map['nome'] as String,
-      descricao: map['descricao'] as String,
-      diaSemana: map['diaSemana'] as String,
-      dataInicio: map['dataInicio'] as String,
-      dataFim: map['dataFim'] as String,
-      tipoEvento: map['tipoEvento'] as int,
-      anoLetivo: map['anoLetivo'] as int,
-      componenteCurricular: map['componenteCurricular'] as String,
+      nome: map['nome'] ?? '',
+      descricao: map['descricao'] ?? '',
+      diaSemana: map['diaSemana'] ?? '',
+      dataInicio: map['dataInicio'] ?? '',
+      dataFim: map['dataFim'] ?? '',
+      tipoEvento: map['tipoEvento'] ?? 0,
+      anoLetivo: map['anoLetivo'] ?? 0,
+      componenteCurricular: map['componenteCurricular'] ?? '',
     );
   }
 

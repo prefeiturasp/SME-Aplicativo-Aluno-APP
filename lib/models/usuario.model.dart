@@ -79,18 +79,18 @@ class UsuarioModel {
 
   factory UsuarioModel.fromMap(Map<String, dynamic> map) {
     final usr = UsuarioModel(
-      id: map['id'] as int,
-      nome: map['nome'] as String,
-      nomeMae: map['nomeMae'] as String,
-      cpf: map['cpf'] as String,
-      email: map['email'] as String,
-      token: map['token'] as String,
-      primeiroAcesso: map['primeiroAcesso'] as bool,
-      atualizarDadosCadastrais: map['atualizarDadosCadastrais'] as bool,
-      celular: map['celular'] as String,
+      id: map['id'] ?? 0,
+      nome: map['nome'] ?? '',
+      nomeMae: map['nomeMae'] ?? '',
+      cpf: map['cpf'] ?? '',
+      email: map['email'] ?? '',
+      token: map['token'] ?? '',
+      primeiroAcesso: map['primeiroAcesso'] ?? false,
+      atualizarDadosCadastrais: map['atualizarDadosCadastrais'] ?? false,
+      celular: map['celular'] ?? '',
       dataNascimento: DateTime.parse(map['dataNascimento']),
       ultimaAtualizacao: DateTime.parse(map['ultimaAtualizacao']),
-      senha: map['senha'],
+      senha: map['senha'] ?? '',
     );
     return usr;
   }
@@ -138,7 +138,7 @@ class UsuarioModel {
         senha.hashCode;
   }
 
-  clear() {
+  void clear() {
     id = 0;
     nome = '';
     nomeMae = '';

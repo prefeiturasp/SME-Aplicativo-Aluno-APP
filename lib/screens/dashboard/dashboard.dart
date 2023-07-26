@@ -55,7 +55,6 @@ class DashboardState extends State<Dashboard> {
   }
 
   void loadingBackRecentMessage() async {
-    setState(() {});
     _messagesController.loadMessages(widget.estudante.codigoEol, widget.userId);
   }
 
@@ -158,7 +157,7 @@ class DashboardState extends State<Dashboard> {
                 title: events[i].nome,
               ),
               titleEvent: events[i].nome,
-              desc: events[i].descricao != null ? (events[i].descricao.length > 3 ? true : false) : false,
+              desc: events[i].descricao.isNotEmpty ? (events[i].descricao.length > 3 ? true : false) : false,
               eventDesc: events[i].descricao,
               dia: events[i].dataInicio,
               tipoEvento: events[i].tipoEvento,

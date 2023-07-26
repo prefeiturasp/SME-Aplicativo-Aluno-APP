@@ -35,15 +35,14 @@ class ListMessageState extends State<ListMessages> {
   @override
   void initState() {
     super.initState();
-    _loadingMessages();
+    loadingMessages();
   }
 
-  _loadingMessages() {
-    setState(() {});
+  void loadingMessages() {
     _messagesController.loadMessages(widget.codigoAlunoEol, widget.userId);
   }
 
-  Future<bool> _confirmDeleteMessage(int id) async {
+  Future<bool> confirmDeleteMessage(int id) async {
     bool retorno = false;
     showDialog(
       context: context,
@@ -55,7 +54,7 @@ class ListMessageState extends State<ListMessages> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                _removeMesageToStorage(
+                removeMesageToStorage(
                   widget.codigoAlunoEol,
                   id,
                   widget.userId,
@@ -79,21 +78,21 @@ class ListMessageState extends State<ListMessages> {
     return retorno;
   }
 
-  _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
+  Future<void> removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
     await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
-  _navigateToMessage(BuildContext context, Message message) {
+  void navigateToMessage(BuildContext context, Message message) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) =>
             ViewMessage(userId: widget.userId, message: message, codigoAlunoEol: widget.codigoAlunoEol),
       ),
-    ).whenComplete(() => _loadingMessages());
+    ).whenComplete(() => loadingMessages());
   }
 
-  Widget _listCardsMessages(
+  Widget listCardsMessages(
     List<Message> messages,
     BuildContext context,
     double screenHeight,
@@ -105,7 +104,7 @@ class ListMessageState extends State<ListMessages> {
           .map(
             (item) => GestureDetector(
               onTap: () {
-                _navigateToMessage(context, item);
+                navigateToMessage(context, item);
               },
               child: CardMessage(
                 headerTitle: item.categoriaNotificacao,
@@ -154,7 +153,7 @@ class ListMessageState extends State<ListMessages> {
                     visible: item.mensagemVisualizada,
                     child: GestureDetector(
                       onTap: () async {
-                        await _confirmDeleteMessage(item.id);
+                        await confirmDeleteMessage(item.id);
                       },
                       child: Container(
                         width: screenHeight * 6,
@@ -166,7 +165,7 @@ class ListMessageState extends State<ListMessages> {
                           ),
                         ),
                         child: Icon(
-                          FontAwesomeIcons.trashAlt,
+                          FontAwesomeIcons.trashCan,
                           color: const Color(0xffC65D00),
                           size: screenHeight * 2.5,
                         ),
@@ -174,48 +173,46 @@ class ListMessageState extends State<ListMessages> {
                     ),
                   ),
                   Container(
-                    child: Container(
-                      height: screenHeight * 6,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xffC65D00), width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(screenHeight * 3),
-                        ),
+                    height: screenHeight * 6,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xffC65D00), width: 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(screenHeight * 3),
                       ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => ViewMessage(
-                                    message: item,
-                                    codigoAlunoEol: widget.codigoAlunoEol,
-                                    userId: widget.userId,
-                                  ),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => ViewMessage(
+                                  message: item,
+                                  codigoAlunoEol: widget.codigoAlunoEol,
+                                  userId: widget.userId,
                                 ),
-                              )
-                              .whenComplete(() => _loadingMessages());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            const AutoSizeText(
-                              'LER MENSAGEM',
-                              maxFontSize: 16,
-                              minFontSize: 14,
-                              style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(
-                              width: screenHeight * 2,
-                            ),
-                            const Icon(
-                              FontAwesomeIcons.envelopeOpen,
-                              color: Color(0xffffd037),
-                              size: 16,
+                              ),
                             )
-                          ],
-                        ),
+                            .whenComplete(() => loadingMessages());
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          const AutoSizeText(
+                            'LER MENSAGEM',
+                            maxFontSize: 16,
+                            minFontSize: 14,
+                            style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            width: screenHeight * 2,
+                          ),
+                          const Icon(
+                            FontAwesomeIcons.envelopeOpen,
+                            color: Color(0xffffd037),
+                            size: 16,
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -227,7 +224,7 @@ class ListMessageState extends State<ListMessages> {
     );
   }
 
-  Widget _buildListMessages(BuildContext context, double screenHeight) {
+  Widget buildListMessages(BuildContext context, double screenHeight) {
     return Observer(
       builder: (context) {
         if (_messagesController.isLoading) {
@@ -275,7 +272,7 @@ class ListMessageState extends State<ListMessages> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _navigateToMessage(context, _messagesController.messages.first);
+                    //navigateToMessage(context, _messagesController.messages.first);
                   },
                   child: CardMessage(
                     headerTitle: _messagesController.messages.first.categoriaNotificacao,
@@ -327,8 +324,8 @@ class ListMessageState extends State<ListMessages> {
                         visible: _messagesController.messages.first.mensagemVisualizada,
                         child: GestureDetector(
                           onTap: () async {
-                            await _confirmDeleteMessage(_messagesController.messages.first.id)
-                                .whenComplete(() => _loadingMessages());
+                            await confirmDeleteMessage(_messagesController.messages.first.id)
+                                .whenComplete(() => loadingMessages());
                           },
                           child: Container(
                             width: screenHeight * 6,
@@ -340,43 +337,41 @@ class ListMessageState extends State<ListMessages> {
                               ),
                             ),
                             child: const Icon(
-                              FontAwesomeIcons.trashAlt,
+                              FontAwesomeIcons.trashCan,
                               color: Color(0xffC65D00),
                             ),
                           ),
                         ),
                       ),
                       Container(
-                        child: Container(
-                          height: screenHeight * 6,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffC65D00), width: 1),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(screenHeight * 3),
-                            ),
+                        height: screenHeight * 6,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffC65D00), width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(screenHeight * 3),
                           ),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _navigateToMessage(context, _messagesController.messages.first);
-                            },
-                            child: Row(
-                              children: <Widget>[
-                                const AutoSizeText(
-                                  'LER MENSAGEM',
-                                  maxFontSize: 16,
-                                  minFontSize: 14,
-                                  style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                                ),
-                                SizedBox(
-                                  width: screenHeight * 2,
-                                ),
-                                const Icon(
-                                  FontAwesomeIcons.envelopeOpen,
-                                  color: Color(0xffffd037),
-                                  size: 16,
-                                )
-                              ],
-                            ),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            navigateToMessage(context, _messagesController.messages.first);
+                          },
+                          child: Row(
+                            children: <Widget>[
+                              const AutoSizeText(
+                                'LER MENSAGEM',
+                                maxFontSize: 16,
+                                minFontSize: 14,
+                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: screenHeight * 2,
+                              ),
+                              const Icon(
+                                FontAwesomeIcons.envelopeOpen,
+                                color: Color(0xffffd037),
+                                size: 16,
+                              )
+                            ],
                           ),
                         ),
                       ),
@@ -467,7 +462,7 @@ class ListMessageState extends State<ListMessages> {
                   builder: (context) {
                     // !dreCheck && !smeCheck && !ueCheck
                     if (_messagesController.filteredList.isNotEmpty) {
-                      return _listCardsMessages(_messagesController.filteredList, context, screenHeight);
+                      return listCardsMessages(_messagesController.filteredList, context, screenHeight);
                     } else if (!dreCheck && !smeCheck && !ueCheck) {
                       return Container(
                         padding: EdgeInsets.all(screenHeight * 2.5),
@@ -540,7 +535,7 @@ class ListMessageState extends State<ListMessages> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildListMessages(context, screenHeight),
+                  buildListMessages(context, screenHeight),
                 ],
               ),
             ),
