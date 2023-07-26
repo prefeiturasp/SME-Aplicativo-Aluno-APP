@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sme_app_aluno/models/outros_servicos/outro_servico.model.dart';
 import 'package:sme_app_aluno/repositories/outros_servicos_repository.dart';
@@ -28,8 +30,7 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
               elements: snapshot.data.toList(),
               groupBy: (servico) => servico.categoria,
               groupComparator: (value2, value1) => value1.compareTo(value2),
-              itemComparator: (item2, item1) =>
-                  item1.titulo.compareTo(item2.titulo),
+              itemComparator: (item2, item1) => item1.titulo.compareTo(item2.titulo),
               order: GroupedListOrder.DESC,
               useStickyGroupSeparators: true,
               groupSeparatorBuilder: (String value) => Padding(
@@ -43,12 +44,10 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
               itemBuilder: (c, servico) {
                 return Card(
                   elevation: 8.0,
-                  margin:
-                      new EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
+                  margin: new EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
                   child: ListTile(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    leading: Image.network(servico.icone),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    leading: obterIcone(servico),
                     title: Text(
                       servico.titulo,
                       style: TextStyle(
@@ -66,6 +65,16 @@ class _OutrosServicosListaState extends State<OutrosServicosLista> {
           },
         ),
       ),
+    );
+  }
+
+  Image obterIcone(servico) {
+    return Image.network(
+      servico.icone,
+      fit: BoxFit.cover,
+      errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+        return Image.asset("assets/images/icone_erro.png");
+      },
     );
   }
 }

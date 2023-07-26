@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:sme_app_aluno/interfaces/authenticate_repository_interface.dart';
@@ -10,7 +11,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
   @override
   Future<UsuarioDataModel> loginUser(String cpf, String password) async {
-    String idDevice;
+    String idDevice = '';
 
     idDevice = await _firebaseMessaging.getToken();
 
@@ -38,15 +39,14 @@ class AuthenticateRepository implements IAuthenticateRepository {
         var user = UsuarioDataModel.fromJson(decodeJson);
         return user;
       } else if (response.statusCode == 408) {
-        return UsuarioDataModel(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
+        return UsuarioDataModel(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
         var decodeError = jsonDecode(response.body);
         var dataError = UsuarioDataModel.fromJson(decodeError);
         return dataError;
       }
     } catch (error, stacktrace) {
-      print("Erro ao tentar se autenticar " + stacktrace.toString());
+      log("Erro ao tentar se autenticar " + stacktrace.toString());
       return null;
     }
   }

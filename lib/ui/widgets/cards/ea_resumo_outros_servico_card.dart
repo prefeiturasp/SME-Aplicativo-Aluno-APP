@@ -10,12 +10,10 @@ class EAResumoOutrosServicosCard extends StatefulWidget {
   EAResumoOutrosServicosCard();
 
   @override
-  _EAResumoOutrosServicosCardState createState() =>
-      _EAResumoOutrosServicosCardState();
+  _EAResumoOutrosServicosCardState createState() => _EAResumoOutrosServicosCardState();
 }
 
-class _EAResumoOutrosServicosCardState
-    extends State<EAResumoOutrosServicosCard> {
+class _EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> {
   @override
   Widget build(BuildContext context) {
     var outroServicosRepository = OutrosServicosRepository();
@@ -128,9 +126,7 @@ class _EAResumoOutrosServicosCardState
                             "MAIS SERVIÇOS",
                             maxFontSize: 16,
                             minFontSize: 14,
-                            style: TextStyle(
-                                color: Color(0xffC65D00),
-                                fontWeight: FontWeight.w700),
+                            style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
                           ),
                           SizedBox(
                             width: screenHeight * 3,
@@ -155,8 +151,7 @@ class _EAResumoOutrosServicosCardState
 class OutrosLinksInfoWidget extends StatelessWidget {
   final double screenHeight;
   final OutroServicoModel outroServicoModel;
-  const OutrosLinksInfoWidget(
-      {Key key, @required this.screenHeight, @required this.outroServicoModel})
+  const OutrosLinksInfoWidget({Key key, @required this.screenHeight, @required this.outroServicoModel})
       : super(key: key);
 
   @override
@@ -173,12 +168,7 @@ class OutrosLinksInfoWidget extends StatelessWidget {
                 top: screenHeight * 0.5,
               ),
               child: ClipRect(
-                child: Image.network(
-                  outroServicoModel.icone,
-                  width: screenHeight * 9,
-                  height: screenHeight * 9,
-                  fit: BoxFit.cover,
-                ),
+                child: obterIcone(),
               ),
             ),
             onTap: () => launch(outroServicoModel.urlSite),
@@ -196,6 +186,23 @@ class OutrosLinksInfoWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Image obterIcone() {
+    return Image.network(
+      outroServicoModel.icone,
+      width: screenHeight * 9,
+      height: screenHeight * 9,
+      fit: BoxFit.cover,
+      errorBuilder: (BuildContext context, Object exception, StackTrace stackTrace) {
+        return Image.asset(
+          "assets/images/icone_erro.png",
+          width: screenHeight * 9,
+          height: screenHeight * 9,
+          fit: BoxFit.cover,
+        );
+      },
     );
   }
 }
