@@ -155,11 +155,16 @@ class EventItem extends StatelessWidget {
       );
     }
 
-    return Container(
-      padding: EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
-      child: SizedBox(
-        height: screenHeight * 3,
-        child: InkWell(
+    return InkWell(
+      onTap: () {
+        if (tipoEvento == 0) {
+          viewEvent();
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
+        child: SizedBox(
+          height: screenHeight * 3,
           child: ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,8 +172,7 @@ class EventItem extends StatelessWidget {
                 Flexible(
                   child: Wrap(
                     children: [
-                      // ignore: sized_box_for_whitespace
-                      Container(
+                      SizedBox(
                         width: (size.width / 1.75),
                         child: customTitle,
                       )
@@ -177,7 +181,7 @@ class EventItem extends StatelessWidget {
                 ),
                 tipoEvento == 0
                     ? Icon(
-                        FontAwesomeIcons.solidNoteSticky,
+                        FontAwesomeIcons.tractor,
                         color: const Color(0xFF086397),
                         size: screenHeight * 2.2,
                       )
@@ -202,11 +206,6 @@ class EventItem extends StatelessWidget {
               ),
             ),
           ),
-          onTap: () {
-            if (tipoEvento == 0) {
-              viewEvent();
-            }
-          },
         ),
       ),
     );

@@ -274,7 +274,7 @@ class DashboardState extends State<Dashboard> {
                     } else {
                       if (_eventController.priorityEvents != null) {
                         return CardCalendar(
-                          heightContainer: screenHeight * 48,
+                          heightContainer: screenHeight * 35,
                           title: 'AGENDA',
                           month: _eventController.currentMonth,
                           totalEventos: '${_eventController.events!.length} evento(s) esse mês',

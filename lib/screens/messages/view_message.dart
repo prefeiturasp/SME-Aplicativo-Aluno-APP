@@ -327,67 +327,63 @@ class ViewMessageState extends State<ViewMessage> {
                   ],
                   footer: true,
                   footerContent: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          EAIconButton(
+                    Row(
+                      children: <Widget>[
+                        EAIconButton(
+                          iconBtn: const Icon(
+                            FontAwesomeIcons.trashCan,
+                            color: Color(0xffC65D00),
+                          ),
+                          screenHeight: screenHeight,
+                          onPress: () => _confirmDeleteMessage(widget.message.id),
+                        ),
+                        SizedBox(
+                          width: screenHeight * 2,
+                        ),
+                        Visibility(
+                          visible: messageIsRead,
+                          child: EAIconButton(
                             iconBtn: const Icon(
-                              FontAwesomeIcons.trashCan,
+                              FontAwesomeIcons.envelope,
                               color: Color(0xffC65D00),
                             ),
                             screenHeight: screenHeight,
-                            onPress: () => _confirmDeleteMessage(widget.message.id),
-                          ),
-                          SizedBox(
-                            width: screenHeight * 2,
-                          ),
-                          Visibility(
-                            visible: messageIsRead,
-                            child: EAIconButton(
-                              iconBtn: const Icon(
-                                FontAwesomeIcons.envelope,
-                                color: Color(0xffC65D00),
-                              ),
-                              screenHeight: screenHeight,
-                              onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Container(
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
+                            onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey),
                           ),
                         ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              const AutoSizeText(
-                                'VOLTAR',
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: screenHeight * 1,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.angleLeft,
-                                color: const Color(0xffffd037),
-                                size: screenHeight * 4,
-                              )
-                            ],
-                          ),
+                      ],
+                    ),
+                    Container(
+                      height: screenHeight * 6,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: const Color(0xffC65D00), width: 1),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenHeight * 3),
+                        ),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            const AutoSizeText(
+                              'VOLTAR',
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              width: screenHeight * 1,
+                            ),
+                            Icon(
+                              FontAwesomeIcons.angleLeft,
+                              color: const Color(0xffffd037),
+                              size: screenHeight * 4,
+                            )
+                          ],
                         ),
                       ),
                     ),

@@ -29,7 +29,7 @@ class EADefaultButton extends StatelessWidget {
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: screenHeight * 6,
+      height: screenHeight * 5.23,
       decoration: BoxDecoration(
         color: !enabled ? const Color(0xffF2F1EE) : btnColor,
         borderRadius: BorderRadius.circular(screenHeight * 3),
@@ -56,8 +56,8 @@ class EADefaultButton extends StatelessWidget {
     return <Widget>[
       AutoSizeText(
         text,
-        maxFontSize: 16,
-        minFontSize: 14,
+        maxFontSize: 18,
+        minFontSize: 16,
         style: styleAutoSize ??
             TextStyle(color: !enabled ? const Color(0xffC4C4C4) : Colors.white, fontWeight: FontWeight.w700),
       ),
