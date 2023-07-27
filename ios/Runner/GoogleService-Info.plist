@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>972840924389-7cku7v6ttvtp16k5ne6c1upacauvo2l9.apps.googleusercontent.com</string>
+	<string>862361861343-lb8gnof70rqr4b807bbo8mmml96ljq47.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.972840924389-7cku7v6ttvtp16k5ne6c1upacauvo2l9</string>
+	<string>com.googleusercontent.apps.862361861343-lb8gnof70rqr4b807bbo8mmml96ljq47</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC8hkJu1Lq3NRNdLUH8kU9j_iJlEFbVO_I</string>
+	<string>AIzaSyC7daWYzRKOl9d_Yn_c9YeZO0QPgvKqPow</string>
 	<key>GCM_SENDER_ID</key>
-	<string>972840924389</string>
+	<string>862361861343</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.smeAppAluno</string>
+	<string>br.gov.sp.prefeitura.sme.appaluno</string>
 	<key>PROJECT_ID</key>
-	<string>sme-app-aluno</string>
+	<string>app-escolaaqui-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sme-app-aluno.appspot.com</string>
+	<string>app-escolaaqui-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:972840924389:ios:26df45ff57b519c74f100c</string>
+	<string>1:862361861343:ios:2125457553d8d62c57bd6a</string>
 </dict>
 </plist>

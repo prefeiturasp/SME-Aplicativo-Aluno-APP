@@ -1,55 +1,50 @@
 import 'package:mobx/mobx.dart';
-import 'package:sme_app_aluno/models/change_email_and_phone/data_change_email_and_phone.dart';
-import 'package:sme_app_aluno/models/first_access/data.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/repositories/first_access_repository.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
+
+import '../../models/change_email_and_phone/data_change_email_and_phone.dart';
+import '../../models/first_access/data.dart';
+import '../../models/user/user.dart';
+import '../../repositories/first_access_repository.dart';
+import '../../services/user.service.dart';
 
 part 'first_access.controller.g.dart';
 
-class FirstAccessController = _FirstAccessControllerBase
-    with _$FirstAccessController;
+class FirstAccessController = FirstAccessControllerBase with _$FirstAccessController;
 
-abstract class _FirstAccessControllerBase with Store {
-  FirstAccessRepository _firstAccessRepository;
+abstract class FirstAccessControllerBase with Store {
+  final FirstAccessRepository firstAccessRepository = FirstAccessRepository();
   final UserService _userService = UserService();
-  _FirstAccessControllerBase() {
-    _firstAccessRepository = FirstAccessRepository();
-  }
 
   @observable
-  Data data;
+  Data? data;
 
   @observable
-  DataChangeEmailAndPhone dataEmailOrPhone;
+  DataChangeEmailAndPhone dataEmailOrPhone = DataChangeEmailAndPhone();
 
   bool isLoading = false;
 
   @observable
-  String currentEmail;
+  String currentEmail = '';
 
   @observable
-  String currentPhone;
+  String currentPhone = '';
 
   @action
-  changeNewPassword(int id, String password) async {
+  Future<void> changeNewPassword(int id, String password) async {
     isLoading = true;
-    data = await _firstAccessRepository.changeNewPassword(id, password);
+    data = await firstAccessRepository.changeNewPassword(id, password);
     isLoading = false;
   }
 
   @action
-  changeEmailAndPhone(
-      String email, String phone, int userId, bool changePassword) async {
+  Future<void> changeEmailAndPhone(String email, String phone, int userId, bool changePassword) async {
     isLoading = true;
-    dataEmailOrPhone = await _firstAccessRepository.changeEmailAndPhone(
-        email, phone, userId, changePassword);
+    dataEmailOrPhone = await firstAccessRepository.changeEmailAndPhone(email, phone, userId, changePassword);
     isLoading = false;
   }
 
   @action
-  loadUserForStorage(int userId) async {
-    User user = await _userService.find(userId);
+  Future<void> loadUserForStorage(int userId) async {
+    final User user = await _userService.find(userId);
     currentEmail = user.email;
     currentPhone = user.celular;
   }

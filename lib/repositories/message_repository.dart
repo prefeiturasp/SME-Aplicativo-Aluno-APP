@@ -1,187 +1,188 @@
 import 'dart:convert';
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
-import 'package:sme_app_aluno/interfaces/message_repository_interface.dart';
 import 'package:http/http.dart' as http;
-import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/models/user/user.dart';
-import 'package:sme_app_aluno/services/message.service.dart';
-import 'package:sme_app_aluno/services/user.service.dart';
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+
+import '../interfaces/message_repository_interface.dart';
+import '../models/message/message.dart';
+import '../services/message.service.dart';
+import '../stores/index.dart';
+import '../utils/app_config_reader.dart';
 
 class MessageRepository implements IMessageRepository {
-  final UserService _userService = UserService();
   final MessageService _messageService = MessageService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
+  @override
   Future<List<Message>> fetchNewMessages(int codigoEol) async {
     try {
-      List<Message> messagesDB = await _messageService.all();
-      var messageRecent = messagesDB[0].criadoEm;
-      var dateFormaet = messageRecent.replaceAll(':', '%3A');
+      final List<Message> messagesDB = await _messageService.all();
+      final messageRecent = messagesDB[0].criadoEm;
+      final dateFormaet = messageRecent.replaceAll(':', '%3A');
 
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$codigoEol/desde/$dateFormaet');
       final response = await http.get(
-          "${AppConfigReader.getApiHost()}/Mensagens/$codigoEol/desde/$dateFormaet",
-          headers: {
-            "Authorization": "Bearer ${usuarioStore.usuario.token}",
-            "Content-Type": "application/json",
-          });
+        url,
+        headers: {
+          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Content-Type': 'application/json',
+        },
+      );
 
       if (response.statusCode == 200) {
-        List<dynamic> messagesResponse = jsonDecode(response.body);
-        var algo = messagesResponse.map((m) => Message.fromJson(m)).toList();
-        algo.forEach((message) {
+        final List<dynamic> messagesResponse = jsonDecode(response.body);
+        final algo = messagesResponse.map((m) => Message.fromJson(m)).toList();
+        for (var message in algo) {
           _messageService.create(message);
-        });
-        List<Message> messagesDBAll = await _messageService.all();
-        messagesDBAll.sort((b, a) =>
-            DateTime.parse(a.criadoEm).compareTo(DateTime.parse(b.criadoEm)));
-        return messagesDBAll
-            .where((element) => element.codigoEOL == codigoEol)
-            .toList();
+        }
+        final List<Message> messagesDBAll = await _messageService.all();
+        messagesDBAll.sort((b, a) => DateTime.parse(a.criadoEm).compareTo(DateTime.parse(b.criadoEm)));
+        return messagesDBAll.where((element) => element.codigoEOL == codigoEol).toList();
       } else {
         return messagesDB;
       }
     } catch (e) {
-      print(e);
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log(e.toString());
+      return [];
     }
   }
 
-  @override
   Future<Message> getMessageById(int messageId, int userId) async {
     try {
-      final response = await http.get(
-          "${AppConfigReader.getApiHost()}/Mensagens/$messageId",
-          headers: {"Authorization": "Bearer ${usuarioStore.usuario.token}"});
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$messageId');
+      final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}'});
 
       if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
+        final decodeJson = jsonDecode(response.body);
         final message = Message.fromJson(decodeJson);
         return message;
       } else {
-        return null;
+        return Message(
+          id: 0,
+          mensagem: '',
+          titulo: '',
+          dataEnvio: DateTime.now().toIso8601String(),
+          criadoEm: DateTime.now().toIso8601String(),
+          mensagemVisualizada: true,
+          categoriaNotificacao: '',
+          codigoEOL: 0,
+        );
       }
     } catch (e) {
-      print(e.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log(e.toString());
+      throw Exception(e);
     }
   }
 
   @override
   Future<List<Message>> fetchMessages(int codigoEol, int userId) async {
     try {
-      List<Message> messagesDB = await _messageService.all();
-      List<Message> messagesDBForEOL = messagesDB
-          .where((element) => element.codigoEOL == codigoEol)
-          .toList();
-      if (messagesDBForEOL.length > 0) {
-        var response = await fetchNewMessages(codigoEol);
+      final List<Message> messagesDB = await _messageService.all();
+      final List<Message> messagesDBForEOL = messagesDB.where((element) => element.codigoEOL == codigoEol).toList();
+      if (messagesDBForEOL.isNotEmpty) {
+        final response = await fetchNewMessages(codigoEol);
         return response;
       } else {
-        final response = await http.get(
-            "${AppConfigReader.getApiHost()}/Notificacao/$codigoEol",
-            headers: {"Authorization": "Bearer ${usuarioStore.usuario.token}"});
+        final url = Uri.parse('${AppConfigReader.getApiHost()}/Notificacao/$codigoEol');
+        final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}'});
 
         if (response.statusCode == 200) {
-          List<dynamic> messages = jsonDecode(response.body);
-          var sortMessages = messages
-              .map((json) => Message(
-                    id: json['id'],
-                    mensagem: json['mensagem'],
-                    titulo: json['titulo'],
-                    dataEnvio: json['dataEnvio'],
-                    criadoEm: json['criadoEm'],
-                    alteradoEm: json['alteradoEm'],
-                    mensagemVisualizada: json['mensagemVisualizada'],
-                    categoriaNotificacao: json['categoriaNotificacao'],
-                    codigoEOL: codigoEol,
-                  ))
+          final List<dynamic> messages = jsonDecode(response.body);
+          final sortMessages = messages
+              .map(
+                (json) => Message(
+                  id: json['id'],
+                  mensagem: json['mensagem'],
+                  titulo: json['titulo'],
+                  dataEnvio: json['dataEnvio'],
+                  criadoEm: json['criadoEm'],
+                  alteradoEm: json['alteradoEm'],
+                  mensagemVisualizada: json['mensagemVisualizada'],
+                  categoriaNotificacao: json['categoriaNotificacao'],
+                  codigoEOL: codigoEol,
+                ),
+              )
               .toList()
-                ..sort((b, a) => DateTime.parse(a.criadoEm)
-                    .compareTo(DateTime.parse(b.criadoEm)));
+            ..sort((b, a) => DateTime.parse(a.criadoEm).compareTo(DateTime.parse(b.criadoEm)));
 
-          sortMessages.forEach((message) {
+          for (var message in sortMessages) {
             _messageService.create(message);
-          });
+          }
 
           return sortMessages;
         } else {
-          return null;
+          log('Status Code fetchMessages ${response.statusCode}');
+          return List<Message>() = [];
         }
       }
     } catch (e) {
-      print(e.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log(e.toString());
+      return throw Exception(e);
     }
   }
 
   @override
-  Future<bool> readMessage(int notificacaoId, int usuarioId, int codigoAlunoEol,
-      bool mensagemVisualia) async {
-    Map data = {
-      "notificacaoId": notificacaoId,
-      "usuarioId": usuarioId,
-      "codigoAlunoEol": codigoAlunoEol != null ? codigoAlunoEol : 0,
-      "mensagemVisualizada": mensagemVisualia
+  Future<bool> readMessage(int notificacaoId, int usuarioId, int codigoAlunoEol, bool mensagemVisualia) async {
+    final Map data = {
+      'notificacaoId': notificacaoId,
+      'usuarioId': usuarioId,
+      'codigoAlunoEol': codigoAlunoEol,
+      'mensagemVisualizada': mensagemVisualia
     };
 
     //encode Map to JSON
-    var body = json.encode(data);
+    final body = json.encode(data);
 
     try {
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/UsuarioNotificacaoLeitura');
       final response = await http.post(
-        "${AppConfigReader.getApiHost()}/UsuarioNotificacaoLeitura",
+        url,
         headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
-          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Content-Type': 'application/json',
         },
         body: body,
       );
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        print("[MessageRepository] Erro ao atualizar mensagem " +
-            response.statusCode.toString());
-        return null;
+        log('[MessageRepository] Erro ao atualizar mensagem ${response.statusCode}');
+        return throw Exception(response.reasonPhrase);
       }
     } catch (error, stacktrace) {
-      print("[MessageRepository] Erro de requisição " + stacktrace.toString());
-      GetIt.I.get<SentryClient>().captureException(exception: error);
-      return null;
+      log('[MessageRepository] Erro de requisição $stacktrace');
+      return throw Exception(error);
     }
   }
 
   @override
-  Future<bool> deleteMessage(
-      int codigoEol, int idNotificacao, int userId) async {
-    List<Message> messagesDB = await _messageService.all();
+  Future<bool> deleteMessage(int codigoEol, int idNotificacao, int userId) async {
+    final List<Message> messagesDB = await _messageService.all();
     try {
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$idNotificacao/$codigoEol');
       final response = await http.delete(
-          "${AppConfigReader.getApiHost()}/Mensagens/$idNotificacao/$codigoEol",
-          headers: {
-            "Authorization": "Bearer ${usuarioStore.usuario.token}",
-            "Content-Type": "application/json",
-          });
+        url,
+        headers: {
+          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Content-Type': 'application/json',
+        },
+      );
       if (response.statusCode == 200) {
         await _messageService.delete(idNotificacao);
 
-        messagesDB.forEach((element) {
+        for (var element in messagesDB) {
           _messageService.delete(element.id);
-        });
+        }
 
-        return null;
+        return true;
       } else {
-        return null;
+        return false;
       }
     } catch (e) {
-      print("Erro ao tentar excluir mensagem $e");
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('Erro ao tentar excluir mensagem $e');
+
+      return false;
     }
   }
 }

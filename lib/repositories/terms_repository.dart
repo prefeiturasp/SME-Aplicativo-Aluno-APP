@@ -1,90 +1,85 @@
 import 'dart:convert';
-import 'package:sme_app_aluno/interfaces/terms_repository_interface.dart';
-import 'package:http/http.dart' as http;
-import 'package:sme_app_aluno/models/index.dart';
-import 'package:sme_app_aluno/models/terms/term.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
+import 'package:http/http.dart' as http;
+
+import '../interfaces/terms_repository_interface.dart';
+import '../models/terms/term.dart';
+import '../services/api.service.dart';
+import '../utils/app_config_reader.dart';
 
 class TermsRepository extends ITermsRepository {
+  final api = GetIt.I.get<ApiService>();
   @override
-  Future<dynamic> fetchTerms(String cpf) async {
+  Future<Term> fetchTerms(String cpf) async {
     try {
-      var response = await http
-          .get("${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf");
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf');
+      final response = await http.get(url);
       if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
+        final decodeJson = jsonDecode(response.body);
         final termo = Term.fromJson(decodeJson);
         return termo;
       } else if (response.statusCode == 204) {
-        return Term();
+        return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+      throw Exception(e);
     }
   }
 
   @override
-  Future<dynamic> fetchTermsCurrentUser() async {
+  Future<Term> fetchTermsCurrentUser() async {
     try {
-      var response =
-          await http.get("${AppConfigReader.getApiHost()}/TermosDeUso/logado");
+      final response = await api.dio.get('/TermosDeUso/logado');
       if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(response.body);
-        final termo = Term.fromJson(decodeJson);
+        final termo = Term.fromMap(response.data);
         return termo;
-      } else if (response.statusCode == 204) {
-        return true;
-      } else if (response.statusCode == 408) {
-        return UsuarioDataModel(
-            ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()]);
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados fetchTermsCurrentUser');
+        return Term.clear();
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('Erro ao obter dados fetchTermsCurrentUser $e');
+      return Term.clear();
     }
   }
 
   @override
-  Future<bool> registerTerms(int termoDeUsoId, String cpf, String device,
-      String ip, double versao) async {
-    Map data = {
-      "termoDeUsoId": termoDeUsoId,
-      "cpfUsuario": cpf,
-      "device": device,
-      "ip": ip,
-      "versao": versao,
+  Future<bool> registerTerms(int termoDeUsoId, String cpf, String device, String ip, double versao) async {
+    final Map data = {
+      'termoDeUsoId': termoDeUsoId,
+      'cpfUsuario': cpf,
+      'device': device,
+      'ip': ip,
+      'versao': versao,
     };
 
-    var body = json.encode(data);
+    final body = json.encode(data);
 
     try {
-      var response = await http.post(
-          "${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: body);
+      final url = Uri.parse('${AppConfigReader.getApiHost()}/TermosDeUso/registrar-aceite');
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter dados');
+        throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('$e');
+
+      throw Exception(e);
     }
   }
 }

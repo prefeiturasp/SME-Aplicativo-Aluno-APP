@@ -5,15 +5,16 @@ class LabelEvent extends StatelessWidget {
   final String labelName;
   final Color labelColor;
 
-  LabelEvent({
-    @required this.labelName,
-    @required this.labelColor,
+  const LabelEvent({
+    super.key,
+    required this.labelName,
+    required this.labelColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -40,7 +41,7 @@ class LabelEvent extends StatelessWidget {
           minFontSize: 14,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xff333333),
           ),
         ),

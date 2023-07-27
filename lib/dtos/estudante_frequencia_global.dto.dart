@@ -1,6 +1,6 @@
 class EstudanteFrequenciaGlobalDTO {
-  double frequencia;
-  String corDaFrequencia;
+  double? frequencia;
+  String? corDaFrequencia;
 
   EstudanteFrequenciaGlobalDTO({this.frequencia, this.corDaFrequencia});
 

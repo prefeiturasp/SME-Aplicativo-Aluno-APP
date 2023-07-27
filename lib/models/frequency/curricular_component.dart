@@ -1,4 +1,5 @@
-import 'package:sme_app_aluno/models/frequency/frequencias_por_bimestre.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'package:sme_app_aluno/models/index.dart';
 
 class CurricularComponent {
@@ -11,45 +12,48 @@ class CurricularComponent {
   int codigoComponenteCurricular;
   String componenteCurricular;
   List<EstudanteFrequenciaModel> frequencias;
+  CurricularComponent({
+    required this.anoLetivo,
+    required this.codigoUe,
+    required this.nomeUe,
+    required this.codigoTurma,
+    required this.nomeTurma,
+    required this.alunoCodigo,
+    required this.codigoComponenteCurricular,
+    required this.componenteCurricular,
+    required this.frequencias,
+  });
 
-  CurricularComponent(
-      {this.anoLetivo,
-      this.codigoUe,
-      this.nomeUe,
-      this.codigoTurma,
-      this.nomeTurma,
-      this.alunoCodigo,
-      this.codigoComponenteCurricular,
-      this.componenteCurricular,
-      this.frequencias});
 
-  CurricularComponent.fromJson(Map<String, dynamic> json) {
-    anoLetivo = json['anoLetivo'];
-    codigoUe = json['codigoUe'];
-    nomeUe = json['nomeUe'];
-    codigoTurma = json['codigoTurma'];
-    nomeTurma = json['nomeTurma'];
-    alunoCodigo = json['alunoCodigo'];
-    codigoComponenteCurricular = json['codigoComponenteCurricular'];
-    componenteCurricular = json['componenteCurricular'];
-    if (json['frequenciasPorBimestre'] != null) {
-      frequencias = new List<EstudanteFrequenciaModel>();
-      json['frequenciasPorBimestre'].forEach((v) {
-        frequencias.add(new EstudanteFrequenciaModel.fromJson(v));
-      });
-    }
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'anoLetivo': anoLetivo,
+      'codigoUe': codigoUe,
+      'nomeUe': nomeUe,
+      'codigoTurma': codigoTurma,
+      'nomeTurma': nomeTurma,
+      'alunoCodigo': alunoCodigo,
+      'codigoComponenteCurricular': codigoComponenteCurricular,
+      'componenteCurricular': componenteCurricular,
+      'frequencias': frequencias.map((x) => x.toMap()).toList(),
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['anoLetivo'] = this.anoLetivo;
-    data['codigoUe'] = this.codigoUe;
-    data['nomeUe'] = this.nomeUe;
-    data['codigoTurma'] = this.codigoTurma;
-    data['nomeTurma'] = this.nomeTurma;
-    data['alunoCodigo'] = this.alunoCodigo;
-    data['codigoComponenteCurricular'] = this.codigoComponenteCurricular;
-    data['componenteCurricular'] = this.componenteCurricular;
-    return data;
+  factory CurricularComponent.fromMap(Map<String, dynamic> map) {
+    return CurricularComponent(
+      anoLetivo: map['anoLetivo'] as String,
+      codigoUe: map['codigoUe'] as String,
+      nomeUe: map['nomeUe'] as String,
+      codigoTurma: map['codigoTurma'] as String,
+      nomeTurma: map['nomeTurma'] as String,
+      alunoCodigo: map['alunoCodigo'] as String,
+      codigoComponenteCurricular: map['codigoComponenteCurricular'] as int,
+      componenteCurricular: map['componenteCurricular'] as String,
+      frequencias: List<EstudanteFrequenciaModel>.from((map['frequencias'] as List<int>).map<EstudanteFrequenciaModel>((x) => EstudanteFrequenciaModel.fromMap(x as Map<String,dynamic>),),),
+    );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory CurricularComponent.fromJson(String source) => CurricularComponent.fromMap(json.decode(source) as Map<String, dynamic>);
 }

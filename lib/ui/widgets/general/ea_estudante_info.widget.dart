@@ -1,28 +1,28 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:sme_app_aluno/utils/string_support.dart';
 
 class EAEstudanteInfo extends StatelessWidget {
   final String nome;
   final String ue;
   final String tipoEscola;
   final String dre;
-  final String grade;
-  final int codigoEOL;
-  final Widget avatar;
-  final String modalidade;
-  final EdgeInsets padding;
+  final String? grade;
+  final int? codigoEOL;
+  final Widget? avatar;
+  final String? modalidade;
+  final EdgeInsets? padding;
 
-  EAEstudanteInfo(
-      {@required this.nome,
-      @required this.ue,
-      @required this.tipoEscola,
-      @required this.dre,
-      this.codigoEOL,
-      this.grade,
-      this.avatar,
-      this.modalidade,
-      this.padding});
+  EAEstudanteInfo({
+    required this.nome,
+    required this.ue,
+    required this.tipoEscola,
+    required this.dre,
+    this.codigoEOL,
+    this.grade,
+    this.avatar,
+    this.modalidade,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +60,7 @@ class EAEstudanteInfo extends StatelessWidget {
                   // StringSupport.truncateEndString(nome, 25),
                   maxFontSize: 16,
                   minFontSize: 14,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 AutoSizeText(
                   "$tipoEscola $ue ($dre)",
@@ -74,7 +73,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ),
                 modalidade != null
                     ? AutoSizeText(
-                        "${modalidade.toUpperCase()}",
+                        "${modalidade!.toUpperCase()}",
                         maxFontSize: 12,
                         minFontSize: 10,
                         style: TextStyle(
@@ -89,8 +88,7 @@ class EAEstudanteInfo extends StatelessWidget {
                     "TURMA $grade",
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(
-                        color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),
@@ -100,8 +98,7 @@ class EAEstudanteInfo extends StatelessWidget {
                     "COD. EOL: $codigoEOL",
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(
-                        color: Color(0xff757575), fontWeight: FontWeight.w500),
+                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),

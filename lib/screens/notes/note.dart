@@ -9,7 +9,12 @@ class Note extends StatelessWidget {
   final bool current;
   final Color color;
 
-  Note({this.name, this.noteValue, this.description, this.current, this.color});
+  Note(
+      {required this.name,
+      required this.noteValue,
+      required this.description,
+      required this.current,
+      required this.color});
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -27,7 +32,7 @@ class Note extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
-              new FlatButton(
+              ElevatedButton(
                 child: new Text("FECHAR"),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -62,11 +67,9 @@ class Note extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             decoration: BoxDecoration(
-                border: Border.all(
-                    width: current ? screenHeight * 0.3 : 0.0,
-                    color: current ? color : Colors.transparent),
-                borderRadius:
-                    BorderRadius.all(Radius.circular(screenHeight * 1)),
+                border:
+                    Border.all(width: current ? screenHeight * 0.3 : 0.0, color: current ? color : Colors.transparent),
+                borderRadius: BorderRadius.all(Radius.circular(screenHeight * 1)),
                 color: noteValue == '-'
                     ? Color(0xFFEDEDED).withOpacity(0.4)
                     : current
@@ -74,9 +77,7 @@ class Note extends StatelessWidget {
                         : Color(0xFFEDEDED)),
             width: screenHeight * 8,
           ),
-          onTap: description != null &&
-                  description.isNotEmpty &&
-                  description.length > 5
+          onTap: description != null && description.isNotEmpty && description.length > 5
               ? () {
                   viewEvent();
                 }
