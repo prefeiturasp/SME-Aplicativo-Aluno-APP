@@ -29,7 +29,7 @@ class EstudanteFrequenciaRepository {
         throw Exception(response.statusCode);
       }
     } catch (e) {
-      log('$e');
+      log('EstudanteFrequenciaRepository $e');
       throw Exception(e);
     }
   }

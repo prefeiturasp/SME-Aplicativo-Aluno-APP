@@ -46,7 +46,7 @@ class FrequencyGlobalCard extends StatelessWidget {
                     child: Expanded(
                       flex: 3,
                       child: CircularPercentIndicator(
-                        radius: 47.0,
+                        radius: 40.0,
                         lineWidth: 4.0,
                         animation: true,
                         animationDuration: 3000,

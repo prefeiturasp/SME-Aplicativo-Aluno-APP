@@ -19,15 +19,17 @@ class AutenticacaoController {
   Future<UsuarioDataModel> authenticateUser(String cpf, String password) async {
     try {
       final data = await repository.loginUser(cpf, password);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('eaUsuario', jsonEncode(data.data.toJson()));
-      await usuarioStore.carregarUsuario();
+      if (data.ok) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('eaUsuario', jsonEncode(data.data.toJson()));
+        await usuarioStore.carregarUsuario();
+      }
       return data;
     } catch (e) {
-      log(e.toString());
+      log('Erro ao tentar se autenticar AutenticacaoController $e');
       return UsuarioDataModel(
         ok: false,
-        erros: [e.toString()],
+        erros: ['Erro ao tentar se autenticar'],
         data: UsuarioModel(
           id: 0,
           nome: '',
@@ -43,7 +45,6 @@ class AutenticacaoController {
           senha: '',
         ),
       );
-      //throw Exception(e);
     }
   }
 }

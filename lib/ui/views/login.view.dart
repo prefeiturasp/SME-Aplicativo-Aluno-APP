@@ -46,7 +46,7 @@ class LoginViewState extends State<LoginView> {
     super.initState();
   }
 
-  _handleSignIn(
+  Future<void> handleSignIn(
     String cpf,
     String password,
   ) async {
@@ -63,7 +63,7 @@ class LoginViewState extends State<LoginView> {
     if (!usuario.ok) {
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: usuario.erros != null ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
+        content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
       );
 
       if (context.mounted) {
@@ -290,7 +290,7 @@ class LoginViewState extends State<LoginView> {
                                   enabled: CPFValidator.isValid(_cpf) && _password.length >= 7,
                                   onPress: () {
                                     if (_formKey.currentState!.validate()) {
-                                      _handleSignIn(_cpf, _password);
+                                      handleSignIn(_cpf, _password);
                                     } else {
                                       setState(() {
                                         _cpfIsError = true;
