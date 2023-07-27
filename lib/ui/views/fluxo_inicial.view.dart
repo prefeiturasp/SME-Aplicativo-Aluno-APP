@@ -69,7 +69,6 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       });
     } catch (ex) {
       log(ex.toString());
-      //throw Exception(ex);
     }
   }
 

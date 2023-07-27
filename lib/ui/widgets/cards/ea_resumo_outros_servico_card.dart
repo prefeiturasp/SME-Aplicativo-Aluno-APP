@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -183,19 +185,31 @@ class OutrosLinksInfoWidget extends StatelessWidget {
   }
 
   Image obterIcone() {
-    return Image.network(
-      outroServicoModel.icone,
-      width: screenHeight * 9,
-      height: screenHeight * 9,
-      fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        return Image.asset(
-          'assets/images/icone_erro.png',
-          width: screenHeight * 9,
-          height: screenHeight * 9,
-          fit: BoxFit.cover,
-        );
-      },
-    );
+    try {
+      final imaage = Image.network(
+        outroServicoModel.icone,
+        width: screenHeight * 9,
+        height: screenHeight * 9,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          log('obterIcone outros seriços $error');
+          return Image.asset(
+            'assets/images/icone_erro.png',
+            width: screenHeight * 9,
+            height: screenHeight * 9,
+            fit: BoxFit.cover,
+          );
+        },
+      );
+      return imaage;
+    } on Exception catch (e) {
+      log('obterIcone outros seriços $e');
+      return Image.asset(
+        'assets/images/icone_erro.png',
+        width: screenHeight * 9,
+        height: screenHeight * 9,
+        fit: BoxFit.cover,
+      );
+    }
   }
 }
