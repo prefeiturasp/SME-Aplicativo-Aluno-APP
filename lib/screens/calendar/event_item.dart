@@ -181,7 +181,7 @@ class EventItem extends StatelessWidget {
                 ),
                 tipoEvento == 0
                     ? Icon(
-                        FontAwesomeIcons.tractor,
+                        FontAwesomeIcons.solidNoteSticky,
                         color: const Color(0xFF086397),
                         size: screenHeight * 2.2,
                       )
