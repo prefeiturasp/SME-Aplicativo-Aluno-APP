@@ -120,7 +120,7 @@ class MessageRepository implements IMessageRepository {
         }
       }
     } catch (e) {
-      log(e.toString());
+      log('MessageRepository fetchMessages $e');
       return List<Message>() = [];
     }
   }
@@ -148,13 +148,15 @@ class MessageRepository implements IMessageRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final retorno = Message.fromMap(jsonDecode(response.body));
+        return retorno.mensagemVisualizada;
       } else {
         log('[MessageRepository] Erro ao atualizar mensagem ${response.statusCode}');
         return false;
       }
     } catch (error, stacktrace) {
       log('[MessageRepository] Erro de requisição $stacktrace');
+      log('[MessageRepository] Erro de requisição $error');
       return false;
     }
   }

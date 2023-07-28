@@ -44,25 +44,24 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
       _messagesController.updateMessage(
         notificacaoId: widget.message.id,
         usuarioId: widget.userId,
-        codigoAlunoEol: widget.message.codigoEOL ?? 0,
+        codigoAlunoEol: widget.message.codigoEOL,
         mensagemVisualia: false,
       );
     } else {
       _messagesController.updateMessage(
         notificacaoId: widget.message.id,
         usuarioId: widget.userId,
-        codigoAlunoEol: widget.message.codigoEOL ?? 0,
+        codigoAlunoEol: widget.message.codigoEOL,
         mensagemVisualia: true,
       );
     }
   }
 
-  _navigateToListMessage() async {
+  Future<void> navigateToListMessage() async {
     Nav.push(context, const EstudanteListaView());
   }
 
-  Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
-    bool retorno = false;
+  Future<void> confirmNotReadeMessage(int id, scaffoldKey) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -73,7 +72,6 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
                 _viewMessageUpdate(true, true);
                 Navigator.of(context).pop(false);
                 const snackbar = SnackBar(content: Text('Mensagem marcada como não lida'));
@@ -86,7 +84,6 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             )
@@ -94,13 +91,11 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
         );
       },
     );
-
-    return retorno;
   }
 
-  _launchURL(url) async {
+  Future<bool> launchURL(url) async {
     if (await canLaunchUrl(url)) {
-      await launchUrl(url);
+      return await launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -124,7 +119,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              _navigateToListMessage();
+              navigateToListMessage();
             },
           ),
         ),
@@ -163,7 +158,10 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                     ),
                     SizedBox(
                       width: screenHeight * 39,
-                      child: HtmlWidget(widget.message.mensagem, onTapUrl: (url) => _launchURL(url)),
+                      child: HtmlWidget(
+                        widget.message.mensagem,
+                        onTapUrl: (url) => launchURL(url),
+                      ),
                     ),
                     SizedBox(
                       height: screenHeight * 3,
@@ -178,59 +176,57 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                   ],
                   footer: true,
                   footerContent: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: screenHeight * 2,
-                          ),
-                          Visibility(
-                            visible: messageIsRead,
-                            child: EAIconButton(
-                              iconBtn: const Icon(
-                                FontAwesomeIcons.envelope,
-                                color: Color(0xffC65D00),
-                              ),
-                              screenHeight: screenHeight,
-                              onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: screenHeight * 2,
+                        ),
+                        Visibility(
+                          visible: messageIsRead,
+                          child: EAIconButton(
+                            iconBtn: const Icon(
+                              FontAwesomeIcons.envelope,
+                              color: Color(0xffC65D00),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Container(
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
+                            screenHeight: screenHeight,
+                            onPress: () {
+                              confirmNotReadeMessage(widget.message.id, scaffoldKey);
+                            },
                           ),
                         ),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            _navigateToListMessage();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              const AutoSizeText(
-                                'VOLTAR',
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: screenHeight * 1,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.angleLeft,
-                                color: const Color(0xffffd037),
-                                size: screenHeight * 4,
-                              )
-                            ],
-                          ),
+                      ],
+                    ),
+                    Container(
+                      height: screenHeight * 6,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: const Color(0xffC65D00), width: 1),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenHeight * 3),
+                        ),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          navigateToListMessage();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            const AutoSizeText(
+                              'VOLTAR',
+                              maxFontSize: 16,
+                              minFontSize: 14,
+                              style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              width: screenHeight * 1,
+                            ),
+                            Icon(
+                              FontAwesomeIcons.angleLeft,
+                              color: const Color(0xffffd037),
+                              size: screenHeight * 4,
+                            )
+                          ],
                         ),
                       ),
                     ),

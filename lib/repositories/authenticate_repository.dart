@@ -41,7 +41,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         final user = UsuarioDataModel.fromJson(response.body);
         return user;
       } else {
-        log('Erro ao tentar se autenticar ${response.statusCode}');
+        log('Erro ao tentar se autenticar status code ${response.statusCode}');
         return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());
       }
     } catch (error, stacktrace) {

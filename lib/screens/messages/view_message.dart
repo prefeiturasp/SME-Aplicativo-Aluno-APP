@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -34,28 +36,19 @@ class ViewMessageState extends State<ViewMessage> {
   @override
   void initState() {
     super.initState();
-    _viewMessageUpdate(widget.message.mensagemVisualizada, false);
+    viewMessageUpdate(widget.message.mensagemVisualizada);
   }
 
-  _viewMessageUpdate(bool mensagemVisualizada, bool action) async {
-    if (!mensagemVisualizada && action) {
-      _messagesController.updateMessage(
-        notificacaoId: widget.message.id,
-        usuarioId: widget.userId,
-        codigoAlunoEol: widget.codigoAlunoEol,
-        mensagemVisualia: false,
-      );
-    } else if (!mensagemVisualizada) {
-      _messagesController.updateMessage(
-        notificacaoId: widget.message.id,
-        usuarioId: widget.userId,
-        codigoAlunoEol: widget.codigoAlunoEol ?? 0,
-        mensagemVisualia: true,
-      );
-    }
+  Future<void> viewMessageUpdate(bool mensagemVisualizada) async {
+    _messagesController.updateMessage(
+      notificacaoId: widget.message.id,
+      usuarioId: widget.userId,
+      codigoAlunoEol: widget.codigoAlunoEol,
+      mensagemVisualia: mensagemVisualizada,
+    );
   }
 
-  Future<bool> _confirmDeleteMessage(int id) async {
+  Future<bool> confirmDeleteMessage(int id) async {
     bool retorno = false;
     showDialog(
       context: context,
@@ -68,7 +61,7 @@ class ViewMessageState extends State<ViewMessage> {
               child: const Text('SIM'),
               onPressed: () async {
                 retorno = true;
-                await _removeMesageToStorage(
+                await removeMesageToStorage(
                   widget.codigoAlunoEol,
                   id,
                   widget.userId,
@@ -94,22 +87,21 @@ class ViewMessageState extends State<ViewMessage> {
     return retorno;
   }
 
-  Future<bool> _confirmNotReadeMessage(int id, scaffoldKey) async {
-    bool retorno = false;
+  Future<void> confirmNotReadeMessage(Message mensagem, scaffoldKey) async {
+    final String msg = mensagem.mensagemVisualizada ? 'não lida' : 'lida';
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Atenção'),
-          content: const Text('Você tem certeza que deseja marcar esta mensagem como não lida?'),
+          content: Text('Você tem certeza que deseja marcar esta mensagem  como $msg ?'),
           actions: <Widget>[
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
-                _viewMessageUpdate(false, true);
+                viewMessageUpdate(mensagem.mensagemVisualizada);
                 Navigator.of(context).pop(false);
-                const snackbar = SnackBar(content: Text('Mensagem marcada como não lida'));
+                final snackbar = SnackBar(content: Text('Mensagem marcada como não $msg '));
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 setState(() {
                   messageIsRead = false;
@@ -119,7 +111,6 @@ class ViewMessageState extends State<ViewMessage> {
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             )
@@ -127,25 +118,26 @@ class ViewMessageState extends State<ViewMessage> {
         );
       },
     );
-
-    return retorno;
   }
 
-  _removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
+  Future<void> removeMesageToStorage(int codigoEol, int idNotificacao, int userId) async {
     await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
-  _launchURL(url) async {
+  Future<bool> launchURL(url) async {
     if (await canLaunchUrl(url)) {
       final codigo = _obterCodigoRelatorio(url);
       final bool relatorioExiste = await _relatorioExiste(codigo);
       if (relatorioExiste) {
         await launchUrl(url);
+        return true;
       } else {
         _modalInfo();
+        return false;
       }
     } else {
-      throw 'Could not launch $url';
+      log('Could not launch $url');
+      return false;
     }
   }
 
@@ -311,7 +303,7 @@ class ViewMessageState extends State<ViewMessage> {
                       width: screenHeight * 39,
                       child: HtmlWidget(
                         widget.message.mensagem,
-                        onTapUrl: (url) => _launchURL(url),
+                        onTapUrl: (url) => launchURL(url),
                       ),
                     ),
                     SizedBox(
@@ -335,7 +327,7 @@ class ViewMessageState extends State<ViewMessage> {
                             color: Color(0xffC65D00),
                           ),
                           screenHeight: screenHeight,
-                          onPress: () => _confirmDeleteMessage(widget.message.id),
+                          onPress: () => confirmDeleteMessage(widget.message.id),
                         ),
                         SizedBox(
                           width: screenHeight * 2,
@@ -343,12 +335,16 @@ class ViewMessageState extends State<ViewMessage> {
                         Visibility(
                           visible: messageIsRead,
                           child: EAIconButton(
-                            iconBtn: const Icon(
-                              FontAwesomeIcons.envelope,
-                              color: Color(0xffC65D00),
+                            iconBtn: Icon(
+                              widget.message.mensagemVisualizada
+                                  ? FontAwesomeIcons.envelopeOpen
+                                  : FontAwesomeIcons.envelope,
+                              color: const Color(0xffC65D00),
                             ),
                             screenHeight: screenHeight,
-                            onPress: () => _confirmNotReadeMessage(widget.message.id, scaffoldKey),
+                            onPress: () {
+                              confirmNotReadeMessage(widget.message, scaffoldKey);
+                            },
                           ),
                         ),
                       ],

@@ -382,7 +382,7 @@ class ListMessageState extends State<ListMessages> {
                                 width: screenHeight * 2,
                               ),
                               const Icon(
-                                FontAwesomeIcons.envelopeOpen,
+                                FontAwesomeIcons.envelope,
                                 color: Color(0xffffd037),
                                 size: 16,
                               )
