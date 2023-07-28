@@ -29,6 +29,7 @@ pipeline {
             file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV'),
             file(credentialsId: 'app-config-dev', variable: 'APPCONFIGDEV'),
           ]) {
+            sh 'if [ -d "config" ]; then rm -Rf config; fi'
             sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
@@ -47,6 +48,7 @@ pipeline {
             file(credentialsId: 'google-service-hom', variable: 'GOOGLEJSONHOM'),
             file(credentialsId: 'app-config-hom', variable: 'APPCONFIGHOM'),
           ]) {
+	    sh 'if [ -d "config" ]; then rm -Rf config; fi'
             sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
             sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
@@ -65,6 +67,7 @@ pipeline {
             file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
             file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
           ]) {
+            sh 'if [ -d "config" ]; then rm -Rf config; fi'
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
             sh 'cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d\'=\' -f2 > /home/cirrus/key.pass'
             sh 'cd ${WORKSPACE} && mkdir config && cp $APPCONFIGPROD config/app_config.json'
