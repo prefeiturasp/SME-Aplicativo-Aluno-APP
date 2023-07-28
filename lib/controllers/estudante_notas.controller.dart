@@ -46,9 +46,6 @@ abstract class EstudanteNotasControllerBase with Store {
   ObservableList<ComponenteCurricularNotaDTO>? componentesCurricularesNotasConceitos;
 
   @observable
-  var tamanho1;
-
-  @observable
   bool loading = false;
 
   @action
