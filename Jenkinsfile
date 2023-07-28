@@ -1,7 +1,7 @@
 pipeline {
     agent {
       node { 
-        label 'flutter-android'
+        label 'SME-AGENT-FLUTTER3106'
 	    }
     }
     
