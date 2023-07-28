@@ -100,24 +100,25 @@ class UserService {
       log('<--------------------------');
       log('Erro ao atualizar usuário: $ex');
       log('<--------------------------');
-      throw Exception(ex);
     }
   }
 
   Future delete(int id) async {
     final Database db = await dbHelper.initDatabase();
+    final List<Map<String, dynamic>> maps = await db.query(TB_USER, where: 'id = ?', whereArgs: [id]);
     try {
-      await db.delete(
-        TB_USER,
-        where: 'id = ?',
-        whereArgs: [id],
-      );
+      if (maps.isNotEmpty) {
+        await db.delete(
+          TB_USER,
+          where: 'id = ?',
+          whereArgs: [id],
+        );
+      }
       log('Usuário removido com sucesso: $id');
     } catch (ex) {
       log('<--------------------------');
       log('Erro ao deletar usuário: $ex');
       log('<--------------------------');
-      throw Exception(ex);
     }
   }
 
