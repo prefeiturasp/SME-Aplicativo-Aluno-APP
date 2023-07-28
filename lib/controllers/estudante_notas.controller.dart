@@ -43,28 +43,24 @@ abstract class EstudanteNotasControllerBase with Store {
   ObservableList<Note>? listNotesFinal;
 
   @observable
-  ObservableList<ComponenteCurricularNotaDTO> componentesCurricularesNotasConceitos =
-      ObservableList<ComponenteCurricularNotaDTO>();
-
-  @observable
-  var tamanho;
+  ObservableList<ComponenteCurricularNotaDTO>? componentesCurricularesNotasConceitos;
 
   @observable
   bool loading = false;
 
   @action
   void limparNotas() {
-    bUm = ListNotes(notasPorComponenteCurricular: []);
-    bDois = ListNotes(notasPorComponenteCurricular: []);
-    bTres = ListNotes(notasPorComponenteCurricular: []);
-    bQuatro = ListNotes(notasPorComponenteCurricular: []);
-    bFinal = ListNotes(notasPorComponenteCurricular: []);
-    listNotesUm = ObservableList<Note>();
-    listNotesDois = ObservableList<Note>();
-    listNotesTres = ObservableList<Note>();
-    listNotesQuatro = ObservableList<Note>();
-    listNotesFinal = ObservableList<Note>();
-    componentesCurricularesNotasConceitos = ObservableList<ComponenteCurricularNotaDTO>();
+    bUm = null;
+    bDois = null;
+    bTres = null;
+    bQuatro = null;
+    bFinal = null;
+    listNotesUm = null;
+    listNotesDois = null;
+    listNotesTres = null;
+    listNotesQuatro = null;
+    listNotesFinal = null;
+    componentesCurricularesNotasConceitos = null;
   }
 
   @action

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Message {
@@ -63,15 +62,15 @@ class Message {
 
   factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      id: map['id'] as int,
-      mensagem: map['mensagem'] as String,
-      titulo: map['titulo'] as String,
-      dataEnvio: map['dataEnvio'] as String,
-      criadoEm: map['criadoEm'] as String,
-      alteradoEm: map['alteradoEm'] as String,
-      mensagemVisualizada: map['mensagemVisualizada'] as bool,
-      categoriaNotificacao: map['categoriaNotificacao'] as String,
-      codigoEOL: map['codigoEOL'] as int,
+      id: map['id'] ?? 0,
+      mensagem: map['mensagem'] ?? '',
+      titulo: map['titulo'] ?? '',
+      dataEnvio: map['dataEnvio'] ?? '',
+      criadoEm: map['criadoEm'] ?? '',
+      alteradoEm: map['alteradoEm'],
+      mensagemVisualizada: map['mensagemVisualizada'] ?? false,
+      categoriaNotificacao: map['categoriaNotificacao'] ?? '',
+      codigoEOL: map['codigoEOL'] ?? 0,
     );
   }
 

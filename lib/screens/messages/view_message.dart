@@ -365,6 +365,13 @@ class ViewMessageState extends State<ViewMessage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F1EE),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(screenHeight * 3),
+                          ),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/messages/messages.controller.dart';
 import '../../models/message/message.dart';
+import '../../ui/widgets/appbar/app_bar_escola_aqui.dart';
 import '../../utils/conection.dart';
 import '../../utils/date_format.dart';
 import '../../utils/string_support.dart';
@@ -194,6 +195,13 @@ class ListMessageState extends State<ListMessages> {
                             )
                             .whenComplete(() => loadingMessages());
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xffF2F1EE),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(screenHeight * 3),
+                        ),
+                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -355,6 +363,13 @@ class ListMessageState extends State<ListMessages> {
                           onPressed: () {
                             navigateToMessage(context, _messagesController.messages.first);
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xffF2F1EE),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(screenHeight * 3),
+                            ),
+                          ),
                           child: Row(
                             children: <Widget>[
                               const AutoSizeText(
@@ -514,15 +529,8 @@ class ListMessageState extends State<ListMessages> {
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
-        appBar: AppBar(
-          title: const Text('Mensagens'),
-          backgroundColor: const Color(0xffEEC25E),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            },
-          ),
+        appBar: const AppBarEscolaAqui(
+          titulo: 'Mensagens',
         ),
         body: RefreshIndicator(
           onRefresh: () async {
