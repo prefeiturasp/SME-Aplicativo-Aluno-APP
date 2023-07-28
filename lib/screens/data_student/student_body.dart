@@ -6,7 +6,7 @@ class StudentBody extends StatelessWidget {
   final String codigoEOL;
   final String situacao;
 
-  StudentBody({this.dataNasc, this.codigoEOL, this.situacao});
+  StudentBody({required this.dataNasc,required this.codigoEOL,required this.situacao});
 
   @override
   Widget build(BuildContext context) {

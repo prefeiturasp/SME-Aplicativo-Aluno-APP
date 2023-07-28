@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -13,28 +13,29 @@ class EventItem extends StatelessWidget {
   final String eventDesc;
   final String componenteCurricular;
 
-  EventItem({
-    this.tipoEvento,
-    this.customTitle,
-    this.titleEvent,
-    this.desc,
-    this.dia,
-    this.eventDesc,
-    this.componenteCurricular,
+  const EventItem({
+    super.key,
+    required this.tipoEvento,
+    required this.customTitle,
+    required this.titleEvent,
+    required this.desc,
+    required this.dia,
+    required this.eventDesc,
+    required this.componenteCurricular,
   });
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     const colorAvaliacao = Color(0xFF9C33AD);
     const colorReuniao = Color(0xFFE1771D);
     const colorOutros = Color(0xFFC4C4C4);
 
-    DateTime dataInicio = DateTime.parse(dia);
+    final DateTime dataInicio = DateTime.parse(dia);
     final formatDate = DateFormat('dd/MM/yyyy');
 
-    viewEvent() {
+    Future viewEvent() {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -67,90 +68,83 @@ class EventItem extends StatelessWidget {
                       Expanded(
                         flex: 8,
                         child: Text(
-                          "Avaliação: ${formatDate.format(dataInicio)}",
+                          'Avaliação: ${formatDate.format(dataInicio)}',
                           overflow: TextOverflow.clip,
                           maxLines: 4,
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w600),
+                          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
                   ),
-                  componenteCurricular != null
+                  componenteCurricular.isNotEmpty
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Divider(
+                            const Divider(
                               color: Color(0xffCDCDCD),
                             ),
-                            Text(
-                              "Componente Curricular",
+                            const Text(
+                              'Componente Curricular',
                               overflow: TextOverflow.clip,
                               maxLines: 4,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 12,
                             ),
                             Text(
                               componenteCurricular,
                               overflow: TextOverflow.clip,
                               maxLines: 4,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                               ),
                             ),
-                            Divider(
+                            const Divider(
                               color: Color(0xffCDCDCD),
                             ),
                           ],
                         )
-                      : Divider(
+                      : const Divider(
                           color: Color(0xffCDCDCD),
                         ),
-                  Text(
-                    "Nome da Avaliação",
+                  const Text(
+                    'Nome da Avaliação',
                     overflow: TextOverflow.clip,
                     maxLines: 4,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
                     titleEvent,
                     overflow: TextOverflow.clip,
                     maxLines: 4,
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
-                  Divider(
+                  const Divider(
                     color: Color(0xffCDCDCD),
                   ),
-                  Text(
-                    "Conteúdo",
+                  const Text(
+                    'Conteúdo',
                     overflow: TextOverflow.clip,
                     maxLines: 4,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w600),
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
-                  Html(
-                    data: eventDesc,
-                  ),
-                  Divider(
+                  HtmlWidget(eventDesc),
+                  const Divider(
                     color: Color(0xffCDCDCD),
                   ),
                 ],
               ),
             ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text("FECHAR"),
+              ElevatedButton(
+                child: const Text('FECHAR'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -161,59 +155,59 @@ class EventItem extends StatelessWidget {
       );
     }
 
-    return Container(
-        padding:
-            EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
-        child: Container(
-          height: screenHeight * 6,
-          child: InkWell(
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Wrap(
+    return InkWell(
+      onTap: () {
+        if (tipoEvento == 0) {
+          viewEvent();
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
+        child: SizedBox(
+          height: screenHeight * 3,
+          child: ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Wrap(
                     children: [
-                      Container(
+                      SizedBox(
                         width: (size.width / 1.75),
                         child: customTitle,
                       )
                     ],
                   ),
-                  tipoEvento == 0
-                      ? Icon(
-                          FontAwesomeIcons.solidStickyNote,
-                          color: Color(0xFF086397),
-                          size: screenHeight * 2.2,
-                        )
-                      : SizedBox.shrink()
-                ],
-              ),
-              leading: CircleAvatar(
-                  backgroundColor: tipoEvento == 0
-                      ? colorAvaliacao
-                      : tipoEvento == 16
-                          ? colorReuniao
-                          : tipoEvento == 17
-                              ? colorReuniao
-                              : tipoEvento == 19
-                                  ? colorReuniao
-                                  : colorOutros,
-                  child: AutoSizeText(
-                    dataInicio.day.toString(),
-                    maxFontSize: 16,
-                    minFontSize: 14,
-                    style: TextStyle(
-                        fontSize: screenHeight * 2,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  )),
+                ),
+                tipoEvento == 0
+                    ? Icon(
+                        FontAwesomeIcons.solidNoteSticky,
+                        color: const Color(0xFF086397),
+                        size: screenHeight * 2.2,
+                      )
+                    : const SizedBox.shrink()
+              ],
             ),
-            onTap: () {
-              if (tipoEvento == 0) {
-                viewEvent();
-              }
-            },
+            leading: CircleAvatar(
+              backgroundColor: tipoEvento == 0
+                  ? colorAvaliacao
+                  : tipoEvento == 16
+                      ? colorReuniao
+                      : tipoEvento == 17
+                          ? colorReuniao
+                          : tipoEvento == 19
+                              ? colorReuniao
+                              : colorOutros,
+              child: AutoSizeText(
+                dataInicio.day.toString(),
+                maxFontSize: 16,
+                minFontSize: 14,
+                style: TextStyle(fontSize: screenHeight * 2, color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -1,18 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class ObsBody extends StatelessWidget {
   final String title;
-  final String recomendacoesFamilia;
-  final String recomendacoesAluno;
-  final bool current;
+  final String? recomendacoesFamilia;
+  final String? recomendacoesAluno;
+  bool current = false;
 
-  ObsBody(
-      {this.title,
-      this.recomendacoesFamilia,
-      this.recomendacoesAluno,
-      this.current});
+  ObsBody({required this.title, this.recomendacoesFamilia, this.recomendacoesAluno, this.current = false});
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +38,18 @@ class ObsBody extends StatelessWidget {
                     'Recomendações a familía',
                     minFontSize: 12,
                     maxFontSize: 14,
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Html(data: recomendacoesFamilia)),
+                  subtitle: HtmlWidget(recomendacoesFamilia ?? '')),
               ListTile(
-                  title: AutoSizeText(
-                    'Recomendações ao aluno',
-                    minFontSize: 12,
-                    maxFontSize: 14,
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Html(data: recomendacoesAluno)),
+                title: AutoSizeText(
+                  'Recomendações ao aluno',
+                  minFontSize: 12,
+                  maxFontSize: 14,
+                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+                ),
+                subtitle: HtmlWidget(recomendacoesAluno ?? ''),
+              ),
             ],
           ),
         ));

@@ -1,36 +1,42 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sme_app_aluno/models/estudante.model.dart';
-import 'package:sme_app_aluno/screens/data_student/data.dart';
-import 'package:sme_app_aluno/screens/frequency/frequency.dart';
-import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/screens/notes/expansion.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:sme_app_aluno/utils/date_format.dart';
+
+import '../../enumeradores/modalidade_tipo.dart';
+import '../../enumeradores/modelo_boletim.dart';
+import '../../models/estudante.model.dart';
+import '../../screens/data_student/data.dart';
+import '../../screens/frequency/frequency.dart';
+import '../../screens/not_internet/not_internet.dart';
+import '../../screens/notes/expansion.dart';
+import '../../utils/conection.dart';
+import '../../utils/date_format.dart';
+import '../../utils/mensagem_sistema.dart';
+import '../index.dart';
 
 class EstudanteResumoView extends StatefulWidget {
   final EstudanteModel estudante;
-  final int userId;
   final String modalidade;
-
-  EstudanteResumoView({@required this.estudante, this.modalidade, this.userId});
+  final String grupoCodigo;
+  const EstudanteResumoView({
+    super.key,
+    required this.estudante,
+    required this.modalidade,
+    required this.grupoCodigo,
+  });
 
   @override
-  _EstudanteResumoViewState createState() => _EstudanteResumoViewState();
+  EstudanteResumoViewState createState() => EstudanteResumoViewState();
 }
 
-class _EstudanteResumoViewState extends State<EstudanteResumoView> {
+class EstudanteResumoViewState extends State<EstudanteResumoView> {
   bool abaDados = true;
   bool abaBoletim = false;
   bool abaFrequencia = false;
 
-  content(BuildContext context, double screenHeight, EstudanteModel data) {
-    String dateFormatted =
-        DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
-    String dateSituacaoMatricula = DateFormatSuport.formatStringDate(
-        data.dataSituacaoMatricula, 'dd/MM/yyyy');
+  Widget content(BuildContext context, double screenHeight, EstudanteModel data, GlobalKey<ScaffoldState> scaffoldkey) {
+    final String dateFormatted = DateFormatSuport.formatStringDate(data.dataNascimento, 'dd/MM/yyyy');
+    final String dateSituacaoMatricula = DateFormatSuport.formatStringDate(data.dataSituacaoMatricula, 'dd/MM/yyyy');
 
     if (abaDados) {
       return Container(
@@ -38,7 +44,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
         padding: EdgeInsets.all(screenHeight * 2.5),
         child: DataStudent(
           dataNasc: dateFormatted,
-          codigoEOL: "${data.codigoEol}",
+          codigoEOL: '${data.codigoEol}',
           situacao: dateSituacaoMatricula,
           codigoUe: widget.estudante.codigoEscola,
         ),
@@ -47,14 +53,20 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
 
     if (abaBoletim) {
       return Container(
-        padding: EdgeInsets.all(screenHeight * 2.5),
+        padding: EdgeInsets.all(screenHeight),
+        height: MediaQuery.of(context).size.height - screenHeight * 26,
         child: Expansion(
           codigoUe: widget.estudante.codigoEscola,
+          codigoDre: widget.estudante.codigoDre,
+          semestre: 0,
+          modelo: ModeloBoletim.Detalhado,
+          anoLetivo: DateTime.now().year,
           codigoTurma: widget.estudante.codigoTurma.toString(),
           codigoAluno: widget.estudante.codigoEol.toString(),
           groupSchool: widget.modalidade,
+          codigoModalidade: widget.grupoCodigo,
+          scaffoldState: scaffoldkey,
         ),
-        height: MediaQuery.of(context).size.height - screenHeight * 26,
       );
     }
 
@@ -62,35 +74,33 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
       return Frequency(
         student: widget.estudante,
       );
+    } else {
+      return const SizedBox();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
-
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
+    final keyScaffod = GlobalKey<ScaffoldState>();
     if (connectionStatus == ConnectivityStatus.Offline) {
-      // BackgroundFetch.stop().then((int status) {
-      //   print('[BackgroundFetch] stop success: $status');
-      // });
       return NotInteernet();
     } else {
-      var size = MediaQuery.of(context).size;
-      var screenHeight =
-          (size.height - MediaQuery.of(context).padding.top) / 100;
+      final size = MediaQuery.of(context).size;
+      final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
       return Scaffold(
-        backgroundColor: Color(0xffE5E5E5),
+        key: keyScaffod,
+        backgroundColor: const Color(0xffE5E5E5),
         appBar: AppBar(
-          title: Text(
-            "Informações do estudante",
-            style: TextStyle(
-                color: Color(0xff333333), fontWeight: FontWeight.w500),
+          title: const Text(
+            'Informações do estudante',
+            style: TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w500),
           ),
-          backgroundColor: Color(0xffEEC25E),
+          backgroundColor: const Color(0xffEEC25E),
         ),
         body: SingleChildScrollView(
           child: Container(
-            color: Color(0xffE5E5E5),
+            color: const Color(0xffE5E5E5),
             width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -99,14 +109,12 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.all(screenHeight * 2.5),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Color(0xffC5C5C5), width: 0.5))),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5)),
+                      ),
                       child: EAEstudanteInfo(
-                        nome: widget.estudante.nomeSocial != null &&
-                                widget.estudante.nomeSocial.isNotEmpty
+                        nome: widget.estudante.nomeSocial.isNotEmpty
                             ? widget.estudante.nomeSocial
                             : widget.estudante.nome,
                         ue: widget.estudante.escola,
@@ -116,8 +124,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                         codigoEOL: widget.estudante.codigoEol,
                       ),
                     ),
-                    Container(
-                        child: Row(
+                    Row(
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
@@ -128,30 +135,26 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
+                            padding: EdgeInsets.only(top: screenHeight * 2.2, bottom: screenHeight * 2.2),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border(
-                                  bottom: BorderSide(
-                                      color: abaDados
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                bottom: BorderSide(
+                                  color: abaDados ? const Color(0xffC65D00) : const Color(0xffCECECE),
+                                  width: 2,
+                                ),
+                              ),
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                "DADOS",
+                                'DADOS',
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaDados
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                  color: abaDados ? const Color(0xffC65D00) : const Color(0xff9f9f9f),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
@@ -165,30 +168,28 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
-                            padding: EdgeInsets.only(
-                                top: screenHeight * 2.2,
-                                bottom: screenHeight * 2.2),
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
+                            padding: EdgeInsets.only(top: screenHeight * 2.2, bottom: screenHeight * 2.2),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border(
-                                  bottom: BorderSide(
-                                      color: abaBoletim
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                bottom: BorderSide(
+                                  color: abaBoletim ? const Color(0xffC65D00) : const Color(0xffCECECE),
+                                  width: 2,
+                                ),
+                              ),
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                "BOLETIM",
+                                widget.grupoCodigo == ModalidadeTipo.EducacaoInfantil
+                                    ? MensagemSistema.abaLabelRelatorio
+                                    : MensagemSistema.abaLabelBoletim,
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaBoletim
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                  color: abaBoletim ? const Color(0xffC65D00) : const Color(0xff9f9f9f),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
@@ -202,8 +203,7 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             });
                           },
                           child: Container(
-                            width: (MediaQuery.of(context).size.width / 100) *
-                                33.33,
+                            width: (MediaQuery.of(context).size.width / 100) * 33.33,
                             padding: EdgeInsets.only(
                               top: screenHeight * 2.2,
                               bottom: screenHeight * 2.2,
@@ -211,29 +211,33 @@ class _EstudanteResumoViewState extends State<EstudanteResumoView> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border(
-                                  bottom: BorderSide(
-                                      color: abaFrequencia
-                                          ? Color(0xffC65D00)
-                                          : Color(0xffCECECE),
-                                      width: 2)),
+                                bottom: BorderSide(
+                                  color: abaFrequencia ? const Color(0xffC65D00) : const Color(0xffCECECE),
+                                  width: 2,
+                                ),
+                              ),
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                "FREQUÊNCIA",
+                                'FREQUÊNCIA',
                                 maxFontSize: 16,
                                 minFontSize: 14,
                                 style: TextStyle(
-                                    color: abaFrequencia
-                                        ? Color(0xffC65D00)
-                                        : Color(0xff9f9f9f),
-                                    fontWeight: FontWeight.w500),
+                                  color: abaFrequencia ? const Color(0xffC65D00) : const Color(0xff9f9f9f),
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
                         )
                       ],
-                    )),
-                    content(context, screenHeight, widget.estudante)
+                    ),
+                    content(
+                      context,
+                      screenHeight,
+                      widget.estudante,
+                      keyScaffod,
+                    ),
                   ],
                 )
               ],

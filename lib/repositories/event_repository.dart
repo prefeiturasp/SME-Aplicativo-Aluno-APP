@@ -1,39 +1,33 @@
-import 'dart:convert';
-import 'package:get_it/get_it.dart';
-import 'package:sentry/sentry.dart';
-import 'package:http/http.dart' as http;
+import 'dart:developer';
 
-import 'package:sme_app_aluno/interfaces/event_repository_interface.dart';
-import 'package:sme_app_aluno/models/event/event.dart' as EventModel;
-import 'package:sme_app_aluno/stores/index.dart';
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+import 'package:get_it/get_it.dart';
+
+import '../interfaces/event_repository_interface.dart';
+import '../models/event/event.dart' as eventmodel;
+import '../services/api.service.dart';
+import '../stores/index.dart';
 
 class EventRepository extends IEventRepository {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
+  final api = GetIt.I.get<ApiService>();
 
   @override
-  Future<List<EventModel.Event>> fetchEvent(
-      int codigoAluno, int mes, int ano, int userId) async {
+  Future<List<eventmodel.Event>> fetchEvent(int codigoAluno, int mes, int ano, int userId) async {
     try {
-      var response = await http.get(
-        "${AppConfigReader.getApiHost()}/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}",
-        headers: {
-          "Authorization": "Bearer ${usuarioStore.usuario.token}",
-          "Content-Type": "application/json"
-        },
-      );
+      final List<eventmodel.Event> retorno = [];
+      final response = await api.dio.get('/Evento/AlunoLogado/${ano.toInt()}/${mes.toInt()}/${codigoAluno.toInt()}');
       if (response.statusCode == 200) {
-        List<dynamic> eventResponse = jsonDecode(response.body);
-        var eventos = eventResponse.map((m) => EventModel.Event.fromJson(m)).toList();
-        return eventos;
+        for (var i = 0; i < response.data.length; i++) {
+          retorno.add(eventmodel.Event.fromMap(response.data[i]));
+        }
+        return retorno;
       } else {
-        print('Erro ao obter dados');
-        return null;
+        log('Erro ao obter eventos ${response.statusCode}');
+        return retorno;
       }
     } catch (e) {
-      print('$e');
-      GetIt.I.get<SentryClient>().captureException(exception: e);
-      return null;
+      log('Erro ao obter eventos $e');
+      return [];
     }
   }
 }
