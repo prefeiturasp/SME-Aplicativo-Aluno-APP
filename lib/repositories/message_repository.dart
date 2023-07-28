@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../interfaces/message_repository_interface.dart';
 import '../models/message/message.dart';
+import '../services/api.service.dart';
 import '../services/message.service.dart';
 import '../stores/index.dart';
 import '../utils/app_config_reader.dart';
@@ -13,37 +14,30 @@ import '../utils/app_config_reader.dart';
 class MessageRepository implements IMessageRepository {
   final MessageService _messageService = MessageService();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
-
+  final api = GetIt.I.get<ApiService>();
   @override
   Future<List<Message>> fetchNewMessages(int codigoEol) async {
     try {
+      log('MessageRepository fetchNewMessages');
       final List<Message> messagesDB = await _messageService.all();
       final messageRecent = messagesDB[0].criadoEm;
       final dateFormaet = messageRecent.replaceAll(':', '%3A');
 
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$codigoEol/desde/$dateFormaet');
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
-          'Content-Type': 'application/json',
-        },
-      );
-
+      final response = await api.dio.get('/Mensagens/$codigoEol/desde/$dateFormaet');
       if (response.statusCode == 200) {
-        final List<dynamic> messagesResponse = jsonDecode(response.body);
-        final algo = messagesResponse.map((m) => Message.fromJson(m)).toList();
-        for (var message in algo) {
-          _messageService.create(message);
+        for (var i = 0; i < response.data.length; i++) {
+          final messagem = Message.fromMap(response.data[i]);
+          messagem.codigoEOL = codigoEol;
+          _messageService.create(messagem);
         }
-        final List<Message> messagesDBAll = await _messageService.all();
+        final messagesDBAll = await _messageService.all();
         messagesDBAll.sort((b, a) => DateTime.parse(a.criadoEm).compareTo(DateTime.parse(b.criadoEm)));
-        return messagesDBAll.where((element) => element.codigoEOL == codigoEol).toList();
-      } else {
-        return messagesDB;
+        final lista = messagesDBAll.where((element) => element.codigoEOL == codigoEol).toList();
+        return lista;
       }
+      return messagesDB;
     } catch (e) {
-      log(e.toString());
+      log('fetchNewMessages $e');
       return [];
     }
   }
@@ -70,8 +64,17 @@ class MessageRepository implements IMessageRepository {
         );
       }
     } catch (e) {
-      log(e.toString());
-      throw Exception(e);
+      log('getMessageById $e');
+      return Message(
+        id: 0,
+        mensagem: '',
+        titulo: '',
+        dataEnvio: DateTime.now().toIso8601String(),
+        criadoEm: DateTime.now().toIso8601String(),
+        mensagemVisualizada: true,
+        categoriaNotificacao: '',
+        codigoEOL: 0,
+      );
     }
   }
 
@@ -118,7 +121,7 @@ class MessageRepository implements IMessageRepository {
       }
     } catch (e) {
       log(e.toString());
-      return throw Exception(e);
+      return List<Message>() = [];
     }
   }
 
@@ -148,11 +151,11 @@ class MessageRepository implements IMessageRepository {
         return jsonDecode(response.body);
       } else {
         log('[MessageRepository] Erro ao atualizar mensagem ${response.statusCode}');
-        return throw Exception(response.reasonPhrase);
+        return false;
       }
     } catch (error, stacktrace) {
       log('[MessageRepository] Erro de requisição $stacktrace');
-      return throw Exception(error);
+      return false;
     }
   }
 
@@ -160,14 +163,7 @@ class MessageRepository implements IMessageRepository {
   Future<bool> deleteMessage(int codigoEol, int idNotificacao, int userId) async {
     final List<Message> messagesDB = await _messageService.all();
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$idNotificacao/$codigoEol');
-      final response = await http.delete(
-        url,
-        headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
-          'Content-Type': 'application/json',
-        },
-      );
+      final response = await api.dio.delete('/Mensagens/$idNotificacao/$codigoEol');
       if (response.statusCode == 200) {
         await _messageService.delete(idNotificacao);
 

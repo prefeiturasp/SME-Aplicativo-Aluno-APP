@@ -14,8 +14,7 @@ class MessageService {
     try {
       await db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (ex) {
-      log('Erro ao criar mensagem: $ex');
-      throw Exception(ex);
+      log('Erro ao criar mensagem no sqlLite: $ex');
     }
   }
 
@@ -40,8 +39,8 @@ class MessageService {
       );
       return messages;
     } catch (ex) {
-      log(ex.toString());
-      throw Exception(ex);
+      log('MessageService ALL $ex');
+      return [];
     }
   }
 
@@ -54,8 +53,7 @@ class MessageService {
         whereArgs: [id],
       );
     } catch (ex) {
-      log('Erro ao deletar usuário: $ex');
-      throw Exception(ex);
+      log('Erro ao deletar mensagem: $ex');
     }
   }
 }

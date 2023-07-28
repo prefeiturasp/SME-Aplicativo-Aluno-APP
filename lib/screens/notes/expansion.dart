@@ -233,24 +233,26 @@ class ExpansionState extends State<Expansion> {
                 children: [
                   AutoSizeText(
                     msg,
-                    maxFontSize: 13,
-                    minFontSize: 11,
+                    maxFontSize: 10,
+                    minFontSize: 8,
                     style: const TextStyle(
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 8,
                   ),
-                  EADefaultButton(
-                    text: MensagemSistema.labelBotaoEntendi,
-                    iconColor: Colors.white,
-                    btnColor: const Color(0xffffd037),
-                    enabled: true,
-                    styleAutoSize: const TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
-                    onPress: () {
-                      Navigator.of(context).pop();
-                    },
+                  Flexible(
+                    child: EADefaultButton(
+                      text: MensagemSistema.labelBotaoEntendi,
+                      iconColor: Colors.white,
+                      btnColor: const Color(0xffffd037),
+                      enabled: true,
+                      styleAutoSize: const TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
+                      onPress: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                 ],
               ),

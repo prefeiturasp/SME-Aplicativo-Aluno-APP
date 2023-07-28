@@ -56,8 +56,7 @@ class EADefaultButton extends StatelessWidget {
     return <Widget>[
       AutoSizeText(
         text,
-        maxFontSize: 18,
-        minFontSize: 16,
+        minFontSize: 10,
         style: styleAutoSize ??
             TextStyle(color: !enabled ? const Color(0xffC4C4C4) : Colors.white, fontWeight: FontWeight.w700),
       ),
