@@ -38,15 +38,15 @@ class EstudanteNotaConceitoModel {
 
   factory EstudanteNotaConceitoModel.fromMap(Map<String, dynamic> map) {
     return EstudanteNotaConceitoModel(
-      id: map['id'] as int,
-      conselhoClasseNotaId: map['conselhoClasseNotaId'] as int,
+      id: map['id'] ?? 0,
+      conselhoClasseNotaId: map['conselhoClasseNotaId'] ?? 0,
       bimestre: map['bimestre'] as int,
-      componenteCurricularCodigo: map['componenteCurricularCodigo'] as int,
-      componenteCurricularNome: map['componenteCurricularNome'] as String,
-      conceitoId: map['conceitoId'] as int,
-      nota: map['nota'] as String,
-      corDaNota: map['corDaNota'] as String,
-      notaConceito: map['notaConceito'] as String,
+      componenteCurricularCodigo: map['componenteCurricularCodigo'] ?? 0,
+      componenteCurricularNome: map['componenteCurricularNome'] ?? '',
+      conceitoId: map['conceitoId'] ?? 0,
+      nota: map['nota'] ?? '',
+      corDaNota: map['corDaNota'] ?? '',
+      notaConceito: map['notaConceito'] ?? '',
     );
   }
 

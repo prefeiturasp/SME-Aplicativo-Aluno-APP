@@ -9,7 +9,7 @@ import 'package:getwidget/getwidget.dart';
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
-import '../../screens/firstAccess/firstAccess.dart';
+import '../../screens/firstAccess/first_access.dart';
 import '../../screens/recover_password/recover_password.dart';
 import '../../stores/usuario.store.dart';
 import '../../utils/navigator.dart';

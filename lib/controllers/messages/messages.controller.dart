@@ -108,53 +108,41 @@ abstract class MessagesControllerBase with Store {
     if (smeCheck && ueCheck && dreCheck) {
       final condition1 = ObservableList<Message>.of(messages);
       for (var element in condition1) {
-        log('condition1');
         log(element.toString());
-        log('condition1');
       }
       auxList = ObservableList<Message>.of(condition1);
     } else if (smeCheck && ueCheck && !dreCheck) {
       final condition2 = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao != 'DRE').toList());
       for (var element in condition2) {
-        log('condition2');
         log(element.toString());
-        log('condition2');
       }
       auxList = ObservableList<Message>.of(condition2);
     } else if (smeCheck && !ueCheck && dreCheck) {
       final condition3 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'UE').toList();
       for (var element in condition3) {
-        log('condition3');
         log(element.toString());
-        log('condition3');
       }
       auxList = ObservableList<Message>.of(condition3);
     } else if (smeCheck && !ueCheck && !dreCheck) {
       final condition4 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'SME').toList();
       for (var element in condition4) {
-        log('condition4');
         log(element.toString());
-        log('condition4');
       }
       auxList = ObservableList<Message>.of(condition4);
     } else if (!smeCheck && ueCheck && dreCheck) {
       final condition5 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'SME').toList();
       for (var element in condition5) {
-        log('condition5');
         log(element.toString());
-        log('condition5');
       }
       auxList = ObservableList<Message>.of(condition5);
     } else if (!smeCheck && ueCheck && !dreCheck) {
       final condition6 =
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'UE').toList();
       for (var element in condition6) {
-        log('condition6');
         log(element.toString());
-        log('condition6');
       }
       auxList = ObservableList<Message>.of(condition6);
     } else if (!smeCheck && !ueCheck && dreCheck) {
@@ -162,9 +150,7 @@ abstract class MessagesControllerBase with Store {
           ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'DRE').toList();
 
       for (var element in condition7) {
-        log('condition7');
         log(element.toString());
-        log('condition7');
       }
 
       auxList = ObservableList<Message>.of(condition7);
