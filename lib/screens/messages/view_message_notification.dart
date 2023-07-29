@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -95,14 +93,20 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
     );
   }
 
-  Future<bool> launchURL(Uri url) async {
-    final urlValida = await canLaunchUrl(url);
-    if (urlValida) {
-      return await launchUrl(url);
-    } else {
-      log('Nâo foi possivel abrir a URL $url');
-      return false;
+  Future<void> openURl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      showInfo(Colors.red, 'Falha ao Abrir o LINK');
     }
+  }
+
+  void showInfo(Color color, String mensagem) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        content: Text(mensagem),
+      ),
+    );
   }
 
   @override
@@ -164,7 +168,10 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                       width: screenHeight * 39,
                       child: HtmlWidget(
                         widget.message.mensagem,
-                        onTapUrl: (url) => launchURL(Uri.parse(url)),
+                        onTapUrl: (url) {
+                          openURl(url);
+                          return true;
+                        },
                       ),
                     ),
                     SizedBox(
@@ -212,6 +219,13 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                         onPressed: () async {
                           navigateToListMessage();
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffF2F1EE),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(screenHeight * 3),
+                          ),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
