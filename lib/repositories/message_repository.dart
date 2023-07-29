@@ -44,25 +44,21 @@ class MessageRepository implements IMessageRepository {
 
   Future<Message> getMessageById(int messageId, int userId) async {
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$messageId');
-      final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}'});
-
+      final response = await api.dio.get('/Mensagens/$messageId');
       if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final message = Message.fromJson(decodeJson);
+        final message = Message.fromMap(response.data);
         return message;
-      } else {
-        return Message(
-          id: 0,
-          mensagem: '',
-          titulo: '',
-          dataEnvio: DateTime.now().toIso8601String(),
-          criadoEm: DateTime.now().toIso8601String(),
-          mensagemVisualizada: true,
-          categoriaNotificacao: '',
-          codigoEOL: 0,
-        );
       }
+      return Message(
+        id: 0,
+        mensagem: '',
+        titulo: '',
+        dataEnvio: DateTime.now().toIso8601String(),
+        criadoEm: DateTime.now().toIso8601String(),
+        mensagemVisualizada: true,
+        categoriaNotificacao: '',
+        codigoEOL: 0,
+      );
     } catch (e) {
       log('getMessageById $e');
       return Message(
@@ -120,7 +116,7 @@ class MessageRepository implements IMessageRepository {
         }
       }
     } catch (e) {
-      log(e.toString());
+      log('MessageRepository fetchMessages $e');
       return List<Message>() = [];
     }
   }
@@ -148,13 +144,15 @@ class MessageRepository implements IMessageRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final retorno = Message.fromMap(jsonDecode(response.body));
+        return retorno.mensagemVisualizada;
       } else {
         log('[MessageRepository] Erro ao atualizar mensagem ${response.statusCode}');
         return false;
       }
     } catch (error, stacktrace) {
       log('[MessageRepository] Erro de requisição $stacktrace');
+      log('[MessageRepository] Erro de requisição $error');
       return false;
     }
   }

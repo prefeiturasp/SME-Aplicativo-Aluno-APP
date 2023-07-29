@@ -48,40 +48,50 @@ class CorpoNotas extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Note(
-              current: bDois == '-' && bTres == '-' && bQuatro == '-' && bFinal == '-' && bUm != '-' ? true : false,
-              name: '1º Bim',
-              noteValue: bUm ?? '',
-              color: corUm,
-              description: descUm  ?? '',
+            Flexible(
+              child: Note(
+                current: bDois == '-' && bTres == '-' && bQuatro == '-' && bFinal == '-' && bUm != '-' ? true : false,
+                name: '1º Bim',
+                noteValue: bUm ?? '',
+                color: corUm,
+                description: descUm ?? '',
+              ),
             ),
-            Note(
-              current: bTres == '-' && bQuatro == '-' && bFinal == '-' && bDois != '-' ? true : false,
-              name: '2º Bim',
-              noteValue: bDois  ?? '',
-              color: corDois,
-              description: descDois  ?? '',
+            Flexible(
+              child: Note(
+                current: bTres == '-' && bQuatro == '-' && bFinal == '-' && bDois != '-' ? true : false,
+                name: '2º Bim',
+                noteValue: bDois ?? '',
+                color: corDois,
+                description: descDois ?? '',
+              ),
             ),
-            Note(
-              current: bQuatro == '-' && bTres != '-' ? true : false,
-              name: '3º Bim',
-              noteValue: bTres ?? '',
-              color: corTres,
-              description: descTres ?? '',
+            Flexible(
+              child: Note(
+                current: bQuatro == '-' && bTres != '-' ? true : false,
+                name: '3º Bim',
+                noteValue: bTres ?? '',
+                color: corTres,
+                description: descTres ?? '',
+              ),
             ),
-            Note(
-              current: bFinal == '-' && bQuatro != '-' ? true : false,
-              name: '4º Bim',
-              noteValue: bQuatro ?? '',
-              color: corQuatro,
-              description: descQuatro ?? '',
+            Flexible(
+              child: Note(
+                current: bFinal == '-' && bQuatro != '-' ? true : false,
+                name: '4º Bim',
+                noteValue: bQuatro ?? '',
+                color: corQuatro,
+                description: descQuatro ?? '',
+              ),
             ),
-            Note(
-              current: bFinal != '-' ? true : false,
-              name: 'Final',
-              noteValue: bFinal ?? '',
-              color: corFinal,
-              description: descFinal ?? '',
+            Flexible(
+              child: Note(
+                current: bFinal != '-' ? true : false,
+                name: 'Final',
+                noteValue: bFinal ?? '',
+                color: corFinal,
+                description: descFinal ?? '',
+              ),
             ),
           ],
         ),

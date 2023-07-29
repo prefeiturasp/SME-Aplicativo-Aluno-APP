@@ -35,13 +35,12 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
   final Stream<RemoteMessage> _firebaseonOnMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp;
 
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
-  MessagesController _messagesController = MessagesController();
+  final MessagesController _messagesController = MessagesController();
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    _initPushNotificationHandlers();
-    _messagesController = MessagesController();
+    initPushNotificationHandlers();
     usuarioStore.carregarUsuario();
   }
 
@@ -51,64 +50,71 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
     super.dispose();
   }
 
-  _initPushNotificationHandlers() async {
+  Future<void> initPushNotificationHandlers() async {
     try {
       _firebaseMessaging.requestPermission();
-      _firebaseMessaging.getToken();
+      _firebaseMessaging.getToken().then((print));
       _firebaseMessaging.subscribeToTopic('AppAluno');
       _firebaseMessaging.getInitialMessage().then((message) async {
         if (message != null) {
-          await _navigateToMessageView(message.data);
+          await navigateToMessageView(message.data);
         }
       });
-      _firebaseonMessage.listen((RemoteMessage message) {
-        _popUpNotification(message.data);
+      _firebaseonMessage.listen((RemoteMessage message) async {
+        await popUpNotification(message.data);
       });
       _firebaseonOnMessageOpenedApp.listen((event) async {
-        await _navigateToMessageView(event.data);
+        await navigateToMessageView(event.data);
       });
+      FirebaseMessaging.onBackgroundMessage(
+        (message) async {
+          await navigateToMessageView(message.data);
+        },
+      );
     } catch (ex) {
       log(ex.toString());
     }
   }
 
-  _popUpNotification(Map<String, dynamic> message) {
+  Future<void> popUpNotification(Map<String, dynamic> message) async {
     AwesomeDialog(
       context: context,
       headerAnimationLoop: true,
       dialogType: DialogType.success,
       animType: AnimType.bottomSlide,
-      title: "NOTIFICAÇÃO - ${message["data"]["categoriaNotificacao"]}",
+      title: "NOTIFICAÇÃO - ${message["categoriaNotificacao"]}",
       desc: 'Você acaba de receber uma \n mensagem.',
       btnOkOnPress: () {
-        _navigateToMessageView(message);
+        navigateToMessageView(message);
       },
       btnOkText: 'VISUALIZAR',
     ).show();
   }
 
-  _navigateToMessageView(Map<String, dynamic> message) async {
+  Future<void> navigateToMessageView(Map<String, dynamic> message) async {
     final Message message0 = Message(
-      id: int.parse(message['data']['Id']),
-      titulo: message['data']['Titulo'],
-      mensagem: message['data']['Mensagem'],
-      criadoEm: message['data']['CriadoEm'],
-      codigoEOL: message['data']['CodigoEOL'] != null ? int.parse(message['data']['CodigoEOL']) : 0,
-      categoriaNotificacao: message['data']['categoriaNotificacao'],
-      dataEnvio: message['data']['DataEnvio'],
-      alteradoEm: message['data']['AlteradoEm'],
-      mensagemVisualizada: message['data']['MensagemVisualizada'],
+      id: int.parse(message['Id']),
+      titulo: message['Titulo'],
+      mensagem: message['Mensagem'],
+      criadoEm: message['CriadoEm'],
+      codigoEOL: message['CodigoEOL'] != null ? int.parse(message['CodigoEOL']) : 0,
+      categoriaNotificacao: message['categoriaNotificacao'],
+      dataEnvio: message['DataEnvio'] ?? DateTime.now().toIso8601String(),
+      alteradoEm: message['AlteradoEm'] ?? '',
+      mensagemVisualizada: message['MensagemVisualizada'] ?? false,
     );
 
     await _messagesController.loadById(message0.id, usuarioStore.usuario.id);
     message0.mensagem = _messagesController.message!.mensagem;
-    Nav.push(
-      context,
-      ViewMessageNotification(
-        message: message0,
-        userId: usuarioStore.usuario.id,
-      ),
-    );
+    if (context.mounted) {
+      Nav.push(
+        context,
+        ViewMessageNotification(
+          message: message0,
+          userId: usuarioStore.usuario.id,
+        ),
+      );
+    }
   }
 
   Widget fluxoLogin() {
@@ -120,9 +126,6 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
     } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
       return const AtualizacaoCadastralView();
     }
-    // else {
-    //   return EstudanteListaView();
-    // }
 
     return const Scaffold(
       backgroundColor: Color(0xffE5E5E5),

@@ -2,131 +2,85 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/models/ue/data_ue.dart';
+import '../../models/ue/data_ue.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UEBody extends StatelessWidget {
   final DadosUE dadosUE;
 
-  UEBody({required this.dadosUE});
+  const UEBody({super.key, required this.dadosUE});
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
-    fazerLigacao(String telefone) async {
-      var url = "tel:$telefone";
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Não foi possível realizar a ação para o número $url';
+    void showAlerta(Color color, String mensagem) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: color,
+          content: Text(mensagem),
+        ),
+      );
+    }
+
+    Future<void> fazerLigacao(String telefone) async {
+      final url = Uri.parse('tel:$telefone');
+      if (!await launchUrl(url)) {
+        showAlerta(Colors.red, 'Não foi possível realizar a ação para o número $url');
       }
     }
 
     Widget itemClipBoard(BuildContext context, String infoName, String infoData, double screenHeight) {
       return InkWell(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              AutoSizeText(
-                infoName,
-                maxFontSize: 16,
-                minFontSize: 14,
-                style: TextStyle(color: Colors.black),
-              ),
-              SizedBox(
-                height: screenHeight * 1,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(color: Colors.white),
-                child: AutoSizeText(
-                  infoData.isNotEmpty ? infoData : 'Informação não disponível.',
-                  maxFontSize: 20,
-                  minFontSize: 18,
-                  style: infoData.isNotEmpty
-                      ? TextStyle(
-                          color: Color(0xff2096FA),
-                          decoration: TextDecoration.underline,
-                        )
-                      : TextStyle(color: Colors.black),
-                ),
-              ),
-              Divider(
-                thickness: 1,
-              )
-            ],
-          ),
-        ),
         onTap: infoData.isNotEmpty
             ? () async {
-                await Clipboard.setData(new ClipboardData(text: infoData)).then((_) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(infoName + " copiado para área de transferência!"),
-                  ));
+                await Clipboard.setData(ClipboardData(text: infoData)).then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('$infoName copiado para área de transferência!'),
+                    ),
+                  );
                 });
               }
             : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AutoSizeText(
+              infoName,
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: const TextStyle(color: Colors.black),
+            ),
+            SizedBox(
+              height: screenHeight * 1,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(color: Colors.white),
+              child: AutoSizeText(
+                infoData.isNotEmpty ? infoData : 'Informação não disponível.',
+                maxFontSize: 20,
+                minFontSize: 18,
+                style: infoData.isNotEmpty
+                    ? const TextStyle(
+                        color: Color(0xff2096FA),
+                        decoration: TextDecoration.underline,
+                      )
+                    : const TextStyle(color: Colors.black),
+              ),
+            ),
+            const Divider(
+              thickness: 1,
+            )
+          ],
+        ),
       );
     }
 
     Widget itemCall(BuildContext context, String infoName, String infoData, double screenHeight) {
       return InkWell(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              AutoSizeText(
-                infoName,
-                maxFontSize: 16,
-                minFontSize: 14,
-                style: TextStyle(color: Colors.black),
-              ),
-              SizedBox(
-                height: screenHeight * 1,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(color: Colors.white),
-                child: infoData.isNotEmpty
-                    ? (int.tryParse(infoData) != null
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AutoSizeText(
-                                infoData,
-                                maxFontSize: 20,
-                                minFontSize: 18,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              Icon(
-                                FontAwesomeIcons.phone,
-                                size: screenHeight * 3,
-                                color: Color(0xFFC65D00),
-                              )
-                            ],
-                          )
-                        : AutoSizeText(
-                            infoData,
-                            maxFontSize: 20,
-                            minFontSize: 18,
-                            style: TextStyle(color: Colors.black),
-                          ))
-                    : AutoSizeText(
-                        'Informação não disponível.',
-                        maxFontSize: 20,
-                        minFontSize: 18,
-                        style: TextStyle(color: Colors.black),
-                      ),
-              ),
-              Divider(
-                thickness: 1,
-              )
-            ],
-          ),
-        ),
         onTap: infoData.isNotEmpty
             ? (int.tryParse(infoData) != null
                 ? () {
@@ -134,52 +88,90 @@ class UEBody extends StatelessWidget {
                   }
                 : null)
             : null,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AutoSizeText(
+              infoName,
+              maxFontSize: 16,
+              minFontSize: 14,
+              style: const TextStyle(color: Colors.black),
+            ),
+            SizedBox(
+              height: screenHeight * 1,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: const BoxDecoration(color: Colors.white),
+              child: infoData.isNotEmpty
+                  ? (int.tryParse(infoData) != null
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AutoSizeText(
+                              infoData,
+                              maxFontSize: 20,
+                              minFontSize: 18,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            Icon(
+                              FontAwesomeIcons.phone,
+                              size: screenHeight * 3,
+                              color: const Color(0xFFC65D00),
+                            )
+                          ],
+                        )
+                      : AutoSizeText(
+                          infoData,
+                          maxFontSize: 20,
+                          minFontSize: 18,
+                          style: const TextStyle(color: Colors.black),
+                        ))
+                  : const AutoSizeText(
+                      'Informação não disponível.',
+                      maxFontSize: 20,
+                      minFontSize: 18,
+                      style: TextStyle(color: Colors.black),
+                    ),
+            ),
+            const Divider(
+              thickness: 1,
+            )
+          ],
+        ),
       );
     }
 
-    var cepComplete = dadosUE.cep.toString().padLeft(8, '0');
+    final cepComplete = dadosUE.cep.toString().padLeft(8, '0');
 
-    var cepMask = cepComplete.substring(0, 5) + "-" + cepComplete.substring(5);
+    final cepMask = '${cepComplete.substring(0, 5)}-${cepComplete.substring(5)}';
 
-    var enderecoConcatenado = dadosUE.tipoLogradouro +
-        ' ' +
-        dadosUE.logradouro +
-        ', ' +
-        dadosUE.numero +
-        ' - ' +
-        dadosUE.bairro +
-        ', ' +
-        dadosUE.municipio +
-        ' - ' +
-        dadosUE.uf +
-        ', ' +
-        cepMask;
+    final enderecoConcatenado =
+        '${dadosUE.tipoLogradouro} ${dadosUE.logradouro}, ${dadosUE.numero} - ${dadosUE.bairro}, ${dadosUE.municipio} - ${dadosUE.uf}, $cepMask';
 
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 1),
-            child: AutoSizeText(
-              'Dados da Unidade Escolar',
-              maxFontSize: 18,
-              minFontSize: 16,
-              style: TextStyle(color: Color(0xFFC65D00), fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 1),
+          child: const AutoSizeText(
+            'Dados da Unidade Escolar',
+            maxFontSize: 18,
+            minFontSize: 16,
+            style: TextStyle(color: Color(0xFFC65D00), fontWeight: FontWeight.bold),
+            textAlign: TextAlign.left,
           ),
-          itemClipBoard(context, "Endereço", enderecoConcatenado, screenHeight),
-          SizedBox(
-            height: screenHeight * 2.5,
-          ),
-          itemCall(context, "Telefone", dadosUE.telefone, screenHeight),
-          SizedBox(
-            height: screenHeight * 2.5,
-          ),
-          itemClipBoard(context, "Email", dadosUE.email, screenHeight),
-        ],
-      ),
+        ),
+        itemClipBoard(context, 'Endereço', enderecoConcatenado, screenHeight),
+        SizedBox(
+          height: screenHeight * 2.5,
+        ),
+        itemCall(context, 'Telefone', dadosUE.telefone, screenHeight),
+        SizedBox(
+          height: screenHeight * 2.5,
+        ),
+        itemClipBoard(context, 'Email', dadosUE.email, screenHeight),
+      ],
     );
   }
 }

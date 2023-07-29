@@ -4,10 +4,10 @@ class Message {
   int id;
   String mensagem;
   String titulo;
-  String dataEnvio;
+  String? dataEnvio;
   String criadoEm;
   String? alteradoEm;
-  bool mensagemVisualizada;
+  bool mensagemVisualizada = false;
   String categoriaNotificacao;
   int codigoEOL;
   Message({
