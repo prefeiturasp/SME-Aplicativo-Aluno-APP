@@ -245,7 +245,7 @@ Contribuições são **super bem vindas**! Se você tem vontade de construir o E
 
 # Instalação e Configuração
 
-Para iniciar o desenvolvimento da aplicação primeiro você precisa ter o Flutter instalado. A versão utilizada atualmente é a `v1.12.13+hotfix.8`. Depois é preciso obter os pacotes (dependências) do dart:
+Para iniciar o desenvolvimento da aplicação primeiro você precisa ter o Flutter instalado. A versão utilizada atualmente é a `3.10.6`. Depois é preciso obter os pacotes (dependências) do dart:
 
 `flutter pub get`
 
