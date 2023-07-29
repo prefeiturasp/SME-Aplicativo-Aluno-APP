@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -93,11 +95,13 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
     );
   }
 
-  Future<bool> launchURL(url) async {
-    if (await canLaunchUrl(url)) {
+  Future<bool> launchURL(Uri url) async {
+    final urlValida = await canLaunchUrl(url);
+    if (urlValida) {
       return await launchUrl(url);
     } else {
-      throw 'Could not launch $url';
+      log('Nâo foi possivel abrir a URL $url');
+      return false;
     }
   }
 
@@ -160,7 +164,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                       width: screenHeight * 39,
                       child: HtmlWidget(
                         widget.message.mensagem,
-                        onTapUrl: (url) => launchURL(url),
+                        onTapUrl: (url) => launchURL(Uri.parse(url)),
                       ),
                     ),
                     SizedBox(

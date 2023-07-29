@@ -44,25 +44,21 @@ class MessageRepository implements IMessageRepository {
 
   Future<Message> getMessageById(int messageId, int userId) async {
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Mensagens/$messageId');
-      final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}'});
-
+      final response = await api.dio.get('/Mensagens/$messageId');
       if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final message = Message.fromJson(decodeJson);
+        final message = Message.fromMap(response.data);
         return message;
-      } else {
-        return Message(
-          id: 0,
-          mensagem: '',
-          titulo: '',
-          dataEnvio: DateTime.now().toIso8601String(),
-          criadoEm: DateTime.now().toIso8601String(),
-          mensagemVisualizada: true,
-          categoriaNotificacao: '',
-          codigoEOL: 0,
-        );
       }
+      return Message(
+        id: 0,
+        mensagem: '',
+        titulo: '',
+        dataEnvio: DateTime.now().toIso8601String(),
+        criadoEm: DateTime.now().toIso8601String(),
+        mensagemVisualizada: true,
+        categoriaNotificacao: '',
+        codigoEOL: 0,
+      );
     } catch (e) {
       log('getMessageById $e');
       return Message(
