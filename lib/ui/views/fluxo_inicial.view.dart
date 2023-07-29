@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/messages/messages.controller.dart';
 import '../../models/message/message.dart';
-import '../../screens/firstAccess/firstAccess.dart';
+import '../../screens/firstAccess/first_access.dart';
 import '../../screens/messages/view_message_notification.dart';
 import '../../screens/not_internet/not_internet.dart';
 import '../../stores/usuario.store.dart';
