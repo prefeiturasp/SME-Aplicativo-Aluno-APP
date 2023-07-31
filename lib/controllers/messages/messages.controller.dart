@@ -16,16 +16,16 @@ abstract class MessagesControllerBase with Store {
   Message? message;
 
   @observable
-  ObservableList<Message> messages = ObservableList<Message>();
+  ObservableList<Message>? messages;
 
   @observable
-  ObservableList<Message> recentMessages = ObservableList<Message>();
+  ObservableList<Message>? recentMessages;
 
   @observable
-  ObservableList<Message> auxList = ObservableList<Message>();
+  ObservableList<Message>? auxList;
 
   @observable
-  ObservableList<Message> filteredList = ObservableList<Message>();
+  ObservableList<Message>? filteredList;
 
   @observable
   bool isLoading = false;
@@ -76,13 +76,13 @@ abstract class MessagesControllerBase with Store {
 
   @action
   void loadRecentMessagesPorCategory() {
-    final messagesUe = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'UE').toList());
+    final messagesUe = ObservableList<Message>.of(messages!.where((e) => e.categoriaNotificacao == 'UE').toList());
     countMessageUE = messagesUe.length;
 
-    final messagesSME = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'SME').toList());
+    final messagesSME = ObservableList<Message>.of(messages!.where((e) => e.categoriaNotificacao == 'SME').toList());
     countMessageSME = messagesSME.length;
 
-    final messagesDRE = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao == 'DRE').toList());
+    final messagesDRE = ObservableList<Message>.of(messages!.where((e) => e.categoriaNotificacao == 'DRE').toList());
     countMessageDRE = messagesDRE.length;
 
     final list = ObservableList<Message>();
@@ -106,48 +106,48 @@ abstract class MessagesControllerBase with Store {
   void filterItems(bool dreCheck, bool smeCheck, bool ueCheck) {
     var auxList = ObservableList<Message>();
     if (smeCheck && ueCheck && dreCheck) {
-      final condition1 = ObservableList<Message>.of(messages);
+      final condition1 = messages ?? ObservableList<Message>.of(messages!);
       for (var element in condition1) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition1);
     } else if (smeCheck && ueCheck && !dreCheck) {
-      final condition2 = ObservableList<Message>.of(messages.where((e) => e.categoriaNotificacao != 'DRE').toList());
+      final condition2 = ObservableList<Message>.of(messages!.where((e) => e.categoriaNotificacao != 'DRE').toList());
       for (var element in condition2) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition2);
     } else if (smeCheck && !ueCheck && dreCheck) {
-      final condition3 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'UE').toList();
+      final condition3 = messages ??
+          ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao != 'UE').toList();
       for (var element in condition3) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition3);
     } else if (smeCheck && !ueCheck && !dreCheck) {
-      final condition4 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'SME').toList();
+      final condition4 = messages ??
+          ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'SME').toList();
       for (var element in condition4) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition4);
     } else if (!smeCheck && ueCheck && dreCheck) {
-      final condition5 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao != 'SME').toList();
+      final condition5 = messages ??
+          ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao != 'SME').toList();
       for (var element in condition5) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition5);
     } else if (!smeCheck && ueCheck && !dreCheck) {
-      final condition6 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'UE').toList();
+      final condition6 = messages ??
+          ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'UE').toList();
       for (var element in condition6) {
         log(element.toString());
       }
       auxList = ObservableList<Message>.of(condition6);
     } else if (!smeCheck && !ueCheck && dreCheck) {
-      final condition7 =
-          ObservableList<Message>.of(messages).where((element) => element.categoriaNotificacao == 'DRE').toList();
+      final condition7 = messages ??
+          ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'DRE').toList();
 
       for (var element in condition7) {
         log(element.toString());
