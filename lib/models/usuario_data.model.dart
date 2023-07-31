@@ -37,8 +37,8 @@ class UsuarioDataModel {
 
   factory UsuarioDataModel.fromMap(Map<dynamic, dynamic> map) {
     final usr = UsuarioDataModel(
-      ok: map['ok'],
-      erros: List<String>.from((map['erros'])),
+      ok: map['ok'] ?? false,
+      erros: List<String>.from((map['erros']) ?? ''),
       data: UsuarioModel.fromMap(map['data']),
     );
     return usr;

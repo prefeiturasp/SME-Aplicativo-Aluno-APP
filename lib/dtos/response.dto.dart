@@ -34,7 +34,7 @@ class ResponseDTO {
   factory ResponseDTO.fromMap(Map<String, dynamic> map) {
     return ResponseDTO(
       ok: map['ok'] as bool,
-      erros: map['erros'] != null ? List<String>.from((map['erros'] as List<String>)) : [],
+      erros: map['erros'] != null ? List<String>.from((map['erros'])) : [],
     );
   }
 
