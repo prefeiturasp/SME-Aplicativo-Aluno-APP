@@ -23,7 +23,7 @@ class UsuarioRepository extends IUsuarioRepository {
       'nomeMae': nomeMae,
       'celular': telefone
     });
-
+    log(body);
     try {
       final url = Uri.parse('${AppConfigReader.getApiHost()}/Usuario');
       final response = await http.put(
@@ -34,7 +34,7 @@ class UsuarioRepository extends IUsuarioRepository {
         },
         body: body,
       );
-
+      final response2 = await api.dio.put('/Usuario', data: body);
       if (response.statusCode == 200) {
         final decodeJson = jsonDecode(response.body);
         final user = UsuarioDataModel.fromJson(decodeJson);

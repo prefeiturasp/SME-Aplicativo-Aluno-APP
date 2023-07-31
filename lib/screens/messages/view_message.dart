@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -125,20 +123,27 @@ class ViewMessageState extends State<ViewMessage> {
   }
 
   Future<bool> launchURL(url) async {
-    if (await canLaunchUrl(url)) {
-      final codigo = _obterCodigoRelatorio(url);
-      final bool relatorioExiste = await _relatorioExiste(codigo);
-      if (relatorioExiste) {
-        await launchUrl(url);
-        return true;
-      } else {
-        _modalInfo();
-        return false;
+    final Uri uri = Uri.parse(url);
+    final codigo = _obterCodigoRelatorio(url);
+    final bool relatorioExiste = await _relatorioExiste(codigo);
+    if (relatorioExiste) {
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        showInfo(Colors.red, 'Falha ao Abrir o LINK');
       }
+      return true;
     } else {
-      log('Could not launch $url');
+      _modalInfo();
       return false;
     }
+  }
+
+  void showInfo(Color color, String mensagem) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        content: Text(mensagem),
+      ),
+    );
   }
 
   Future<bool> _relatorioExiste(String codigo) async {
