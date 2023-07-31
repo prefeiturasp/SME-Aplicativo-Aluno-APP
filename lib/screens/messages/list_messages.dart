@@ -280,7 +280,7 @@ class ListMessageState extends State<ListMessages> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //navigateToMessage(context, _messagesController.messages.first);
+                    navigateToMessage(context, _messagesController.messages!.first);
                   },
                   child: CardMessage(
                     headerTitle: _messagesController.messages!.first.categoriaNotificacao,
