@@ -97,7 +97,7 @@ class ViewMessageState extends State<ViewMessage> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                viewMessageUpdate(mensagem.mensagemVisualizada);
+                viewMessageUpdate(!mensagem.mensagemVisualizada);
                 Navigator.of(context).pop(false);
                 final snackbar = SnackBar(content: Text('Mensagem marcada como não $msg '));
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
