@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +55,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     loadInputs();
   }
 
-  void loadInputs() async {
+  Future<void> loadInputs() async {
     setState(() {
       _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
           ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario.dataNascimento)
@@ -283,7 +285,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                       ),
                       Form(
                         key: _formKey,
-                        // autovalidate: true,
+                        //autovalidateMode: AutovalidateMode.always,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,7 +306,8 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     () {
                                       if (value.isNotEmpty) {
                                         final data = value.split('/');
-                                        _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
+                                        _dataNascimento = DateTime.parse('${data[2]}${data[1]}${data[0]}');
+                                        log(_dataNascimento.toString());
                                       }
                                     },
                                   );
@@ -428,7 +431,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                               height: screenHeight * 1,
                             ),
                             InfoBox(
-                              icon: FontAwesomeIcons.exclamationTriangle,
+                              icon: FontAwesomeIcons.triangleExclamation,
                               content: <Widget>[
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

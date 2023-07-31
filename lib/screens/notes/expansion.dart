@@ -56,19 +56,19 @@ class ExpansionState extends State<Expansion> {
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
   final _repositorioRecomandacao = RecomendacaoAlunoRepository();
-  DateTime? _dateTime;
+  DateTime? dateTime;
   var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
     super.initState();
-    _dateTime = DateTime.now();
+    dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
     _buscarRecomandacao();
   }
 
   Future<void> carregarNotas() async {
     final bimestres = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
-    if (bimestres != null) {
+    if (bimestres.isNotEmpty) {
       _estudanteNotasController.obterNotasConceito(bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
     } else {
       _estudanteNotasController.limparNotas();
@@ -106,23 +106,21 @@ class ExpansionState extends State<Expansion> {
   }
 
   String _obterNota(int index, int bimestre) {
-    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos!
+    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!
         .where((element) => element.bimestre == bimestre);
-    final qtdRegistros = notaConceito.length;
+    final qtdRegistros = notaConceito?.length ?? 0;
     if (qtdRegistros > 0) {
       return notaConceito != null
-          ? (notaConceito.first.conceitoId != null
-              ? notaConceito.first.notaConceito
-              : notaConceito.first.nota.toString())
+          ? (notaConceito.first.conceitoId > 0 ? notaConceito.first.notaConceito : notaConceito.first.nota.toString())
           : '-';
     }
     return '-';
   }
 
   Color _obterCor(int index, int bimestre) {
-    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos[index].notasConceitos!
+    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!
         .where((element) => element.bimestre == bimestre);
-    final qtdRegistros = notaConceito.length;
+    final qtdRegistros = notaConceito?.length ?? 0;
     if (qtdRegistros > 0) {
       return notaConceito != null ? HexColor(notaConceito.first.corDaNota.toString()) : const Color(0xFFD4D4D4);
     }
@@ -132,7 +130,7 @@ class ExpansionState extends State<Expansion> {
   Widget _corpoNotasMontar(context, int index) {
     return CorpoNotas(
       groupSchool: widget.groupSchool,
-      title: _estudanteNotasController.componentesCurricularesNotasConceitos[index].componenteCurricularNome,
+      title: _estudanteNotasController.componentesCurricularesNotasConceitos?[index].componenteCurricularNome ?? '',
       bUm: _obterNota(index, 1),
       bDois: _obterNota(index, 2),
       bTres: _obterNota(index, 3),
@@ -169,7 +167,7 @@ class ExpansionState extends State<Expansion> {
             margin: EdgeInsets.all(screenHeight * 1),
             child: Scrollbar(
               child: ListView.builder(
-                itemCount: _estudanteNotasController.componentesCurricularesNotasConceitos.length,
+                itemCount: _estudanteNotasController.componentesCurricularesNotasConceitos?.length ?? 0,
                 itemBuilder: _corpoNotasMontar,
               ),
             ),
@@ -233,24 +231,26 @@ class ExpansionState extends State<Expansion> {
                 children: [
                   AutoSizeText(
                     msg,
-                    maxFontSize: 13,
-                    minFontSize: 11,
+                    maxFontSize: 10,
+                    minFontSize: 8,
                     style: const TextStyle(
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 8,
                   ),
-                  EADefaultButton(
-                    text: MensagemSistema.labelBotaoEntendi,
-                    iconColor: Colors.white,
-                    btnColor: const Color(0xffffd037),
-                    enabled: true,
-                    styleAutoSize: const TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
-                    onPress: () {
-                      Navigator.of(context).pop();
-                    },
+                  Flexible(
+                    child: EADefaultButton(
+                      text: MensagemSistema.labelBotaoEntendi,
+                      iconColor: Colors.white,
+                      btnColor: const Color(0xffffd037),
+                      enabled: true,
+                      styleAutoSize: const TextStyle(color: Color(0xffd06d12), fontWeight: FontWeight.w600),
+                      onPress: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                 ],
               ),

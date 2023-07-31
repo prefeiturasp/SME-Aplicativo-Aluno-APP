@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../models/message/message.dart';
+import '../../../services/message.service.dart';
 import '../../../utils/date_format.dart';
 import '../../../utils/string_support.dart';
 
@@ -29,6 +30,7 @@ class CardRecentMessage extends StatefulWidget {
 }
 
 class CardRecentMessageState extends State<CardRecentMessage> {
+  final serviceMessage = MessageService();
   bool retorno = false;
   Future<bool> _confirmDeleteMessage(int id) async {
     showDialog(
@@ -40,7 +42,8 @@ class CardRecentMessageState extends State<CardRecentMessage> {
           actions: <Widget>[
             ElevatedButton(
               child: const Text('SIM'),
-              onPressed: () {
+              onPressed: () async {
+                await removeMesageToStorage(id);
                 retorno = true;
               },
             ),
@@ -58,7 +61,9 @@ class CardRecentMessageState extends State<CardRecentMessage> {
     return retorno;
   }
 
-  //_removeMesageToStorage(int id) async {}
+  Future<dynamic> removeMesageToStorage(int id) async {
+    await serviceMessage.delete(id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,41 +296,41 @@ class CardRecentMessageState extends State<CardRecentMessage> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: screenHeight * 6,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffC65D00), width: 1),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(screenHeight * 3),
-                          ),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: widget.outherRoutes,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              const AutoSizeText(
-                                'VER TODAS',
-                                maxFontSize: 16,
-                                minFontSize: 14,
-                                style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: screenHeight * 2,
-                              ),
-                              Icon(
-                                FontAwesomeIcons.envelopeOpen,
-                                color: const Color(0xffffd037),
-                                size: screenHeight * 3,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   height: screenHeight * 6,
+                      //   decoration: BoxDecoration(
+                      //     border: Border.all(color: const Color(0xffC65D00), width: 1),
+                      //     borderRadius: BorderRadius.all(
+                      //       Radius.circular(screenHeight * 3),
+                      //     ),
+                      //   ),
+                      //   child: ElevatedButton(
+                      //     onPressed: widget.outherRoutes,
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: <Widget>[
+                      //         const AutoSizeText(
+                      //           'VER TODAS',
+                      //           maxFontSize: 16,
+                      //           minFontSize: 14,
+                      //           style: TextStyle(color: Color(0xffC65D00), fontWeight: FontWeight.w700),
+                      //         ),
+                      //         SizedBox(
+                      //           width: screenHeight * 2,
+                      //         ),
+                      //         Icon(
+                      //           FontAwesomeIcons.envelopeOpen,
+                      //           color: const Color(0xffffd037),
+                      //           size: screenHeight * 3,
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   )
-                : Container(),
+                : const SizedBox(),
           ),
         ],
       ),

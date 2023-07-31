@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -43,10 +44,10 @@ class BoletimAlunoRepository implements IBoletimRepository {
       );
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
-      } else {
-        return false;
       }
+      return false;
     } catch (e) {
+      log('solicitar boletim pdf $e');
       return false;
     }
   }
