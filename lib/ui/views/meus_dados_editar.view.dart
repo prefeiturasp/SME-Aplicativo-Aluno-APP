@@ -49,7 +49,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
         : '';
 
     _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : '';
-    _telefoneCtrl.text = usuarioStore.usuario.celular ?? '';
+    _telefoneCtrl.text = usuarioStore.usuario.celular;
     _emailCtrl.text = usuarioStore.usuario.email;
     _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
 
@@ -64,7 +64,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
     });
 
     final data = _dataNascimentoCtrl.text.split('/');
-    _dataNascimento = DateTime.parse("${data[2]}${data[1]}${data[0]}");
+    _dataNascimento = DateTime.parse('${data[2]}${data[1]}${data[0]}');
 
     final response = await usuarioController.atualizarDados(
       _nomeMaeCtrl.text.trim(),
@@ -83,7 +83,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
         content: response.erros != null ? Text(response.erros![0]) : const Text('Erro de serviço'),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
 
     return response.ok;
@@ -318,7 +320,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                             height: screenHeight * 1,
                           ),
                           InfoBox(
-                            icon: FontAwesomeIcons.exclamationTriangle,
+                            icon: FontAwesomeIcons.triangleExclamation,
                             content: <Widget>[
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -362,7 +364,9 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                         if (_formKey.currentState!.validate()) {
                                           final retorno = await onClickFinalizarCadastro();
                                           if (retorno) {
-                                            Navigator.pop(context);
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                            }
                                           }
                                         }
                                       },

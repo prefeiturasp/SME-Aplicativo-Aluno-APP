@@ -5,9 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/size/gf_size.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/autenticacao.controller.dart';
@@ -72,7 +69,7 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
         },
       );
     } catch (ex) {
-      log(ex.toString());
+      log('initPushNotificationHandlers $ex');
     }
   }
 
@@ -125,20 +122,9 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       );
     } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
       return const AtualizacaoCadastralView();
+    } else {
+      return const EstudanteListaView();
     }
-
-    return const Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      body: Center(
-        child: GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        ),
-      ),
-    );
   }
 
   @override

@@ -100,7 +100,7 @@ class ListMessageState extends State<ListMessages> {
   ) {
     return Column(
       children: messages
-          .where((e) => e.id != _messagesController.messages[0].id)
+          .where((e) => e.id != _messagesController.messages![0].id)
           .toList()
           .map(
             (item) => GestureDetector(
@@ -246,11 +246,11 @@ class ListMessageState extends State<ListMessages> {
         } else {
           // _messagesController.loadMessagesNotDeleteds();
           _messagesController.loadMessageToFilters(dreCheck, smeCheck, ueCheck);
-          if (_messagesController.messages.isEmpty) {
+          if (_messagesController.messages == null) {
             return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Visibility(
-                visible: _messagesController.messages.isEmpty,
+                visible: _messagesController.messages == null,
                 child: const Column(
                   children: <Widget>[
                     AutoSizeText(
@@ -280,18 +280,18 @@ class ListMessageState extends State<ListMessages> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //navigateToMessage(context, _messagesController.messages.first);
+                    navigateToMessage(context, _messagesController.messages!.first);
                   },
                   child: CardMessage(
-                    headerTitle: _messagesController.messages.first.categoriaNotificacao,
+                    headerTitle: _messagesController.messages!.first.categoriaNotificacao,
                     headerIcon: true,
-                    recentMessage: !_messagesController.messages.first.mensagemVisualizada,
-                    categoriaNotificacao: _messagesController.messages.first.categoriaNotificacao,
+                    recentMessage: !_messagesController.messages!.first.mensagemVisualizada,
+                    categoriaNotificacao: _messagesController.messages!.first.categoriaNotificacao,
                     content: <Widget>[
                       SizedBox(
                         width: screenHeight * 39,
                         child: AutoSizeText(
-                          _messagesController.messages.first.titulo,
+                          _messagesController.messages!.first.titulo,
                           maxFontSize: 16,
                           minFontSize: 14,
                           maxLines: 2,
@@ -304,7 +304,7 @@ class ListMessageState extends State<ListMessages> {
                       SizedBox(
                         width: screenHeight * 39,
                         child: AutoSizeText(
-                          StringSupport.parseHtmlString(_messagesController.messages.first.mensagem),
+                          StringSupport.parseHtmlString(_messagesController.messages!.first.mensagem),
                           maxFontSize: 16,
                           minFontSize: 14,
                           maxLines: 5,
@@ -319,7 +319,7 @@ class ListMessageState extends State<ListMessages> {
                         height: screenHeight * 3,
                       ),
                       AutoSizeText(
-                        DateFormatSuport.formatStringDate(_messagesController.messages.first.criadoEm, 'dd/MM/yyyy'),
+                        DateFormatSuport.formatStringDate(_messagesController.messages!.first.criadoEm, 'dd/MM/yyyy'),
                         maxFontSize: 16,
                         minFontSize: 14,
                         maxLines: 2,
@@ -329,10 +329,10 @@ class ListMessageState extends State<ListMessages> {
                     footer: true,
                     footerContent: <Widget>[
                       Visibility(
-                        visible: _messagesController.messages.first.mensagemVisualizada,
+                        visible: _messagesController.messages!.first.mensagemVisualizada,
                         child: GestureDetector(
                           onTap: () async {
-                            await confirmDeleteMessage(_messagesController.messages.first.id)
+                            await confirmDeleteMessage(_messagesController.messages!.first.id)
                                 .whenComplete(() => loadingMessages());
                           },
                           child: Container(
@@ -361,7 +361,7 @@ class ListMessageState extends State<ListMessages> {
                         ),
                         child: ElevatedButton(
                           onPressed: () {
-                            navigateToMessage(context, _messagesController.messages.first);
+                            navigateToMessage(context, _messagesController.messages!.first);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xffF2F1EE),
@@ -396,12 +396,12 @@ class ListMessageState extends State<ListMessages> {
                 SizedBox(
                   height: screenHeight * 5,
                 ),
-                _messagesController.messages.length == 1
+                _messagesController.messages!.length == 1
                     ? Container()
                     : AutoSizeText(
-                        (_messagesController.messages.length - 1) == 1
-                            ? '${_messagesController.messages.length - 1} MENSAGEM ANTIGA'
-                            : '${_messagesController.messages.length - 1} MENSAGENS ANTIGAS',
+                        (_messagesController.messages!.length - 1) == 1
+                            ? '${_messagesController.messages!.length - 1} MENSAGEM ANTIGA'
+                            : '${_messagesController.messages!.length - 1} MENSAGENS ANTIGAS',
                         maxFontSize: 18,
                         minFontSize: 16,
                         style: const TextStyle(color: Color(0xffDE9524), fontWeight: FontWeight.w500),
@@ -475,9 +475,8 @@ class ListMessageState extends State<ListMessages> {
                 ),
                 Observer(
                   builder: (context) {
-                    // !dreCheck && !smeCheck && !ueCheck
-                    if (_messagesController.filteredList.isNotEmpty) {
-                      return listCardsMessages(_messagesController.filteredList, context, screenHeight);
+                    if (_messagesController.filteredList != null) {
+                      return listCardsMessages(_messagesController.filteredList!, context, screenHeight);
                     } else if (!dreCheck && !smeCheck && !ueCheck) {
                       return Container(
                         padding: EdgeInsets.all(screenHeight * 2.5),

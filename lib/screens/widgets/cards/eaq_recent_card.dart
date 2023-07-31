@@ -241,7 +241,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                             child: AutoSizeText(
                               StringSupport.truncateEndString(
                                 StringSupport.parseHtmlString(widget.message.mensagem),
-                                80,
+                                60,
                               ),
                               maxFontSize: 16,
                               minFontSize: 14,
@@ -253,7 +253,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                             ),
                           ),
                           SizedBox(
-                            height: screenHeight * 3,
+                            height: screenHeight * 2,
                           ),
                           AutoSizeText(
                             DateFormatSuport.formatStringDate(widget.message.criadoEm, 'dd/MM/yyyy'),

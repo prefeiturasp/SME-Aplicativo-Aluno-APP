@@ -31,7 +31,7 @@ class ValidatorsUtil {
     return null;
   }
 
-  static String nome(String value, String nomeCampo) {
+  static String? nome(String value, String nomeCampo) {
     RegExp regExp = RegExp(
       r'(\w)\1\1',
       caseSensitive: false,
@@ -76,7 +76,7 @@ class ValidatorsUtil {
         log(nomeValidador[i].length.toString());
       }
     }
-    return '';
+    return null;
   }
 
   static String? dataNascimento(String value) {
