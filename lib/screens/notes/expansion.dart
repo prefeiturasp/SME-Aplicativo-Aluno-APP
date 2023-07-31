@@ -56,19 +56,19 @@ class ExpansionState extends State<Expansion> {
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
   final _repositorioRecomandacao = RecomendacaoAlunoRepository();
-  DateTime? _dateTime;
+  DateTime? dateTime;
   var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
     super.initState();
-    _dateTime = DateTime.now();
+    dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
     _buscarRecomandacao();
   }
 
   Future<void> carregarNotas() async {
     final bimestres = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
-    if (bimestres != null) {
+    if (bimestres.isNotEmpty) {
       _estudanteNotasController.obterNotasConceito(bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
     } else {
       _estudanteNotasController.limparNotas();
@@ -111,9 +111,7 @@ class ExpansionState extends State<Expansion> {
     final qtdRegistros = notaConceito?.length ?? 0;
     if (qtdRegistros > 0) {
       return notaConceito != null
-          ? (notaConceito.first.conceitoId != null
-              ? notaConceito.first.notaConceito
-              : notaConceito.first.nota.toString())
+          ? (notaConceito.first.conceitoId > 0 ? notaConceito.first.notaConceito : notaConceito.first.nota.toString())
           : '-';
     }
     return '-';
