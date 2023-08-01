@@ -77,12 +77,35 @@ pipeline {
 	        }
         }
       }
+
+      stage('Build AAB Prod') {
+        when {
+          branch 'master'
+        }
+        steps {
+          withCredentials([
+            file(credentialsId: 'google-service-prod', variable: 'GOOGLEJSONPROD'),
+            file(credentialsId: 'app-config-prod', variable: 'APPCONFIGPROD'),
+            file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
+            file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
+          ]) {
+      sh 'if [ -d "config" ]; then rm -Rf config; fi'
+            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
+            sh 'cat ${WORKSPACE}/android/key.properties | grep keyPassword | cut -d\'=\' -f2 > ${WORKSPACE}/android/key.pass'
+            sh 'cd ${WORKSPACE} && mkdir config && cp $APPCONFIGPROD config/app_config.json'
+            sh 'cp ${GOOGLEJSONPROD} android/app/google-services.json'
+            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build appbundle --release'
+            sh "/opt/android-sdk-linux/build-tools/33.0.2/apksigner sign --ks ~/key.jks --ks-pass file:${WORKSPACE}/android/key.pass ${WORKSPACE}/build/app/outputs/aab/release/app-release.aab"
+          }
+        }
+      }
   }
 
   post {
     always {
       echo 'One way or another, I have finished'
       archiveArtifacts artifacts: 'build/app/outputs/apk/release/**/*.apk', fingerprint: true
+      archiveArtifacts artifacts: 'build/app/outputs/aab/release/**/*.aab', fingerprint: true
     }
     success {
       telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Esta ok !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n\n Uma nova versão da aplicação esta disponivel!!!")
