@@ -35,15 +35,15 @@ class _MeusDadosViewState extends State<MeusDadosView> {
     super.initState();
   }
 
-  loadInputs() {
-    _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
-        ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario.dataNascimento)
+  void loadInputs() {
+    _dataNascimentoCtrl.text = usuarioStore.usuario?.dataNascimento != null
+        ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario!.dataNascimento)
         : '';
 
-    _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : '';
-    _telefoneCtrl.text = usuarioStore.usuario.celular ?? '';
-    _emailCtrl.text = usuarioStore.usuario.email;
-    _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
+    _cpfCtrl.text = usuarioStore.usuario?.cpf ?? '';
+    _telefoneCtrl.text = usuarioStore.usuario?.celular ?? '';
+    _emailCtrl.text = usuarioStore.usuario?.email ?? '';
+    _nomeMaeCtrl.text = usuarioStore.usuario?.nomeMae ?? '';
   }
 
   @override
@@ -86,7 +86,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   color: ColorsUtil.campoDesabilitado,
                 ),
                 child: TextFormField(
-                  initialValue: usuarioStore.usuario.nome,
+                  initialValue: usuarioStore.usuario!.nome,
                   style: const TextStyle(
                     color: Color(0xff333333),
                     fontWeight: FontWeight.w600,
@@ -191,7 +191,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   color: ColorsUtil.campoDesabilitado,
                 ),
                 child: TextFormField(
-                  controller: TextEditingController(text: usuarioStore.usuario.email),
+                  controller: TextEditingController(text: usuarioStore.usuario!.email),
                   enabled: false,
                   style: const TextStyle(
                     color: Color(0xff333333),
@@ -240,8 +240,8 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               Observer(
                 builder: (_) => Center(
                   child: Text(
-                    usuarioStore.usuario.ultimaAtualizacao != null
-                        ? "Dados atualizados em: ${DateFormat("dd/MM/yyyy").format(usuarioStore.usuario.ultimaAtualizacao!)} às ${DateFormat("HH:mm").format(usuarioStore.usuario.ultimaAtualizacao!)}"
+                    usuarioStore.usuario!.ultimaAtualizacao != null
+                        ? "Dados atualizados em: ${DateFormat("dd/MM/yyyy").format(usuarioStore.usuario!.ultimaAtualizacao!)} às ${DateFormat("HH:mm").format(usuarioStore.usuario!.ultimaAtualizacao!)}"
                         : '',
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Color(0xff333333)),
@@ -261,7 +261,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => MeusDadosEditarView(),
+                      builder: (_) => const MeusDadosEditarView(),
                     ),
                   ).then(
                     (value) => setState(() {
@@ -297,8 +297,8 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ChangePassword(
-                              cpf: usuarioStore.usuario.cpf,
-                              id: usuarioStore.usuario.id,
+                              cpf: usuarioStore.usuario!.cpf,
+                              id: usuarioStore.usuario!.id,
                             ),
                           ),
                         );

@@ -49,7 +49,7 @@ class DrawerMenuState extends State<DrawerMenu> {
   void loadingBackRecentMessage() {
     _messagesController.loadMessages(
       widget.estudante.codigoEol,
-      usuarioStore.usuario.id,
+      usuarioStore.usuario!.id,
     );
   }
 
@@ -58,7 +58,7 @@ class DrawerMenuState extends State<DrawerMenu> {
       context,
       MaterialPageRoute(
         builder: (context) => ListMessages(
-          userId: usuarioStore.usuario.id,
+          userId: usuarioStore.usuario!.id,
           codigoGrupo: widget.codigoGrupo,
           codigoAlunoEol: widget.estudante.codigoEol,
         ),
@@ -67,14 +67,14 @@ class DrawerMenuState extends State<DrawerMenu> {
   }
 
   void navigateToListStudents(BuildContext context) async {
-    if (usuarioStore.usuario.nome.isNotEmpty) {
+    if (usuarioStore.usuario?.nome != null) {
       Nav.push(context, const EstudanteListaView());
     } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const LoginView(
-            notice: '',
+            notice: null,
           ),
         ),
       );
@@ -118,9 +118,9 @@ class DrawerMenuState extends State<DrawerMenu> {
                   ),
                   Observer(
                     builder: (context) {
-                      if (usuarioStore.usuario.nome.isNotEmpty) {
+                      if (usuarioStore.usuario?.nome != null) {
                         return AutoSizeText(
-                          usuarioStore.usuario.nome,
+                          usuarioStore.usuario!.nome,
                           maxFontSize: 16,
                           minFontSize: 14,
                           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
@@ -286,7 +286,7 @@ class DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             onTap: () async {
-              Auth.logout(context, usuarioStore.usuario.id, false);
+              Auth.logout(context, usuarioStore.usuario!.id, false);
             },
           ),
         ],
