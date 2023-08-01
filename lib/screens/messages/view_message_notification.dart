@@ -75,7 +75,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
               onPressed: () {
                 _viewMessageUpdate(true, true);
                 Navigator.of(context).pop(false);
-                final snackbar = SnackBar(content: Text('Mensagem marcada como não $msg '));
+                final snackbar = SnackBar(content: Text('Mensagem marcada como  $msg '));
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 setState(() {
                   messageIsRead = !messageIsRead;
