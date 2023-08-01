@@ -33,7 +33,7 @@ class RelatorioRaaRepository implements IRelatorioRaaRepository {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
         body: body,

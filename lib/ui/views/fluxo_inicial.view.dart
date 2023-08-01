@@ -101,26 +101,26 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       mensagemVisualizada: message['MensagemVisualizada'] ?? false,
     );
 
-    await _messagesController.loadById(message0.id, usuarioStore.usuario.id);
+    await _messagesController.loadById(message0.id, usuarioStore.usuario!.id);
     message0.mensagem = _messagesController.message!.mensagem;
     if (context.mounted) {
       Nav.push(
         context,
         ViewMessageNotification(
           message: message0,
-          userId: usuarioStore.usuario.id,
+          userId: usuarioStore.usuario!.id,
         ),
       );
     }
   }
 
   Widget fluxoLogin() {
-    if (usuarioStore.usuario.primeiroAcesso) {
+    if (usuarioStore.usuario!.primeiroAcesso) {
       return FirstAccess(
-        id: usuarioStore.usuario.id,
-        cpf: usuarioStore.usuario.cpf,
+        id: usuarioStore.usuario!.id,
+        cpf: usuarioStore.usuario!.cpf,
       );
-    } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+    } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
       return const AtualizacaoCadastralView();
     } else {
       return const EstudanteListaView();
@@ -135,13 +135,13 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       return NotInteernet();
     } else {
       return Observer(
-        builder: (context) => usuarioStore.usuario.id == 0
+        builder: (context) => usuarioStore.usuario?.id == null
             ? const LoginView(
-                notice: '',
+                notice: null,
               )
-            : (usuarioStore.usuario.primeiroAcesso != false
+            : (usuarioStore.usuario?.primeiroAcesso != false
                 ? const LoginView(
-                    notice: '',
+                    notice: null,
                   )
                 : fluxoLogin()),
       );

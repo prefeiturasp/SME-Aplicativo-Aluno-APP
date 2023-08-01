@@ -57,17 +57,17 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
 
   Future<void> loadInputs() async {
     setState(() {
-      _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
-          ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario.dataNascimento)
+      _dataNascimentoCtrl.text = usuarioStore.usuario?.dataNascimento != null
+          ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario!.dataNascimento)
           : '';
 
-      _dataNascimento = usuarioStore.usuario.dataNascimento;
-      _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : '';
-      _telefoneCtrl.text = usuarioStore.usuario.celular.isNotEmpty ? usuarioStore.usuario.celular : '';
-      _emailCtrl.text = usuarioStore.usuario.email;
-      _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
+      _dataNascimento = usuarioStore.usuario!.dataNascimento;
+      _cpfCtrl.text = usuarioStore.usuario?.cpf != null ? usuarioStore.usuario!.cpf : '';
+      _telefoneCtrl.text = usuarioStore.usuario?.celular != null ? usuarioStore.usuario!.celular : '';
+      _emailCtrl.text = usuarioStore.usuario?.email != null ? usuarioStore.usuario!.email : '';
+      _nomeMaeCtrl.text = usuarioStore.usuario?.nomeMae != null ? usuarioStore.usuario!.nomeMae : '';
 
-      _nomeMae = usuarioStore.usuario.nomeMae;
+      _nomeMae = _nomeMaeCtrl.text;
       _telefone = _telefoneCtrl.text;
     });
   }
@@ -147,7 +147,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
               child: const Text('SIM'),
               onPressed: () async {
                 retorno = true;
-                await Auth.logout(context, usuarioStore.usuario.id, false);
+                await Auth.logout(context, usuarioStore.usuario!.id, false);
               },
             )
           ],
@@ -173,336 +173,334 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
             padding: EdgeInsets.all(screenHeight * 2.5),
             child: Column(
               children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: screenHeight * 36,
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: screenHeight * 8, bottom: screenHeight * 2),
-                            child: AssetsUtil.logoEA,
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              onPressed: () {
-                                _onBackPress();
-                              },
-                              icon: Icon(
-                                FontAwesomeIcons.signOutAlt,
-                                color: ColorsUtil.laranja01,
-                                size: screenHeight * 2,
-                              ),
+                Column(
+                  children: <Widget>[
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: screenHeight * 36,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: screenHeight * 8, bottom: screenHeight * 2),
+                          child: AssetsUtil.logoEA,
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            onPressed: () {
+                              _onBackPress();
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.rightFromBracket,
+                              color: ColorsUtil.laranja01,
+                              size: screenHeight * 2,
                             ),
-                          )
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: screenHeight * 3),
-                        child: AutoSizeText(
-                          "${(usuarioStore.usuario.primeiroAcesso ? "Primeiro Acesso! " : "")}Atualize os dados de cadastro",
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: ColorsUtil.cinza01,
                           ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 3),
+                      child: AutoSizeText(
+                        "${(usuarioStore.usuario!.primeiroAcesso ? "Primeiro Acesso! " : "")}Atualize os dados de cadastro",
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorsUtil.cinza01,
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AutoSizeText(
-                            'Dados do responsável',
-                            maxFontSize: 18,
-                            minFontSize: 16,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: ColorsUtil.laranja02,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AutoSizeText(
+                          'Dados do responsável',
+                          maxFontSize: 18,
+                          minFontSize: 16,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: ColorsUtil.laranja02,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Observer(
+                          builder: (context) => Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoDesabilitado,
+                            ),
+                            child: TextFormField(
+                              initialValue: usuarioStore.usuario != null ? usuarioStore.usuario!.nome : '',
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              decoration: const InputDecoration(
+                                labelText: 'Nome completo do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              enabled: false,
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
                             ),
                           ),
-                          const SizedBox(
-                            height: 10,
+                        ),
+                        SizedBox(
+                          height: screenHeight * 1,
+                        ),
+                        Observer(
+                          builder: (context) => Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoDesabilitado,
+                            ),
+                            child: TextFormField(
+                              controller: _cpfCtrl,
+                              enabled: false,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              decoration: const InputDecoration(
+                                labelText: 'CPF do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
+                            ),
                           ),
-                          Observer(
-                            builder: (context) => Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoDesabilitado,
+                        ),
+                        SizedBox(
+                          height: screenHeight * 5,
+                        ),
+                      ],
+                    ),
+                    Form(
+                      key: _formKey,
+                      //autovalidateMode: AutovalidateMode.always,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
                               ),
-                              child: TextFormField(
-                                initialValue: usuarioStore.usuario != null ? usuarioStore.usuario.nome : '',
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                decoration: const InputDecoration(
-                                  labelText: 'Nome completo do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                enabled: false,
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
+                            ),
+                            child: TextFormField(
+                              controller: _dataNascimentoCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(
+                                  () {
+                                    if (value.isNotEmpty) {
+                                      final data = value.split('/');
+                                      _dataNascimento = DateTime.parse('${data[2]}${data[1]}${data[0]}');
+                                      log(_dataNascimento.toString());
+                                    }
+                                  },
+                                );
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Data de nascimento do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
                               ),
+                              validator: (value) {
+                                return ValidatorsUtil.dataNascimento(value!);
+                              },
+                              keyboardType: TextInputType.datetime,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
+                              ),
+                            ),
+                            child: TextFormField(
+                              controller: _nomeMaeCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {
+                                  _nomeMae = value;
+                                  _formKey.currentState?.validate();
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Filiação do responsável legal',
+                                hintText: 'Preferencialmente nome da mãe',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return ValidatorsUtil.nome(value!, 'Nome do responsável legal');
+                                } else {
+                                  return null;
+                                }
+                              },
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
+                              ),
+                            ),
+                            child: TextFormField(
+                              controller: _emailCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {},
+                              decoration: const InputDecoration(
+                                labelText: 'E-mail do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                return ValidatorsUtil.email(value!);
+                              },
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 3,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 2,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: ColorsUtil.campoHabilitado,
+                              border: Border(
+                                bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
+                              ),
+                            ),
+                            child: TextFormField(
+                              controller: _telefoneCtrl,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {
+                                  _telefone = value;
+                                });
+                              },
+                              validator: (value) {
+                                return ValidatorsUtil.telefone(value!);
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Telefone celular do responsável',
+                                labelStyle: TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              keyboardType: TextInputType.number,
                             ),
                           ),
                           SizedBox(
                             height: screenHeight * 1,
                           ),
-                          Observer(
-                            builder: (context) => Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoDesabilitado,
-                              ),
-                              child: TextFormField(
-                                controller: _cpfCtrl,
-                                enabled: false,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                decoration: const InputDecoration(
-                                  labelText: 'CPF do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                              ),
-                            ),
+                          InfoBox(
+                            icon: FontAwesomeIcons.triangleExclamation,
+                            content: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width / 1.5,
+                                    child: const AutoSizeText(
+                                      'Declaro que as informações acima são verdadeiras',
+                                      maxFontSize: 18,
+                                      minFontSize: 16,
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
+                                    ),
+                                  ),
+                                  Checkbox(
+                                    value: _declaracao,
+                                    activeColor: ColorsUtil.laranja01,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        _formKey.currentState?.validate();
+                                        _declaracao = newValue!;
+                                      });
+                                    },
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: screenHeight * 5,
                           ),
-                        ],
-                      ),
-                      Form(
-                        key: _formKey,
-                        //autovalidateMode: AutovalidateMode.always,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
-                                ),
-                              ),
-                              child: TextFormField(
-                                controller: _dataNascimentoCtrl,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(
-                                    () {
-                                      if (value.isNotEmpty) {
-                                        final data = value.split('/');
-                                        _dataNascimento = DateTime.parse('${data[2]}${data[1]}${data[0]}');
-                                        log(_dataNascimento.toString());
-                                      }
-                                    },
-                                  );
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Data de nascimento do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.dataNascimento(value!);
-                                },
-                                keyboardType: TextInputType.datetime,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
-                                ),
-                              ),
-                              child: TextFormField(
-                                controller: _nomeMaeCtrl,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nomeMae = value;
-                                    _formKey.currentState?.validate();
-                                  });
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Filiação do responsável legal',
-                                  hintText: 'Preferencialmente nome da mãe',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return ValidatorsUtil.nome(value!, 'Nome do responsável legal');
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
-                                ),
-                              ),
-                              child: TextFormField(
-                                controller: _emailCtrl,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {},
-                                decoration: const InputDecoration(
-                                  labelText: 'E-mail do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  return ValidatorsUtil.email(value!);
-                                },
-                                keyboardType: TextInputType.multiline,
-                                minLines: 1,
-                                maxLines: 3,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 2,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: ColorsUtil.campoHabilitado,
-                                border: Border(
-                                  bottom: BorderSide(color: ColorsUtil.campoBorda, width: screenHeight * 0.39),
-                                ),
-                              ),
-                              child: TextFormField(
-                                controller: _telefoneCtrl,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _telefone = value;
-                                  });
-                                },
-                                validator: (value) {
-                                  return ValidatorsUtil.telefone(value!);
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Telefone celular do responsável',
-                                  labelStyle: TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 1,
-                            ),
-                            InfoBox(
-                              icon: FontAwesomeIcons.triangleExclamation,
-                              content: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          !_busy
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width / 1.5,
-                                      child: const AutoSizeText(
-                                        'Declaro que as informações acima são verdadeiras',
-                                        maxFontSize: 18,
-                                        minFontSize: 16,
-                                        style: TextStyle(fontWeight: FontWeight.bold, color: ColorsUtil.cinza01),
-                                      ),
-                                    ),
-                                    Checkbox(
-                                      value: _declaracao,
-                                      activeColor: ColorsUtil.laranja01,
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _formKey.currentState?.validate();
-                                          _declaracao = newValue!;
-                                        });
+                                    EADefaultButton(
+                                      text: 'FINALIZAR CADASTRO',
+                                      icon: FontAwesomeIcons.chevronRight,
+                                      iconColor: const Color(0xffffd037),
+                                      btnColor: const Color(0xffd06d12),
+                                      enabled: habilitaBotaoCadastro(),
+                                      onPress: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          onClickFinalizarCadastro();
+                                        }
                                       },
-                                    )
+                                    ),
+                                    SizedBox(height: screenHeight * 3),
+                                    EADefaultButton(
+                                      text: 'CADASTRAR MAIS TARDE',
+                                      btnColor: const Color(0xffd06d12),
+                                      icon: FontAwesomeIcons.chevronLeft,
+                                      iconColor: const Color(0xffffd037),
+                                      onPress: () {
+                                        _onBackPress();
+                                      },
+                                      enabled: true,
+                                    ),
                                   ],
                                 )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight * 5,
-                            ),
-                            !_busy
-                                ? Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      EADefaultButton(
-                                        text: 'FINALIZAR CADASTRO',
-                                        icon: FontAwesomeIcons.chevronRight,
-                                        iconColor: const Color(0xffffd037),
-                                        btnColor: const Color(0xffd06d12),
-                                        enabled: habilitaBotaoCadastro(),
-                                        onPress: () {
-                                          if (_formKey.currentState!.validate()) {
-                                            onClickFinalizarCadastro();
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(height: screenHeight * 3),
-                                      EADefaultButton(
-                                        text: 'CADASTRAR MAIS TARDE',
-                                        btnColor: const Color(0xffd06d12),
-                                        icon: FontAwesomeIcons.chevronLeft,
-                                        iconColor: const Color(0xffffd037),
-                                        onPress: () {
-                                          _onBackPress();
-                                        },
-                                        enabled: true,
-                                      ),
-                                    ],
-                                  )
-                                : const GFLoader(
-                                    type: GFLoaderType.square,
-                                    loaderColorOne: Color(0xffDE9524),
-                                    loaderColorTwo: Color(0xffC65D00),
-                                    loaderColorThree: Color(0xffC65D00),
-                                    size: GFSize.LARGE,
-                                  ),
-                          ],
-                        ),
+                              : const GFLoader(
+                                  type: GFLoaderType.square,
+                                  loaderColorOne: Color(0xffDE9524),
+                                  loaderColorTwo: Color(0xffC65D00),
+                                  loaderColorThree: Color(0xffC65D00),
+                                  size: GFSize.LARGE,
+                                ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 Container(
                   height: screenHeight * 6,
@@ -518,7 +516,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
   }
 
   bool habilitaBotaoCadastro() {
-    if (_nomeMae == null) {
+    if (_nomeMae.isEmpty) {
       return false;
     }
     if (_telefone.isEmpty || _nomeMae.isEmpty) {

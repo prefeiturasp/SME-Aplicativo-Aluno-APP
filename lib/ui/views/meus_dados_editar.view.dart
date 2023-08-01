@@ -17,10 +17,10 @@ class MeusDadosEditarView extends StatefulWidget {
   const MeusDadosEditarView({super.key});
 
   @override
-  _MeusDadosEditarViewState createState() => _MeusDadosEditarViewState();
+  MeusDadosEditarViewState createState() => MeusDadosEditarViewState();
 }
 
-class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
+class MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -44,16 +44,16 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   void initState() {
     super.initState();
 
-    _dataNascimentoCtrl.text = usuarioStore.usuario.dataNascimento != null
-        ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario.dataNascimento)
+    _dataNascimentoCtrl.text = usuarioStore.usuario?.dataNascimento != null
+        ? DateFormat('dd/MM/yyyy').format(usuarioStore.usuario!.dataNascimento)
         : '';
 
-    _cpfCtrl.text = usuarioStore.usuario.cpf.isNotEmpty ? usuarioStore.usuario.cpf : '';
-    _telefoneCtrl.text = usuarioStore.usuario.celular;
-    _emailCtrl.text = usuarioStore.usuario.email;
-    _nomeMaeCtrl.text = usuarioStore.usuario.nomeMae;
+    _cpfCtrl.text = usuarioStore.usuario?.cpf != null ? usuarioStore.usuario!.cpf : '';
+    _telefoneCtrl.text = usuarioStore.usuario?.celular != null ? usuarioStore.usuario!.celular : '';
+    _emailCtrl.text = usuarioStore.usuario?.email != null ? usuarioStore.usuario!.email : '';
+    _nomeMaeCtrl.text = usuarioStore.usuario?.nomeMae != null ? usuarioStore.usuario!.nomeMae : '';
 
-    _dataNascimento = usuarioStore.usuario.dataNascimento;
+    _dataNascimento = usuarioStore.usuario?.dataNascimento ?? usuarioStore.usuario!.dataNascimento;
     _telefone = _telefoneCtrl.text;
     _nomeMae = _nomeMaeCtrl.text;
   }
@@ -135,7 +135,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                           color: ColorsUtil.campoDesabilitado,
                         ),
                         child: TextFormField(
-                          initialValue: usuarioStore.usuario.nome,
+                          initialValue: usuarioStore.usuario!.nome,
                           style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
                           decoration: const InputDecoration(
                             labelText: 'Nome completo do responsável',
@@ -392,7 +392,7 @@ class _MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   }
 
   bool habilitaBotaoCadastro() {
-    if (_nomeMae == null) {
+    if (_nomeMae.isNotEmpty) {
       return false;
     }
     if (_telefone.isEmpty || _nomeMae.isEmpty) {

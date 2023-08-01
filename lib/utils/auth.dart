@@ -36,14 +36,11 @@ class Auth {
         log('Mensagem removida: ${message.toMap()}');
         await messageService.delete(message.id);
       });
-
-      await userService.delete(userId);
+      await usuarioStore.limparUsuario();
 
       BackgroundFetch.stop().then((int status) {
         log('[BackgroundFetch] stop success: $status');
       });
-
-      usuarioStore.limparUsuario();
 
       if (context.mounted) {
         voltarLogin(context, desconected);
@@ -62,7 +59,7 @@ class Auth {
                   'Você foi desconectado pois não está mais vinculado como responsável de nenhum estudante ativo. Dúvidas entre em contato com a Unidade Escolar.',
             )
           : const LoginView(
-              notice: '',
+              notice: null,
             ),
     );
   }

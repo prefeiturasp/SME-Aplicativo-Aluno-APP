@@ -104,16 +104,17 @@ class UserService {
   }
 
   Future delete(int id) async {
-    final Database db = await dbHelper.initDatabase();
-    final List<Map<String, dynamic>> maps = await db.query(TB_USER, where: 'id = ?', whereArgs: [id]);
     try {
-      if (maps.isNotEmpty) {
-        await db.delete(
-          TB_USER,
-          where: 'id = ?',
-          whereArgs: [id],
-        );
-      }
+      final Database db = await dbHelper.initDatabase();
+      // final List<Map<String, dynamic>> maps = await db.query(TB_USER, where: 'id = ?', whereArgs: [id]);
+      // if (maps.isNotEmpty) {
+      //   await db.delete(
+      //     TB_USER,
+      //     where: 'id = ?',
+      //     whereArgs: [id],
+      //   );
+      // }
+      await db.rawQuery('delete from user where id =$id');
       log('Usuário removido com sucesso: $id');
     } catch (ex) {
       log('<--------------------------');

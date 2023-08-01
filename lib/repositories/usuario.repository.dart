@@ -15,7 +15,7 @@ class UsuarioRepository extends IUsuarioRepository {
   @override
   Future<ResponseDTO> atualizar(String nomeMae, DateTime dataNascimento, String email, String telefone) async {
     final body = json.encode({
-      'id': usuarioStore.usuario.id,
+      'id': usuarioStore.usuario!.id,
       'email': email,
       'dataNascimentoResponsavel': dataNascimento.toString(),
       'nomeMae': nomeMae,
@@ -41,7 +41,7 @@ class UsuarioRepository extends IUsuarioRepository {
   @override
   Future<UsuarioModel> obterDadosUsuario() async {
     try {
-      final response = await api.dio.get('/Usuario/${usuarioStore.usuario.cpf}');
+      final response = await api.dio.get('/Usuario/${usuarioStore.usuario!.cpf}');
       if (response.statusCode == 200) {
         final usuario = UsuarioModel.fromMap(response.data);
         return usuario;
