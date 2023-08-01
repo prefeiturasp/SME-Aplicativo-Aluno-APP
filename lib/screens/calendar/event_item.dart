@@ -162,9 +162,9 @@ class EventItem extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.only(bottom: screenHeight * 1.5, top: screenHeight * 1),
+        padding: EdgeInsets.only(bottom: screenHeight * 1.3, top: screenHeight * 0.8),
         child: SizedBox(
-          height: screenHeight * 3,
+          height: screenHeight * 2.9,
           child: ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,7 +173,7 @@ class EventItem extends StatelessWidget {
                   child: Wrap(
                     children: [
                       SizedBox(
-                        width: (size.width / 1.75),
+                        width: (size.width / 1.1),
                         child: customTitle,
                       )
                     ],
@@ -183,7 +183,7 @@ class EventItem extends StatelessWidget {
                     ? Icon(
                         FontAwesomeIcons.solidNoteSticky,
                         color: const Color(0xFF086397),
-                        size: screenHeight * 2.2,
+                        size: screenHeight * 2.1,
                       )
                     : const SizedBox.shrink()
               ],
@@ -200,8 +200,8 @@ class EventItem extends StatelessWidget {
                               : colorOutros,
               child: AutoSizeText(
                 dataInicio.day.toString(),
-                maxFontSize: 16,
-                minFontSize: 14,
+                maxFontSize: 14,
+                minFontSize: 12,
                 style: TextStyle(fontSize: screenHeight * 2, color: Colors.white, fontWeight: FontWeight.w600),
               ),
             ),
