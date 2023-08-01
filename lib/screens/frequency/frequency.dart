@@ -3,42 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/components/loader/gf_loader.dart';
-import 'package:getflutter/size/gf_size.dart';
-import 'package:getflutter/types/gf_loader_type.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:sme_app_aluno/controllers/estudante_frequencia.controller.dart';
-import 'package:sme_app_aluno/controllers/index.dart';
-import 'package:sme_app_aluno/dtos/componente_curricular.dto.dart';
-import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
-import 'package:sme_app_aluno/models/estudante.model.dart';
-import 'package:sme_app_aluno/models/index.dart';
-import 'package:sme_app_aluno/repositories/index.dart';
-import 'package:sme_app_aluno/screens/frequency/widgets/box_frequency.dart';
-import 'package:sme_app_aluno/screens/frequency/widgets/label_frequency.dart';
-import 'package:sme_app_aluno/screens/widgets/cards/card_alert.dart';
-import 'package:sme_app_aluno/screens/widgets/cards/frequency_global_card.dart';
-import 'package:sme_app_aluno/stores/index.dart';
+
+import '../../controllers/index.dart';
+import '../../dtos/componente_curricular.dto.dart';
+import '../../models/estudante.model.dart';
+import '../../models/index.dart';
+import '../widgets/cards/card_alert.dart';
+import '../widgets/cards/frequency_global_card.dart';
+import 'widgets/box_frequency.dart';
+import 'widgets/label_frequency.dart';
 
 class Frequency extends StatefulWidget {
   final EstudanteModel student;
 
-  Frequency({
-    @required this.student,
+  const Frequency({
+    super.key,
+    required this.student,
   });
 
   @override
-  _FrequencyState createState() => _FrequencyState();
+  FrequencyState createState() => FrequencyState();
 }
 
-class _FrequencyState extends State<Frequency> {
+class FrequencyState extends State<Frequency> {
   final _frequencyController = GetIt.I.get<EstudanteFrequenciaController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
-  final _usuarioStore = GetIt.I.get<UsuarioStore>();
-  List<int> _bimestres;
-  List<ComponenteCurricularDTO> _componentesCurriculares;
-  final anoLetivo = new DateTime.now().year;
+  List<int> _bimestres = [];
+  List<ComponenteCurricularDTO> _componentesCurriculares = [];
+  final anoLetivo = DateTime.now().year;
 
   @override
   void initState() {
@@ -49,72 +44,66 @@ class _FrequencyState extends State<Frequency> {
   Future<void> obterFrequencias() async {
     _frequencyController.limpar();
     _bimestres =
-        await _estudanteController.obterBimestresDisponiveisParaVisualizacao(
-            widget.student.codigoTurma.toString());
+        await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.student.codigoTurma.toString());
 
-    if (_bimestres != null) {
-      _componentesCurriculares =
-          await _estudanteController.obterComponentesCurriculares(
-              _bimestres,
-              widget.student.codigoEscola,
-              widget.student.codigoTurma.toString(),
-              widget.student.codigoEol.toString());
+    _componentesCurriculares = await _estudanteController.obterComponentesCurriculares(
+      _bimestres,
+      widget.student.codigoEscola,
+      widget.student.codigoTurma.toString(),
+      widget.student.codigoEol.toString(),
+    );
 
-      await _frequencyController.obterFrequenciaGlobal(
-          widget.student.codigoTurma.toString(),
-          widget.student.codigoEol.toString());
-    }
-
-    setState(() {});
+    await _frequencyController.obterFrequenciaGlobal(
+      widget.student.codigoTurma.toString(),
+      widget.student.codigoEol.toString(),
+    );
   }
 
-  List<Map<String, dynamic>> _boxes =
-      List.generate(4, (index) => {'isExpanded': false});
-
-  Widget _listBoxBimestre(
+  Widget listBoxBimestre(
     ComponenteCurricularDTO data,
     bool aulas,
     bool faltas,
     bool compensacoes,
   ) {
-    List<Widget> list = data?.frequencias?.map((frequency) {
-          if (aulas) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: new BoxFrequency(
-                title: "${frequency.bimestre}º Bim.",
-                idbox: "${frequency.totalAulas}",
-                fail: false,
-              ),
-            );
-          }
+    final List<Widget> list = data.frequencias.map((frequency) {
+      if (aulas) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: BoxFrequency(
+            title: '${frequency.bimestre}º Bim.',
+            idbox: '${frequency.totalAulas}',
+            fail: false,
+            ausencias: const [],
+          ),
+        );
+      }
 
-          if (faltas) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: BoxFrequency(
-                title: "${frequency.bimestre}º Bim.",
-                idbox: "${frequency.totalAusencias}",
-                fail: true,
-                //ausencias: frequency.ausencias,
-              ),
-            );
-          }
+      if (faltas) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: BoxFrequency(
+            title: '${frequency.bimestre}º Bim.',
+            idbox: '${frequency.totalAusencias}',
+            fail: true, ausencias: const [],
+            //ausencias: frequency.ausencias,
+          ),
+        );
+      }
 
-          if (compensacoes) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: BoxFrequency(
-                title: "${frequency.bimestre}º Bim.",
-                idbox: "${frequency.totalCompensacoes}",
-                fail: false,
-              ),
-            );
-          }
+      if (compensacoes) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: BoxFrequency(
+            title: '${frequency.bimestre}º Bim.',
+            idbox: '${frequency.totalCompensacoes}',
+            fail: false,
+            ausencias: const [],
+          ),
+        );
+      }
 
-          return Text("${frequency.bimestre}º Bim.");
-        })?.toList() ??
-        [];
+      return Text('${frequency.bimestre}º Bim.');
+    }).toList();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -122,7 +111,7 @@ class _FrequencyState extends State<Frequency> {
     );
   }
 
-  Widget _rowFrequency(
+  Widget rowFrequency(
     double screenHeight,
     String label,
     ComponenteCurricularDTO data,
@@ -137,7 +126,7 @@ class _FrequencyState extends State<Frequency> {
         SizedBox(
           height: screenHeight * 2,
         ),
-        _listBoxBimestre(
+        listBoxBimestre(
           data,
           aulas,
           faltas,
@@ -150,21 +139,21 @@ class _FrequencyState extends State<Frequency> {
     );
   }
 
-  Widget _listProgressBar(
+  Widget listProgressBar(
     ComponenteCurricularDTO data,
     double screenHeight,
   ) {
-    List<Widget> list = new List<Widget>();
-    if (data.frequencias != null) {
-      for (var i = 0; i < data.frequencias?.length; i++) {
-        list.add(Column(
+    final List<Widget> list = [];
+    for (var i = 0; i < data.frequencias.length; i++) {
+      list.add(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AutoSizeText(
-              "${data.frequencias[i].bimestre}º Bimestre",
+              '${data.frequencias[i].bimestre}º Bimestre',
               maxFontSize: 13,
               minFontSize: 11,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xff757575),
                 fontWeight: FontWeight.w400,
               ),
@@ -179,14 +168,14 @@ class _FrequencyState extends State<Frequency> {
                   width: screenHeight * 36,
                   lineHeight: 14.0,
                   percent: data.frequencias[i].percentualFrequencia / 100,
-                  backgroundColor: Color(0xffEDEDED),
+                  backgroundColor: const Color(0xffEDEDED),
                   progressColor: HexColor(data.frequencias[i].corDaFrequencia),
                 ),
                 AutoSizeText(
-                  "${data.frequencias[i].percentualFrequencia.toStringAsFixed(0)}%",
+                  '${data.frequencias[i].percentualFrequencia.toStringAsFixed(0)}%',
                   maxFontSize: 13,
                   minFontSize: 11,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xff757575),
                     fontWeight: FontWeight.w400,
                   ),
@@ -197,25 +186,25 @@ class _FrequencyState extends State<Frequency> {
               height: screenHeight * 2.5,
             ),
           ],
-        ));
-      }
+        ),
+      );
     }
-    return new Column(children: list);
+    return Column(children: list);
   }
 
-  _buildLoadingWidget(size, screenHeight) => Container(
-        child: GFLoader(
+  Container buildLoadingWidget(size, screenHeight) => Container(
+        margin: EdgeInsets.all(screenHeight * 1.5),
+        child: const GFLoader(
           type: GFLoaderType.square,
           loaderColorOne: Color(0xffDE9524),
           loaderColorTwo: Color(0xffC65D00),
           loaderColorThree: Color(0xffC65D00),
           size: GFSize.LARGE,
         ),
-        margin: EdgeInsets.all(screenHeight * 1.5),
       );
 
-  _buildFrequencyExpandedPanel(index, size, screenHeight) {
-    var _comp = _componentesCurriculares[index];
+  Container buildFrequencyExpandedPanel(index, size, screenHeight) {
+    final comp = _componentesCurriculares[index];
 
     return Container(
       padding: EdgeInsets.all(screenHeight * 2),
@@ -223,49 +212,46 @@ class _FrequencyState extends State<Frequency> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _comp.frequencias.length > 0
-                ? _rowFrequency(
+            comp.frequencias.isNotEmpty
+                ? rowFrequency(
                     screenHeight,
-                    "Quantidade de aulas",
-                    _comp,
+                    'Quantidade de aulas',
+                    comp,
                     true,
                     false,
                     false,
                   )
-                : Text(
-                    "Não foram encontrados registros para este Componente Curricular"),
-            _comp.frequencias.length > 0
-                ? _rowFrequency(
+                : const Text('Não foram encontrados registros para este Componente Curricular'),
+            comp.frequencias.isNotEmpty
+                ? rowFrequency(
                     screenHeight,
-                    "Quantidade de ausências",
-                    _comp,
+                    'Quantidade de ausências',
+                    comp,
                     false,
                     true,
                     false,
                   )
-                : SizedBox(),
-            _comp.frequencias.length > 0
-                ? _rowFrequency(
+                : const SizedBox(),
+            comp.frequencias.isNotEmpty
+                ? rowFrequency(
                     screenHeight,
-                    "Ausências compensadas",
-                    _comp,
+                    'Ausências compensadas',
+                    comp,
                     false,
                     false,
                     true,
                   )
-                : SizedBox(),
-            _comp.frequencias.length > 0
-                ? LabelFrequency(text: "Percentual de frequência")
-                : SizedBox(),
+                : const SizedBox(),
+            comp.frequencias.isNotEmpty ? LabelFrequency(text: 'Percentual de frequência') : const SizedBox(),
             SizedBox(
               height: screenHeight * 2,
             ),
-            _comp.frequencias.length > 0
-                ? _listProgressBar(
-                    _comp,
+            comp.frequencias.isNotEmpty
+                ? listProgressBar(
+                    comp,
                     screenHeight,
                   )
-                : SizedBox(),
+                : const SizedBox(),
             SizedBox(
               height: screenHeight * 2,
             ),
@@ -275,39 +261,36 @@ class _FrequencyState extends State<Frequency> {
     );
   }
 
-  _frequencyContainerBodyObserver(index, size, screenHeight) =>
-      Observer(builder: (context) {
-        Widget _result;
+  Observer frequencyContainerBodyObserver(index, size, screenHeight) => Observer(
+        builder: (context) {
+          late final Container result;
 
-        if (_frequencyController?.loadingCurricularComponent ?? false) {
-          _result = _buildLoadingWidget(size, screenHeight);
-        }
-
-        if (_componentesCurriculares[index] != null) {
-          if (_componentesCurriculares[index].frequencias != null) {
-            _result = _buildFrequencyExpandedPanel(index, size, screenHeight);
+          if (_frequencyController.loadingCurricularComponent) {
+            result = buildLoadingWidget(size, screenHeight);
           }
-        }
 
-        return _result ?? Text('erro ao obter dados');
-      });
+          result = buildFrequencyExpandedPanel(index, size, screenHeight);
 
-  _frequencyExpansionPanelCallback(int index, bool isExpanded) async {
+          return result;
+        },
+      );
+
+  Future<void> frequencyExpansionPanelCallback(int index, bool isExpanded) async {
     setState(() {
-      _componentesCurriculares[index].expandido =
-          !_componentesCurriculares[index].expandido;
+      _componentesCurriculares[index].expandido = _componentesCurriculares[index].expandido;
     });
 
-    bool isExpanded = _componentesCurriculares[index].expandido;
+    final bool isExpanded = _componentesCurriculares[index].expandido;
 
     if (isExpanded) {
-      var frequencias = await _frequencyController.fetchCurricularComponent(
-          anoLetivo,
-          widget.student.codigoEscola,
-          widget.student.codigoTurma.toString(),
-          widget.student.codigoEol.toString(),
-          _componentesCurriculares[index].codigo.toString(),
-          _bimestres);
+      final frequencias = await _frequencyController.fetchCurricularComponent(
+        anoLetivo,
+        widget.student.codigoEscola,
+        widget.student.codigoTurma.toString(),
+        widget.student.codigoEol.toString(),
+        _componentesCurriculares[index].codigo.toString(),
+        _bimestres,
+      );
 
       setState(() {
         _componentesCurriculares[index].frequencias = frequencias;
@@ -315,16 +298,16 @@ class _FrequencyState extends State<Frequency> {
     }
   }
 
-  _frequencyExpandedPanel(index, size, screenHeight) => ExpansionPanel(
+  ExpansionPanel frequencyExpandedPanel(index, size, screenHeight) => ExpansionPanel(
         headerBuilder: (BuildContext context, bool isExpanded) {
           return Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
             width: MediaQuery.of(context).size.width,
             child: AutoSizeText(
-              "${_componentesCurriculares[index].descricao}",
+              '${_componentesCurriculares[index].descricao}',
               maxFontSize: 20,
               minFontSize: 18,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
               ),
@@ -332,41 +315,41 @@ class _FrequencyState extends State<Frequency> {
           );
         },
         body: Container(
-          decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(
-              color: Color(0xffDBDBDB),
-              width: 1.0,
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xffDBDBDB),
+                width: 1.0,
+              ),
             ),
-          )),
+          ),
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _frequencyContainerBodyObserver(index, size, screenHeight),
+              frequencyContainerBodyObserver(index, size, screenHeight),
             ],
           ),
         ),
         isExpanded: _componentesCurriculares[index].expandido,
       );
 
-  _buildAlertEmptyFrequency(size, screenHeight) => CardAlert(
-        title: "FREQUÊNCIA",
+  CardAlert buildAlertEmptyFrequency(size, screenHeight) => CardAlert(
+        title: 'FREQUÊNCIA',
         icon: Icon(
-          FontAwesomeIcons.calendarAlt,
-          color: Color(0xffFFD037),
+          FontAwesomeIcons.calendar,
+          color: const Color(0xffFFD037),
           size: screenHeight * 6,
         ),
-        text:
-            "Não foi encontrado nenhum dado de frequência para este estudante.",
+        text: 'Não foi encontrado nenhum dado de frequência para este estudante.',
       );
 
-  _messageComponentCurricular(double screenHeight) => Container(
+  Container messageComponentCurricular(double screenHeight) => Container(
         padding: EdgeInsets.all(screenHeight * 1.5),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Color(0xffBDBECB), width: 1),
+          border: Border.all(color: const Color(0xffBDBECB), width: 1),
           borderRadius: BorderRadius.all(
             Radius.circular(screenHeight * 1),
           ),
@@ -375,81 +358,68 @@ class _FrequencyState extends State<Frequency> {
               color: Colors.grey.withOpacity(0.6),
               spreadRadius: 1,
               blurRadius: 2,
-              offset: Offset(0, 2), // changes position of shadow
+              offset: const Offset(0, 2), // changes position of shadow
             ),
           ],
         ),
-        child: AutoSizeText(
-          "Apenas os componentes curriculares com registro de frequência por parte dos professores estão sendo apresentados.",
+        child: const AutoSizeText(
+          'Apenas os componentes curriculares com registro de frequência por parte dos professores estão sendo apresentados.',
           minFontSize: 14,
           maxFontSize: 16,
           style: TextStyle(color: Colors.black),
         ),
       );
 
-  _buildMainFrequencyContainer(size, screenHeight) {
-    List _compList = _componentesCurriculares;
-    List<ExpansionPanel> _children =
-        _compList.asMap().entries.map<ExpansionPanel>((entry) {
-      return _frequencyExpandedPanel(entry.key, size, screenHeight);
+  ExpansionPanelList buildMainFrequencyContainer(size, screenHeight) {
+    final List compList = _componentesCurriculares;
+    final List<ExpansionPanel> children = compList.asMap().entries.map<ExpansionPanel>((entry) {
+      return frequencyExpandedPanel(entry.key, size, screenHeight);
     }).toList();
 
     return ExpansionPanelList(
-      expansionCallback: _frequencyExpansionPanelCallback,
-      children: _children,
+      expansionCallback: frequencyExpansionPanelCallback,
+      children: children,
     );
   }
 
-  _buildEmptyContainer() => Container(
-        height: 0,
-        width: 0,
+  Observer globalFrequencyObserver(size, screenHeight) => Observer(
+        builder: (context) {
+          if (_frequencyController.loadingFrequency) {
+            return buildLoadingWidget(size, screenHeight);
+          }
+
+          return FrequencyGlobalCard(frequencia: _frequencyController.frequencia);
+        },
       );
 
-  _globalFrequencyObserver(size, screenHeight) => Observer(builder: (context) {
-        if (_frequencyController.loadingFrequency) {
-          return _buildLoadingWidget(size, screenHeight);
-        }
+  Observer detailedFrequencyObserver(size, screenHeight) => Observer(
+        builder: (context) {
+          if (_frequencyController.loadingFrequency) {
+            return buildLoadingWidget(size, screenHeight);
+          }
 
-        if (_frequencyController.frequencia != null) {
-          return FrequencyGlobalCard(
-              frequencia: _frequencyController.frequencia);
-        }
-
-        return _buildAlertEmptyFrequency(size, screenHeight);
-      });
-
-  _detailedFrequencyObserver(size, screenHeight) =>
-      Observer(builder: (context) {
-        if (_frequencyController.loadingFrequency) {
-          return _buildLoadingWidget(size, screenHeight);
-        }
-
-        if (_componentesCurriculares != null) {
-          return _buildMainFrequencyContainer(size, screenHeight);
-        }
-
-        return _buildEmptyContainer();
-      });
+          return buildMainFrequencyContainer(size, screenHeight);
+        },
+      );
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Container(
-      // height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(screenHeight * 2.5),
       child: Column(
         children: [
-          _messageComponentCurricular(screenHeight),
+          messageComponentCurricular(screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          _globalFrequencyObserver(size, screenHeight),
+          globalFrequencyObserver(size, screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          _detailedFrequencyObserver(size, screenHeight)
+          detailedFrequencyObserver(size, screenHeight)
         ],
       ),
     );

@@ -7,20 +7,18 @@ class CardMessage extends StatelessWidget {
   final bool headerIcon;
   final List<Widget> content;
   final bool recentMessage;
-  final bool firstMessage;
   final bool footer;
   final List<Widget> footerContent;
   final String categoriaNotificacao;
 
   CardMessage(
-      {this.headerTitle,
-      this.headerIcon,
-      this.content,
-      this.recentMessage,
-      this.firstMessage,
-      this.footer,
-      this.footerContent,
-      this.categoriaNotificacao});
+      {required this.headerTitle,
+      required this.headerIcon,
+      required this.content,
+      required this.recentMessage,
+      required this.footer,
+      required this.footerContent,
+      required this.categoriaNotificacao});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +60,7 @@ class CardMessage extends StatelessWidget {
                             ? colorUE.withOpacity(0.4)
                             : colorTURMA.withOpacity(0.4),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2),
-                    topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,9 +73,7 @@ class CardMessage extends StatelessWidget {
                         child: Container(
                           margin: EdgeInsets.only(right: screenHeight * 2),
                           child: Icon(
-                            recentMessage
-                                ? FontAwesomeIcons.envelope
-                                : FontAwesomeIcons.envelopeOpen,
+                            recentMessage ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
                             color: recentMessage
                                 ? Color(0xffFFD869)
                                 : categoriaNotificacao == "SME"
@@ -152,8 +147,7 @@ class CardMessage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xffF3F3F3),
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(screenHeight * 2),
-                    bottomRight: Radius.circular(screenHeight * 2)),
+                    bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2)),
               ),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,

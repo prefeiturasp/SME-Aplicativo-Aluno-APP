@@ -1,56 +1,82 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+
+import '../../dtos/validacao_erro_dto.dart';
+
 class Data {
   bool ok;
   List<String> erros;
   ValidacaoErros validacaoErros;
   String token;
-
   Data({
-    this.ok,
-    this.erros,
-    this.validacaoErros,
-    this.token,
+    required this.ok,
+    required this.erros,
+    required this.validacaoErros,
+    required this.token,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    ok = json['ok'];
-    erros = json['erros'] != null ? json['erros'].cast<String>() : null;
-    validacaoErros = json['validacaoErros'] != null
-        ? new ValidacaoErros.fromJson(json['validacaoErros'])
-        : null;
-    token = json['data']['token'];
+  
+
+  Data copyWith({
+    bool? ok,
+    List<String>? erros,
+    ValidacaoErros? validacaoErros,
+    String? token,
+  }) {
+    return Data(
+      ok: ok ?? this.ok,
+      erros: erros ?? this.erros,
+      validacaoErros: validacaoErros ?? this.validacaoErros,
+      token: token ?? this.token,
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ok'] = this.ok;
-    data['erros'] = this.erros;
-    if (this.validacaoErros != null) {
-      data['validacaoErros'] = this.validacaoErros.toJson();
-    }
-    data['data']['token'] = this.token;
-    return data;
-  }
-}
-
-class ValidacaoErros {
-  List<String> additionalProp1;
-  List<String> additionalProp2;
-  List<String> additionalProp3;
-
-  ValidacaoErros(
-      {this.additionalProp1, this.additionalProp2, this.additionalProp3});
-
-  ValidacaoErros.fromJson(Map<String, dynamic> json) {
-    additionalProp1 = json['additionalProp1'].cast<String>();
-    additionalProp2 = json['additionalProp2'].cast<String>();
-    additionalProp3 = json['additionalProp3'].cast<String>();
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'ok': ok,
+      'erros': erros,
+      'validacaoErros': validacaoErros.toMap(),
+      'token': token,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['additionalProp1'] = this.additionalProp1;
-    data['additionalProp2'] = this.additionalProp2;
-    data['additionalProp3'] = this.additionalProp3;
-    return data;
+  factory Data.fromMap(Map<String, dynamic> map) {
+    return Data(
+      ok: map['ok'],
+      erros: List<String>.from((map['erros'] as List<String>)),
+      token: map['token'] as String,
+      validacaoErros: ValidacaoErros.fromMap(map['validacaoErros']),
+      
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Data.fromJson(String source) => Data.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Data(ok: $ok, erros: $erros, validacaoErros: $validacaoErros, token: $token)';
+  }
+
+  @override
+  bool operator ==(covariant Data other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.ok == ok &&
+      listEquals(other.erros, erros) &&
+      other.validacaoErros == validacaoErros &&
+      other.token == token;
+  }
+
+  @override
+  int get hashCode {
+    return ok.hashCode ^
+      erros.hashCode ^
+      validacaoErros.hashCode ^
+      token.hashCode;
   }
 }

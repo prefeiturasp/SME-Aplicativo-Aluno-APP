@@ -1,41 +1,43 @@
+import 'dart:developer';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getflutter/getflutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sentry/sentry.dart';
-import 'package:sme_app_aluno/controllers/autenticacao.controller.dart';
-import 'package:sme_app_aluno/controllers/messages/messages.controller.dart';
-import 'package:sme_app_aluno/models/message/message.dart';
-import 'package:sme_app_aluno/screens/firstAccess/firstAccess.dart';
-import 'package:sme_app_aluno/stores/usuario.store.dart';
-import 'package:sme_app_aluno/ui/index.dart';
-import 'package:sme_app_aluno/ui/views/login.view.dart';
-import 'package:sme_app_aluno/screens/messages/view_message_notification.dart';
-import 'package:sme_app_aluno/screens/not_internet/not_internet.dart';
-import 'package:sme_app_aluno/ui/views/atualizacao_cadastral.view.dart';
-import 'package:sme_app_aluno/utils/conection.dart';
-import 'package:sme_app_aluno/utils/navigator.dart';
+
+import '../../controllers/autenticacao.controller.dart';
+import '../../controllers/messages/messages.controller.dart';
+import '../../models/message/message.dart';
+import '../../screens/firstAccess/first_access.dart';
+import '../../screens/messages/view_message_notification.dart';
+import '../../screens/not_internet/not_internet.dart';
+import '../../stores/usuario.store.dart';
+import '../../utils/conection.dart';
+import '../../utils/navigator.dart';
+import '../index.dart';
 
 class FluxoInicialView extends StatefulWidget {
+  const FluxoInicialView({super.key});
+
   @override
-  _FluxoInicialViewState createState() => _FluxoInicialViewState();
+  FluxoInicialViewState createState() => FluxoInicialViewState();
 }
 
-class _FluxoInicialViewState extends State<FluxoInicialView> {
-  final usuarioStore = GetIt.I.get<UsuarioStore>();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+class FluxoInicialViewState extends State<FluxoInicialView> {
+  UsuarioStore usuarioStore = GetIt.I.get<UsuarioStore>();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final Stream<RemoteMessage> _firebaseonMessage = FirebaseMessaging.onMessage;
+  final Stream<RemoteMessage> _firebaseonOnMessageOpenedApp = FirebaseMessaging.onMessageOpenedApp;
 
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
-  MessagesController _messagesController;
+  final MessagesController _messagesController = MessagesController();
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    _initPushNotificationHandlers();
-    _messagesController = MessagesController();
+    initPushNotificationHandlers();
     usuarioStore.carregarUsuario();
   }
 
@@ -45,105 +47,104 @@ class _FluxoInicialViewState extends State<FluxoInicialView> {
     super.dispose();
   }
 
-  _initPushNotificationHandlers() {
+  Future<void> initPushNotificationHandlers() async {
     try {
-      _firebaseMessaging.requestNotificationPermissions();
-      _firebaseMessaging.getToken().then(print);
-      _firebaseMessaging.subscribeToTopic("AppAluno");
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          _popUpNotification(message);
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          await _navigateToMessageView(message);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          await _navigateToMessageView(message);
+      _firebaseMessaging.requestPermission();
+      _firebaseMessaging.getToken().then((print));
+      _firebaseMessaging.subscribeToTopic('AppAluno');
+      _firebaseMessaging.getInitialMessage().then((message) async {
+        if (message != null) {
+          await navigateToMessageView(message.data);
+        }
+      });
+      _firebaseonMessage.listen((RemoteMessage message) async {
+        await popUpNotification(message.data);
+      });
+      _firebaseonOnMessageOpenedApp.listen((event) async {
+        await navigateToMessageView(event.data);
+      });
+      FirebaseMessaging.onBackgroundMessage(
+        (message) async {
+          await navigateToMessageView(message.data);
         },
       );
-    } catch(ex) {
-      GetIt.I.get<SentryClient>().captureException(exception: ex);
+    } catch (ex) {
+      log('initPushNotificationHandlers $ex');
     }
   }
 
-  _popUpNotification(Map<String, dynamic> message) {
+  Future<void> popUpNotification(Map<String, dynamic> message) async {
     AwesomeDialog(
-        context: context,
-        headerAnimationLoop: true,
-        dialogType: DialogType.SUCCES,
-        animType: AnimType.BOTTOMSLIDE,
-        title: "NOTIFICAÇÃO - ${message["data"]["categoriaNotificacao"]}",
-        desc: "Você acaba de receber uma \n mensagem.",
-        btnOkOnPress: () {
-          _navigateToMessageView(message);
-        },
-        btnOkText: "VISUALIZAR")
-      ..show();
+      context: context,
+      headerAnimationLoop: true,
+      dialogType: DialogType.success,
+      animType: AnimType.bottomSlide,
+      title: "NOTIFICAÇÃO - ${message["categoriaNotificacao"]}",
+      desc: 'Você acaba de receber uma \n mensagem.',
+      btnOkOnPress: () {
+        navigateToMessageView(message);
+      },
+      btnOkText: 'VISUALIZAR',
+    ).show();
   }
 
-  _navigateToMessageView(Map<String, dynamic> message) async {
-    Message _message = Message(
-      id: int.parse(message["data"]["Id"]),
-      titulo: message["data"]["Titulo"],
-      mensagem: message["data"]["Mensagem"],
-      criadoEm: message["data"]["CriadoEm"],
-      codigoEOL: message["data"]["CodigoEOL"] != null
-          ? int.parse(message["data"]["CodigoEOL"])
-          : 0,
-      categoriaNotificacao: message["data"]["categoriaNotificacao"],
+  Future<void> navigateToMessageView(Map<String, dynamic> message) async {
+    final Message message0 = Message(
+      id: int.parse(message['Id']),
+      titulo: message['Titulo'],
+      mensagem: message['Mensagem'],
+      criadoEm: message['CriadoEm'],
+      codigoEOL: message['CodigoEOL'] != null ? int.parse(message['CodigoEOL']) : 0,
+      categoriaNotificacao: message['categoriaNotificacao'],
+      dataEnvio: message['DataEnvio'] ?? DateTime.now().toIso8601String(),
+      alteradoEm: message['AlteradoEm'] ?? '',
+      mensagemVisualizada: message['MensagemVisualizada'] ?? false,
     );
 
-    await _messagesController.loadById(_message.id, usuarioStore.usuario.id);
-    _message.mensagem = _messagesController.message.mensagem;
-    Nav.push(
+    await _messagesController.loadById(message0.id, usuarioStore.usuario!.id);
+    message0.mensagem = _messagesController.message!.mensagem;
+    if (context.mounted) {
+      Nav.push(
         context,
         ViewMessageNotification(
-          message: _message,
-          userId: usuarioStore.usuario.id,
-        ));
+          message: message0,
+          userId: usuarioStore.usuario!.id,
+        ),
+      );
+    }
   }
 
   Widget fluxoLogin() {
-    if (usuarioStore.usuario != null) {
-      if (usuarioStore.usuario.primeiroAcesso) {
-        return FirstAccess(
-          id: usuarioStore.usuario.id,
-          cpf: usuarioStore.usuario.cpf,
-        );
-      } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
-        return AtualizacaoCadastralView();
-      } else {
-        return EstudanteListaView();
-      }
+    if (usuarioStore.usuario!.primeiroAcesso) {
+      return FirstAccess(
+        id: usuarioStore.usuario!.id,
+        cpf: usuarioStore.usuario!.cpf,
+      );
+    } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
+      return const AtualizacaoCadastralView();
+    } else {
+      return const EstudanteListaView();
     }
-
-    return Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      body: new Center(
-        child: GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    var connectionStatus = Provider.of<ConnectivityStatus>(context);
+    final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
     if (connectionStatus == ConnectivityStatus.Offline) {
       return NotInteernet();
     } else {
       return Observer(
-          builder: (context) => usuarioStore.usuario == null
-              ? LoginView()
-              : (usuarioStore.usuario.primeiroAcesso == null
-                  ? LoginView()
-                  : fluxoLogin()));
+        builder: (context) => usuarioStore.usuario?.id == null
+            ? const LoginView(
+                notice: null,
+              )
+            : (usuarioStore.usuario?.primeiroAcesso != false
+                ? const LoginView(
+                    notice: null,
+                  )
+                : fluxoLogin()),
+      );
     }
   }
 }

@@ -1,4 +1,5 @@
-import 'package:sme_app_aluno/utils/data.util.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
 class UsuarioModel {
   int id;
@@ -11,65 +12,161 @@ class UsuarioModel {
   bool atualizarDadosCadastrais;
   String celular;
   DateTime dataNascimento;
-  DateTime ultimaAtualizacao;
-  String senha;
+  DateTime? ultimaAtualizacao;
+  String? senha;
 
-  UsuarioModel(
-      {this.id,
-      this.nome,
-      this.cpf,
-      this.email,
-      this.token,
-      this.primeiroAcesso,
-      this.atualizarDadosCadastrais,
-      this.celular,
-      this.dataNascimento,
-      this.ultimaAtualizacao});
+  UsuarioModel({
+    required this.id,
+    required this.nome,
+    required this.nomeMae,
+    required this.cpf,
+    required this.email,
+    required this.token,
+    required this.primeiroAcesso,
+    required this.atualizarDadosCadastrais,
+    required this.celular,
+    required this.dataNascimento,
+    this.ultimaAtualizacao,
+    this.senha,
+  });
 
-  UsuarioModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    nome = json['nome'];
-    cpf = json['cpf'];
-    email = json['email'];
-    nomeMae = json['nomeMae'];
-    token = json['token'];
-    primeiroAcesso = json['primeiroAcesso'];
-    atualizarDadosCadastrais = json['atualizarDadosCadastrais'];
-    celular = json['celular'];
-    dataNascimento = DataUtil.converteParaDataLocal(json['dataNascimento']);
-    ultimaAtualizacao =
-        DataUtil.converteParaDataLocal(json['ultimaAtualizacao']);
+  UsuarioModel copyWith({
+    int? id,
+    String? nome,
+    String? nomeMae,
+    String? cpf,
+    String? email,
+    String? token,
+    bool? primeiroAcesso,
+    bool? atualizarDadosCadastrais,
+    String? celular,
+    DateTime? dataNascimento,
+    DateTime? ultimaAtualizacao,
+    String? senha,
+  }) {
+    return UsuarioModel(
+      id: id ?? this.id,
+      nome: nome ?? this.nome,
+      nomeMae: nomeMae ?? this.nomeMae,
+      cpf: cpf ?? this.cpf,
+      email: email ?? this.email,
+      token: token ?? this.token,
+      primeiroAcesso: primeiroAcesso ?? this.primeiroAcesso,
+      atualizarDadosCadastrais: atualizarDadosCadastrais ?? this.atualizarDadosCadastrais,
+      celular: celular ?? this.celular,
+      dataNascimento: dataNascimento ?? this.dataNascimento,
+      ultimaAtualizacao: ultimaAtualizacao ?? this.ultimaAtualizacao,
+      senha: senha ?? this.senha,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'id': id,
       'nome': nome,
+      'nomeMae': nomeMae,
       'cpf': cpf,
       'email': email,
-      'nomeMae': nomeMae,
       'token': token,
-      'primeiroAcesso': primeiroAcesso ? 1 : 0,
-      'atualizarDadosCadastrais': atualizarDadosCadastrais ? 1 : 0,
+      'primeiroAcesso': primeiroAcesso,
+      'atualizarDadosCadastrais': atualizarDadosCadastrais,
       'celular': celular,
-      'dataNascimento': dataNascimento,
-      'ultimaAtualizacao': ultimaAtualizacao
+      'dataNascimento': dataNascimento.toIso8601String(),
+      'ultimaAtualizacao': ultimaAtualizacao?.toIso8601String(),
+      'senha': senha,
     };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['nome'] = this.nome;
-    data['cpf'] = this.cpf;
-    data['email'] = this.email;
-    data['nomeMae'] = this.nomeMae;
-    data['token'] = this.token;
-    data['primeiroAcesso'] = this.primeiroAcesso;
-    data['atualizarDadosCadastrais'] = this.atualizarDadosCadastrais;
-    data['celular'] = this.celular;
-    data['dataNascimento'] = this.dataNascimento.toString();
-    data['ultimaAtualizacao'] = this.ultimaAtualizacao.toString();
-    return data;
+  factory UsuarioModel.fromMap(Map<String, dynamic> map) {
+    final usr = UsuarioModel(
+      id: map['id'] ?? 0,
+      nome: map['nome'] ?? '',
+      nomeMae: map['nomeMae'] ?? '',
+      cpf: map['cpf'] ?? '',
+      email: map['email'] ?? '',
+      token: map['token'] ?? '',
+      primeiroAcesso: map['primeiroAcesso'] ?? false,
+      atualizarDadosCadastrais: map['atualizarDadosCadastrais'] ?? false,
+      celular: map['celular'] ?? '',
+      dataNascimento: map['dataNascimento'] != null ? DateTime.parse(map['dataNascimento']) : DateTime.now(),
+      ultimaAtualizacao: map['ultimaAtualizacao'] != null ? DateTime.parse(map['ultimaAtualizacao']) : null,
+      senha: map['senha'] ?? '',
+    );
+    return usr;
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UsuarioModel.fromJson(String source) => UsuarioModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'UsuarioModel(id: $id, nome: $nome, nomeMae: $nomeMae, cpf: $cpf, email: $email, token: $token, primeiroAcesso: $primeiroAcesso, atualizarDadosCadastrais: $atualizarDadosCadastrais, celular: $celular, dataNascimento: $dataNascimento, ultimaAtualizacao: $ultimaAtualizacao, senha: $senha)';
+  }
+
+  @override
+  bool operator ==(covariant UsuarioModel other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.nome == nome &&
+        other.nomeMae == nomeMae &&
+        other.cpf == cpf &&
+        other.email == email &&
+        other.token == token &&
+        other.primeiroAcesso == primeiroAcesso &&
+        other.atualizarDadosCadastrais == atualizarDadosCadastrais &&
+        other.celular == celular &&
+        other.dataNascimento == dataNascimento &&
+        other.ultimaAtualizacao == ultimaAtualizacao &&
+        other.senha == senha;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        nome.hashCode ^
+        nomeMae.hashCode ^
+        cpf.hashCode ^
+        email.hashCode ^
+        token.hashCode ^
+        primeiroAcesso.hashCode ^
+        atualizarDadosCadastrais.hashCode ^
+        celular.hashCode ^
+        dataNascimento.hashCode ^
+        ultimaAtualizacao.hashCode ^
+        senha.hashCode;
+  }
+
+  void clear() {
+    id = 0;
+    nome = '';
+    nomeMae = '';
+    cpf = '';
+    email = '';
+    token = '';
+    primeiroAcesso = false;
+    atualizarDadosCadastrais = false;
+    celular = '';
+    dataNascimento = DateTime.now();
+    ultimaAtualizacao = null;
+    senha = '';
+  }
+
+  factory UsuarioModel.clear() {
+    return UsuarioModel(
+      id: 0,
+      nome: '',
+      nomeMae: '',
+      cpf: '',
+      email: '',
+      token: '',
+      primeiroAcesso: false,
+      atualizarDadosCadastrais: false,
+      celular: '',
+      dataNascimento: DateTime.now(),
+      ultimaAtualizacao: null,
+      senha: '',
+    );
   }
 }

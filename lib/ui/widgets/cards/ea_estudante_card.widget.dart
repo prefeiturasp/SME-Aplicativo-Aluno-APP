@@ -10,17 +10,17 @@ class EAEstudanteCard extends StatelessWidget {
   final String schooType;
   final String dreName;
   final String studentGrade;
-  final Function onPress;
-  final Image avatar;
+  final VoidCallback onPress;
+  final Image? avatar;
 
   EAEstudanteCard(
-      {@required this.codigoEOL,
-      @required this.name,
-      @required this.schoolName,
-      @required this.dreName,
-      @required this.studentGrade,
-      @required this.onPress,
-      @required this.schooType,
+      {required this.codigoEOL,
+      required this.name,
+      required this.schoolName,
+      required this.dreName,
+      required this.studentGrade,
+      required this.onPress,
+      required this.schooType,
       this.avatar});
 
   @override

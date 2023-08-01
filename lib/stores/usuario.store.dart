@@ -2,59 +2,63 @@ import 'dart:convert';
 
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sme_app_aluno/models/index.dart';
+
+import '../models/index.dart';
 
 part 'usuario.store.g.dart';
 
-class UsuarioStore = _UsuarioStoreBase with _$UsuarioStore;
+class UsuarioStore = UsuarioStoreBase with _$UsuarioStore;
 
-abstract class _UsuarioStoreBase with Store {
+abstract class UsuarioStoreBase with Store {
   @observable
   bool carregando = false;
 
   @observable
-  int id;
+  int? id;
 
   @observable
-  String cpf;
+  String? cpf;
 
   @observable
-  UsuarioModel usuario = new UsuarioModel();
+  UsuarioModel? usuario;
 
   @observable
-  String token;
+  String? token;
 
   @action
-  carregarUsuario() async {
+  Future<void> carregarUsuario() async {
     carregando = true;
     final prefs = await SharedPreferences.getInstance();
-    var prefsUsuario = prefs.getString("eaUsuario");
+    final prefsUsuario = prefs.getString('eaUsuario');
     if (prefsUsuario != null) {
       usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
-      id = usuario?.id;
-      cpf = usuario?.cpf;
-      token = usuario?.token;
+      id = usuario!.id;
+      cpf = usuario!.cpf;
+      token = usuario!.token;
     }
     carregando = false;
   }
 
   @action
-  atualizarDados(String email, DateTime dataNascimento, String nomeMae,
-      String telefone, DateTime ultimaAtualizacao) async {
+  Future<void> atualizarDados(
+    String email,
+    DateTime dataNascimento,
+    String nomeMae,
+    String telefone,
+    DateTime? ultimaAtualizacao,
+  ) async {
     carregando = true;
 
     final prefs = await SharedPreferences.getInstance();
 
-    if (usuario != null) {
-      usuario.email = email;
-      usuario.dataNascimento = dataNascimento;
-      usuario.nomeMae = nomeMae;
-      usuario.celular = telefone;
-      usuario.primeiroAcesso = false;
-      usuario.atualizarDadosCadastrais = false;
-      usuario.ultimaAtualizacao = ultimaAtualizacao;
-      await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
-    }
+    usuario!.email = email;
+    usuario!.dataNascimento = dataNascimento;
+    usuario!.nomeMae = nomeMae;
+    usuario!.celular = telefone;
+    usuario!.primeiroAcesso = false;
+    usuario!.atualizarDadosCadastrais = false;
+    usuario!.ultimaAtualizacao = ultimaAtualizacao;
+    await prefs.setString('eaUsuario', jsonEncode(usuario!.toJson()));
 
     carregando = false;
   }
@@ -62,10 +66,8 @@ abstract class _UsuarioStoreBase with Store {
   @action
   Future<void> atualizaPrimeiroAcesso(bool primeiroAcesso) async {
     final prefs = await SharedPreferences.getInstance();
-    if (usuario != null) {
-      usuario.primeiroAcesso = primeiroAcesso;
-      await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
-    }
+    usuario!.primeiroAcesso = primeiroAcesso;
+    await prefs.setString('eaUsuario', jsonEncode(usuario!.toJson()));
   }
 
   @action

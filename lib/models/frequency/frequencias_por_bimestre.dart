@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:sme_app_aluno/models/frequency/ausencias.dart';
 
 class FrequenciasPorBimestre {
@@ -8,42 +11,46 @@ class FrequenciasPorBimestre {
   String corDaFrequencia;
   double frequencia;
   List<Ausencias> ausencias;
+  FrequenciasPorBimestre({
+    required this.bimestre,
+    required this.quantidadeAulas,
+    required this.quantidadeFaltas,
+    required this.quantidadeCompensacoes,
+    required this.corDaFrequencia,
+    required this.frequencia,
+    required this.ausencias,
+  });
 
-  FrequenciasPorBimestre(
-      {this.bimestre,
-      this.quantidadeAulas,
-      this.quantidadeFaltas,
-      this.quantidadeCompensacoes,
-      this.corDaFrequencia,
-      this.frequencia,
-      this.ausencias});
-
-  FrequenciasPorBimestre.fromJson(Map<String, dynamic> json) {
-    bimestre = json['bimestre'];
-    quantidadeAulas = json['quantidadeAulas'];
-    quantidadeFaltas = json['quantidadeFaltas'];
-    quantidadeCompensacoes = json['quantidadeCompensacoes'];
-    corDaFrequencia = json['corDaFrequencia'];
-    frequencia = json['frequencia'];
-    if (json['ausencias'] != null) {
-      ausencias = new List<Ausencias>();
-      json['ausencias'].forEach((v) {
-        ausencias.add(new Ausencias.fromJson(v));
-      });
-    }
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'bimestre': bimestre,
+      'quantidadeAulas': quantidadeAulas,
+      'quantidadeFaltas': quantidadeFaltas,
+      'quantidadeCompensacoes': quantidadeCompensacoes,
+      'corDaFrequencia': corDaFrequencia,
+      'frequencia': frequencia,
+      'ausencias': ausencias.map((x) => x.toMap()).toList(),
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['bimestre'] = this.bimestre;
-    data['quantidadeAulas'] = this.quantidadeAulas;
-    data['quantidadeFaltas'] = this.quantidadeFaltas;
-    data['quantidadeCompensacoes'] = this.quantidadeCompensacoes;
-    data['corDaFrequencia'] = this.corDaFrequencia;
-    data['frequencia'] = this.frequencia;
-    if (this.ausencias != null) {
-      data['ausencias'] = this.ausencias.map((v) => v.toJson()).toList();
-    }
-    return data;
+  factory FrequenciasPorBimestre.fromMap(Map<String, dynamic> map) {
+    return FrequenciasPorBimestre(
+      bimestre: map['bimestre'] as int,
+      quantidadeAulas: map['quantidadeAulas'] as int,
+      quantidadeFaltas: map['quantidadeFaltas'] as int,
+      quantidadeCompensacoes: map['quantidadeCompensacoes'] as int,
+      corDaFrequencia: map['corDaFrequencia'] as String,
+      frequencia: map['frequencia'] as double,
+      ausencias: List<Ausencias>.from(
+        (map['ausencias'] as List<int>).map<Ausencias>(
+          (x) => Ausencias.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+    );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory FrequenciasPorBimestre.fromJson(String source) =>
+      FrequenciasPorBimestre.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -22,102 +22,91 @@ class NotesBody extends StatelessWidget {
   final String groupSchool;
 
   NotesBody(
-      {this.title,
-      this.bUm,
-      this.bDois,
-      this.bTres,
-      this.bQuatro,
-      this.bFinal,
-      this.descUm,
-      this.descDois,
-      this.descTres,
-      this.descQuatro,
-      this.descFinal,
-      this.corUm,
-      this.corDois,
-      this.corTres,
-      this.corQuatro,
-      this.corFinal,
-      this.groupSchool});
+      {required this.title,
+      required this.bUm,
+      required this.bDois,
+      required this.bTres,
+      required this.bQuatro,
+      required this.bFinal,
+      required this.descUm,
+      required this.descDois,
+      required this.descTres,
+      required this.descQuatro,
+      required this.descFinal,
+      required this.corUm,
+      required this.corDois,
+      required this.corTres,
+      required this.corQuatro,
+      required this.corFinal,
+      required this.groupSchool});
 
   _buildGroupNonEJA() => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Note(
-        current: bDois == '-' &&
-                bTres == '-' &&
-                bQuatro == '-' &&
-                bFinal == '-' &&
-                bUm != '-'
-            ? true
-            : false,
-        name: '1º Bim',
-        noteValue: bUm,
-        color: corUm,
-        description: descUm,
-      ),
-      Note(
-        current: bTres == '-' &&
-                bQuatro == '-' &&
-                bFinal == '-' &&
-                bDois != '-'
-            ? true
-            : false,
-        name: '2º Bim',
-        noteValue: bDois,
-        color: corDois,
-        description: descDois,
-      ),
-      Note(
-        current: bQuatro == '-' && bTres != '-' ? true : false,
-        name: '3º Bim',
-        noteValue: bTres,
-        color: corTres,
-        description: descTres,
-      ),
-      Note(
-        current: bFinal == '-' && bQuatro != '-' ? true : false,
-        name: '4º Bim',
-        noteValue: bQuatro,
-        color: corQuatro,
-        description: descQuatro,
-      ),
-      Note(
-        current: bFinal != '-' ? true : false,
-        name: 'Final',
-        noteValue: bFinal,
-        color: corFinal,
-        description: descFinal,
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Note(
+            current: bDois == '-' && bTres == '-' && bQuatro == '-' && bFinal == '-' && bUm != '-' ? true : false,
+            name: '1º Bim',
+            noteValue: bUm,
+            color: corUm,
+            description: descUm,
+          ),
+          Note(
+            current: bTres == '-' && bQuatro == '-' && bFinal == '-' && bDois != '-' ? true : false,
+            name: '2º Bim',
+            noteValue: bDois,
+            color: corDois,
+            description: descDois,
+          ),
+          Note(
+            current: bQuatro == '-' && bTres != '-' ? true : false,
+            name: '3º Bim',
+            noteValue: bTres,
+            color: corTres,
+            description: descTres,
+          ),
+          Note(
+            current: bFinal == '-' && bQuatro != '-' ? true : false,
+            name: '4º Bim',
+            noteValue: bQuatro,
+            color: corQuatro,
+            description: descQuatro,
+          ),
+          Note(
+            current: bFinal != '-' ? true : false,
+            name: 'Final',
+            noteValue: bFinal,
+            color: corFinal,
+            description: descFinal,
+          ),
+        ],
+      );
 
   _buildGroupEJA() => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Note(
-        current: bDois == '-' && bUm != '-' ? true : false,
-        name: '1º Bim',
-        noteValue: bUm,
-        color: corUm,
-        description: descUm,
-      ),
-      Note(
-        current: bFinal == '-' && bDois != '-' ? true : false,
-        name: '2º Bim',
-        noteValue: bDois,
-        color: corDois,
-        description: descDois,
-      ),
-      Note(
-        current: bFinal != '-' ? true : false,
-        name: 'Final',
-        noteValue: bFinal,
-        color: corFinal,
-        description: descFinal,
-      ),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Note(
+            current: bDois == '-' && bUm != '-' ? true : false,
+            name: '1º Bim',
+            noteValue: bUm,
+            color: corUm,
+            description: descUm,
+          ),
+          Note(
+            current: bFinal == '-' && bDois != '-' ? true : false,
+            name: '2º Bim',
+            noteValue: bDois,
+            color: corDois,
+            description: descDois,
+          ),
+          Note(
+            current: bFinal != '-' ? true : false,
+            name: 'Final',
+            noteValue: bFinal,
+            color: corFinal,
+            description: descFinal,
+          ),
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -134,11 +123,8 @@ class NotesBody extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
           subtitle: Padding(
-            padding: EdgeInsets.all(screenHeight * 0.5),
-            child: groupSchool != 'EJA'
-                ? _buildGroupNonEJA()
-                : _buildGroupEJA()
-          )),
+              padding: EdgeInsets.all(screenHeight * 0.5),
+              child: groupSchool != 'EJA' ? _buildGroupNonEJA() : _buildGroupEJA())),
     );
   }
 }
@@ -147,5 +133,5 @@ class ModelTest {
   String name;
   bool current;
 
-  ModelTest({this.name, this.current});
+  ModelTest({required this.name, required this.current});
 }

@@ -4,6 +4,7 @@
 
 ### Flutter ###
 # Flutter/Dart/Pub related
+**.g.dart
 *.g.dart
 **/doc/api/
 .dart_tool/
@@ -78,3 +79,10 @@ pubspec.lock
 *.last_build_id
 
 /config
+lib/controllers/**.g.dart
+lib/controllers/*.g.dart
+lib/controllers/event/**.g.dart
+lib/controllers/event/*.g.dart
+lib/**.g.dart
+lib/*.g.dart
+pubspec.lock
