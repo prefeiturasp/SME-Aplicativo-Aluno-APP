@@ -29,7 +29,7 @@ pipeline {
             file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV'),
             file(credentialsId: 'app-config-dev', variable: 'APPCONFIGDEV'),
           ]) {
-	    sh 'if [ -d "config" ]; then rm -Rf config; fi'  
+	    sh 'if [ -d "config" ]; then rm -Rf config; fi'
             sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
             sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
