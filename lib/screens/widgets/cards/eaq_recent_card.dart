@@ -325,7 +325,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
                       ),
                       Flexible(
                         child: Container(
-                          height: screenHeight * 6,
+                          height: screenHeight * 5,
                           decoration: BoxDecoration(
                             border: Border.all(color: const Color(0xffC65D00), width: 1),
                             borderRadius: BorderRadius.all(
