@@ -54,7 +54,7 @@ class Term {
 
   String toJson() => json.encode(toMap());
 
-  factory Term.fromJson(String source) => Term.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Term.fromJson(String source) => Term.fromMap(json.decode(source));
 
   @override
   String toString() {
