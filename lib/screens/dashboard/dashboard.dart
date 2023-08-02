@@ -211,7 +211,7 @@ class DashboardState extends State<Dashboard> {
                       if (_messagesController.messages != null) {
                         _messagesController.loadRecentMessagesPorCategory();
 
-                        if (_messagesController.messages == null) {
+                        if (_messagesController.recentMessages!.isEmpty) {
                           return Visibility(
                             visible: true,
                             child: CardRecentMessage(

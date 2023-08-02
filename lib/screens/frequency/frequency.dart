@@ -6,22 +6,21 @@ import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import '../../controllers/index.dart';
 import '../../dtos/componente_curricular.dto.dart';
 import '../../models/estudante.model.dart';
 import '../../models/index.dart';
-import '../widgets/cards/card_alert.dart';
-import '../widgets/cards/frequency_global_card.dart';
 import 'widgets/box_frequency.dart';
 import 'widgets/label_frequency.dart';
+import '../widgets/cards/card_alert.dart';
+import '../widgets/cards/frequency_global_card.dart';
 
 class Frequency extends StatefulWidget {
-  final EstudanteModel student;
+  final EstudanteModel? student;
 
   const Frequency({
     super.key,
-    required this.student,
+    @required this.student,
   });
 
   @override
@@ -31,8 +30,8 @@ class Frequency extends StatefulWidget {
 class FrequencyState extends State<Frequency> {
   final _frequencyController = GetIt.I.get<EstudanteFrequenciaController>();
   final _estudanteController = GetIt.I.get<EstudanteController>();
-  List<int> _bimestres = [];
-  List<ComponenteCurricularDTO> _componentesCurriculares = [];
+  List<int>? _bimestres;
+  List<ComponenteCurricularDTO>? _componentesCurriculares;
   final anoLetivo = DateTime.now().year;
 
   @override
@@ -44,22 +43,26 @@ class FrequencyState extends State<Frequency> {
   Future<void> obterFrequencias() async {
     _frequencyController.limpar();
     _bimestres =
-        await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.student.codigoTurma.toString());
+        await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.student!.codigoTurma.toString());
 
-    _componentesCurriculares = await _estudanteController.obterComponentesCurriculares(
-      _bimestres,
-      widget.student.codigoEscola,
-      widget.student.codigoTurma.toString(),
-      widget.student.codigoEol.toString(),
-    );
+    if (_bimestres != null) {
+      _componentesCurriculares = await _estudanteController.obterComponentesCurriculares(
+        _bimestres!,
+        widget.student!.codigoEscola,
+        widget.student!.codigoTurma.toString(),
+        widget.student!.codigoEol.toString(),
+      );
 
-    await _frequencyController.obterFrequenciaGlobal(
-      widget.student.codigoTurma.toString(),
-      widget.student.codigoEol.toString(),
-    );
+      await _frequencyController.obterFrequenciaGlobal(
+        widget.student!.codigoTurma.toString(),
+        widget.student!.codigoEol.toString(),
+      );
+    }
+
+    setState(() {});
   }
 
-  Widget listBoxBimestre(
+  Widget _listBoxBimestre(
     ComponenteCurricularDTO data,
     bool aulas,
     bool faltas,
@@ -73,7 +76,6 @@ class FrequencyState extends State<Frequency> {
             title: '${frequency.bimestre}º Bim.',
             idbox: '${frequency.totalAulas}',
             fail: false,
-            ausencias: const [],
           ),
         );
       }
@@ -84,7 +86,7 @@ class FrequencyState extends State<Frequency> {
           child: BoxFrequency(
             title: '${frequency.bimestre}º Bim.',
             idbox: '${frequency.totalAusencias}',
-            fail: true, ausencias: const [],
+            fail: true,
             //ausencias: frequency.ausencias,
           ),
         );
@@ -97,7 +99,6 @@ class FrequencyState extends State<Frequency> {
             title: '${frequency.bimestre}º Bim.',
             idbox: '${frequency.totalCompensacoes}',
             fail: false,
-            ausencias: const [],
           ),
         );
       }
@@ -111,7 +112,7 @@ class FrequencyState extends State<Frequency> {
     );
   }
 
-  Widget rowFrequency(
+  Widget _rowFrequency(
     double screenHeight,
     String label,
     ComponenteCurricularDTO data,
@@ -126,7 +127,7 @@ class FrequencyState extends State<Frequency> {
         SizedBox(
           height: screenHeight * 2,
         ),
-        listBoxBimestre(
+        _listBoxBimestre(
           data,
           aulas,
           faltas,
@@ -139,7 +140,7 @@ class FrequencyState extends State<Frequency> {
     );
   }
 
-  Widget listProgressBar(
+  Widget _listProgressBar(
     ComponenteCurricularDTO data,
     double screenHeight,
   ) {
@@ -192,7 +193,7 @@ class FrequencyState extends State<Frequency> {
     return Column(children: list);
   }
 
-  Container buildLoadingWidget(size, screenHeight) => Container(
+  Container _buildLoadingWidget(size, screenHeight) => Container(
         margin: EdgeInsets.all(screenHeight * 1.5),
         child: const GFLoader(
           type: GFLoaderType.square,
@@ -203,8 +204,8 @@ class FrequencyState extends State<Frequency> {
         ),
       );
 
-  Container buildFrequencyExpandedPanel(index, size, screenHeight) {
-    final comp = _componentesCurriculares[index];
+  Container _buildFrequencyExpandedPanel(index, size, screenHeight) {
+    final comp = _componentesCurriculares![index];
 
     return Container(
       padding: EdgeInsets.all(screenHeight * 2),
@@ -213,7 +214,7 @@ class FrequencyState extends State<Frequency> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             comp.frequencias.isNotEmpty
-                ? rowFrequency(
+                ? _rowFrequency(
                     screenHeight,
                     'Quantidade de aulas',
                     comp,
@@ -223,7 +224,7 @@ class FrequencyState extends State<Frequency> {
                   )
                 : const Text('Não foram encontrados registros para este Componente Curricular'),
             comp.frequencias.isNotEmpty
-                ? rowFrequency(
+                ? _rowFrequency(
                     screenHeight,
                     'Quantidade de ausências',
                     comp,
@@ -233,7 +234,7 @@ class FrequencyState extends State<Frequency> {
                   )
                 : const SizedBox(),
             comp.frequencias.isNotEmpty
-                ? rowFrequency(
+                ? _rowFrequency(
                     screenHeight,
                     'Ausências compensadas',
                     comp,
@@ -247,7 +248,7 @@ class FrequencyState extends State<Frequency> {
               height: screenHeight * 2,
             ),
             comp.frequencias.isNotEmpty
-                ? listProgressBar(
+                ? _listProgressBar(
                     comp,
                     screenHeight,
                   )
@@ -261,50 +262,50 @@ class FrequencyState extends State<Frequency> {
     );
   }
 
-  Observer frequencyContainerBodyObserver(index, size, screenHeight) => Observer(
+  Observer _frequencyContainerBodyObserver(index, size, screenHeight) => Observer(
         builder: (context) {
-          late final Container result;
+          Widget? result;
 
           if (_frequencyController.loadingCurricularComponent) {
-            result = buildLoadingWidget(size, screenHeight);
+            result = _buildLoadingWidget(size, screenHeight);
           }
 
-          result = buildFrequencyExpandedPanel(index, size, screenHeight);
+          result = _buildFrequencyExpandedPanel(index, size, screenHeight);
 
-          return result;
+          return result ?? const Text('erro ao obter dados');
         },
       );
 
-  Future<void> frequencyExpansionPanelCallback(int index, bool isExpanded) async {
+  Future<void> _frequencyExpansionPanelCallback(int index, bool isExpanded) async {
     setState(() {
-      _componentesCurriculares[index].expandido = _componentesCurriculares[index].expandido;
+      _componentesCurriculares![index].expandido = !_componentesCurriculares![index].expandido;
     });
 
-    final bool isExpanded = _componentesCurriculares[index].expandido;
+    final bool isExpanded = _componentesCurriculares![index].expandido;
 
     if (isExpanded) {
       final frequencias = await _frequencyController.fetchCurricularComponent(
         anoLetivo,
-        widget.student.codigoEscola,
-        widget.student.codigoTurma.toString(),
-        widget.student.codigoEol.toString(),
-        _componentesCurriculares[index].codigo.toString(),
-        _bimestres,
+        widget.student!.codigoEscola,
+        widget.student!.codigoTurma.toString(),
+        widget.student!.codigoEol.toString(),
+        _componentesCurriculares![index].codigo.toString(),
+        (_bimestres as List<int>),
       );
 
       setState(() {
-        _componentesCurriculares[index].frequencias = frequencias;
+        _componentesCurriculares![index].frequencias = frequencias;
       });
     }
   }
 
-  ExpansionPanel frequencyExpandedPanel(index, size, screenHeight) => ExpansionPanel(
+  ExpansionPanel _frequencyExpandedPanel(index, size, screenHeight) => ExpansionPanel(
         headerBuilder: (BuildContext context, bool isExpanded) {
           return Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
             width: MediaQuery.of(context).size.width,
             child: AutoSizeText(
-              '${_componentesCurriculares[index].descricao}',
+              '${_componentesCurriculares![index].descricao}',
               maxFontSize: 20,
               minFontSize: 18,
               style: const TextStyle(
@@ -328,24 +329,24 @@ class FrequencyState extends State<Frequency> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              frequencyContainerBodyObserver(index, size, screenHeight),
+              _frequencyContainerBodyObserver(index, size, screenHeight),
             ],
           ),
         ),
-        isExpanded: _componentesCurriculares[index].expandido,
+        isExpanded: _componentesCurriculares![index].expandido,
       );
 
-  CardAlert buildAlertEmptyFrequency(size, screenHeight) => CardAlert(
+  CardAlert _buildAlertEmptyFrequency(size, screenHeight) => CardAlert(
         title: 'FREQUÊNCIA',
         icon: Icon(
-          FontAwesomeIcons.calendar,
+          FontAwesomeIcons.calendarDays,
           color: const Color(0xffFFD037),
           size: screenHeight * 6,
         ),
         text: 'Não foi encontrado nenhum dado de frequência para este estudante.',
       );
 
-  Container messageComponentCurricular(double screenHeight) => Container(
+  Container _messageComponentCurricular(double screenHeight) => Container(
         padding: EdgeInsets.all(screenHeight * 1.5),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -370,35 +371,50 @@ class FrequencyState extends State<Frequency> {
         ),
       );
 
-  ExpansionPanelList buildMainFrequencyContainer(size, screenHeight) {
-    final List compList = _componentesCurriculares;
-    final List<ExpansionPanel> children = compList.asMap().entries.map<ExpansionPanel>((entry) {
-      return frequencyExpandedPanel(entry.key, size, screenHeight);
-    }).toList();
+  ExpansionPanelList _buildMainFrequencyContainer(size, screenHeight) {
+    final List compList = _componentesCurriculares!;
+    final List<ExpansionPanel> children = compList
+        .asMap()
+        .entries
+        .map<ExpansionPanel>((entry) => _frequencyExpandedPanel(entry.key, size, screenHeight))
+        .toList();
 
     return ExpansionPanelList(
-      expansionCallback: frequencyExpansionPanelCallback,
+      expansionCallback: _frequencyExpansionPanelCallback,
       children: children,
     );
   }
 
-  Observer globalFrequencyObserver(size, screenHeight) => Observer(
+  SizedBox _buildEmptyContainer() => const SizedBox(
+        height: 0,
+        width: 0,
+      );
+
+  Observer _globalFrequencyObserver(size, screenHeight) => Observer(
         builder: (context) {
           if (_frequencyController.loadingFrequency) {
-            return buildLoadingWidget(size, screenHeight);
+            return _buildLoadingWidget(size, screenHeight);
           }
 
-          return FrequencyGlobalCard(frequencia: _frequencyController.frequencia);
+          if (_frequencyController.frequencia != null) {
+            return FrequencyGlobalCard(frequencia: _frequencyController.frequencia);
+          }
+
+          return _buildAlertEmptyFrequency(size, screenHeight);
         },
       );
 
-  Observer detailedFrequencyObserver(size, screenHeight) => Observer(
+  Observer _detailedFrequencyObserver(size, screenHeight) => Observer(
         builder: (context) {
           if (_frequencyController.loadingFrequency) {
-            return buildLoadingWidget(size, screenHeight);
+            return _buildLoadingWidget(size, screenHeight);
           }
 
-          return buildMainFrequencyContainer(size, screenHeight);
+          if (_componentesCurriculares != null) {
+            return _buildMainFrequencyContainer(size, screenHeight);
+          }
+
+          return _buildEmptyContainer();
         },
       );
 
@@ -408,18 +424,19 @@ class FrequencyState extends State<Frequency> {
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Container(
+      // height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(screenHeight * 2.5),
       child: Column(
         children: [
-          messageComponentCurricular(screenHeight),
+          _messageComponentCurricular(screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          globalFrequencyObserver(size, screenHeight),
+          _globalFrequencyObserver(size, screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          detailedFrequencyObserver(size, screenHeight)
+          _detailedFrequencyObserver(size, screenHeight)
         ],
       ),
     );

@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../dtos/estudante_frequencia_global.dto.dart';
 import '../../../utils/mensagem_sistema.dart';
@@ -22,7 +22,7 @@ class FrequencyGlobalCard extends StatelessWidget {
     return frequencia != null
         ? SingleChildScrollView(
             child: Container(
-              height: screenHeight * 18,
+              height: screenHeight * 17,
               padding: EdgeInsets.all(screenHeight * 2),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -46,15 +46,15 @@ class FrequencyGlobalCard extends StatelessWidget {
                     child: Expanded(
                       flex: 3,
                       child: CircularPercentIndicator(
-                        radius: 40.0,
-                        lineWidth: 4.0,
+                        radius: 30.0,
+                        lineWidth: 2.0,
                         animation: true,
                         animationDuration: 3000,
                         percent: frequencia!.frequencia! / 100,
                         animateFromLastPercent: true,
                         center: AutoSizeText(
                           '${frequencia!.frequencia}%',
-                          maxFontSize: 18,
+                          maxFontSize: 16,
                           minFontSize: 14,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
