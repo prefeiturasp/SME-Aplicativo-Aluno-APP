@@ -106,7 +106,7 @@ class DrawerMenuState extends State<DrawerMenu> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: screenHeight * 3, bottom: screenHeight * 3),
+                    margin: EdgeInsets.only(right: screenHeight * 3, bottom: screenHeight * 2),
                     child: ClipOval(
                       child: Image.asset(
                         MensagemSistema.caminhoImagemUsuario,
@@ -121,8 +121,8 @@ class DrawerMenuState extends State<DrawerMenu> {
                       if (usuarioStore.usuario?.nome != null) {
                         return AutoSizeText(
                           usuarioStore.usuario!.nome,
-                          maxFontSize: 16,
-                          minFontSize: 14,
+                          maxFontSize: 14,
+                          minFontSize: 12,
                           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                         );
                       } else {

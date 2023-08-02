@@ -244,13 +244,12 @@ class ListMessageState extends State<ListMessages> {
             size: GFSize.LARGE,
           );
         } else {
-          // _messagesController.loadMessagesNotDeleteds();
           _messagesController.loadMessageToFilters(dreCheck, smeCheck, ueCheck);
-          if (_messagesController.messages == null) {
+          if (_messagesController.messages!.isEmpty) {
             return Container(
               margin: EdgeInsets.only(top: screenHeight * 2.5),
               child: Visibility(
-                visible: _messagesController.messages == null,
+                visible: _messagesController.messages!.isEmpty,
                 child: const Column(
                   children: <Widget>[
                     AutoSizeText(
