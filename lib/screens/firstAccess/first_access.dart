@@ -406,7 +406,7 @@ class FirstAccessState extends State<FirstAccess> {
                             ),
                             Observer(
                               builder: (context) {
-                                if (_termsController.term!.termosDeUso.isNotEmpty) {
+                                if (_termsController.term?.termosDeUso != null) {
                                   return GestureDetector(
                                     child: InfoBox(
                                       icon: FontAwesomeIcons.triangleExclamation,
