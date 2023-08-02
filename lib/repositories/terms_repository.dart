@@ -17,18 +17,17 @@ class TermsRepository extends ITermsRepository {
       final url = Uri.parse('${AppConfigReader.getApiHost()}/TermosDeUso?cpf=$cpf');
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final termo = Term.fromJson(decodeJson);
+        final termo = Term.fromJson(response.body);
         return termo;
       } else if (response.statusCode == 204) {
         return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       } else {
         log('Erro ao obter dados');
-        throw Exception(response.reasonPhrase);
+        return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       }
     } catch (e) {
       log('$e');
-      throw Exception(e);
+      return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
     }
   }
 
