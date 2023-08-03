@@ -47,8 +47,8 @@ android {
         applicationId "br.gov.sp.prefeitura.sme.appaluno"
         minSdkVersion 24
         targetSdkVersion rootProject.ext.compileSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 2
+        versionName '1.4.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
