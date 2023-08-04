@@ -61,20 +61,21 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
     Nav.push(context, const EstudanteListaView());
   }
 
-  Future<void> confirmNotReadeMessage(int id, scaffoldKey) async {
+  Future<void> confirmNotReadeMessage(Message mensagem, scaffoldKey) async {
+    final String msg = mensagem.mensagemVisualizada ? 'não lida' : 'lida';
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Atenção'),
-          content: const Text('Você tem certeza que deseja marcar esta mensagem como não lida?'),
+          content: Text('Você tem certeza que deseja marcar esta mensagem  como $msg ?'),
           actions: <Widget>[
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
                 _viewMessageUpdate(true, true);
                 Navigator.of(context).pop(false);
-                const snackbar = SnackBar(content: Text('Mensagem marcada como não lida'));
+                final snackbar = SnackBar(content: Text('Mensagem marcada como  $msg '));
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 setState(() {
                   messageIsRead = !messageIsRead;
@@ -201,7 +202,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                             ),
                             screenHeight: screenHeight,
                             onPress: () {
-                              confirmNotReadeMessage(widget.message.id, scaffoldKey);
+                              confirmNotReadeMessage(widget.message, scaffoldKey);
                             },
                           ),
                         ),

@@ -14,10 +14,10 @@ class ResponsibleRepository implements IResponsibleRepository {
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
     try {
       final url =
-          Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario.cpf}');
+          Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario!.cpf}');
       final response = await http.get(
         url,
-        headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}', 'Content-Type': 'application/json'},
+        headers: {'Authorization': 'Bearer ${usuarioStore.usuario!.token}', 'Content-Type': 'application/json'},
       );
 
       log('Request: ${response.statusCode} - ${response.request} | ${response.body} ');

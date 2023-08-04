@@ -5,7 +5,7 @@ class EstudanteFrequenciaModel {
   final String codigoAluno;
   final String componenteCurricularId;
   final int numeroFaltasNaoCompensadas;
-  final int periodoEscolarId;
+  final int? periodoEscolarId;
   final int totalAulas;
   final int totalAusencias;
   final int totalCompensacoes;
@@ -48,15 +48,15 @@ class EstudanteFrequenciaModel {
   factory EstudanteFrequenciaModel.fromMap(Map<String, dynamic> map) {
     return EstudanteFrequenciaModel(
       bimestre: map['bimestre'] as int,
-      codigoAluno: map['codigoAluno'] as String,
-      componenteCurricularId: map['componenteCurricularId'] as String,
+      codigoAluno: map['codigoAluno'] ?? '',
+      componenteCurricularId: map['disciplinaId'] ?? '',
       numeroFaltasNaoCompensadas: map['numeroFaltasNaoCompensadas'] as int,
-      periodoEscolarId: map['periodoEscolarId'] as int,
+      periodoEscolarId: map['periodoEscolarId'],
       totalAulas: map['totalAulas'] as int,
       totalAusencias: map['totalAusencias'] as int,
       totalCompensacoes: map['totalCompensacoes'] as int,
-      turmaId: map['turmaId'] as String,
-      corDaFrequencia: map['corDaFrequencia'] as String,
+      turmaId: map['turmaId'] ?? '',
+      corDaFrequencia: map['corDaFrequencia'] ?? '',
       percentualFrequencia: map['percentualFrequencia'] as double,
       percentualFrequenciaFinal: map['percentualFrequenciaFinal'] as double,
     );

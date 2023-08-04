@@ -5,9 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/size/gf_size.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 
 import '../../controllers/autenticacao.controller.dart';
@@ -72,7 +69,7 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
         },
       );
     } catch (ex) {
-      log(ex.toString());
+      log('initPushNotificationHandlers $ex');
     }
   }
 
@@ -104,41 +101,30 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       mensagemVisualizada: message['MensagemVisualizada'] ?? false,
     );
 
-    await _messagesController.loadById(message0.id, usuarioStore.usuario.id);
+    await _messagesController.loadById(message0.id, usuarioStore.usuario!.id);
     message0.mensagem = _messagesController.message!.mensagem;
     if (context.mounted) {
       Nav.push(
         context,
         ViewMessageNotification(
           message: message0,
-          userId: usuarioStore.usuario.id,
+          userId: usuarioStore.usuario!.id,
         ),
       );
     }
   }
 
   Widget fluxoLogin() {
-    if (usuarioStore.usuario.primeiroAcesso) {
+    if (usuarioStore.usuario!.primeiroAcesso) {
       return FirstAccess(
-        id: usuarioStore.usuario.id,
-        cpf: usuarioStore.usuario.cpf,
+        id: usuarioStore.usuario!.id,
+        cpf: usuarioStore.usuario!.cpf,
       );
-    } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+    } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
       return const AtualizacaoCadastralView();
+    } else {
+      return const EstudanteListaView();
     }
-
-    return const Scaffold(
-      backgroundColor: Color(0xffE5E5E5),
-      body: Center(
-        child: GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        ),
-      ),
-    );
   }
 
   @override
@@ -149,13 +135,13 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       return NotInteernet();
     } else {
       return Observer(
-        builder: (context) => usuarioStore.usuario.id == 0
+        builder: (context) => usuarioStore.usuario?.id == null
             ? const LoginView(
-                notice: '',
+                notice: null,
               )
-            : (usuarioStore.usuario.primeiroAcesso != false
+            : (usuarioStore.usuario?.primeiroAcesso != false
                 ? const LoginView(
-                    notice: '',
+                    notice: null,
                   )
                 : fluxoLogin()),
       );

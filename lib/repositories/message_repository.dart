@@ -84,7 +84,7 @@ class MessageRepository implements IMessageRepository {
         return response;
       } else {
         final url = Uri.parse('${AppConfigReader.getApiHost()}/Notificacao/$codigoEol');
-        final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario.token}'});
+        final response = await http.get(url, headers: {'Authorization': 'Bearer ${usuarioStore.usuario!.token}'});
 
         if (response.statusCode == 200) {
           final List<dynamic> messages = jsonDecode(response.body);
@@ -138,7 +138,7 @@ class MessageRepository implements IMessageRepository {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
         body: body,
