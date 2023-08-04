@@ -18,7 +18,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
       final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
       );
@@ -48,7 +48,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
         body: body,
@@ -72,11 +72,11 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
       final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
       );
-      List<OutroServicoModel> retorno = [];
+      final List<OutroServicoModel> retorno = [];
 
       if (response.statusCode == 200) {
         final interable = jsonDecode(response.body);

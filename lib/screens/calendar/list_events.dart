@@ -99,7 +99,7 @@ class ListEventsState extends State<ListEvents> {
                       border: Border(bottom: BorderSide(color: Color(0xffC5C5C5), width: 0.5)),
                     ),
                     child: EAEstudanteInfo(
-                      nome: widget.student.nomeSocial,
+                      nome: widget.student.nome.isNotEmpty ? widget.student.nome : widget.student.nome,
                       ue: widget.student.escola,
                       tipoEscola: widget.student.descricaoTipoEscola,
                       dre: widget.student.siglaDre,
@@ -248,7 +248,7 @@ class ListEventsState extends State<ListEvents> {
                 padding: EdgeInsets.only(
                   left: screenHeight * 7,
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     LabelEvent(labelName: 'Avaliação', labelColor: colorAvaliacao),

@@ -81,7 +81,7 @@ class ShowInfoState extends State<ShowInfo> {
           onPressed: () => Nav.push(
             context,
             const LoginView(
-              notice: '',
+              notice: null,
             ),
           ),
         ),

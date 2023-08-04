@@ -9,14 +9,14 @@ import 'package:getwidget/getwidget.dart';
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
-import '../../screens/firstAccess/firstAccess.dart';
+import '../../screens/firstAccess/first_access.dart';
 import '../../screens/recover_password/recover_password.dart';
 import '../../stores/usuario.store.dart';
 import '../../utils/navigator.dart';
 import '../index.dart';
 
 class LoginView extends StatefulWidget {
-  final String notice;
+  final String? notice;
 
   const LoginView({super.key, required this.notice});
 
@@ -70,15 +70,15 @@ class LoginViewState extends State<LoginView> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else {
-      if (usuarioStore.usuario.primeiroAcesso && context.mounted) {
+      if (usuarioStore.usuario!.primeiroAcesso && context.mounted) {
         Nav.push(
           context,
           FirstAccess(
-            id: usuarioStore.usuario.id,
-            cpf: usuarioStore.usuario.cpf,
+            id: usuarioStore.usuario!.id,
+            cpf: usuarioStore.usuario!.cpf,
           ),
         );
-      } else if (usuarioStore.usuario.atualizarDadosCadastrais) {
+      } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
         Nav.push(context, const AtualizacaoCadastralView());
       } else {
         Nav.push(context, const EstudanteListaView());
@@ -90,7 +90,6 @@ class LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
@@ -116,7 +115,7 @@ class LoginViewState extends State<LoginView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          widget.notice.isNotEmpty
+                          widget.notice != null
                               ? Container(
                                   decoration: BoxDecoration(
                                     color: Colors.red,
@@ -126,7 +125,7 @@ class LoginViewState extends State<LoginView> {
                                   ),
                                   padding: EdgeInsets.all(screenHeight * 2),
                                   child: AutoSizeText(
-                                    widget.notice,
+                                    widget.notice!,
                                     maxFontSize: 18,
                                     minFontSize: 16,
                                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),

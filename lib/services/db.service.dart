@@ -1,5 +1,5 @@
 import 'package:path/path.dart';
-import 'package:sme_app_aluno/utils/db/db_settings.dart';
+import '../utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
