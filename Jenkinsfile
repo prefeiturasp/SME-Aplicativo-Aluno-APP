@@ -1,14 +1,14 @@
 pipeline {
     agent {
-      node {
+      node { 
         label 'SME-AGENT-FLUTTER3106'
 	    }
     }
-
+    
     options {
       buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
       disableConcurrentBuilds()
-      skipDefaultCheckout()
+      skipDefaultCheckout()  
     }
 
     stages {
@@ -19,11 +19,11 @@ pipeline {
       }
 
       stage('Build APK Dev') {
-	      when {
-          anyOf {
-            branch 'developer';
-          }
-        }
+	      when { 
+          anyOf { 
+            branch 'developer'; 
+          } 
+        }       
         steps {
           withCredentials([
             file(credentialsId: 'google-service-dev', variable: 'GOOGLEJSONDEV'),
@@ -41,11 +41,11 @@ pipeline {
       }
 
       stage('Build APK Hom') {
-	      when {
-          anyOf {
-            branch 'release'
-          }
-        }
+	      when { 
+          anyOf { 
+            branch 'release' 
+          } 
+        }       
         steps {
           withCredentials([
             file(credentialsId: 'google-service-hom', variable: 'GOOGLEJSONHOM'),
@@ -61,7 +61,7 @@ pipeline {
           }
         }
       }
-
+	    
       stage('Build APK/AAB Prod') {
         when {
           branch 'master'
