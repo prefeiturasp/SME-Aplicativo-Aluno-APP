@@ -29,13 +29,13 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       Atom(name: 'MessagesControllerBase.messages', context: context);
 
   @override
-  ObservableList<Message> get messages {
+  ObservableList<Message>? get messages {
     _$messagesAtom.reportRead();
     return super.messages;
   }
 
   @override
-  set messages(ObservableList<Message> value) {
+  set messages(ObservableList<Message>? value) {
     _$messagesAtom.reportWrite(value, super.messages, () {
       super.messages = value;
     });
@@ -45,13 +45,13 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       Atom(name: 'MessagesControllerBase.recentMessages', context: context);
 
   @override
-  ObservableList<Message> get recentMessages {
+  ObservableList<Message>? get recentMessages {
     _$recentMessagesAtom.reportRead();
     return super.recentMessages;
   }
 
   @override
-  set recentMessages(ObservableList<Message> value) {
+  set recentMessages(ObservableList<Message>? value) {
     _$recentMessagesAtom.reportWrite(value, super.recentMessages, () {
       super.recentMessages = value;
     });
@@ -61,13 +61,13 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       Atom(name: 'MessagesControllerBase.auxList', context: context);
 
   @override
-  ObservableList<Message> get auxList {
+  ObservableList<Message>? get auxList {
     _$auxListAtom.reportRead();
     return super.auxList;
   }
 
   @override
-  set auxList(ObservableList<Message> value) {
+  set auxList(ObservableList<Message>? value) {
     _$auxListAtom.reportWrite(value, super.auxList, () {
       super.auxList = value;
     });
@@ -77,13 +77,13 @@ mixin _$MessagesController on MessagesControllerBase, Store {
       Atom(name: 'MessagesControllerBase.filteredList', context: context);
 
   @override
-  ObservableList<Message> get filteredList {
+  ObservableList<Message>? get filteredList {
     _$filteredListAtom.reportRead();
     return super.filteredList;
   }
 
   @override
-  set filteredList(ObservableList<Message> value) {
+  set filteredList(ObservableList<Message>? value) {
     _$filteredListAtom.reportWrite(value, super.filteredList, () {
       super.filteredList = value;
     });

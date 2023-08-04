@@ -88,7 +88,7 @@ class UsuarioModel {
       primeiroAcesso: map['primeiroAcesso'] ?? false,
       atualizarDadosCadastrais: map['atualizarDadosCadastrais'] ?? false,
       celular: map['celular'] ?? '',
-      dataNascimento: DateTime.parse(map['dataNascimento']),
+      dataNascimento: map['dataNascimento'] != null ? DateTime.parse(map['dataNascimento']) : DateTime.now(),
       ultimaAtualizacao: map['ultimaAtualizacao'] != null ? DateTime.parse(map['ultimaAtualizacao']) : null,
       senha: map['senha'] ?? '',
     );

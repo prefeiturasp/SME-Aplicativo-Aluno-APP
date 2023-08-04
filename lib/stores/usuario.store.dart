@@ -7,36 +7,23 @@ import '../models/index.dart';
 
 part 'usuario.store.g.dart';
 
-class UsuarioStore = _UsuarioStoreBase with _$UsuarioStore;
+class UsuarioStore = UsuarioStoreBase with _$UsuarioStore;
 
-abstract class _UsuarioStoreBase with Store {
+abstract class UsuarioStoreBase with Store {
   @observable
   bool carregando = false;
 
   @observable
-  int id = 0;
+  int? id;
 
   @observable
-  String cpf = '';
+  String? cpf;
 
   @observable
-  UsuarioModel usuario = UsuarioModel(
-    id: 0,
-    nome: '',
-    nomeMae: '',
-    cpf: '',
-    email: '',
-    token: '',
-    primeiroAcesso: false,
-    atualizarDadosCadastrais: false,
-    celular: '',
-    dataNascimento: DateTime.now(),
-    ultimaAtualizacao: DateTime.now(),
-    senha: '',
-  );
+  UsuarioModel? usuario;
 
   @observable
-  String token = '';
+  String? token;
 
   @action
   Future<void> carregarUsuario() async {
@@ -45,9 +32,9 @@ abstract class _UsuarioStoreBase with Store {
     final prefsUsuario = prefs.getString('eaUsuario');
     if (prefsUsuario != null) {
       usuario = UsuarioModel.fromJson(jsonDecode(prefsUsuario));
-      id = usuario.id;
-      cpf = usuario.cpf;
-      token = usuario.token;
+      id = usuario!.id;
+      cpf = usuario!.cpf;
+      token = usuario!.token;
     }
     carregando = false;
   }
@@ -64,14 +51,14 @@ abstract class _UsuarioStoreBase with Store {
 
     final prefs = await SharedPreferences.getInstance();
 
-    usuario.email = email;
-    usuario.dataNascimento = dataNascimento;
-    usuario.nomeMae = nomeMae;
-    usuario.celular = telefone;
-    usuario.primeiroAcesso = false;
-    usuario.atualizarDadosCadastrais = false;
-    usuario.ultimaAtualizacao = ultimaAtualizacao;
-    await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
+    usuario!.email = email;
+    usuario!.dataNascimento = dataNascimento;
+    usuario!.nomeMae = nomeMae;
+    usuario!.celular = telefone;
+    usuario!.primeiroAcesso = false;
+    usuario!.atualizarDadosCadastrais = false;
+    usuario!.ultimaAtualizacao = ultimaAtualizacao;
+    await prefs.setString('eaUsuario', jsonEncode(usuario!.toJson()));
 
     carregando = false;
   }
@@ -79,15 +66,15 @@ abstract class _UsuarioStoreBase with Store {
   @action
   Future<void> atualizaPrimeiroAcesso(bool primeiroAcesso) async {
     final prefs = await SharedPreferences.getInstance();
-    usuario.primeiroAcesso = primeiroAcesso;
-    await prefs.setString('eaUsuario', jsonEncode(usuario.toJson()));
+    usuario!.primeiroAcesso = primeiroAcesso;
+    await prefs.setString('eaUsuario', jsonEncode(usuario!.toJson()));
   }
 
   @action
   Future<void> limparUsuario() async {
     final prefs = await SharedPreferences.getInstance();
-    usuario.clear();
-    token = '';
+    usuario = null;
+    token = null;
     prefs.clear();
   }
 }

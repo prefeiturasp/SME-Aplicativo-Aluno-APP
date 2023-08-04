@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 import 'dart:io' show Platform;
 
@@ -407,10 +406,10 @@ class FirstAccessState extends State<FirstAccess> {
                             ),
                             Observer(
                               builder: (context) {
-                                if (_termsController.term!.termosDeUso != null) {
+                                if (_termsController.term?.termosDeUso != null) {
                                   return GestureDetector(
                                     child: InfoBox(
-                                      icon: FontAwesomeIcons.exclamationTriangle,
+                                      icon: FontAwesomeIcons.triangleExclamation,
                                       content: <Widget>[
                                         const AutoSizeText(
                                           'Você precisa aceitar os Termos de Uso',

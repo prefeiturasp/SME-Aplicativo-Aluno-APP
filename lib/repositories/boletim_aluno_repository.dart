@@ -33,12 +33,11 @@ class BoletimAlunoRepository implements IBoletimRepository {
       'alunoCodigo': alunoCodigo
     };
     final String body = json.encode(data);
-    log('boletim $body');
     try {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${usuarioStore.usuario.token}',
+          'Authorization': 'Bearer ${usuarioStore.usuario!.token}',
           'Content-Type': 'application/json',
         },
         body: body,

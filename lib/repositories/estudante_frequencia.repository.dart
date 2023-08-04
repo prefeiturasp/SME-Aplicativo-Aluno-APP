@@ -49,14 +49,14 @@ class EstudanteFrequenciaRepository {
       );
 
       if (response.statusCode == 200) {
-        final retorno = (response.data as List).map((x) => EstudanteFrequenciaModel.fromJson(x)).toList();
+        final retorno = (response.data as List).map((x) => EstudanteFrequenciaModel.fromMap(x)).toList();
         return retorno;
       } else {
         log('Erro ao obter a frequencia do aluno');
         throw Exception(response.statusCode);
       }
     } catch (e) {
-      log('$e');
+      log('fetchCurricularComponent  $e');
       throw Exception(e);
     }
   }

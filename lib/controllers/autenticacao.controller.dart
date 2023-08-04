@@ -27,24 +27,7 @@ class AutenticacaoController {
       return data;
     } catch (e) {
       log('Erro ao tentar se autenticar AutenticacaoController $e');
-      return UsuarioDataModel(
-        ok: false,
-        erros: ['Erro ao tentar se autenticar'],
-        data: UsuarioModel(
-          id: 0,
-          nome: '',
-          nomeMae: '',
-          cpf: cpf,
-          email: '',
-          token: '',
-          primeiroAcesso: false,
-          atualizarDadosCadastrais: false,
-          celular: '',
-          dataNascimento: DateTime.now(),
-          ultimaAtualizacao: DateTime.now(),
-          senha: '',
-        ),
-      );
+      throw Exception(e);
     }
   }
 }

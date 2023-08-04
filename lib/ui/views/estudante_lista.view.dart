@@ -45,21 +45,17 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
   }
 
   void _onBackgroundFetch(String taskId) async {
-    final bool responsibleHasStudent = await _backgroundFetchController.checkIfResponsibleHasStudent(_usuarioStore.id);
+    final bool responsibleHasStudent = await _backgroundFetchController.checkIfResponsibleHasStudent(_usuarioStore.id!);
     log('[BackgroundFetch] - INIT -> ${AppConfigReader.getBundleIdentifier()}.verificaSeUsuarioTemAlunoVinculado');
     if (responsibleHasStudent == false) {
-      authLogout();
+      authLogout(true);
     }
 
     BackgroundFetch.finish(taskId);
   }
 
-  void authLogout() {
-    Auth.logout(context, _usuarioStore.id, true);
-  }
-
-  void _logoutUser() async {
-    await Auth.logout(context, _usuarioStore.usuario.id, true);
+  void authLogout(bool desconectado) {
+    Auth.logout(context, _usuarioStore.id!, desconectado);
   }
 
   Widget _itemCardStudent(BuildContext context, EstudanteModel model, String groupSchool, int codigoGrupo, int userId) {
@@ -73,7 +69,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
       onPress: () {
         Nav.push(
           context,
-          Dashboard(userId: _usuarioStore.id, estudante: model, groupSchool: groupSchool, codigoGrupo: codigoGrupo),
+          Dashboard(userId: _usuarioStore.id!, estudante: model, groupSchool: groupSchool, codigoGrupo: codigoGrupo),
         );
       },
     );
@@ -93,8 +89,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
     return Column(children: list);
   }
 
-  Future<bool> _onBackPress() async {
-    bool retorno = false;
+  Future<void> _onBackPress() async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -105,15 +100,13 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                Auth.logout(context, _usuarioStore.id, false);
-                retorno = true;
-                Nav.pushReplacement(context, const LoginView(notice: ''));
+                authLogout(false);
+                Nav.pushReplacement(context, const LoginView(notice: null));
               },
             ),
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             )
@@ -121,7 +114,6 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         );
       },
     );
-    return retorno;
   }
 
   void _loadingAllStudents() async {
@@ -141,7 +133,8 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Auth.logout(context, _usuarioStore.id, false);
+              authLogout(false);
+              //Auth.logout(context, _usuarioStore.id, true);
             },
             icon: Icon(
               FontAwesomeIcons.rightFromBracket,
@@ -151,7 +144,10 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         ],
       ),
       body: WillPopScope(
-        onWillPop: _onBackPress,
+        onWillPop: () async {
+          _onBackPress();
+          return true;
+        },
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
@@ -196,7 +192,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
                           );
                         }
                         if (_estudanteStore.gruposEstudantes.isEmpty) {
-                          _logoutUser();
+                          authLogout(false);
                           return Container();
                         } else {
                           return ListView.builder(
@@ -218,7 +214,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
                                     context,
                                     dados[index].grupo,
                                     dados[index].codigoGrupo,
-                                    _usuarioStore.id,
+                                    _usuarioStore.id!,
                                   ),
                                 ],
                               );

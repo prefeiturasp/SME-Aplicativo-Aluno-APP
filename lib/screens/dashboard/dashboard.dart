@@ -208,12 +208,12 @@ class DashboardState extends State<Dashboard> {
                         size: GFSize.LARGE,
                       );
                     } else {
-                      if (_messagesController.messages.isNotEmpty) {
+                      if (_messagesController.messages != null) {
                         _messagesController.loadRecentMessagesPorCategory();
 
-                        if (_messagesController.messages.isEmpty) {
+                        if (_messagesController.recentMessages!.isEmpty) {
                           return Visibility(
-                            visible: _messagesController.messages.isEmpty,
+                            visible: true,
                             child: CardRecentMessage(
                               message: _messagesController.message,
                               countMessages: _messagesController.countMessage,
@@ -225,23 +225,23 @@ class DashboardState extends State<Dashboard> {
                         } else {
                           return Observer(
                             builder: (_) {
-                              if (_messagesController.recentMessages.isNotEmpty) {
+                              if (_messagesController.recentMessages != null) {
                                 return Container(
                                   height: screenHeight * 48,
                                   margin: EdgeInsets.only(top: screenHeight * 3),
                                   child: Visibility(
-                                    visible: _messagesController.recentMessages.length > 1,
+                                    visible: _messagesController.recentMessages!.length > 1,
                                     replacement: _buildItemMEssage(
-                                      _messagesController.recentMessages[0],
-                                      _messagesController.recentMessages.length,
+                                      _messagesController.recentMessages![0],
+                                      _messagesController.recentMessages!.length,
                                       context,
                                     ),
                                     child: ListView.builder(
-                                      itemCount: _messagesController.recentMessages.length,
+                                      itemCount: _messagesController.recentMessages!.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
                                         final dados = _messagesController.recentMessages;
-                                        return _buildItemMEssage(dados[index], dados.length, context);
+                                        return _buildItemMEssage(dados![index], dados.length, context);
                                       },
                                     ),
                                   ),

@@ -43,7 +43,6 @@ class EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> 
       child: FutureBuilder(
         future: outroServicosRepository.obterLinksPioritario(),
         initialData: valorInicial,
-        //builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
         builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
           return Column(
             children: <Widget>[
