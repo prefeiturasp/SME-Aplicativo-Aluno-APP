@@ -18,7 +18,7 @@ pipeline {
         }
       }
 
-      stage('Build APK Dev') {
+      stage('Build APK/AAB Dev') {
 	      when { 
           anyOf { 
             branch 'developer'; 
@@ -35,12 +35,12 @@ pipeline {
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYJKS} ${WORKSPACE}/android/app/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
             sh 'mkdir config && cp $APPCONFIGDEV config/app_config.json'
             sh 'cp $GOOGLEJSONDEV android/app/google-services.json'
-            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
+            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release && flutter build appbundle --release'
           }
         }
       }
 
-      stage('Build APK Hom') {
+      stage('Build APK/AAB Hom') {
 	      when { 
           anyOf { 
             branch 'release' 
@@ -57,7 +57,29 @@ pipeline {
             sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYJKS} ${WORKSPACE}/android/app/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
             sh 'mkdir config && cp $APPCONFIGHOM config/app_config.json'
             sh 'cp $GOOGLEJSONHOM android/app/google-services.json'
-            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release'
+            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release && flutter build appbundle --release'
+          }
+        }
+      }
+
+      stage('Build APK/AAB Hom2') {
+	      when { 
+          anyOf { 
+            branch 'release-r2' 
+          } 
+        }       
+        steps {
+          withCredentials([
+            file(credentialsId: 'google-service-hom2', variable: 'GOOGLEJSONHOM2'),
+            file(credentialsId: 'app-config-hom2', variable: 'APPCONFIGHOM2'),
+	    file(credentialsId: 'app-key-jks', variable: 'APPKEYJKS'),
+            file(credentialsId: 'app-key-properties', variable: 'APPKEYPROPERTIES'),
+          ]) {
+	    sh 'if [ -d "config" ]; then rm -Rf config; fi'
+            sh 'cp ${APPKEYJKS} ~/key.jks && cp ${APPKEYJKS} ${WORKSPACE}/android/app/key.jks && cp ${APPKEYPROPERTIES} ${WORKSPACE}/android/key.properties'
+            sh 'mkdir config && cp $APPCONFIGHOM2 config/app_config.json'
+            sh 'cp $GOOGLEJSONHOM2 android/app/google-services.json'
+            sh 'flutter clean && flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs && flutter build apk --release && flutter build appbundle --release'
           }
         }
       }
