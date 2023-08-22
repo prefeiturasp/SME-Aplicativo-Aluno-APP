@@ -19,17 +19,17 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.5
   provider: ^6.0.5
-  http: ^0.13.3
+  http: ^1.1.0
   auto_size_text: ^3.0.0
   font_awesome_flutter: ^10.4.0
-  connectivity_plus: ^3.0.6 
+  connectivity_plus: ^4.0.2 
   mobx: ^2.0.6+1
   flutter_mobx: ^2.0.5
   brasil_fields: ^1.9.1
   cpf_cnpj_validator: ^2.0.0
   json_serializable: ^6.7.1
   json_annotation: ^4.0.1
-  firebase_messaging: ^14.6.5
+  firebase_messaging: ^14.6.6
   firebase_analytics: ^10.4.4
   intl: ^0.18.1
   flutter_html: ^3.0.0-beta.2
