@@ -7,7 +7,7 @@ buildscript {
         minSdkVersion       = 24
         appCompatVersion    = "1.0.2"
         ndkVersion          = "25.1.8937393"
-        versionCode         = 11
+        versionCode         = 12
         versionName         = '1.4.1'
     }
     
