@@ -9,7 +9,6 @@ import '../models/message/group.dart';
 import '../models/message/message.dart';
 import '../services/group_messages.service.dart';
 import '../services/message.service.dart';
-import '../services/user.service.dart';
 import '../stores/index.dart';
 import '../ui/views/login.view.dart';
 import 'navigator.dart';
@@ -18,7 +17,6 @@ class Auth {
   static Future<void> logout(BuildContext context, int userId, bool desconected) async {
     try {
       final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-      final UserService userService = UserService();
       final MessageService messageService = MessageService();
       final GroupMessageService groupMessageService = GroupMessageService();
       final usuarioStore = GetIt.I.get<UsuarioStore>();
