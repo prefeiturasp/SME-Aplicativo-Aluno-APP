@@ -392,7 +392,7 @@ class MeusDadosEditarViewState extends State<MeusDadosEditarView> {
   }
 
   bool habilitaBotaoCadastro() {
-    if (_nomeMae.isNotEmpty) {
+    if (_nomeMae.isEmpty) {
       return false;
     }
     if (_telefone.isEmpty || _nomeMae.isEmpty) {

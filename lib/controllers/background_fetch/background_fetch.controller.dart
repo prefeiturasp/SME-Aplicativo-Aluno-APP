@@ -59,7 +59,19 @@ abstract class BackgroundFetchControllerBase with Store {
 
   @action
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
-    responsibleHasStudent = await _responsibleRepository.checkIfResponsibleHasStudent(userId);
+    const int numeroTentativas = 5;
+    responsibleHasStudent = await responsavelPorAlgumEstudante(userId);
+    while (!responsibleHasStudent) {
+      for (int index = 1; index <= numeroTentativas; index++) {
+        responsibleHasStudent = await responsavelPorAlgumEstudante(userId);
+        if (responsibleHasStudent) return responsibleHasStudent;
+      }
+      return responsibleHasStudent;
+    }
     return responsibleHasStudent;
+  }
+
+  Future<bool> responsavelPorAlgumEstudante(int userId) async {
+    return await _responsibleRepository.checkIfResponsibleHasStudent(userId);
   }
 }

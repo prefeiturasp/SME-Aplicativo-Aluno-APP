@@ -21,7 +21,6 @@ class UsuarioRepository extends IUsuarioRepository {
       'nomeMae': nomeMae,
       'celular': telefone
     });
-    log(body);
     try {
       final response = await api.dio.put('/Usuario', data: body);
       if (response.statusCode == 200) {
