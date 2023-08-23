@@ -165,7 +165,7 @@ class OutrosLinksInfoWidget extends StatelessWidget {
           ),
           onTap: () {
             final urls = Uri.parse(outroServicoModel.urlSite);
-            launchUrl(urls);
+            launchUrl(urls, mode: LaunchMode.externalApplication);
           },
         ),
         AutoSizeText(
