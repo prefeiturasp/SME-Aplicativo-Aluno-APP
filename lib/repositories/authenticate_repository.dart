@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/authenticate_repository_interface.dart';
 import '../models/index.dart';
@@ -52,6 +54,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
       }
     } catch (error, stacktrace) {
       log('Erro ao tentar se autenticar $stacktrace');
+      GetIt.I.get<SentryClient>().captureException(error, stackTrace: stacktrace);
       return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());
     }
   }
