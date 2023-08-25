@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/index.dart';
@@ -25,8 +26,9 @@ class AutenticacaoController {
         await usuarioStore.carregarUsuario();
       }
       return data;
-    } catch (e) {
+    } catch (e, stacktrace) {
       log('Erro ao tentar se autenticar AutenticacaoController $e');
+      GetIt.I.get<SentryClient>().captureException(e, stackTrace: stacktrace);
       throw Exception(e);
     }
   }
