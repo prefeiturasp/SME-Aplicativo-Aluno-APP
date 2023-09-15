@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-
 import '../controllers/index.dart';
 import '../repositories/index.dart';
 import '../services/index.dart';
@@ -7,7 +6,9 @@ import '../stores/index.dart';
 
 class DependenciasIoC {
   GetIt getIt = GetIt.instance;
-
+  DependenciasIoC() {
+    getIt = GetIt.instance;
+  }
   void registrarServicos() {
     getIt.registerSingleton<ApiService>(ApiService());
   }
