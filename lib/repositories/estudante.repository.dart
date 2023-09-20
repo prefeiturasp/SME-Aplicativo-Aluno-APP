@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../dtos/componente_curricular.dto.dart';
 import '../models/student/data_student.dart';
@@ -25,10 +26,16 @@ class EstudanteRepository {
       } else {
         final dataError = DataStudent.fromJson(response.data);
         log('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes()');
+        GetIt.I.get<SentryClient>().captureException(
+              'Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}',
+            );
         return dataError;
       }
     } catch (e, stacktrace) {
       log('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $stacktrace');
+      GetIt.I.get<SentryClient>().captureException(
+            'Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace',
+          );
       throw Exception(e);
     }
   }
@@ -56,6 +63,9 @@ class EstudanteRepository {
       }
     } catch (e, stacktrace) {
       log('Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $stacktrace');
+      GetIt.I.get<SentryClient>().captureException(
+            'Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $e $stacktrace',
+          );
       return List<ComponenteCurricularDTO>() = [];
     }
   }
@@ -69,10 +79,14 @@ class EstudanteRepository {
         final bimestres = response.data;
         return bimestres.cast<int>();
       } else {
+        GetIt.I.get<SentryClient>().captureException(response);
         return [];
       }
     } catch (e, stacktrace) {
       log('Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $stacktrace');
+      GetIt.I.get<SentryClient>().captureException(
+            'Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $e $stacktrace',
+          );
       return [];
     }
   }

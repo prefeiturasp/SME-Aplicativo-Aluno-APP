@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/authenticate_repository_interface.dart';
 import '../models/index.dart';
@@ -51,11 +53,12 @@ class AuthenticateRepository implements IAuthenticateRepository {
       } else if (response.statusCode == 408) {
         final usuarioRetorno = UsuarioDataModel(ok: false, erros: [response.body], data: UsuarioModel.clear());
         log('Erro ao tentar se autenticar status code ${response.statusCode}');
+        GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar status code ${response.statusCode}');
         return usuarioRetorno;
       } else {
         final erros = jsonDecode(response.body)['erros'] as List;
         final usuarioRetorno = UsuarioDataModel(ok: false, erros: [], data: UsuarioModel.clear());
-
+        GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar  ${response.body}}');
         for (var i = 0; i < erros.length; i++) {
           usuarioRetorno.erros.add(erros[i]);
         }
@@ -64,6 +67,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
       }
     } catch (error, stacktrace) {
       log('Erro ao tentar se autenticar $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar  $error , $stacktrace}');
       return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());
     }
   }

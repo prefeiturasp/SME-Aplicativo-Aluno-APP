@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sentry/sentry.dart';
 
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/usuario.controller.dart';
@@ -96,11 +97,11 @@ class LoginViewState extends State<LoginView> {
       setState(() {
         _carregando = false;
       });
-      log('Erro ao tentar se autenticar AutenticacaoController $e');
-
+      log('Erro ao tentar se autenticar LoginView $e');
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar LoginView $e');
       const snackBar = SnackBar(
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 10),
+        duration: Duration(seconds: 20),
         content: Text('Erro ao tentar se autenticar!'),
       );
 

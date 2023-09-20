@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
+
 import '../models/message/group.dart';
 import 'db.service.dart';
 import '../utils/db/db_settings.dart';
@@ -17,6 +20,7 @@ class GroupMessageService {
       log('--------------------------');
     } catch (ex) {
       log('Erro ao criar mensagem: $ex');
+      GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
   }
@@ -40,6 +44,7 @@ class GroupMessageService {
       return groups;
     } catch (ex) {
       log(ex.toString());
+      GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
   }
@@ -57,6 +62,7 @@ class GroupMessageService {
       log('<--------------------------');
       log('Erro ao deletar usuário: $ex');
       log('<--------------------------');
+      GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
   }
