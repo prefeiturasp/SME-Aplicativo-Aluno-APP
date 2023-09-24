@@ -13,23 +13,23 @@ import '../utils/app_config_reader.dart';
 class AuthenticateRepository implements IAuthenticateRepository {
   @override
   Future<UsuarioDataModel> loginUser(String cpf, String password) async {
-    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
-    String? idDevice = '';
-    await Future.delayed(const Duration(seconds: 2));
-    idDevice = await firebaseMessaging.getToken();
-    await Future.delayed(const Duration(seconds: 3));
-    log('FIREBASE TOKEN: $idDevice');
-
-    final Map parametrosLogin = {
-      'cpf': cpf,
-      'senha': password,
-      'dispositivoId': idDevice,
-    };
-
-    final body = json.encode(parametrosLogin);
-
     try {
+      final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
+      String? idDevice = '';
+      await Future.delayed(const Duration(seconds: 2));
+      idDevice = await firebaseMessaging.getToken();
+      await Future.delayed(const Duration(seconds: 3));
+      log('FIREBASE TOKEN: $idDevice');
+
+      final Map parametrosLogin = {
+        'cpf': cpf,
+        'senha': password,
+        'dispositivoId': idDevice,
+      };
+
+      final body = json.encode(parametrosLogin);
+
       final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao');
       final response = await http
           .post(

@@ -209,7 +209,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 1,
                           ),
                           const AutoSizeText(
-                            'Digite o CPF do responsável',
+                            'Digite o CPF do responsável!',
                             maxFontSize: 14,
                             minFontSize: 12,
                             style: TextStyle(color: Color(0xff979797)),
@@ -281,7 +281,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 3,
                           ),
                           Container(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                               onTap: () {
                                 Nav.push(context, RecoverPassword(input: _cpfRaw));
