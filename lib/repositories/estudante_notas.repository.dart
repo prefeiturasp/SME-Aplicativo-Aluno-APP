@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import '../models/index.dart';
 import '../services/index.dart';
 import 'dart:developer';
@@ -21,10 +22,16 @@ class EstudanteNotasRepository {
         return retorno;
       } else {
         log('Erro ao obter dados EstudanteNotasRepository obterNotasConceitos ${response.statusCode}');
+        GetIt.I.get<SentryClient>().captureException(
+              'Erro ao obter dados EstudanteNotasRepository obterNotasConceitos ${response.statusCode}',
+            );
         return [];
       }
     } catch (e) {
       log('Erro ao obter dados EstudanteNotasRepository obterNotasConceitos $e');
+      GetIt.I
+          .get<SentryClient>()
+          .captureException('Erro ao obter dados EstudanteNotasRepository obterNotasConceitos $e');
       return [];
     }
   }

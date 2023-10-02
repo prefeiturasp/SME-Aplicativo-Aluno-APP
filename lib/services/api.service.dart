@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:sme_app_aluno/interceptors/index.dart';
-import 'package:sme_app_aluno/utils/index.dart';
+import '../interceptors/index.dart';
+import '../utils/index.dart';
 
 class ApiService {
-  Dio dio = new Dio();
+  Dio dio = Dio();
 
   ApiService() {
-    dio = new Dio();
-    dio.interceptors.add(new AutenticacaoInterceptor());
+    dio = Dio();
+    dio.interceptors.add(AutenticacaoInterceptor());
     dio.options.baseUrl = AppConfigReader.getApiHost();
   }
 }
