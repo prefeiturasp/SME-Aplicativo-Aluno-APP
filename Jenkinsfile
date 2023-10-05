@@ -106,5 +106,13 @@ pipeline {
          }
       }
   }
- 
-}
+post {
+    always {
+      echo 'One way or another, I have finished'
+      archiveArtifacts artifacts: 'build/app/outputs/apk/release/**/*.apk', fingerprint: true
+      archiveArtifacts artifacts: 'build/app/outputs/bundle/release/**/*.aab', fingerprint: true
+    }
+      
+    
+  }
+ }
