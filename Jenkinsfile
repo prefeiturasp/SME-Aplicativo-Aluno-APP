@@ -1,9 +1,9 @@
 pipeline {
-    agent {
-      node { 
-        label 'SME-AGENT-FLUTTER3106'
-	    }
-    }
+    agent { kubernetes { 
+                  label 'flutter3106'
+                  defaultContainer 'flutter3106'
+                }
+              }
     
     options {
       buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
