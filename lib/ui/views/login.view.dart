@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:sentry/sentry.dart';
 
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/usuario.controller.dart';
@@ -50,38 +53,60 @@ class LoginViewState extends State<LoginView> {
     String cpf,
     String password,
   ) async {
-    setState(() {
-      _carregando = true;
-    });
+    try {
+      setState(() {
+        _carregando = true;
+      });
 
-    final UsuarioDataModel usuario = await autenticacaoController.authenticateUser(cpf, password);
+      final UsuarioDataModel usuario = await autenticacaoController.authenticateUser(cpf, password);
 
-    setState(() {
-      _carregando = false;
-    });
+      setState(() {
+        _carregando = false;
+      });
 
-    if (!usuario.ok) {
-      final snackBar = SnackBar(
+      if (!usuario.ok) {
+        final snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 10),
+          content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
+        );
+
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      } else {
+        if (usuarioStore.usuario!.primeiroAcesso && context.mounted) {
+          Nav.push(
+            context,
+            FirstAccess(
+              id: usuarioStore.usuario!.id,
+              cpf: usuarioStore.usuario!.cpf,
+            ),
+          );
+        } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
+          if (context.mounted) {
+            Nav.push(context, const AtualizacaoCadastralView());
+          }
+        } else {
+          if (context.mounted) {
+            Nav.push(context, const EstudanteListaView());
+          }
+        }
+      }
+    } catch (e) {
+      setState(() {
+        _carregando = false;
+      });
+      log('Erro ao tentar se autenticar LoginView $e');
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar LoginView $e');
+      const snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
+        duration: Duration(seconds: 20),
+        content: Text('Erro ao tentar se autenticar!'),
       );
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    } else {
-      if (usuarioStore.usuario!.primeiroAcesso && context.mounted) {
-        Nav.push(
-          context,
-          FirstAccess(
-            id: usuarioStore.usuario!.id,
-            cpf: usuarioStore.usuario!.cpf,
-          ),
-        );
-      } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
-        Nav.push(context, const AtualizacaoCadastralView());
-      } else {
-        Nav.push(context, const EstudanteListaView());
       }
     }
   }
@@ -184,7 +209,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 1,
                           ),
                           const AutoSizeText(
-                            'Digite o CPF do responsável',
+                            'Digite o CPF do responsável!',
                             maxFontSize: 14,
                             minFontSize: 12,
                             style: TextStyle(color: Color(0xff979797)),
@@ -256,7 +281,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 3,
                           ),
                           Container(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                               onTap: () {
                                 Nav.push(context, RecoverPassword(input: _cpfRaw));
