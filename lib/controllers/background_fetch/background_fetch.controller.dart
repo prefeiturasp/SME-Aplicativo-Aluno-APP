@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:background_fetch/background_fetch.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:sentry/sentry.dart';
 
 import '../../repositories/responsible_repository.dart';
 
@@ -38,6 +40,7 @@ abstract class BackgroundFetchControllerBase with Store {
     ).then((int status) {
       log('[BackgroundFetch] configure success: $status');
     }).catchError((e) {
+      GetIt.I.get<SentryClient>().captureException(e);
       log('[BackgroundFetch] configure ERROR: $e');
     });
 

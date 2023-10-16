@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../dtos/estudante_frequencia_global.dto.dart';
 import '../models/estudante_frequencia.model.dart';
@@ -26,10 +27,12 @@ class EstudanteFrequenciaRepository {
         final frequency = Frequency.fromJson(response.data);
         return frequency;
       } else {
+        GetIt.I.get<SentryClient>().captureException('Erro ao obter a frequencia do aluno ${response.statusCode}');
         throw Exception(response.statusCode);
       }
     } catch (e) {
       log('EstudanteFrequenciaRepository $e');
+      GetIt.I.get<SentryClient>().captureException(e);
       throw Exception(e);
     }
   }
@@ -53,10 +56,12 @@ class EstudanteFrequenciaRepository {
         return retorno;
       } else {
         log('Erro ao obter a frequencia do aluno');
+        GetIt.I.get<SentryClient>().captureException('Erro ao obter a frequencia do aluno');
         throw Exception(response.statusCode);
       }
     } catch (e) {
       log('fetchCurricularComponent  $e');
+      GetIt.I.get<SentryClient>().captureException(e);
       throw Exception(e);
     }
   }
@@ -71,10 +76,12 @@ class EstudanteFrequenciaRepository {
         return EstudanteFrequenciaGlobalDTO.fromJson(response.data);
       } else {
         log('Erro ao obter a frequencia do aluno');
+        GetIt.I.get<SentryClient>().captureException('Erro ao obter a frequencia do aluno');
         throw Exception(response.statusCode);
       }
     } catch (e) {
       log('$e');
+      GetIt.I.get<SentryClient>().captureException(e);
       throw Exception(e);
     }
   }

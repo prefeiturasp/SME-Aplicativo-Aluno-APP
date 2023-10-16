@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/boletim_aluno_repository_interface.dart';
 import '../stores/usuario.store.dart';
@@ -30,7 +31,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       'anoLetivo': anoLetivo,
       'modalidadeCodigo': modalidadeCodigo,
       'modelo': modelo,
-      'alunoCodigo': alunoCodigo
+      'alunoCodigo': alunoCodigo,
     };
     final String body = json.encode(data);
     try {
@@ -48,6 +49,7 @@ class BoletimAlunoRepository implements IBoletimRepository {
       return false;
     } catch (e) {
       log('solicitar boletim pdf $e');
+      GetIt.I.get<SentryClient>().captureException(e);
       return false;
     }
   }

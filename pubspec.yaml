@@ -29,7 +29,7 @@ dependencies:
   cpf_cnpj_validator: ^2.0.0
   json_serializable: ^6.7.1
   json_annotation: ^4.0.1
-  firebase_messaging: ^14.6.6
+  firebase_messaging: ^14.6.7
   firebase_analytics: ^10.4.4
   intl: ^0.18.1
   flutter_html: ^3.0.0-beta.2
@@ -39,7 +39,7 @@ dependencies:
   url_launcher: ^6.0.10
   string_validator: ^1.0.0
   email_validator: ^2.1.17
-  sentry: ^7.8.0
+  sentry: ^7.9.0
   awesome_dialog: ^3.0.2
   sqflite: ^2.0.2
   path: ^1.8.0 
@@ -54,7 +54,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   getwidget: ^3.1.1
   get_ip_address: ^0.0.5
-  firebase_core: ^2.15.0
+  firebase_core: ^2.15.1
   
 dev_dependencies:
   flutter_test:
