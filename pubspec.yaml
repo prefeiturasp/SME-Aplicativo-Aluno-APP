@@ -25,7 +25,7 @@ dependencies:
   connectivity_plus: ^5.0.1
   mobx: ^2.2.1
   flutter_mobx: ^2.1.0+1
-  brasil_fields: ^1.9.1
+  brasil_fields: ^1.14.0
   cpf_cnpj_validator: ^2.0.0
   json_serializable: ^6.7.1
   json_annotation: ^4.0.1
