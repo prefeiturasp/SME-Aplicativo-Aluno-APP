@@ -96,6 +96,7 @@ class MyApp extends StatelessWidget {
         color: const Color(0xffEEC25E),
         theme: ThemeData(
           primaryColor: const Color(0xFFEEC25E),
+          useMaterial3: false,
         ),
         home: const FluxoInicialView(),
         builder: EasyLoading.init(),
