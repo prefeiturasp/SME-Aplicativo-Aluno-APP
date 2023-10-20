@@ -28,12 +28,12 @@ dependencies:
   brasil_fields: ^1.14.0
   cpf_cnpj_validator: ^2.0.0
   json_serializable: ^6.7.1
-  json_annotation: ^4.0.1
+  json_annotation: ^4.8.1
   firebase_messaging: ^14.6.7
-  firebase_analytics: ^10.4.4
+  firebase_analytics: ^10.6.1
   intl: ^0.18.1
   flutter_html: ^3.0.0-beta.2
-  flutter_widget_from_html_core: ^0.10.3
+  flutter_widget_from_html_core: ^0.14.3
   
   device_info_plus: ^9.0.2
   url_launcher: ^6.0.10
