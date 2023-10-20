@@ -4,7 +4,7 @@ description: SME Aplicativo do Aluno
 version: 1.4.12+12
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: '>=3.1.4 <4.0.0'
 
 scripts:
   pget: flutter pub get
