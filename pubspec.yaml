@@ -59,7 +59,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mobx_codegen: ^2.0.2 
+  mobx_codegen: ^2.4.0 
   flutter_lints: ^2.0.2
   build_runner: ^2.1.2 
   flutter_launcher_icons: ^0.13.1
