@@ -39,7 +39,7 @@ dependencies:
   url_launcher: ^6.1.14
   string_validator: ^1.0.2
   email_validator: ^2.1.17
-  sentry: ^7.9.0
+  sentry: ^7.10.1
   awesome_dialog: ^3.0.2
   sqflite: ^2.0.2
   path: ^1.8.0 
