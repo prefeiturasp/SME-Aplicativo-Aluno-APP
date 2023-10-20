@@ -43,7 +43,7 @@ dependencies:
   awesome_dialog: ^3.1.0
   sqflite: ^2.3.0
   path: ^1.8.3 
-  local_auth: ^2.1.6 
+  local_auth: ^2.1.7 
   background_fetch: ^1.1.6
   hexcolor: ^3.0.1
   get_it: ^7.1.3
