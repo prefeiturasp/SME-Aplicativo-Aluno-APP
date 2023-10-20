@@ -37,7 +37,7 @@ dependencies:
   
   device_info_plus: ^9.1.0
   url_launcher: ^6.1.14
-  string_validator: ^1.0.0
+  string_validator: ^1.0.2
   email_validator: ^2.1.17
   sentry: ^7.9.0
   awesome_dialog: ^3.0.2
