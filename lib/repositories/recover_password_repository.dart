@@ -36,7 +36,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
       if (response.statusCode == 200) {
         final decodeJson = jsonDecode(response.body);
         final data = Data.fromJson(decodeJson);
-        return data;
+        return data.email;
       } else if (response.statusCode == 408) {
         return Data(
           ok: false,
