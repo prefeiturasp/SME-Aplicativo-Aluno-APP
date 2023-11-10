@@ -24,11 +24,13 @@ class AutenticacaoController {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('eaUsuario', jsonEncode(data.data.toJson()));
         await usuarioStore.carregarUsuario();
+      } else {
+        GetIt.I.get<SentryClient>().captureException(data);
       }
       return data;
-    } catch (e, stacktrace) {
+    } catch (e) {
       log('Erro ao tentar se autenticar AutenticacaoController $e');
-      GetIt.I.get<SentryClient>().captureException(e, stackTrace: stacktrace);
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar AutenticacaoController $e');
       throw Exception(e);
     }
   }

@@ -67,6 +67,7 @@ class LoginViewState extends State<LoginView> {
       if (!usuario.ok) {
         final snackBar = SnackBar(
           backgroundColor: Colors.red,
+          duration: const Duration(seconds: 10),
           content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
         );
 
@@ -92,15 +93,16 @@ class LoginViewState extends State<LoginView> {
           }
         }
       }
-    } catch (e, stacktrace) {
-      log('Erro ao tentar se autenticar AutenticacaoController $e');
-      GetIt.I.get<SentryClient>().captureException(e, stackTrace: stacktrace);
+    } catch (e) {
       setState(() {
         _carregando = false;
       });
+      log('Erro ao tentar se autenticar LoginView $e');
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar LoginView $e');
       const snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('Erro ao tentar se autenticar'),
+        duration: Duration(seconds: 20),
+        content: Text('Erro ao tentar se autenticar!'),
       );
 
       if (context.mounted) {
@@ -207,7 +209,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 1,
                           ),
                           const AutoSizeText(
-                            'Digite o CPF do responsável',
+                            'Digite o CPF do responsável!',
                             maxFontSize: 14,
                             minFontSize: 12,
                             style: TextStyle(color: Color(0xff979797)),
@@ -279,7 +281,7 @@ class LoginViewState extends State<LoginView> {
                             height: screenHeight * 3,
                           ),
                           Container(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                               onTap: () {
                                 Nav.push(context, RecoverPassword(input: _cpfRaw));

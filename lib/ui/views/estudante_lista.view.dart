@@ -109,7 +109,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -224,7 +224,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
                       }
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/event_repository_interface.dart';
 import '../models/event/event.dart' as eventmodel;
@@ -27,6 +28,7 @@ class EventRepository extends IEventRepository {
       }
     } catch (e) {
       log('Erro ao obter eventos $e');
+      GetIt.I.get<SentryClient>().captureException(e);
       return [];
     }
   }

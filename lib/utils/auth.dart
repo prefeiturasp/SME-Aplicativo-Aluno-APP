@@ -44,7 +44,9 @@ class Auth {
         voltarLogin(context, desconected);
       }
     } on Exception {
-      voltarLogin(context, desconected);
+      if (context.mounted) {
+        voltarLogin(context, desconected);
+      }
     }
   }
 
