@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -24,6 +26,7 @@ void backgroundFetchHeadlessTask(String taskId) async {
 Future initializeAppConfig() async {
   try {
     await AppConfigReader.initialize();
+    await initializeiOS();
   } catch (error) {
     log('Erro ao ler arquivo de configurações.');
     log('Verifique se seu projeto possui o arquivo config/app_config.json');
@@ -31,11 +34,26 @@ Future initializeAppConfig() async {
   }
 }
 
+Future<void> initializeiOS() async {
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  if (Platform.isIOS) {
+    firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeAppConfig();
-
+  await Future.delayed(const Duration(seconds: 3));
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Color(0xffde9524),
@@ -78,6 +96,7 @@ class MyApp extends StatelessWidget {
         color: const Color(0xffEEC25E),
         theme: ThemeData(
           primaryColor: const Color(0xFFEEC25E),
+          useMaterial3: false,
         ),
         home: const FluxoInicialView(),
         builder: EasyLoading.init(),
