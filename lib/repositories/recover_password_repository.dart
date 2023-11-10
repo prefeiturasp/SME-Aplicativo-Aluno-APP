@@ -24,7 +24,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     final body = json.encode(data0);
 
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token');
+      final url =
+          Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token');
       final response = await http.put(
         url,
         headers: {
@@ -36,12 +37,13 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
       if (response.statusCode == 200) {
         final decodeJson = jsonDecode(response.body);
         final data = Data.fromJson(decodeJson);
-        return data.email;
+        return data;
       } else if (response.statusCode == 408) {
         return Data(
           ok: false,
           erros: [AppConfigReader.getErrorMessageTimeOut()],
-          validacaoErros: ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []),
+          validacaoErros: ValidacaoErros(
+              additionalProp1: [], additionalProp2: [], additionalProp3: []),
           email: '',
         );
       } else {
@@ -62,7 +64,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
     };
     final body = json.encode(data0);
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar');
+      final url = Uri.parse(
+          '${AppConfigReader.getApiHost()}/Autenticacao/Senha/Token/Validar');
       final response = await http.put(
         url,
         headers: {
@@ -80,7 +83,8 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      log('[RecoverPassword] validateToken - Erro de requisição ' + stacktrace.toString());
+      log('[RecoverPassword] validateToken - Erro de requisição ' +
+          stacktrace.toString());
       throw Exception(e);
     }
   }
@@ -88,11 +92,16 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
   @override
   Future<DataUser> redefinePassword(String password, String token) async {
     String? idDevice = await _firebaseMessaging.getToken();
-    final Map data = {'token': token, 'senha': password, 'dispositivoId': idDevice};
+    final Map data = {
+      'token': token,
+      'senha': password,
+      'dispositivoId': idDevice
+    };
     final body = json.encode(data);
 
     try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir');
+      final url = Uri.parse(
+          '${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir');
       final response = await http.put(
         url,
         headers: {
