@@ -31,7 +31,7 @@ class EAEstudanteInfo extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: padding != null ? padding : const EdgeInsets.all(0),
+      padding: padding ?? const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -39,9 +39,7 @@ class EAEstudanteInfo extends StatelessWidget {
             margin: EdgeInsets.only(
               right: screenHeight * 2.5,
             ),
-            child: avatar != null
-                ? avatar
-                : ClipOval(
+            child: avatar ?? ClipOval(
                     child: Image.asset(
                       'assets/images/avatar_estudante.png',
                       width: screenHeight * 8,

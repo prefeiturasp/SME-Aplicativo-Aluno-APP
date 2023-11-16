@@ -55,9 +55,7 @@ class EAEstudanteCard extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(right: screenHeight * 1.5),
-                    child: avatar != null
-                        ? avatar
-                        : ClipOval(
+                    child: avatar ?? ClipOval(
                             child: Image.asset(
                               'assets/images/avatar_estudante.png',
                               width: screenHeight * 8,

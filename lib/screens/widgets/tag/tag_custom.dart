@@ -25,7 +25,7 @@ class TagCustom extends StatelessWidget {
         text.toUpperCase(),
         maxFontSize: 12,
         minFontSize: 10,
-        style: TextStyle(color: textColor != null ? textColor : Colors.white, fontWeight: FontWeight.w500),
+        style: TextStyle(color: textColor ?? Colors.white, fontWeight: FontWeight.w500),
       ),
     );
   }
