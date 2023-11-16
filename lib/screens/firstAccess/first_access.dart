@@ -175,7 +175,7 @@ class FirstAccessState extends State<FirstAccess> {
     Navigator.pop(context);
   }
 
-  Future<bool> _onBackPress() async {
+  bool _onBackPress() {
     bool retorno = false;
     showDialog(
       context: context,
@@ -218,8 +218,8 @@ class FirstAccessState extends State<FirstAccess> {
       key: scaffoldKey,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: WillPopScope(
-          onWillPop: _onBackPress,
+        child: PopScope(
+          canPop: _onBackPress(),
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.all(screenHeight * 2.5),

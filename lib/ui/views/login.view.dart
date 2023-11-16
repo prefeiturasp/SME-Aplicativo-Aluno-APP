@@ -118,8 +118,8 @@ class LoginViewState extends State<LoginView> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: WillPopScope(
-        onWillPop: () async => false,
+      body: PopScope(
+        canPop: false,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
