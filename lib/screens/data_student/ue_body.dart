@@ -73,7 +73,7 @@ class UEBody extends StatelessWidget {
             ),
             const Divider(
               thickness: 1,
-            )
+            ),
           ],
         ),
       );
@@ -118,7 +118,7 @@ class UEBody extends StatelessWidget {
                               FontAwesomeIcons.phone,
                               size: screenHeight * 3,
                               color: const Color(0xFFC65D00),
-                            )
+                            ),
                           ],
                         )
                       : AutoSizeText(
@@ -136,7 +136,7 @@ class UEBody extends StatelessWidget {
             ),
             const Divider(
               thickness: 1,
-            )
+            ),
           ],
         ),
       );

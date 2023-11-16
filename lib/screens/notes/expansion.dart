@@ -315,9 +315,9 @@ class ExpansionState extends State<Expansion> {
   }
 
   Widget _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.codigoModalidade == ModalidadeTipo.EJA ||
-        widget.codigoModalidade == ModalidadeTipo.Medio ||
-        widget.codigoModalidade == ModalidadeTipo.Fundamental) {
+    if (widget.codigoModalidade == ModalidadeTipo.eja ||
+        widget.codigoModalidade == ModalidadeTipo.medio ||
+        widget.codigoModalidade == ModalidadeTipo.fundamental) {
       return mostrarBotao
           ? EADefaultButton(
               btnColor: Colors.white,
@@ -344,7 +344,7 @@ class ExpansionState extends State<Expansion> {
   }
 
   Widget _botaoRaa(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+    if (widget.codigoModalidade == ModalidadeTipo.educacaoInfantil) {
       return mostrarBotao
           ? EADefaultButton(
               btnColor: Colors.white,
@@ -405,7 +405,7 @@ class ExpansionState extends State<Expansion> {
                 return _buildLoader(screenHeight);
               }
 
-              if (widget.codigoModalidade != ModalidadeTipo.EducacaoInfantil) {
+              if (widget.codigoModalidade != ModalidadeTipo.educacaoInfantil) {
                 return Column(
                   children: [
                     _montarNotasConceito(screenHeight),
@@ -417,7 +417,7 @@ class ExpansionState extends State<Expansion> {
                   ],
                 );
               }
-              if (widget.codigoModalidade == ModalidadeTipo.EducacaoInfantil) {
+              if (widget.codigoModalidade == ModalidadeTipo.educacaoInfantil) {
                 return Column(
                   children: [
                     Text(

@@ -16,10 +16,10 @@ class MeusDadosView extends StatefulWidget {
   const MeusDadosView({super.key});
 
   @override
-  _MeusDadosViewState createState() => _MeusDadosViewState();
+  MeusDadosViewState createState() => MeusDadosViewState();
 }
 
-class _MeusDadosViewState extends State<MeusDadosView> {
+class MeusDadosViewState extends State<MeusDadosView> {
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
   final TextEditingController _emailCtrl = TextEditingController();
@@ -253,7 +253,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
               ),
               EADefaultButton(
                 text: 'EDITAR DADOS',
-                icon: FontAwesomeIcons.edit,
+                icon: FontAwesomeIcons.penToSquare,
                 iconColor: const Color(0xffffd037),
                 btnColor: const Color(0xffd06d12),
                 enabled: true,
@@ -279,7 +279,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ViewData(
+                    const ViewData(
                       label: 'Senha',
                       text: '******',
                     ),
@@ -303,7 +303,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                           ),
                         );
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

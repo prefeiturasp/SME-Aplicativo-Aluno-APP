@@ -45,7 +45,7 @@ class Data {
         ok: map['ok'],
         email: map['email'],
         erros: List<String>.from(map['erros'] as List<String>),
-        validacaoErros: ValidacaoErros.fromMap(map['validacaoErros']));
+        validacaoErros: ValidacaoErros.fromMap(map['validacaoErros']),);
   }
 
   String toJson() => json.encode(toMap());

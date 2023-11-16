@@ -96,7 +96,7 @@ class DataStudentState extends State<DataStudent> {
                           maxFontSize: 18,
                           minFontSize: 16,
                           style: TextStyle(color: Color(0xffC45C04), fontWeight: FontWeight.w700),
-                        )
+                        ),
                       ],
                     ),
                   ),

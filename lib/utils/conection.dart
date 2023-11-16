@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-enum ConnectivityStatus { WiFi, Celular, Offline }
+enum ConnectivityStatus { wiFi, celular, offline }
 
 class ConnectivityService {
   // Crie nosso controlador público
@@ -18,13 +18,13 @@ class ConnectivityService {
   ConnectivityStatus _getStatusFromResult(ConnectivityResult result) {
     switch (result) {
       case ConnectivityResult.mobile:
-        return ConnectivityStatus.Celular;
+        return ConnectivityStatus.celular;
       case ConnectivityResult.wifi:
-        return ConnectivityStatus.WiFi;
+        return ConnectivityStatus.wiFi;
       case ConnectivityResult.none:
-        return ConnectivityStatus.Offline;
+        return ConnectivityStatus.offline;
       default:
-        return ConnectivityStatus.Offline;
+        return ConnectivityStatus.offline;
     }
   }
 }

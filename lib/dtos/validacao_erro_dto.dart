@@ -39,7 +39,7 @@ class ValidacaoErros {
         additionalProp2: List<String>.from(map['additionalProp2'] as List<String>),
         additionalProp3: List<String>.from(
           (map['additionalProp3'] as List<String>),
-        ));
+        ),);
   }
 
   String toJson() => json.encode(toMap());

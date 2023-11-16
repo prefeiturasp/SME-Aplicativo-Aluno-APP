@@ -7,7 +7,7 @@ import '../../repositories/outros_servicos_repository.dart';
 import '../widgets/appbar/app_bar_escola_aqui.dart';
 
 class OutrosServicosLista extends StatefulWidget {
-  const OutrosServicosLista({Key? key}) : super(key: key);
+  const OutrosServicosLista({super.key});
 
   @override
   OutrosServicosListaState createState() => OutrosServicosListaState();

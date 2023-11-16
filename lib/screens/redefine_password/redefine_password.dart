@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 
 import '../../controllers/auth/recover_password.controller.dart';
-import '../../services/user.service.dart';
 import '../../ui/index.dart';
 import '../../utils/navigator.dart';
 import '../widgets/check_line/check_line.dart';
@@ -22,7 +21,6 @@ class RedefinePassword extends StatefulWidget {
 }
 
 class RedefinePasswordState extends State<RedefinePassword> {
-  final UserService _userService = UserService();
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -50,7 +48,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
     super.initState();
   }
 
-  _navigateToScreen() async {
+  void _navigateToScreen() async {
     if (_recoverPasswordController.dataUser!.ok) {
       Nav.push(
         context,
@@ -61,12 +59,12 @@ class RedefinePasswordState extends State<RedefinePassword> {
     }
   }
 
-  _changePassword(String password, String token) async {
+  void _changePassword(String password, String token) async {
     await _recoverPasswordController.redefinePassword(password, token);
     _navigateToScreen();
   }
 
-  onError() {
+  void onError() {
     final snackbar = SnackBar(
       backgroundColor: Colors.red,
       content: _recoverPasswordController.dataUser != null
@@ -77,7 +75,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  Future<bool> _onBackPress() async {
+  bool _onBackPress() {
     bool retorno = false;
     showDialog(
       context: context,
@@ -99,7 +97,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -118,220 +116,218 @@ class RedefinePasswordState extends State<RedefinePassword> {
         title: const Text('Alteração de senha'),
         backgroundColor: const Color(0xffEEC25E),
       ),
-      body: WillPopScope(
-        onWillPop:
-            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress : null,
+      body: PopScope(
+        canPop:
+            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress() : false,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
             child: Column(
               children: <Widget>[
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 3),
-                        child: const AutoSizeText(
-                          'Confirme a nova senha abaixo',
-                          maxFontSize: 18,
-                          minFontSize: 16,
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: screenHeight * 3, top: screenHeight * 3),
+                      child: const AutoSizeText(
+                        'Confirme a nova senha abaixo',
+                        maxFontSize: 18,
+                        minFontSize: 16,
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff757575)),
                       ),
-                      Form(
-                        autovalidateMode: AutovalidateMode.always,
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: screenHeight * 4,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xfff0f0f0),
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
-                                    width: screenHeight * 0.39,
-                                  ),
+                    ),
+                    Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: screenHeight * 4,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff0f0f0),
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
+                                  width: screenHeight * 0.39,
                                 ),
                               ),
-                              child: TextFormField(
-                                obscureText: _showNewPassword,
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _password = value;
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value!.isNotEmpty) {
-                                    if (spaceNull.hasMatch(value)) {
-                                      return 'Senha não pode ter espaço em branco';
-                                    }
-                                  }
-
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                  suffixIcon: IconButton(
-                                    icon: _showNewPassword
-                                        ? const Icon(FontAwesomeIcons.eye)
-                                        : const Icon(FontAwesomeIcons.eyeSlash),
-                                    color: const Color(0xff6e6e6e),
-                                    iconSize: screenHeight * 3.0,
-                                    onPressed: () {
-                                      setState(() {
-                                        _showNewPassword = !_showNewPassword;
-                                      });
-                                    },
-                                  ),
-                                  labelText: 'Nova senha',
-                                  labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                keyboardType: TextInputType.text,
-                              ),
                             ),
-                            SizedBox(
-                              height: screenHeight * 4,
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: screenHeight * 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xfff0f0f0),
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
-                                    width: screenHeight * 0.39,
-                                  ),
-                                ),
-                              ),
-                              child: TextFormField(
-                                style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
-                                obscureText: _showConfirmPassword,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _confirmPassword = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  suffixIcon: IconButton(
-                                    icon: _showConfirmPassword
-                                        ? const Icon(FontAwesomeIcons.eye)
-                                        : const Icon(FontAwesomeIcons.eyeSlash),
-                                    color: const Color(0xff6e6e6e),
-                                    iconSize: screenHeight * 3.0,
-                                    onPressed: () {
-                                      setState(() {
-                                        _showConfirmPassword = !_showConfirmPassword;
-                                      });
-                                    },
-                                  ),
-
-                                  labelText: 'Confirmar a nova senha',
-                                  labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
-                                  errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                  // hintText: "Data de nascimento do aluno",
-                                  border: InputBorder.none,
-                                ),
-                                validator: (value) {
-                                  if (value!.isNotEmpty) {
-                                    if (value != _password) {
-                                      return 'Senhas não correspondem';
-                                    }
-                                  }
-
-                                  return null;
-                                },
-                                keyboardType: TextInputType.text,
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 1,
-                            ),
-                            InfoBox(
-                              icon: FontAwesomeIcons.exclamationTriangle,
-                              content: <Widget>[
-                                const AutoSizeText(
-                                  'Requisitos para sua nova senha!',
-                                  maxFontSize: 18,
-                                  minFontSize: 16,
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
-                                ),
-                                SizedBox(
-                                  height: screenHeight * 2,
-                                ),
-                                CheckLine(
-                                  screenHeight: screenHeight,
-                                  text: 'Uma letra maiúscula',
-                                  checked: upperCaseChar.hasMatch(_password),
-                                ),
-                                CheckLine(
-                                  screenHeight: screenHeight,
-                                  text: 'Uma letra minúscula',
-                                  checked: lowCaseChar.hasMatch(_password),
-                                ),
-                                CheckLine(
-                                  screenHeight: screenHeight,
-                                  text: 'Um algarismo (número) ou um símbolo (caractere especial)',
-                                  checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
-                                ),
-                                CheckLine(
-                                  screenHeight: screenHeight,
-                                  text: 'Não pode permitir caracteres acentuados',
-                                  checked: _password.isNotEmpty &&
-                                      !accentUppercase.hasMatch(_password) &&
-                                      !accentLowcase.hasMatch(_password),
-                                ),
-                                CheckLine(
-                                  screenHeight: screenHeight,
-                                  text: 'Deve ter no mínimo 8 e no máximo 12 caracteres.',
-                                  checked: _password.length >= 8 && _password.length <= 12,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight * 3,
-                            ),
-                            Observer(
-                              builder: (context) {
-                                if (_recoverPasswordController.loading) {
-                                  return const GFLoader(
-                                    type: GFLoaderType.square,
-                                    loaderColorOne: Color(0xffDE9524),
-                                    loaderColorTwo: Color(0xffC65D00),
-                                    loaderColorThree: Color(0xffC65D00),
-                                    size: GFSize.LARGE,
-                                  );
-                                } else {
-                                  return EADefaultButton(
-                                    text: 'CONFIRMAR ALTERAÇÃO',
-                                    icon: FontAwesomeIcons.chevronRight,
-                                    iconColor: const Color(0xffffd037),
-                                    btnColor: const Color(0xffd06d12),
-                                    enabled: (_password.isNotEmpty &&
-                                            _confirmPassword.isNotEmpty &&
-                                            !spaceNull.hasMatch(_password)) &&
-                                        (_confirmPassword == _password),
-                                    onPress: () {
-                                      _changePassword(_password, widget.token);
-                                    },
-                                  );
-                                }
+                            child: TextFormField(
+                              obscureText: _showNewPassword,
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                setState(() {
+                                  _password = value;
+                                });
                               },
-                            )
-                          ],
-                        ),
+                              validator: (value) {
+                                if (value!.isNotEmpty) {
+                                  if (spaceNull.hasMatch(value)) {
+                                    return 'Senha não pode ter espaço em branco';
+                                  }
+                                }
+
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  icon: _showNewPassword
+                                      ? const Icon(FontAwesomeIcons.eye)
+                                      : const Icon(FontAwesomeIcons.eyeSlash),
+                                  color: const Color(0xff6e6e6e),
+                                  iconSize: screenHeight * 3.0,
+                                  onPressed: () {
+                                    setState(() {
+                                      _showNewPassword = !_showNewPassword;
+                                    });
+                                  },
+                                ),
+                                labelText: 'Nova senha',
+                                labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: const TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              keyboardType: TextInputType.text,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 4,
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: screenHeight * 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff0f0f0),
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
+                                  width: screenHeight * 0.39,
+                                ),
+                              ),
+                            ),
+                            child: TextFormField(
+                              style: const TextStyle(color: Color(0xff333333), fontWeight: FontWeight.w600),
+                              obscureText: _showConfirmPassword,
+                              onChanged: (value) {
+                                setState(() {
+                                  _confirmPassword = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  icon: _showConfirmPassword
+                                      ? const Icon(FontAwesomeIcons.eye)
+                                      : const Icon(FontAwesomeIcons.eyeSlash),
+                                  color: const Color(0xff6e6e6e),
+                                  iconSize: screenHeight * 3.0,
+                                  onPressed: () {
+                                    setState(() {
+                                      _showConfirmPassword = !_showConfirmPassword;
+                                    });
+                                  },
+                                ),
+
+                                labelText: 'Confirmar a nova senha',
+                                labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
+                                errorStyle: const TextStyle(fontWeight: FontWeight.w700),
+                                // hintText: "Data de nascimento do aluno",
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value!.isNotEmpty) {
+                                  if (value != _password) {
+                                    return 'Senhas não correspondem';
+                                  }
+                                }
+
+                                return null;
+                              },
+                              keyboardType: TextInputType.text,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenHeight * 1,
+                          ),
+                          InfoBox(
+                            icon: FontAwesomeIcons.triangleExclamation,
+                            content: <Widget>[
+                              const AutoSizeText(
+                                'Requisitos para sua nova senha!',
+                                maxFontSize: 18,
+                                minFontSize: 16,
+                                style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff717171)),
+                              ),
+                              SizedBox(
+                                height: screenHeight * 2,
+                              ),
+                              CheckLine(
+                                screenHeight: screenHeight,
+                                text: 'Uma letra maiúscula',
+                                checked: upperCaseChar.hasMatch(_password),
+                              ),
+                              CheckLine(
+                                screenHeight: screenHeight,
+                                text: 'Uma letra minúscula',
+                                checked: lowCaseChar.hasMatch(_password),
+                              ),
+                              CheckLine(
+                                screenHeight: screenHeight,
+                                text: 'Um algarismo (número) ou um símbolo (caractere especial)',
+                                checked: (numeric.hasMatch(_password) || symbols.hasMatch(_password)),
+                              ),
+                              CheckLine(
+                                screenHeight: screenHeight,
+                                text: 'Não pode permitir caracteres acentuados',
+                                checked: _password.isNotEmpty &&
+                                    !accentUppercase.hasMatch(_password) &&
+                                    !accentLowcase.hasMatch(_password),
+                              ),
+                              CheckLine(
+                                screenHeight: screenHeight,
+                                text: 'Deve ter no mínimo 8 e no máximo 12 caracteres.',
+                                checked: _password.length >= 8 && _password.length <= 12,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: screenHeight * 3,
+                          ),
+                          Observer(
+                            builder: (context) {
+                              if (_recoverPasswordController.loading) {
+                                return const GFLoader(
+                                  type: GFLoaderType.square,
+                                  loaderColorOne: Color(0xffDE9524),
+                                  loaderColorTwo: Color(0xffC65D00),
+                                  loaderColorThree: Color(0xffC65D00),
+                                  size: GFSize.LARGE,
+                                );
+                              } else {
+                                return EADefaultButton(
+                                  text: 'CONFIRMAR ALTERAÇÃO',
+                                  icon: FontAwesomeIcons.chevronRight,
+                                  iconColor: const Color(0xffffd037),
+                                  btnColor: const Color(0xffd06d12),
+                                  enabled: (_password.isNotEmpty &&
+                                          _confirmPassword.isNotEmpty &&
+                                          !spaceNull.hasMatch(_password)) &&
+                                      (_confirmPassword == _password),
+                                  onPress: () {
+                                    _changePassword(_password, widget.token);
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

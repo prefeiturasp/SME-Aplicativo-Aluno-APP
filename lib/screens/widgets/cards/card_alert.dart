@@ -6,10 +6,10 @@ class CardAlert extends StatelessWidget {
   final String title;
   final Icon icon;
   final String text;
-  double textSize = 0;
+  final double textSize;
   final bool isHeader;
 
-  CardAlert({
+  const CardAlert({
     super.key,
     required this.title,
     required this.icon,
@@ -35,7 +35,7 @@ class CardAlert extends StatelessWidget {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(

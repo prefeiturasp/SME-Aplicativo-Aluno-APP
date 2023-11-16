@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import '../models/message/message.dart';
-import '../models/user/user.dart' as UserModel;
+import '../models/user/user.dart' as user_model;
 import 'db.service.dart';
 import '../utils/db/db_settings.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,14 +9,14 @@ import 'package:sqflite/sqflite.dart';
 class UserService {
   final dbHelper = DBHelper();
 
-  Future<List<UserModel.User>> all() async {
+  Future<List<user_model.User>> all() async {
     try {
       final Database db = await dbHelper.initDatabase();
-      final List<Map<String, dynamic>> maps = await db.query(TB_USER);
+      final List<Map<String, dynamic>> maps = await db.query(tbUSER);
       final users = List.generate(
         maps.length,
         (i) {
-          return UserModel.User(
+          return user_model.User(
             id: maps[i]['id'],
             nome: maps[i]['nome'],
             cpf: maps[i]['cpf'],
@@ -42,10 +42,10 @@ class UserService {
     }
   }
 
-  Future create(UserModel.User model) async {
+  Future create(user_model.User model) async {
     final Database db = await dbHelper.initDatabase();
     try {
-      await db.insert(TB_USER, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(tbUSER, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       log('--------------------------');
       log('Usuário criado com sucesso: ${model.toMap()}');
       log('--------------------------');
@@ -55,11 +55,11 @@ class UserService {
     }
   }
 
-  Future<UserModel.User> find(int id) async {
+  Future<user_model.User> find(int id) async {
     final Database db = await dbHelper.initDatabase();
     try {
-      final List<Map<String, dynamic>> maps = await db.query(TB_USER, where: 'id = ?', whereArgs: [id]);
-      final UserModel.User user = UserModel.User(
+      final List<Map<String, dynamic>> maps = await db.query(tbUSER, where: 'id = ?', whereArgs: [id]);
+      final user_model.User user = user_model.User(
         id: maps[0]['id'],
         nome: maps[0]['nome'],
         cpf: maps[0]['cpf'],
@@ -84,11 +84,11 @@ class UserService {
     }
   }
 
-  Future update(UserModel.User model) async {
+  Future update(user_model.User model) async {
     try {
       final Database db = await dbHelper.initDatabase();
       await db.update(
-        TB_USER,
+        tbUSER,
         model.toMap(),
         where: 'id = ?',
         whereArgs: [model.id],
@@ -118,7 +118,7 @@ class UserService {
   Future createMessage(Message model) async {
     final Database db = await dbHelper.initDatabase();
     try {
-      await db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(tbMESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       log('--------------------------');
       log('Mensagem criada com sucesso: ${model.toMap()}');
       log('--------------------------');

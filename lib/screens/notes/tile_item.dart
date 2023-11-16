@@ -5,7 +5,7 @@ class TileItem extends StatelessWidget {
   final String header;
   final List<Widget> body;
 
-  TileItem({
+  const TileItem({super.key, 
     required this.header,
     required this.body,
   });
@@ -17,7 +17,7 @@ class TileItem extends StatelessWidget {
         initiallyExpanded: false,
         title: AutoSizeText(
           header,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           minFontSize: 14,
           maxFontSize: 16,
           textAlign: TextAlign.start,

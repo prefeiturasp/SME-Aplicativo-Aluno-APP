@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../dtos/validacao_erro_dto.dart';
 import '../interfaces/settings_repository_interface.dart';
 import '../models/settings/data.dart';
-import '../models/user/user.dart' as UserModel;
+import '../models/user/user.dart' as user_model;
 import '../services/user.service.dart';
 import '../stores/index.dart';
 import '../utils/app_config_reader.dart';
@@ -38,7 +38,7 @@ class SettingsRepository implements ISettingsRepository {
         final decodeJson = jsonDecode(response.body);
         final data = Data.fromJson(decodeJson);
         await _userService.update(
-          UserModel.User(
+          user_model.User(
             id: usuarioStore.usuario!.id,
             nome: usuarioStore.usuario!.nome,
             cpf: usuarioStore.usuario!.cpf,

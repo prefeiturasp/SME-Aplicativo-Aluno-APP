@@ -12,12 +12,12 @@ class BoxFrequency extends StatelessWidget {
   final List<Ausencias> ausencias;
 
   BoxFrequency({
-    Key? key,
+    super.key,
     required this.title,
     required this.idbox,
     this.fail = false,
     this.ausencias = const [],
-  }) : super(key: key);
+  });
 
   final dataPorExtenso = DateFormat("d 'de' MMMM 'de' y", 'pt_BR');
 

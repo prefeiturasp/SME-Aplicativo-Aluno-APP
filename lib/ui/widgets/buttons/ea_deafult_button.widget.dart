@@ -70,7 +70,7 @@ class EADefaultButton extends StatelessWidget {
           color: !enabled ? const Color(0xffC4C4C4) : iconColor,
           size: screenHeight * 3,
         ),
-      )
+      ),
     ];
   }
 

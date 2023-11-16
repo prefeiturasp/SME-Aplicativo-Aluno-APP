@@ -71,7 +71,7 @@ class ListMessageState extends State<ListMessages> {
                 Navigator.of(context).pop(false);
                 retorno = false;
               },
-            )
+            ),
           ],
         );
       },
@@ -219,7 +219,7 @@ class ListMessageState extends State<ListMessages> {
                             FontAwesomeIcons.envelopeOpen,
                             color: Color(0xffffd037),
                             size: 16,
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -259,7 +259,7 @@ class ListMessageState extends State<ListMessages> {
                     ),
                     Divider(
                       color: Color(0xffcecece),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -384,7 +384,7 @@ class ListMessageState extends State<ListMessages> {
                                 FontAwesomeIcons.envelope,
                                 color: Color(0xffffd037),
                                 size: 16,
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -469,7 +469,7 @@ class ListMessageState extends State<ListMessages> {
                             : null,
                         label: const AutoSizeText('UE', style: TextStyle(color: Color(0xff42474A))),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Observer(
@@ -520,8 +520,8 @@ class ListMessageState extends State<ListMessages> {
   @override
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
-    if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+    if (connectionStatus == ConnectivityStatus.offline) {
+      return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
