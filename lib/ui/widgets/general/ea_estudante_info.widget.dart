@@ -71,7 +71,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ),
                 modalidade != null
                     ? AutoSizeText(
-                        '${modalidade!.toUpperCase()}',
+                        modalidade!.toUpperCase(),
                         maxFontSize: 12,
                         minFontSize: 10,
                         style: const TextStyle(
