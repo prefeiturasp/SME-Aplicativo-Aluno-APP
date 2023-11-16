@@ -7,7 +7,7 @@ class CheckLine extends StatelessWidget {
   final String text;
   final bool checked;
 
-  CheckLine({super.key, required this.screenHeight, required this.text, this.checked = false});
+  const CheckLine({super.key, required this.screenHeight, required this.text, this.checked = false});
 
   @override
   Widget build(BuildContext context) {

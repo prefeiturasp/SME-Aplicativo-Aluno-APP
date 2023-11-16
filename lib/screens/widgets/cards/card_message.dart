@@ -11,7 +11,7 @@ class CardMessage extends StatelessWidget {
   final List<Widget> footerContent;
   final String categoriaNotificacao;
 
-  CardMessage(
+  const CardMessage(
       {super.key, required this.headerTitle,
       required this.headerIcon,
       required this.content,

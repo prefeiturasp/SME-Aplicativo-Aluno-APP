@@ -5,7 +5,7 @@ class TileItem extends StatelessWidget {
   final String header;
   final List<Widget> body;
 
-  TileItem({super.key, 
+  const TileItem({super.key, 
     required this.header,
     required this.body,
   });

@@ -21,7 +21,7 @@ class NotesBody extends StatelessWidget {
   final Color corFinal;
   final String groupSchool;
 
-  NotesBody(
+  const NotesBody(
       {super.key, required this.title,
       required this.bUm,
       required this.bDois,

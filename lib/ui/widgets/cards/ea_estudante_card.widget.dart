@@ -13,7 +13,7 @@ class EAEstudanteCard extends StatelessWidget {
   final VoidCallback onPress;
   final Image? avatar;
 
-  EAEstudanteCard(
+  const EAEstudanteCard(
       {super.key, required this.codigoEOL,
       required this.name,
       required this.schoolName,

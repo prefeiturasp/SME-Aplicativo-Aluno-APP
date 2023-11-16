@@ -6,7 +6,7 @@ class TagCustom extends StatelessWidget {
   final Color color;
   final Color? textColor;
 
-  TagCustom({super.key, required this.text, required this.color, this.textColor});
+  const TagCustom({super.key, required this.text, required this.color, this.textColor});
 
   @override
   Widget build(BuildContext context) {

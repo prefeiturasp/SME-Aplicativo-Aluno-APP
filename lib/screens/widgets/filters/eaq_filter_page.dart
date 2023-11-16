@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EAQFilterPage extends StatefulWidget {
   final List<Widget> items;
 
-  EAQFilterPage({super.key, required this.items});
+  const EAQFilterPage({super.key, required this.items});
   @override
   _EAQFilterPageState createState() => _EAQFilterPageState();
 }
