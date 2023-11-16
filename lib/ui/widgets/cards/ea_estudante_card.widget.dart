@@ -35,8 +35,8 @@ class EAEstudanteCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: screenHeight * 1.5),
         decoration: BoxDecoration(
           color: Colors.white,
-          boxShadow: [
-            const BoxShadow(
+          boxShadow: const [
+            BoxShadow(
               color: Colors.black12,
               offset: Offset(1, 2),
               blurRadius: 2,

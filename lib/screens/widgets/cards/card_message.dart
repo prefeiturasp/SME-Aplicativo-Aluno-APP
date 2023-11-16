@@ -34,8 +34,8 @@ class CardMessage extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(screenHeight * 2),
         ),
-        boxShadow: [
-          const BoxShadow(
+        boxShadow: const [
+          BoxShadow(
             color: Colors.black12,
             offset: Offset(1, 2),
             blurRadius: 2,
