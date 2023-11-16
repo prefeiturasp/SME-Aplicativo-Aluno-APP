@@ -64,7 +64,7 @@ class EAEstudanteCard extends StatelessWidget {
                             ),
                           ),
                   ),
-                  Container(
+                  SizedBox(
                     width: size.width / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -27,7 +27,7 @@ class CheckLine extends StatelessWidget {
         SizedBox(
           width: screenHeight * 1,
         ),
-        Container(
+        SizedBox(
           width: screenHeight * 36,
           child: AutoSizeText(
             text,

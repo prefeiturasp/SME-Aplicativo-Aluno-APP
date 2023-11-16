@@ -48,7 +48,7 @@ class EAEstudanteInfo extends StatelessWidget {
                     ),
                   ),
           ),
-          Container(
+          SizedBox(
             width: (screenWidth / 1.95),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

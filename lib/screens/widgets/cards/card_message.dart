@@ -104,7 +104,7 @@ class CardMessage extends StatelessWidget {
                 ),
                 Visibility(
                   visible: !recentMessage,
-                  child: Container(
+                  child: SizedBox(
                       width: screenHeight * 3.5,
                       height: screenHeight * 3.5,
                       child: ClipOval(
