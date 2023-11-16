@@ -243,7 +243,7 @@ class FrequencyState extends State<Frequency> {
                     true,
                   )
                 : const SizedBox(),
-            comp.frequencias.isNotEmpty ? LabelFrequency(text: 'Percentual de frequência') : const SizedBox(),
+            comp.frequencias.isNotEmpty ? const LabelFrequency(text: 'Percentual de frequência') : const SizedBox(),
             SizedBox(
               height: screenHeight * 2,
             ),

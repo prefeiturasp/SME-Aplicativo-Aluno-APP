@@ -521,7 +521,7 @@ class ListMessageState extends State<ListMessages> {
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+      return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;

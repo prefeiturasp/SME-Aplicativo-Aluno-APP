@@ -84,7 +84,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     final keyScaffod = GlobalKey<ScaffoldState>();
     if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+      return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;

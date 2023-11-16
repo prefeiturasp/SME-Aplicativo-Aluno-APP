@@ -279,7 +279,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ViewData(
+                    const ViewData(
                       label: 'Senha',
                       text: '******',
                     ),
