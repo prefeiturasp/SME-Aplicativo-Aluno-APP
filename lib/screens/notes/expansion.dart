@@ -315,7 +315,7 @@ class ExpansionState extends State<Expansion> {
   }
 
   Widget _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.codigoModalidade == ModalidadeTipo.eJA ||
+    if (widget.codigoModalidade == ModalidadeTipo.eja ||
         widget.codigoModalidade == ModalidadeTipo.medio ||
         widget.codigoModalidade == ModalidadeTipo.fundamental) {
       return mostrarBotao
