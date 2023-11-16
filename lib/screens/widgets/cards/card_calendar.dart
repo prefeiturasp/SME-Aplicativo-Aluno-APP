@@ -63,7 +63,7 @@ class CardCalendar extends StatelessWidget {
                     ? Container(
                         margin: EdgeInsets.only(right: screenHeight * 2),
                         child: Icon(
-                          FontAwesomeIcons.calendarAlt,
+                          FontAwesomeIcons.calendarDays,
                           color: const Color(0xffC45C04),
                           size: screenHeight * 2.7,
                         ),

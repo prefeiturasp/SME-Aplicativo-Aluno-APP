@@ -8,7 +8,7 @@ import '../dtos/validacao_erro_dto.dart';
 import '../interfaces/first_access_repository_interface.dart';
 import '../models/change_email_and_phone/data_change_email_and_phone.dart';
 import '../models/first_access/data.dart';
-import '../models/user/user.dart' as UserModel;
+import '../models/user/user.dart' as user_model;
 import '../services/user.service.dart';
 import '../stores/index.dart';
 import '../utils/app_config_reader.dart';
@@ -41,7 +41,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
         await usuarioStore.atualizaPrimeiroAcesso(false);
 
         await _userService.update(
-          UserModel.User(
+          user_model.User(
             id: usuarioStore.usuario!.id,
             nome: usuarioStore.usuario!.nome,
             cpf: usuarioStore.usuario!.cpf,
@@ -97,7 +97,7 @@ class FirstAccessRepository implements IFirstAccessRepository {
         final decodeJson = jsonDecode(response.body);
         final data = DataChangeEmailAndPhone.fromJson(decodeJson);
         await _userService.update(
-          UserModel.User(
+          user_model.User(
             id: userId,
             nome: usuarioStore.usuario!.nome,
             cpf: usuarioStore.usuario!.cpf,

@@ -177,7 +177,7 @@ class DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
-    if (connectionStatus == ConnectivityStatus.Offline) {
+    if (connectionStatus == ConnectivityStatus.offline) {
       return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;

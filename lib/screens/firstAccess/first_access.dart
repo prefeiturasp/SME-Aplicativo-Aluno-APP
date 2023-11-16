@@ -71,7 +71,7 @@ class FirstAccessState extends State<FirstAccess> {
     _termsController.fetchTermo(widget.cpf);
   }
 
-  _navigateToScreen() {
+  void _navigateToScreen() {
     if (_firstAccessController.data!.ok) {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const AtualizacaoCadastralView()));
     } else {
@@ -98,7 +98,7 @@ class FirstAccessState extends State<FirstAccess> {
     });
   }
 
-  _registerNewPassword(String password) async {
+  Future _registerNewPassword(String password) async {
     setState(() {
       _busy = true;
     });
@@ -112,7 +112,7 @@ class FirstAccessState extends State<FirstAccess> {
     });
   }
 
-  _registerTerm() async {
+  Future _registerTerm() async {
     String deviceId;
     if (Platform.isAndroid) {
       final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -131,7 +131,7 @@ class FirstAccessState extends State<FirstAccess> {
     );
   }
 
-  onError() {
+  void onError() {
     final snackbar = SnackBar(
       backgroundColor: Colors.red,
       content: _firstAccessController.data != null
@@ -167,7 +167,7 @@ class FirstAccessState extends State<FirstAccess> {
     );
   }
 
-  changeStatusTerm() {
+  void changeStatusTerm() {
     setState(() {
       _statusTerm = true;
       log(_statusTerm.toString());
@@ -243,7 +243,7 @@ class FirstAccessState extends State<FirstAccess> {
                                 _onBackPress();
                               },
                               icon: Icon(
-                                FontAwesomeIcons.signOutAlt,
+                                FontAwesomeIcons.rightFromBracket,
                                 color: const Color(0xFFE1771D),
                                 size: screenHeight * 2,
                               ),
@@ -364,7 +364,7 @@ class FirstAccessState extends State<FirstAccess> {
                               height: screenHeight * 1,
                             ),
                             InfoBox(
-                              icon: FontAwesomeIcons.exclamationTriangle,
+                              icon: FontAwesomeIcons.triangleExclamation,
                               content: <Widget>[
                                 const AutoSizeText(
                                   'Requisitos para sua nova senha!',
@@ -437,7 +437,7 @@ class FirstAccessState extends State<FirstAccess> {
                                                 ),
                                                 SizedBox(width: 10),
                                                 Icon(
-                                                  FontAwesomeIcons.fileAlt,
+                                                  FontAwesomeIcons.fileLines,
                                                   size: 16,
                                                   color: Color(0xff717171),
                                                 ),

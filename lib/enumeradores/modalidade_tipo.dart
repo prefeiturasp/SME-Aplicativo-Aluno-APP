@@ -1,10 +1,10 @@
 class ModalidadeTipo {
-  static const String EducacaoInfantil = '1';
-  static const String EJA = '3';
-  static const String CIEJA = '4';
-  static const String Fundamental = '5';
-  static const String Medio = '6';
-  static const String CMCT = '1';
-  static const String MOVA = '8';
-  static const String ETEC = '9';
+  static const String educacaoInfantil = '1';
+  static const String eJA = '3';
+  static const String cIEJA = '4';
+  static const String fundamental = '5';
+  static const String medio = '6';
+  static const String cMCT = '1';
+  static const String mOVA = '8';
+  static const String eTEC = '9';
 }

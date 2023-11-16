@@ -5,10 +5,10 @@ class EAQFilterPage extends StatefulWidget {
 
   const EAQFilterPage({super.key, required this.items});
   @override
-  _EAQFilterPageState createState() => _EAQFilterPageState();
+  EAQFilterPageState createState() => EAQFilterPageState();
 }
 
-class _EAQFilterPageState extends State<EAQFilterPage> {
+class EAQFilterPageState extends State<EAQFilterPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

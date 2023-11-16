@@ -46,7 +46,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     loadInputs();
   }
 
-  loadInputs() async {
+  void loadInputs() async {
     final User user = await _userService.find(widget.userId);
     final String email = user.email;
     final String phone = user.celular;
@@ -56,7 +56,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     setState(() => _phone = maskedPhone);
   }
 
-  fetchChangeEmailOrPhone(String email, String phone, int userId) async {
+  void fetchChangeEmailOrPhone(String email, String phone, int userId) async {
     setState(() {
       _busy = true;
     });

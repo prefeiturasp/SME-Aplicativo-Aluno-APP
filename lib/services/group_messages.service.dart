@@ -14,7 +14,7 @@ class GroupMessageService {
   Future create(Group model) async {
     final Database db = await dbHelper.initDatabase();
     try {
-      await db.insert(TB_GROUP_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(tbGroupMessage, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
       log('--------------------------');
       log('Grupo de menssagem criado com sucesso: ${model.toMap()}');
       log('--------------------------');
@@ -28,7 +28,7 @@ class GroupMessageService {
   Future<List<Group>> all() async {
     try {
       final Database db = await dbHelper.initDatabase();
-      final List<Map<String, dynamic>> maps = await db.query(TB_GROUP_MESSAGE);
+      final List<Map<String, dynamic>> maps = await db.query(tbGroupMessage);
       final groups = List.generate(
         maps.length,
         (i) {
@@ -53,7 +53,7 @@ class GroupMessageService {
     final Database db = await dbHelper.initDatabase();
     try {
       await db.delete(
-        TB_GROUP_MESSAGE,
+        tbGroupMessage,
         where: 'id = ?',
         whereArgs: [id],
       );

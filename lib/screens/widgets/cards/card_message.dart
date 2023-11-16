@@ -65,42 +65,40 @@ class CardMessage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Visibility(
-                        visible: headerIcon ? headerIcon : false,
-                        child: Container(
-                          margin: EdgeInsets.only(right: screenHeight * 2),
-                          child: Icon(
-                            recentMessage ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
-                            color: recentMessage
-                                ? const Color(0xffFFD869)
-                                : categoriaNotificacao == 'SME'
-                                    ? colorSME
-                                    : categoriaNotificacao == 'UE'
-                                        ? colorUE
-                                        : colorTURMA,
-                            size: screenHeight * 2.7,
-                          ),
+                Row(
+                  children: <Widget>[
+                    Visibility(
+                      visible: headerIcon ? headerIcon : false,
+                      child: Container(
+                        margin: EdgeInsets.only(right: screenHeight * 2),
+                        child: Icon(
+                          recentMessage ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
+                          color: recentMessage
+                              ? const Color(0xffFFD869)
+                              : categoriaNotificacao == 'SME'
+                                  ? colorSME
+                                  : categoriaNotificacao == 'UE'
+                                      ? colorUE
+                                      : colorTURMA,
+                          size: screenHeight * 2.7,
                         ),
                       ),
-                      AutoSizeText(
-                        headerTitle,
-                        maxFontSize: 18,
-                        minFontSize: 16,
-                        style: TextStyle(
-                            color: recentMessage
-                                ? Colors.white
-                                : categoriaNotificacao == 'SME'
-                                    ? colorSME
-                                    : categoriaNotificacao == 'UE'
-                                        ? colorUE
-                                        : colorTURMA,
-                            fontWeight: FontWeight.w700,),
-                      ),
-                    ],
-                  ),
+                    ),
+                    AutoSizeText(
+                      headerTitle,
+                      maxFontSize: 18,
+                      minFontSize: 16,
+                      style: TextStyle(
+                          color: recentMessage
+                              ? Colors.white
+                              : categoriaNotificacao == 'SME'
+                                  ? colorSME
+                                  : categoriaNotificacao == 'UE'
+                                      ? colorUE
+                                      : colorTURMA,
+                          fontWeight: FontWeight.w700,),
+                    ),
+                  ],
                 ),
                 Visibility(
                   visible: !recentMessage,

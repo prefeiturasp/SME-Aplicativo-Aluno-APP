@@ -89,7 +89,7 @@ class DrawerMenuState extends State<DrawerMenu> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    final textoBotaoRelatorio = widget.codigoGrupo.toString() == ModalidadeTipo.EducacaoInfantil
+    final textoBotaoRelatorio = widget.codigoGrupo.toString() == ModalidadeTipo.educacaoInfantil
         ? MensagemSistema.menuLabelFrequenciaRelatorio
         : MensagemSistema.menuLabelFrequenciaBoletim;
     return Drawer(
