@@ -28,10 +28,10 @@ class FirstAccess extends StatefulWidget {
   final int id;
   final String cpf;
   const FirstAccess({
-    Key? key,
+    super.key,
     this.id = 0,
     required this.cpf,
-  }) : super(key: key);
+  });
 
   @override
   FirstAccessState createState() => FirstAccessState();

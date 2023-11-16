@@ -16,14 +16,14 @@ class CardRecentMessage extends StatefulWidget {
   final Function onPress;
   final VoidCallback outherRoutes;
   const CardRecentMessage({
-    Key? key,
+    super.key,
     this.message,
     required this.countMessages,
     this.deleteBtn = false,
     required this.recent,
     required this.onPress,
     required this.outherRoutes,
-  }) : super(key: key);
+  });
 
   @override
   CardRecentMessageState createState() => CardRecentMessageState();

@@ -6,11 +6,11 @@ class AppBarEscolaAqui extends StatelessWidget implements PreferredSizeWidget {
   final Color? foreground;
   final Color? colorText;
   const AppBarEscolaAqui({
-    Key? key,
+    super.key,
     this.colorText,
     this.foreground,
     required this.titulo,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return AppBar(
