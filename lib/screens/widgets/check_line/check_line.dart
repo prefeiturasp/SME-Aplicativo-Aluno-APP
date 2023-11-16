@@ -7,7 +7,7 @@ class CheckLine extends StatelessWidget {
   final String text;
   final bool checked;
 
-  CheckLine({required this.screenHeight, required this.text, this.checked = false});
+  const CheckLine({super.key, required this.screenHeight, required this.text, this.checked = false});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,18 @@ class CheckLine extends StatelessWidget {
         checked
             ? Icon(
                 FontAwesomeIcons.check,
-                color: checked ? Color(0xff00AE6E) : Color(0xff757575),
+                color: checked ? const Color(0xff00AE6E) : const Color(0xff757575),
                 size: screenHeight * 2,
               )
             : Icon(
-                FontAwesomeIcons.times,
-                color: Color(0xffff0000),
+                FontAwesomeIcons.xmark,
+                color: const Color(0xffff0000),
                 size: screenHeight * 2,
               ),
         SizedBox(
           width: screenHeight * 1,
         ),
-        Container(
+        SizedBox(
           width: screenHeight * 36,
           child: AutoSizeText(
             text,
@@ -35,9 +35,9 @@ class CheckLine extends StatelessWidget {
             minFontSize: 15,
             maxLines: 3,
             style: TextStyle(
-                color: checked ? Color(0xff00AE6E) : Color(0xffff0000),
+                color: checked ? const Color(0xff00AE6E) : const Color(0xffff0000),
                 height: screenHeight * 0.2,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.w500,),
           ),
         ),
       ],

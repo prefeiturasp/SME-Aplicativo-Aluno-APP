@@ -9,14 +9,14 @@ class DBHelper {
 
   Future<Database> initDatabase() async {
     return openDatabase(
-      join(await getDatabasesPath(), DATABASE_NAME),
+      join(await getDatabasesPath(), databaseNAME),
       onCreate: (db, version) async {
-        await db.execute(CREATE_TABLE_MESSAGES_SCRIPT);
-        await db.execute(CREATE_TABLE_GROUP_MESSAGES_SCRIPT);
+        await db.execute(createTableMessagesScript);
+        await db.execute(createTableGroupMessagesScript);
       },
       onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        await db.execute(CREATE_TABLE_MESSAGES_SCRIPT);
-        await db.execute(CREATE_TABLE_GROUP_MESSAGES_SCRIPT);
+        await db.execute(createTableMessagesScript);
+        await db.execute(createTableGroupMessagesScript);
       },
       version: versionDB,
     );

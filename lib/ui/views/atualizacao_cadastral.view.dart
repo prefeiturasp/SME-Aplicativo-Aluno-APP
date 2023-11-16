@@ -102,7 +102,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       }
     }
 
-    if (response == null) {
+    if (!response.ok) {
       const snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Text('Ocorreu um erro ao atualizar os dados'),
@@ -125,9 +125,9 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     return ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<bool> _onBackPress() async {
+  bool _onBackPress() {
     bool retorno = false;
-    await showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -149,7 +149,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                 retorno = true;
                 await Auth.logout(context, usuarioStore.usuario!.id, false);
               },
-            )
+            ),
           ],
         );
       },
@@ -166,8 +166,8 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: WillPopScope(
-        onWillPop: _onBackPress,
+      body: PopScope(
+        canPop: _onBackPress(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
@@ -196,7 +196,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                               size: screenHeight * 2,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Container(
@@ -453,9 +453,9 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                         _declaracao = newValue!;
                                       });
                                     },
-                                  )
+                                  ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                           SizedBox(

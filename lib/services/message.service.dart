@@ -12,7 +12,7 @@ class MessageService {
   Future create(Message model) async {
     final Database db = await dbHelper.initDatabase();
     try {
-      await db.insert(TB_MESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(tbMESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (ex) {
       log('Erro ao criar mensagem no sqlLite: $ex');
     }
@@ -21,7 +21,7 @@ class MessageService {
   Future<List<Message>> all() async {
     final Database db = await dbHelper.initDatabase();
     try {
-      final List<Map<String, dynamic>> maps = await db.query(TB_MESSAGE);
+      final List<Map<String, dynamic>> maps = await db.query(tbMESSAGE);
       final messages = List.generate(
         maps.length,
         (i) {
@@ -48,7 +48,7 @@ class MessageService {
     final Database db = await dbHelper.initDatabase();
     try {
       await db.delete(
-        TB_MESSAGE,
+        tbMESSAGE,
         where: 'id = ?',
         whereArgs: [id],
       );

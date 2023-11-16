@@ -175,7 +175,7 @@ class EventItem extends StatelessWidget {
                       SizedBox(
                         width: (size.width / 1.1),
                         child: customTitle,
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -185,7 +185,7 @@ class EventItem extends StatelessWidget {
                         color: const Color(0xFF086397),
                         size: screenHeight * 2.1,
                       )
-                    : const SizedBox.shrink()
+                    : const SizedBox.shrink(),
               ],
             ),
             leading: CircleAvatar(

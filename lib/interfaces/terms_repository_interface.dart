@@ -3,5 +3,5 @@ abstract class ITermsRepository {
   Future<dynamic> fetchTerms(String cpf);
   Future<dynamic> fetchTermsCurrentUser();
   Future<bool> registerTerms(
-      int termoDeUsoId, String cpf, String device, String ip, double versao);
+      int termoDeUsoId, String cpf, String device, String ip, double versao,);
 }

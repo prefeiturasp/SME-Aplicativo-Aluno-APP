@@ -12,7 +12,7 @@ class EAEstudanteInfo extends StatelessWidget {
   final String? modalidade;
   final EdgeInsets? padding;
 
-  EAEstudanteInfo({
+  const EAEstudanteInfo({super.key, 
     required this.nome,
     required this.ue,
     required this.tipoEscola,
@@ -26,12 +26,12 @@ class EAEstudanteInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var screenWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: padding != null ? padding : EdgeInsets.all(0),
+      padding: padding ?? const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -39,18 +39,16 @@ class EAEstudanteInfo extends StatelessWidget {
             margin: EdgeInsets.only(
               right: screenHeight * 2.5,
             ),
-            child: avatar != null
-                ? avatar
-                : ClipOval(
+            child: avatar ?? ClipOval(
                     child: Image.asset(
-                      "assets/images/avatar_estudante.png",
+                      'assets/images/avatar_estudante.png',
                       width: screenHeight * 8,
                       height: screenHeight * 8,
                       fit: BoxFit.cover,
                     ),
                   ),
           ),
-          Container(
+          SizedBox(
             width: (screenWidth / 1.95),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,51 +58,51 @@ class EAEstudanteInfo extends StatelessWidget {
                   // StringSupport.truncateEndString(nome, 25),
                   maxFontSize: 16,
                   minFontSize: 14,
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 AutoSizeText(
-                  "$tipoEscola $ue ($dre)",
+                  '$tipoEscola $ue ($dre)',
                   maxFontSize: 12,
                   minFontSize: 10,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xffC4C4C4),
                   ),
                   maxLines: 2,
                 ),
                 modalidade != null
                     ? AutoSizeText(
-                        "${modalidade!.toUpperCase()}",
+                        modalidade!.toUpperCase(),
                         maxFontSize: 12,
                         minFontSize: 10,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xffC4C4C4),
                         ),
                         maxLines: 2,
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 Visibility(
                   visible: grade != null,
                   child: AutoSizeText(
-                    "TURMA $grade",
+                    'TURMA $grade',
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),
                 Visibility(
                   visible: codigoEOL != null,
                   child: AutoSizeText(
-                    "COD. EOL: $codigoEOL",
+                    'COD. EOL: $codigoEOL',
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -4,12 +4,12 @@ class InfoBox extends StatelessWidget {
   final List<Widget> content;
   final IconData? icon;
 
-  InfoBox({required this.content, this.icon});
+  const InfoBox({super.key, required this.content, this.icon});
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Stack(
       clipBehavior: Clip.none,
       children: <Widget>[
@@ -21,7 +21,7 @@ class InfoBox extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Color(0xffFFC6C8),
+              color: const Color(0xffFFC6C8),
             ),
             borderRadius: BorderRadius.circular(screenHeight * 2),
           ),
@@ -38,13 +38,13 @@ class InfoBox extends StatelessWidget {
               child: Container(
                 width: screenHeight * 5,
                 height: screenHeight * 5,
-                color: Color(0xffffffff),
+                color: const Color(0xffffffff),
                 child: Icon(
                   icon,
                   size: screenHeight * 2.3,
-                  color: Color(0xff666666),
+                  color: const Color(0xff666666),
                 ),
-              )),
+              ),),
         ),
       ],
     );

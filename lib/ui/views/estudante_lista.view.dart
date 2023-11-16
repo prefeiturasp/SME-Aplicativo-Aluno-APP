@@ -89,7 +89,8 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
     return Column(children: list);
   }
 
-  Future<void> _onBackPress() async {
+  bool _onBackPress() {
+    bool retorno = false;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -100,6 +101,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
+                retorno = true;
                 authLogout(false);
                 Nav.pushReplacement(context, const LoginView(notice: null));
               },
@@ -107,6 +109,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
+                retorno = false;
                 Navigator.of(context).pop(false);
               },
             ),
@@ -114,6 +117,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         );
       },
     );
+    return retorno;
   }
 
   void _loadingAllStudents() async {
@@ -143,11 +147,8 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
           ),
         ],
       ),
-      body: WillPopScope(
-        onWillPop: () async {
-          _onBackPress();
-          return true;
-        },
+      body: PopScope(
+        canPop: _onBackPress(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),

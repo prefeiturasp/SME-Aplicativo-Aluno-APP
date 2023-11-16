@@ -50,7 +50,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      log("[RecoverPassword] sendToken - Erro de requisição $stacktrace");
+      log('[RecoverPassword] sendToken - Erro de requisição $stacktrace');
       throw Exception(e);
     }
   }
@@ -80,14 +80,14 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      log('[RecoverPassword] validateToken - Erro de requisição ' + stacktrace.toString());
+      log('[RecoverPassword] validateToken - Erro de requisição $stacktrace');
       throw Exception(e);
     }
   }
 
   @override
   Future<DataUser> redefinePassword(String password, String token) async {
-    String? idDevice = await _firebaseMessaging.getToken();
+    final String? idDevice = await _firebaseMessaging.getToken();
     final Map data = {'token': token, 'senha': password, 'dispositivoId': idDevice};
     final body = json.encode(data);
 
@@ -113,7 +113,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      log("[RecoverPassword] redefinePassword - Erro de requisição $stacktrace");
+      log('[RecoverPassword] redefinePassword - Erro de requisição $stacktrace');
       throw Exception(e);
     }
   }
