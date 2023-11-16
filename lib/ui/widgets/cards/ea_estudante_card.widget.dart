@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sme_app_aluno/utils/string_support.dart';
+import '../../../utils/string_support.dart';
 
 class EAEstudanteCard extends StatelessWidget {
   final int codigoEOL;
@@ -21,12 +21,12 @@ class EAEstudanteCard extends StatelessWidget {
       required this.studentGrade,
       required this.onPress,
       required this.schooType,
-      this.avatar});
+      this.avatar,});
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return GestureDetector(
       onTap: onPress,
@@ -41,7 +41,7 @@ class EAEstudanteCard extends StatelessWidget {
               offset: Offset(1, 2),
               blurRadius: 2,
               spreadRadius: 0,
-            )
+            ),
           ],
           borderRadius: BorderRadius.all(
             Radius.circular(screenHeight * 2),
@@ -59,7 +59,7 @@ class EAEstudanteCard extends StatelessWidget {
                         ? avatar
                         : ClipOval(
                             child: Image.asset(
-                              "assets/images/avatar_estudante.png",
+                              'assets/images/avatar_estudante.png',
                               width: screenHeight * 8,
                               height: screenHeight * 8,
                               fit: BoxFit.cover,
@@ -85,7 +85,7 @@ class EAEstudanteCard extends StatelessWidget {
                         ),
                         AutoSizeText(
                           // "$schooType ${StringSupport.truncateEndString(schoolName, 30)} ($dreName)",
-                          "$schooType ${StringSupport.truncateEndString(schoolName, 20)} ($dreName)",
+                          '$schooType ${StringSupport.truncateEndString(schoolName, 20)} ($dreName)',
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xff666666)),
@@ -94,7 +94,7 @@ class EAEstudanteCard extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          "TURMA $studentGrade",
+                          'TURMA $studentGrade',
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xffBBBDC9)),
@@ -103,7 +103,7 @@ class EAEstudanteCard extends StatelessWidget {
                           height: screenHeight * 0.3,
                         ),
                         AutoSizeText(
-                          "CÓDIGO EOL $codigoEOL",
+                          'CÓDIGO EOL $codigoEOL',
                           maxFontSize: 10,
                           minFontSize: 8,
                           style: TextStyle(color: Color(0xffBBBDC9)),
@@ -118,7 +118,7 @@ class EAEstudanteCard extends StatelessWidget {
               FontAwesomeIcons.chevronRight,
               color: Color(0xffffd037),
               size: screenHeight * 3,
-            )
+            ),
           ],
         ),
       ),

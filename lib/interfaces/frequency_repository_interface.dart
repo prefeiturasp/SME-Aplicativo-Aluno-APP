@@ -1,5 +1,5 @@
-import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
-import 'package:sme_app_aluno/models/frequency/frequency.dart';
+import '../models/frequency/curricular_component.dart';
+import '../models/frequency/frequency.dart';
 
 abstract class IFrequencyRepository {
   Future<Frequency> fetchFrequency(

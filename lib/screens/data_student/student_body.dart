@@ -10,11 +10,11 @@ class StudentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     Widget itemResume(BuildContext context, String infoName, String infoData,
-        double screenHeight) {
+        double screenHeight,) {
       return Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,7 @@ class StudentBody extends StatelessWidget {
             ),
             Divider(
               thickness: 1,
-            )
+            ),
           ],
         ),
       );
@@ -52,26 +52,26 @@ class StudentBody extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(
-                bottom: screenHeight * 3, top: screenHeight * 1),
+                bottom: screenHeight * 3, top: screenHeight * 1,),
             child: AutoSizeText(
               'Dados do estudante',
               maxFontSize: 18,
               minFontSize: 16,
               style: TextStyle(
-                  color: Color(0xFFC65D00), fontWeight: FontWeight.bold),
+                  color: Color(0xFFC65D00), fontWeight: FontWeight.bold,),
               textAlign: TextAlign.left,
             ),
           ),
-          itemResume(context, "Data de Nascimento", dataNasc, screenHeight),
+          itemResume(context, 'Data de Nascimento', dataNasc, screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          itemResume(context, "Código EOL", codigoEOL, screenHeight),
+          itemResume(context, 'Código EOL', codigoEOL, screenHeight),
           SizedBox(
             height: screenHeight * 2.5,
           ),
           itemResume(
-              context, "Situação", "Matriculado em $situacao", screenHeight),
+              context, 'Situação', 'Matriculado em $situacao', screenHeight,),
         ],
       ),
     );

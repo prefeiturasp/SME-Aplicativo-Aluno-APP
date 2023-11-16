@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:sme_app_aluno/models/frequency/componentes_curriculares_do_aluno.dart';
+import 'componentes_curriculares_do_aluno.dart';
 
 class Frequency {
   String anoLetivo;

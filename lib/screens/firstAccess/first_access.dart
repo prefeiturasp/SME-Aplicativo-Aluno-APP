@@ -199,7 +199,7 @@ class FirstAccessState extends State<FirstAccess> {
                 Auth.logout(context, widget.id, false);
                 retorno = false;
               },
-            )
+            ),
           ],
         );
       },
@@ -248,7 +248,7 @@ class FirstAccessState extends State<FirstAccess> {
                                 size: screenHeight * 2,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       Container(
@@ -448,9 +448,9 @@ class FirstAccessState extends State<FirstAccess> {
                                                     Icons.check_box,
                                                     color: Color(0xffd06d12),
                                                   )
-                                                : const Icon(Icons.check_box_outline_blank, color: Color(0xff8e8e8e))
+                                                : const Icon(Icons.check_box_outline_blank, color: Color(0xff8e8e8e)),
                                           ],
-                                        )
+                                        ),
                                       ],
                                     ),
                                     onTap: () => howModalBottomSheetTerm(_termsController.term!),

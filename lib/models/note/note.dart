@@ -14,7 +14,7 @@ class Note {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['componenteCurricular'] = this.componenteCurricular;
     data['nota'] = this.nota;
     data['notaDescricao'] = this.notaDescricao;

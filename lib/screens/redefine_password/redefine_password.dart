@@ -99,7 +99,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -326,7 +326,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
                                   );
                                 }
                               },
-                            )
+                            ),
                           ],
                         ),
                       ),

@@ -1,4 +1,4 @@
-import 'package:sme_app_aluno/models/note/list_notes.dart';
+import '../models/note/list_notes.dart';
 
 abstract class IListNotesRepository {
   Future<ListNotes> fetchListNotes(

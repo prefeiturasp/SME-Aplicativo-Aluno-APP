@@ -71,7 +71,7 @@ class ListMessageState extends State<ListMessages> {
                 Navigator.of(context).pop(false);
                 retorno = false;
               },
-            )
+            ),
           ],
         );
       },
@@ -219,7 +219,7 @@ class ListMessageState extends State<ListMessages> {
                             FontAwesomeIcons.envelopeOpen,
                             color: Color(0xffffd037),
                             size: 16,
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -259,7 +259,7 @@ class ListMessageState extends State<ListMessages> {
                     ),
                     Divider(
                       color: Color(0xffcecece),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -384,7 +384,7 @@ class ListMessageState extends State<ListMessages> {
                                 FontAwesomeIcons.envelope,
                                 color: Color(0xffffd037),
                                 size: 16,
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -469,7 +469,7 @@ class ListMessageState extends State<ListMessages> {
                             : null,
                         label: const AutoSizeText('UE', style: TextStyle(color: Color(0xff42474A))),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Observer(

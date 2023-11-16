@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:sme_app_aluno/models/frequency/curricular_component.dart';
+import 'curricular_component.dart';
 
 class ComponentesCurricularesDoAluno {
   int codigoComponenteCurricular;

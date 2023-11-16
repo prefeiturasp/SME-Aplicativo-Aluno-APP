@@ -19,7 +19,7 @@ class UsuarioRepository extends IUsuarioRepository {
       'email': email,
       'dataNascimentoResponsavel': dataNascimento.toString(),
       'nomeMae': nomeMae,
-      'celular': telefone
+      'celular': telefone,
     });
     try {
       final response = await api.dio.put('/Usuario', data: body);

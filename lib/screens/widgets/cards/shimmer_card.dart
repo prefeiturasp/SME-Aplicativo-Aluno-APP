@@ -17,7 +17,7 @@ class ShimmerCard extends StatelessWidget {
               height: 60.0,
               width: 80.0,
               color: Colors.grey,
-            )
+            ),
           ],
         ),
       ),

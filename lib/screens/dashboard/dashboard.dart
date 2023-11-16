@@ -131,7 +131,7 @@ class DashboardState extends State<Dashboard> {
             ),
             const Divider(
               color: Color(0xffCDCDCD),
-            )
+            ),
           ],
         ),
       );
@@ -165,7 +165,7 @@ class DashboardState extends State<Dashboard> {
             ),
             const Divider(
               color: Color(0xffCDCDCD),
-            )
+            ),
           ],
         ),
       );

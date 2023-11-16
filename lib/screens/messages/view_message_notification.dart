@@ -87,7 +87,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -244,7 +244,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                               FontAwesomeIcons.angleLeft,
                               color: const Color(0xffffd037),
                               size: screenHeight * 4,
-                            )
+                            ),
                           ],
                         ),
                       ),

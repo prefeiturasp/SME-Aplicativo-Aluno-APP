@@ -42,7 +42,7 @@ class CardCalendar extends StatelessWidget {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(
@@ -163,7 +163,7 @@ class CardCalendar extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

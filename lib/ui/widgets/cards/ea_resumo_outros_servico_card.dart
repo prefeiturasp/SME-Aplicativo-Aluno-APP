@@ -37,7 +37,7 @@ class EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> 
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: FutureBuilder(
@@ -81,7 +81,7 @@ class EAResumoOutrosServicosCardState extends State<EAResumoOutrosServicosCard> 
                           maxFontSize: 18,
                           minFontSize: 16,
                           style: TextStyle(fontWeight: FontWeight.w700),
-                        )
+                        ),
                       ],
                     ),
                   ],

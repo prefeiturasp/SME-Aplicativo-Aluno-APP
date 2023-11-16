@@ -10,8 +10,8 @@ class ViewData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
       child: Column(
         children: <Widget>[
@@ -25,7 +25,7 @@ class ViewData extends StatelessWidget {
               ),
             ),
             padding: EdgeInsets.only(
-                left: screenHeight * 3, top: screenHeight * 1.5, right: screenHeight * 3, bottom: screenHeight * 1.5),
+                left: screenHeight * 3, top: screenHeight * 1.5, right: screenHeight * 3, bottom: screenHeight * 1.5,),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -46,7 +46,7 @@ class ViewData extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

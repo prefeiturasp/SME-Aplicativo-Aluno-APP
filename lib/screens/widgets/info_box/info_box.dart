@@ -8,8 +8,8 @@ class InfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Stack(
       clipBehavior: Clip.none,
       children: <Widget>[
@@ -44,7 +44,7 @@ class InfoBox extends StatelessWidget {
                   size: screenHeight * 2.3,
                   color: Color(0xff666666),
                 ),
-              )),
+              ),),
         ),
       ],
     );

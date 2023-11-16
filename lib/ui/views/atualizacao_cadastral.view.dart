@@ -149,7 +149,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                 retorno = true;
                 await Auth.logout(context, usuarioStore.usuario!.id, false);
               },
-            )
+            ),
           ],
         );
       },
@@ -196,7 +196,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                               size: screenHeight * 2,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Container(
@@ -453,9 +453,9 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                         _declaracao = newValue!;
                                       });
                                     },
-                                  )
+                                  ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                           SizedBox(

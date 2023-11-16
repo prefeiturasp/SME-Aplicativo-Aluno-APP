@@ -303,7 +303,7 @@ class _MeusDadosViewState extends State<MeusDadosView> {
                           ),
                         );
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

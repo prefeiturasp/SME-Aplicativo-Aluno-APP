@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:sme_app_aluno/screens/notes/note.dart';
+import 'note.dart';
 
 class NotesBody extends StatelessWidget {
   final String title;
@@ -38,9 +38,9 @@ class NotesBody extends StatelessWidget {
       required this.corTres,
       required this.corQuatro,
       required this.corFinal,
-      required this.groupSchool});
+      required this.groupSchool,});
 
-  _buildGroupNonEJA() => Row(
+  Row _buildGroupNonEJA() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Note(
@@ -81,7 +81,7 @@ class NotesBody extends StatelessWidget {
         ],
       );
 
-  _buildGroupEJA() => Row(
+  Row _buildGroupEJA() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Note(
@@ -110,8 +110,8 @@ class NotesBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return Padding(
       padding: EdgeInsets.only(bottom: screenHeight * 0.5),
@@ -124,7 +124,7 @@ class NotesBody extends StatelessWidget {
           ),
           subtitle: Padding(
               padding: EdgeInsets.all(screenHeight * 0.5),
-              child: groupSchool != 'EJA' ? _buildGroupNonEJA() : _buildGroupEJA())),
+              child: groupSchool != 'EJA' ? _buildGroupNonEJA() : _buildGroupEJA(),),),
     );
   }
 }

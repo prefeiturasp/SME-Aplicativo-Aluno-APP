@@ -37,7 +37,7 @@ class CheckLine extends StatelessWidget {
             style: TextStyle(
                 color: checked ? Color(0xff00AE6E) : Color(0xffff0000),
                 height: screenHeight * 0.2,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.w500,),
           ),
         ),
       ],

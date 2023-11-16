@@ -229,7 +229,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     content(
@@ -239,7 +239,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
                       keyScaffod,
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

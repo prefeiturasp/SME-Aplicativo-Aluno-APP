@@ -26,9 +26,9 @@ class EAEstudanteInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    var screenWidth = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       padding: padding != null ? padding : EdgeInsets.all(0),
@@ -43,7 +43,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ? avatar
                 : ClipOval(
                     child: Image.asset(
-                      "assets/images/avatar_estudante.png",
+                      'assets/images/avatar_estudante.png',
                       width: screenHeight * 8,
                       height: screenHeight * 8,
                       fit: BoxFit.cover,
@@ -63,7 +63,7 @@ class EAEstudanteInfo extends StatelessWidget {
                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 AutoSizeText(
-                  "$tipoEscola $ue ($dre)",
+                  '$tipoEscola $ue ($dre)',
                   maxFontSize: 12,
                   minFontSize: 10,
                   style: TextStyle(
@@ -73,7 +73,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ),
                 modalidade != null
                     ? AutoSizeText(
-                        "${modalidade!.toUpperCase()}",
+                        '${modalidade!.toUpperCase()}',
                         maxFontSize: 12,
                         minFontSize: 10,
                         style: TextStyle(
@@ -85,7 +85,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 Visibility(
                   visible: grade != null,
                   child: AutoSizeText(
-                    "TURMA $grade",
+                    'TURMA $grade',
                     maxFontSize: 12,
                     minFontSize: 10,
                     style: TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
@@ -95,7 +95,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 Visibility(
                   visible: codigoEOL != null,
                   child: AutoSizeText(
-                    "COD. EOL: $codigoEOL",
+                    'COD. EOL: $codigoEOL',
                     maxFontSize: 12,
                     minFontSize: 10,
                     style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
@@ -104,7 +104,7 @@ class EAEstudanteInfo extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -10,11 +10,11 @@ class TagCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     return Container(
       padding: EdgeInsets.only(
-          left: screenHeight * 2.2, top: screenHeight * 0.9, right: screenHeight * 2.2, bottom: screenHeight * 0.9),
+          left: screenHeight * 2.2, top: screenHeight * 0.9, right: screenHeight * 2.2, bottom: screenHeight * 0.9,),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.all(

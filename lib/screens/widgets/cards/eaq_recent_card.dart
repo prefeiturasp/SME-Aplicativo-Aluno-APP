@@ -54,7 +54,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -89,7 +89,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(

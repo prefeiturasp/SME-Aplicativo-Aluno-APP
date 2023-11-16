@@ -436,7 +436,7 @@ class FrequencyState extends State<Frequency> {
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          _detailedFrequencyObserver(size, screenHeight)
+          _detailedFrequencyObserver(size, screenHeight),
         ],
       ),
     );

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Nav {
   static push(BuildContext context, Widget screen,
-      {bool fullscreenDialog = false}) {
+      {bool fullscreenDialog = false,}) {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => screen, fullscreenDialog: fullscreenDialog),
+          builder: (context) => screen, fullscreenDialog: fullscreenDialog,),
     );
   }
 

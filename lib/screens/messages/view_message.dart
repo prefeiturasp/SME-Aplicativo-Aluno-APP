@@ -76,7 +76,7 @@ class ViewMessageState extends State<ViewMessage> {
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -111,7 +111,7 @@ class ViewMessageState extends State<ViewMessage> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -390,7 +390,7 @@ class ViewMessageState extends State<ViewMessage> {
                               FontAwesomeIcons.angleLeft,
                               color: const Color(0xffffd037),
                               size: screenHeight * 4,
-                            )
+                            ),
                           ],
                         ),
                       ),

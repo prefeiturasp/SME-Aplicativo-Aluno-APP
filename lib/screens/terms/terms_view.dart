@@ -105,7 +105,7 @@ class _TermsViewState extends State<TermsView> {
                   onPress: widget.changeStatusTerm,
                 ),
               )
-            : const SizedBox.shrink()
+            : const SizedBox.shrink(),
       ],
     );
   }

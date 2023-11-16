@@ -113,7 +113,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },

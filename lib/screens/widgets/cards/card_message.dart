@@ -18,12 +18,12 @@ class CardMessage extends StatelessWidget {
       required this.recentMessage,
       required this.footer,
       required this.footerContent,
-      required this.categoriaNotificacao});
+      required this.categoriaNotificacao,});
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
+    final size = MediaQuery.of(context).size;
+    final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
     const colorSME = Color(0xff9C33AD);
     const colorUE = Color(0xff5151CF);
     const colorTURMA = Color(0xff599E00);
@@ -40,7 +40,7 @@ class CardMessage extends StatelessWidget {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(
@@ -49,18 +49,18 @@ class CardMessage extends StatelessWidget {
             padding: EdgeInsets.all(screenHeight * 2.5),
             decoration: BoxDecoration(
                 color: recentMessage
-                    ? categoriaNotificacao == "SME"
+                    ? categoriaNotificacao == 'SME'
                         ? colorSME
-                        : categoriaNotificacao == "UE"
+                        : categoriaNotificacao == 'UE'
                             ? colorUE
                             : colorTURMA
-                    : categoriaNotificacao == "SME"
+                    : categoriaNotificacao == 'SME'
                         ? colorSME.withOpacity(0.4)
-                        : categoriaNotificacao == "UE"
+                        : categoriaNotificacao == 'UE'
                             ? colorUE.withOpacity(0.4)
                             : colorTURMA.withOpacity(0.4),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2))),
+                    topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2),),),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,9 +76,9 @@ class CardMessage extends StatelessWidget {
                             recentMessage ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
                             color: recentMessage
                                 ? Color(0xffFFD869)
-                                : categoriaNotificacao == "SME"
+                                : categoriaNotificacao == 'SME'
                                     ? colorSME
-                                    : categoriaNotificacao == "UE"
+                                    : categoriaNotificacao == 'UE'
                                         ? colorUE
                                         : colorTURMA,
                             size: screenHeight * 2.7,
@@ -92,12 +92,12 @@ class CardMessage extends StatelessWidget {
                         style: TextStyle(
                             color: recentMessage
                                 ? Colors.white
-                                : categoriaNotificacao == "SME"
+                                : categoriaNotificacao == 'SME'
                                     ? colorSME
-                                    : categoriaNotificacao == "UE"
+                                    : categoriaNotificacao == 'UE'
                                         ? colorUE
                                         : colorTURMA,
-                            fontWeight: FontWeight.w700),
+                            fontWeight: FontWeight.w700,),
                       ),
                     ],
                   ),
@@ -109,9 +109,9 @@ class CardMessage extends StatelessWidget {
                       height: screenHeight * 3.5,
                       child: ClipOval(
                           child: Container(
-                        color: categoriaNotificacao == "SME"
+                        color: categoriaNotificacao == 'SME'
                             ? colorSME
-                            : categoriaNotificacao == "UE"
+                            : categoriaNotificacao == 'UE'
                                 ? colorUE
                                 : colorTURMA,
                         child: Icon(
@@ -119,7 +119,7 @@ class CardMessage extends StatelessWidget {
                           color: Color(0xffFFFFFF),
                           size: screenHeight * 2,
                         ),
-                      ))),
+                      ),),),
                 ),
               ],
             ),
@@ -137,7 +137,7 @@ class CardMessage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: content,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -147,19 +147,19 @@ class CardMessage extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Color(0xffF3F3F3),
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2)),
+                    bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2),),
               ),
               padding: EdgeInsets.only(
                   left: screenHeight * 2.5,
                   right: screenHeight * 2.5,
                   top: screenHeight * 1.5,
-                  bottom: screenHeight * 1.5),
+                  bottom: screenHeight * 1.5,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: footerContent,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

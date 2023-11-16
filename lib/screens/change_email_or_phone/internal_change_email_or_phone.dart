@@ -122,7 +122,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -244,7 +244,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 TelefoneInputFormatter(),
-                                LengthLimitingTextInputFormatter(15)
+                                LengthLimitingTextInputFormatter(15),
                               ],
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
