@@ -20,7 +20,7 @@ class CheckLine extends StatelessWidget {
                 size: screenHeight * 2,
               )
             : Icon(
-                FontAwesomeIcons.times,
+                FontAwesomeIcons.xmark,
                 color: const Color(0xffff0000),
                 size: screenHeight * 2,
               ),
