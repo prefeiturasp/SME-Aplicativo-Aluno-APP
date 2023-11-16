@@ -75,7 +75,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  Future<bool> _onBackPress() async {
+  bool _onBackPress() {
     bool retorno = false;
     showDialog(
       context: context,
@@ -116,9 +116,9 @@ class RedefinePasswordState extends State<RedefinePassword> {
         title: const Text('Alteração de senha'),
         backgroundColor: const Color(0xffEEC25E),
       ),
-      body: WillPopScope(
-        onWillPop:
-            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress : null,
+      body: PopScope(
+        canPop:
+            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress() : false,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),

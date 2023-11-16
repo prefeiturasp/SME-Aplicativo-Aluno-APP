@@ -125,9 +125,9 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     return ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<bool> _onBackPress() async {
+  bool _onBackPress() {
     bool retorno = false;
-    await showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -166,8 +166,8 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: WillPopScope(
-        onWillPop: _onBackPress,
+      body: PopScope(
+        canPop: _onBackPress(),
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
