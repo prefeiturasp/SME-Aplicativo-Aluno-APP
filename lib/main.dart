@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         Provider<TermsController>.value(value: TermsController()),
         StreamProvider<ConnectivityStatus>(
-          initialData: ConnectivityStatus.Celular,
+          initialData: ConnectivityStatus.celular,
           create: (context) => ConnectivityService().connectionStatusController.stream,
         ),
       ],

@@ -42,7 +42,7 @@ class CardCalendar extends StatelessWidget {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(
@@ -63,7 +63,7 @@ class CardCalendar extends StatelessWidget {
                     ? Container(
                         margin: EdgeInsets.only(right: screenHeight * 2),
                         child: Icon(
-                          FontAwesomeIcons.calendarAlt,
+                          FontAwesomeIcons.calendarDays,
                           color: const Color(0xffC45C04),
                           size: screenHeight * 2.7,
                         ),
@@ -163,7 +163,7 @@ class CardCalendar extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

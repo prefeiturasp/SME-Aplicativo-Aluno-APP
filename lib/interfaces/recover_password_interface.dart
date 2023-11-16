@@ -1,5 +1,5 @@
-import 'package:sme_app_aluno/models/recover_password/data.dart';
-import 'package:sme_app_aluno/models/recover_password/data_user.dart';
+import '../models/recover_password/data.dart';
+import '../models/recover_password/data_user.dart';
 
 abstract class IRecoverPasswordRepository {
   Future<Data> sendToken(String cpf);

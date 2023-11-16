@@ -127,7 +127,7 @@ class MessageRepository implements IMessageRepository {
       'notificacaoId': notificacaoId,
       'usuarioId': usuarioId,
       'codigoAlunoEol': codigoAlunoEol,
-      'mensagemVisualizada': mensagemVisualia
+      'mensagemVisualizada': mensagemVisualia,
     };
 
     //encode Map to JSON

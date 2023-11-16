@@ -1,4 +1,4 @@
-import 'package:sme_app_aluno/models/message/message.dart';
+import '../models/message/message.dart';
 
 abstract class IMessageRepository {
   Future<List<Message>> fetchNewMessages(int codigoEol);
@@ -6,7 +6,7 @@ abstract class IMessageRepository {
   Future<List<Message>> fetchMessages(int codigoEol, int userId);
 
   Future<bool> readMessage(int notificacaoId, int usuarioId, int codigoAlunoEol,
-      bool mensagemVisualia);
+      bool mensagemVisualia,);
 
   Future<bool> deleteMessage(int codigoEol, int idNotificacao, int userId);
 }

@@ -1,4 +1,4 @@
-import 'package:sme_app_aluno/models/index.dart';
+import '../models/index.dart';
 
 class ComponenteCurricularNotaDTO {
   String componenteCurricularNome;
@@ -6,5 +6,8 @@ class ComponenteCurricularNotaDTO {
   List<EstudanteNotaConceitoModel>? notasConceitos;
 
   ComponenteCurricularNotaDTO(
-      {required this.componenteCurricularNome, required this.componenteCurricularId, required this.notasConceitos});
+      {
+        required this.componenteCurricularNome, required this.componenteCurricularId, required this.notasConceitos,
+      }
+  );
 }

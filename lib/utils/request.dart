@@ -1,17 +1,17 @@
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:sme_app_aluno/utils/app_config_reader.dart';
+import 'app_config_reader.dart';
 
 class Request {
   //START GET
-  static getURL(String endPoint, Map<String, String> headers, param2) async {
+  static Future<http.Response> getURL(String endPoint, Map<String, String> headers, param2) async {
     try {
-      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
+      final uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
-      log('HTTP Request GET: ' + uri.toString());
+      log('HTTP Request GET: $uri');
 
-      var response = await http.get(
+      final response = await http.get(
         uri,
         headers: headers,
       );
@@ -27,13 +27,13 @@ class Request {
   }
 
   //START POST
-  static postURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
+  static Future<http.Response> postURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
     try {
-      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
+      final uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
-      log('HTTP Request POST: ' + uri.toString());
+      log('HTTP Request POST: $uri');
 
-      var response = await http.post(uri, headers: headers, body: body);
+      final response = await http.post(uri, headers: headers, body: body);
 
       log('HTTP Response StatusCode: ${response.statusCode}');
       log('HTTP Response Body: ${response.body}');
@@ -46,13 +46,13 @@ class Request {
   }
 
   //START PUT
-  static putURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
+  static Future<http.Response> putURL(String endPoint, Map<String, String> headers, Map<String, String> body) async {
     try {
-      var uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
+      final uri =Uri.parse(AppConfigReader.getApiHost() + endPoint);
 
-      log('HTTP Request POST: ' + uri.toString());
+      log('HTTP Request POST: $uri');
 
-      var response = await http.put(uri, headers: headers, body: body);
+      final response = await http.put(uri, headers: headers, body: body);
 
       log('HTTP Response StatusCode: ${response.statusCode}');
       log('HTTP Response Body: ${response.body}');

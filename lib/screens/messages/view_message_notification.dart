@@ -39,7 +39,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
     _viewMessageUpdate(false, false);
   }
 
-  _viewMessageUpdate(bool isNotRead, bool action) async {
+  void _viewMessageUpdate(bool isNotRead, bool action) async {
     if (action) {
       _messagesController.updateMessage(
         notificacaoId: widget.message.id,
@@ -87,7 +87,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -114,8 +114,8 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
-    if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+    if (connectionStatus == ConnectivityStatus.offline) {
+      return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
@@ -244,7 +244,7 @@ class ViewMessageNotificationState extends State<ViewMessageNotification> {
                               FontAwesomeIcons.angleLeft,
                               color: const Color(0xffffd037),
                               size: screenHeight * 4,
-                            )
+                            ),
                           ],
                         ),
                       ),
