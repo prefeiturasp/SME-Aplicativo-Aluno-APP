@@ -8,7 +8,7 @@ class ShimmerCard extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.white,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

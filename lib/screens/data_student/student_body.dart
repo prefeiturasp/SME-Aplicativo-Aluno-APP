@@ -23,22 +23,22 @@ class StudentBody extends StatelessWidget {
               infoName,
               maxFontSize: 16,
               minFontSize: 14,
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
             ),
             SizedBox(
               height: screenHeight * 1,
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: const BoxDecoration(color: Colors.white),
               child: AutoSizeText(
                 infoData,
                 maxFontSize: 20,
                 minFontSize: 18,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
-            Divider(
+            const Divider(
               thickness: 1,
             ),
           ],
@@ -53,7 +53,7 @@ class StudentBody extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
                 bottom: screenHeight * 3, top: screenHeight * 1,),
-            child: AutoSizeText(
+            child: const AutoSizeText(
               'Dados do estudante',
               maxFontSize: 18,
               minFontSize: 16,

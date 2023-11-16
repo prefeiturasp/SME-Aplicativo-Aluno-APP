@@ -36,7 +36,7 @@ class EAEstudanteCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               color: Colors.black12,
               offset: Offset(1, 2),
               blurRadius: 2,
@@ -76,7 +76,7 @@ class EAEstudanteCard extends StatelessWidget {
                             StringSupport.truncateEndString(name, 28),
                             maxFontSize: 12,
                             minFontSize: 10,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             maxLines: 2,
                           ),
                         ),
@@ -88,7 +88,7 @@ class EAEstudanteCard extends StatelessWidget {
                           '$schooType ${StringSupport.truncateEndString(schoolName, 20)} ($dreName)',
                           maxFontSize: 10,
                           minFontSize: 8,
-                          style: TextStyle(color: Color(0xff666666)),
+                          style: const TextStyle(color: Color(0xff666666)),
                         ),
                         SizedBox(
                           height: screenHeight * 0.3,
@@ -97,7 +97,7 @@ class EAEstudanteCard extends StatelessWidget {
                           'TURMA $studentGrade',
                           maxFontSize: 10,
                           minFontSize: 8,
-                          style: TextStyle(color: Color(0xffBBBDC9)),
+                          style: const TextStyle(color: Color(0xffBBBDC9)),
                         ),
                         SizedBox(
                           height: screenHeight * 0.3,
@@ -106,7 +106,7 @@ class EAEstudanteCard extends StatelessWidget {
                           'CÓDIGO EOL $codigoEOL',
                           maxFontSize: 10,
                           minFontSize: 8,
-                          style: TextStyle(color: Color(0xffBBBDC9)),
+                          style: const TextStyle(color: Color(0xffBBBDC9)),
                         ),
                       ],
                     ),
@@ -116,7 +116,7 @@ class EAEstudanteCard extends StatelessWidget {
             ),
             Icon(
               FontAwesomeIcons.chevronRight,
-              color: Color(0xffffd037),
+              color: const Color(0xffffd037),
               size: screenHeight * 3,
             ),
           ],

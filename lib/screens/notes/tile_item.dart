@@ -17,7 +17,7 @@ class TileItem extends StatelessWidget {
         initiallyExpanded: false,
         title: AutoSizeText(
           header,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
           minFontSize: 14,
           maxFontSize: 16,
           textAlign: TextAlign.start,

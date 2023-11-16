@@ -12,7 +12,7 @@ class LabelFrequency extends StatelessWidget {
       text,
       maxFontSize: 16,
       minFontSize: 14,
-      style: TextStyle(
+      style: const TextStyle(
         color: Color(0xff4D4D4D),
         fontWeight: FontWeight.w500,
       ),

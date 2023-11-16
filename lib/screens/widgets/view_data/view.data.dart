@@ -19,7 +19,7 @@ class ViewData extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.only(bottom: screenHeight * 2.5),
             decoration: BoxDecoration(
-              color: backgroundColor ?? Color(0xffF0F0F0),
+              color: backgroundColor ?? const Color(0xffF0F0F0),
               borderRadius: BorderRadius.all(
                 Radius.circular(screenHeight * 0.8),
               ),
@@ -33,7 +33,7 @@ class ViewData extends StatelessWidget {
                   label,
                   maxFontSize: 14,
                   minFontSize: 12,
-                  style: TextStyle(color: Color(0xff757575)),
+                  style: const TextStyle(color: Color(0xff757575)),
                 ),
                 SizedBox(
                   height: screenHeight * 1,
@@ -42,7 +42,7 @@ class ViewData extends StatelessWidget {
                   text,
                   maxFontSize: 20,
                   minFontSize: 18,
-                  style: TextStyle(color: Color(0xff757575)),
+                  style: const TextStyle(color: Color(0xff757575)),
                 ),
               ],
             ),

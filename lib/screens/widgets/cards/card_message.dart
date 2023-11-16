@@ -35,7 +35,7 @@ class CardMessage extends StatelessWidget {
           Radius.circular(screenHeight * 2),
         ),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: Colors.black12,
             offset: Offset(1, 2),
             blurRadius: 2,
@@ -75,7 +75,7 @@ class CardMessage extends StatelessWidget {
                           child: Icon(
                             recentMessage ? FontAwesomeIcons.envelope : FontAwesomeIcons.envelopeOpen,
                             color: recentMessage
-                                ? Color(0xffFFD869)
+                                ? const Color(0xffFFD869)
                                 : categoriaNotificacao == 'SME'
                                     ? colorSME
                                     : categoriaNotificacao == 'UE'
@@ -116,7 +116,7 @@ class CardMessage extends StatelessWidget {
                                 : colorTURMA,
                         child: Icon(
                           FontAwesomeIcons.check,
-                          color: Color(0xffFFFFFF),
+                          color: const Color(0xffFFFFFF),
                           size: screenHeight * 2,
                         ),
                       ),),),
@@ -145,7 +145,7 @@ class CardMessage extends StatelessWidget {
             visible: footer,
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xffF3F3F3),
+                color: const Color(0xffF3F3F3),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(screenHeight * 2), bottomRight: Radius.circular(screenHeight * 2),),
               ),

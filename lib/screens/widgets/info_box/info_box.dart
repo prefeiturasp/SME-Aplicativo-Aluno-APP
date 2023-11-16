@@ -21,7 +21,7 @@ class InfoBox extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Color(0xffFFC6C8),
+              color: const Color(0xffFFC6C8),
             ),
             borderRadius: BorderRadius.circular(screenHeight * 2),
           ),
@@ -38,11 +38,11 @@ class InfoBox extends StatelessWidget {
               child: Container(
                 width: screenHeight * 5,
                 height: screenHeight * 5,
-                color: Color(0xffffffff),
+                color: const Color(0xffffffff),
                 child: Icon(
                   icon,
                   size: screenHeight * 2.3,
-                  color: Color(0xff666666),
+                  color: const Color(0xff666666),
                 ),
               ),),
         ),

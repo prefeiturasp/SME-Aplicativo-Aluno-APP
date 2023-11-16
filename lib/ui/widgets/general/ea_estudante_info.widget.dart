@@ -31,7 +31,7 @@ class EAEstudanteInfo extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: padding != null ? padding : EdgeInsets.all(0),
+      padding: padding != null ? padding : const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -60,13 +60,13 @@ class EAEstudanteInfo extends StatelessWidget {
                   // StringSupport.truncateEndString(nome, 25),
                   maxFontSize: 16,
                   minFontSize: 14,
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
                 ),
                 AutoSizeText(
                   '$tipoEscola $ue ($dre)',
                   maxFontSize: 12,
                   minFontSize: 10,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xffC4C4C4),
                   ),
                   maxLines: 2,
@@ -76,19 +76,19 @@ class EAEstudanteInfo extends StatelessWidget {
                         '${modalidade!.toUpperCase()}',
                         maxFontSize: 12,
                         minFontSize: 10,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xffC4C4C4),
                         ),
                         maxLines: 2,
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 Visibility(
                   visible: grade != null,
                   child: AutoSizeText(
                     'TURMA $grade',
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Color(0xffBBBDC9), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),
@@ -98,7 +98,7 @@ class EAEstudanteInfo extends StatelessWidget {
                     'COD. EOL: $codigoEOL',
                     maxFontSize: 12,
                     minFontSize: 10,
-                    style: TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
+                    style: const TextStyle(color: Color(0xff757575), fontWeight: FontWeight.w500),
                     maxLines: 2,
                   ),
                 ),

@@ -120,7 +120,7 @@ class NotesBody extends StatelessWidget {
             title,
             minFontSize: 13,
             maxFontSize: 15,
-            style: TextStyle(fontWeight: FontWeight.w500),
+            style: const TextStyle(fontWeight: FontWeight.w500),
           ),
           subtitle: Padding(
               padding: EdgeInsets.all(screenHeight * 0.5),
