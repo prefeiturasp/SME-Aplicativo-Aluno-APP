@@ -12,7 +12,7 @@ class CardMessage extends StatelessWidget {
   final String categoriaNotificacao;
 
   CardMessage(
-      {required this.headerTitle,
+      {super.key, required this.headerTitle,
       required this.headerIcon,
       required this.content,
       required this.recentMessage,

@@ -4,7 +4,7 @@ class InfoBox extends StatelessWidget {
   final List<Widget> content;
   final IconData? icon;
 
-  InfoBox({required this.content, this.icon});
+  InfoBox({super.key, required this.content, this.icon});
 
   @override
   Widget build(BuildContext context) {

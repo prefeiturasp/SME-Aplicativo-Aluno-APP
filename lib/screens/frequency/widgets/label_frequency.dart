@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class LabelFrequency extends StatelessWidget {
   final String text;
 
-  LabelFrequency({required this.text});
+  LabelFrequency({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class NotesBody extends StatelessWidget {
   final String groupSchool;
 
   NotesBody(
-      {required this.title,
+      {super.key, required this.title,
       required this.bUm,
       required this.bDois,
       required this.bTres,

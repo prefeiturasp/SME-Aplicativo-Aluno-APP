@@ -6,7 +6,7 @@ class ViewData extends StatelessWidget {
   final String text;
   final Color? backgroundColor;
 
-  ViewData({required this.label, required this.text, this.backgroundColor});
+  ViewData({super.key, required this.label, required this.text, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {

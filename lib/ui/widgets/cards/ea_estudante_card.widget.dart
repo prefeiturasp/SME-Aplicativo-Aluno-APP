@@ -14,7 +14,7 @@ class EAEstudanteCard extends StatelessWidget {
   final Image? avatar;
 
   EAEstudanteCard(
-      {required this.codigoEOL,
+      {super.key, required this.codigoEOL,
       required this.name,
       required this.schoolName,
       required this.dreName,

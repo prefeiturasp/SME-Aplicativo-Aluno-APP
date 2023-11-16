@@ -12,7 +12,7 @@ class EAEstudanteInfo extends StatelessWidget {
   final String? modalidade;
   final EdgeInsets? padding;
 
-  EAEstudanteInfo({
+  EAEstudanteInfo({super.key, 
     required this.nome,
     required this.ue,
     required this.tipoEscola,
