@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 
 import '../../controllers/auth/recover_password.controller.dart';
-import '../../services/user.service.dart';
 import '../../ui/index.dart';
 import '../../utils/navigator.dart';
 import '../widgets/check_line/check_line.dart';
@@ -22,7 +21,6 @@ class RedefinePassword extends StatefulWidget {
 }
 
 class RedefinePasswordState extends State<RedefinePassword> {
-  final UserService _userService = UserService();
   final _formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 

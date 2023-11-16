@@ -79,7 +79,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
         right: widget.totalCateories == 1 ? 0.0 : screenHeight * 1.5,
       ),
       decoration: BoxDecoration(
-        color: widget.message == null ? const Color(0xffC45C04) : Colors.white,
+        color: widget.message.mensagem.isEmpty ? const Color(0xffC45C04) : Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(screenHeight * 2),
         ),
@@ -222,7 +222,7 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
               padding: EdgeInsets.all(screenHeight * 2),
               color: Colors.white,
               child: Container(
-                child: widget.message != null
+                child: widget.message.mensagem.isNotEmpty
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

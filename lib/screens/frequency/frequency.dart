@@ -272,7 +272,7 @@ class FrequencyState extends State<Frequency> {
 
           result = _buildFrequencyExpandedPanel(index, size, screenHeight);
 
-          return result ?? const Text('erro ao obter dados');
+          return result;
         },
       );
 
