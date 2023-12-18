@@ -1,4 +1,4 @@
-FROM ghcr.io/cirruslabs/flutter:3.10.6 as build
+FROM alevato/android-flutter:android-30
 
 ARG GOOGLE_SERVICES_JSON
 ARG JKS_KEY_FILE
