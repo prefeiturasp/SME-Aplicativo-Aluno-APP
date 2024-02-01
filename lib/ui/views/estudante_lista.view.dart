@@ -89,7 +89,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
     return Column(children: list);
   }
 
-  bool _onBackPress() {
+  bool onBackPress() {
     bool retorno = false;
     showDialog(
       context: context,
@@ -137,8 +137,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              authLogout(false);
-              //Auth.logout(context, _usuarioStore.id, true);
+              onBackPress();
             },
             icon: Icon(
               FontAwesomeIcons.rightFromBracket,
@@ -148,7 +147,10 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
         ],
       ),
       body: PopScope(
-        canPop: _onBackPress(),
+        canPop: true,
+        onPopInvoked: (bool e) {
+          onBackPress();
+        },
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
