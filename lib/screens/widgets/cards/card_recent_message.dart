@@ -16,14 +16,14 @@ class CardRecentMessage extends StatefulWidget {
   final Function onPress;
   final VoidCallback outherRoutes;
   const CardRecentMessage({
-    Key? key,
+    super.key,
     this.message,
     required this.countMessages,
     this.deleteBtn = false,
     required this.recent,
     required this.onPress,
     required this.outherRoutes,
-  }) : super(key: key);
+  });
 
   @override
   CardRecentMessageState createState() => CardRecentMessageState();
@@ -53,7 +53,7 @@ class CardRecentMessageState extends State<CardRecentMessage> {
                 retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
@@ -82,7 +82,7 @@ class CardRecentMessageState extends State<CardRecentMessage> {
             offset: Offset(1, 2),
             blurRadius: 2,
             spreadRadius: 0,
-          )
+          ),
         ],
       ),
       child: Column(

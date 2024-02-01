@@ -24,16 +24,17 @@ class Auth {
       final List<Group> groups = await groupMessageService.all();
       final List<Message> messages = await messageService.all();
 
-      groups.forEach((element) async {
-        log('Grupo removido: ${element.toMap()}');
-        await firebaseMessaging.unsubscribeFromTopic(element.codigo);
-        await groupMessageService.delete(element.id);
-      });
+      for (var i = 0; i < groups.length; i++) {
+        log('Grupo removido: ${groups[i].toMap()}');
+        await firebaseMessaging.unsubscribeFromTopic(groups[i].codigo);
+        await groupMessageService.delete(groups[i].id);
+      }
 
-      messages.forEach((message) async {
-        log('Mensagem removida: ${message.toMap()}');
-        await messageService.delete(message.id);
-      });
+      for (var i = 0; i < messages.length; i++) {
+        log('Mensagem removida: ${messages[i].toMap()}');
+        await messageService.delete(messages[i].id);
+      }
+
       await usuarioStore.limparUsuario();
 
       BackgroundFetch.stop().then((int status) {

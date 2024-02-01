@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
       final body = json.encode(parametrosLogin);
 
       final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao');
+
       final response = await http
           .post(
         url,
@@ -40,10 +42,9 @@ class AuthenticateRepository implements IAuthenticateRepository {
         body: body,
       )
           .timeout(
-        const Duration(seconds: 20),
+        const Duration(seconds: 360),
         onTimeout: () {
-          // Time has run out, do what you wanted to do.
-          return http.Response('Erro ao tentar se autenticar', 408); // Request Timeout response status code
+          return http.Response('Erro ao tentar se autenticar', 408);
         },
       );
 
@@ -65,7 +66,7 @@ class AuthenticateRepository implements IAuthenticateRepository {
         log('Erro ao tentar se autenticar status code ${response.statusCode}');
         return usuarioRetorno;
       }
-    } catch (error, stacktrace) {
+    } on DioException catch (error, stacktrace) {
       log('Erro ao tentar se autenticar $stacktrace');
       GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar  $error , $stacktrace}');
       return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());

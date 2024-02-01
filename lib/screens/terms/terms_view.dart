@@ -19,14 +19,14 @@ class TermsView extends StatefulWidget {
   });
 
   @override
-  _TermsViewState createState() => _TermsViewState();
+  TermsViewState createState() => TermsViewState();
 }
 
-class _TermsViewState extends State<TermsView> {
+class TermsViewState extends State<TermsView> {
   final ScrollController _controller = ScrollController();
   var reachEnd = false;
 
-  _listener() {
+  void _listener() {
     final maxScroll = _controller.position.maxScrollExtent;
     final minScroll = _controller.position.minScrollExtent;
     if (_controller.offset >= maxScroll) {
@@ -105,7 +105,7 @@ class _TermsViewState extends State<TermsView> {
                   onPress: widget.changeStatusTerm,
                 ),
               )
-            : const SizedBox.shrink()
+            : const SizedBox.shrink(),
       ],
     );
   }

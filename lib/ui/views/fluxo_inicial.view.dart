@@ -131,8 +131,8 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
 
-    if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+    if (connectionStatus == ConnectivityStatus.offline) {
+      return const NotInteernet();
     } else {
       return Observer(
         builder: (context) => usuarioStore.usuario?.id == null

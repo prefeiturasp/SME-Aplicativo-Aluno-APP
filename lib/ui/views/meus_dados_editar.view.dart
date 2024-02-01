@@ -384,9 +384,9 @@ class MeusDadosEditarViewState extends State<MeusDadosEditarView> {
                                       _declaracao = newValue!;
                                     });
                                   },
-                                )
+                                ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                         SizedBox(

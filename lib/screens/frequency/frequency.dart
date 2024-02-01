@@ -243,7 +243,7 @@ class FrequencyState extends State<Frequency> {
                     true,
                   )
                 : const SizedBox(),
-            comp.frequencias.isNotEmpty ? LabelFrequency(text: 'Percentual de frequência') : const SizedBox(),
+            comp.frequencias.isNotEmpty ? const LabelFrequency(text: 'Percentual de frequência') : const SizedBox(),
             SizedBox(
               height: screenHeight * 2,
             ),
@@ -272,7 +272,7 @@ class FrequencyState extends State<Frequency> {
 
           result = _buildFrequencyExpandedPanel(index, size, screenHeight);
 
-          return result ?? const Text('erro ao obter dados');
+          return result;
         },
       );
 
@@ -436,7 +436,7 @@ class FrequencyState extends State<Frequency> {
           SizedBox(
             height: screenHeight * 2.5,
           ),
-          _detailedFrequencyObserver(size, screenHeight)
+          _detailedFrequencyObserver(size, screenHeight),
         ],
       ),
     );

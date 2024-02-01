@@ -1,4 +1,4 @@
 class ModeloBoletim {
-  static const int Simples = 1;
-  static const int Detalhado = 2;
+  static const int simples = 1;
+  static const int detalhado = 2;
 }

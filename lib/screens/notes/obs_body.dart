@@ -9,12 +9,12 @@ class ObsBody extends StatelessWidget {
   final String? recomendacoesAluno;
   final bool current;
   const ObsBody({
-    Key? key,
+    super.key,
     required this.title,
     this.recomendacoesFamilia,
     this.recomendacoesAluno,
     this.current = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

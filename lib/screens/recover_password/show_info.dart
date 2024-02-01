@@ -36,7 +36,7 @@ class ShowInfoState extends State<ShowInfo> {
     super.initState();
   }
 
-  _onPressValidateToken(String token, BuildContext context) async {
+  void _onPressValidateToken(String token, BuildContext context) async {
     await _recoverPasswordController.validateToken(token);
     if (_recoverPasswordController.data!.ok && context.mounted) {
       Nav.push(
@@ -51,7 +51,7 @@ class ShowInfoState extends State<ShowInfo> {
     }
   }
 
-  onError() {
+  void onError() {
     final snackbar = SnackBar(
       backgroundColor: Colors.red,
       content: _recoverPasswordController.data != null

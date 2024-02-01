@@ -46,7 +46,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     loadInputs();
   }
 
-  loadInputs() async {
+  void loadInputs() async {
     final User user = await _userService.find(widget.userId);
     final String email = user.email;
     final String phone = user.celular;
@@ -56,7 +56,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     setState(() => _phone = maskedPhone);
   }
 
-  fetchChangeEmailOrPhone(String email, String phone, int userId) async {
+  void fetchChangeEmailOrPhone(String email, String phone, int userId) async {
     setState(() {
       _busy = true;
     });
@@ -100,34 +100,31 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     }
   }
 
-  Future<bool> _onBackPress() async {
-    var retorno = false;
+  void _onBackPress() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Atenção'),
           content: const Text('Você não confirmou as suas alterações, deseja descartá-las?'),
-          actions: <Widget>[
+          actions: [
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
+                Navigator.of(context).pop(true);
                 Navigator.of(context).pop(true);
               },
             ),
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
-            )
+            ),
           ],
         );
       },
     );
-    return retorno;
   }
 
   @override
@@ -135,8 +132,14 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
-    return WillPopScope(
-      onWillPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty) ? _onBackPress : null,
+    return PopScope(
+      canPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty),
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        _onBackPress();
+      },
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
@@ -244,7 +247,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 TelefoneInputFormatter(),
-                                LengthLimitingTextInputFormatter(15)
+                                LengthLimitingTextInputFormatter(15),
                               ],
                               keyboardType: TextInputType.number,
                               onChanged: (value) {

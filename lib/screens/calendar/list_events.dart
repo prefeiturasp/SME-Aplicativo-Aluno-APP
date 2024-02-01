@@ -65,7 +65,7 @@ class ListEventsState extends State<ListEvents> {
         ),
         const Divider(
           color: Color(0xffCDCDCD),
-        )
+        ),
       ],
     );
   }
@@ -184,7 +184,7 @@ class ListEventsState extends State<ListEvents> {
                       offset: Offset(1, 2),
                       blurRadius: 2,
                       spreadRadius: 0,
-                    )
+                    ),
                   ],
                 ),
                 padding: EdgeInsets.all(screenHeight * 1.5),
@@ -256,7 +256,7 @@ class ListEventsState extends State<ListEvents> {
                     LabelEvent(labelName: 'Demais eventos', labelColor: colorDemaisEventos),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

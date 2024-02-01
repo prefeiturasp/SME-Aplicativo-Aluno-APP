@@ -59,7 +59,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
           codigoUe: widget.estudante.codigoEscola,
           codigoDre: widget.estudante.codigoDre,
           semestre: 0,
-          modelo: ModeloBoletim.Detalhado,
+          modelo: ModeloBoletim.detalhado,
           anoLetivo: DateTime.now().year,
           codigoTurma: widget.estudante.codigoTurma.toString(),
           codigoAluno: widget.estudante.codigoEol.toString(),
@@ -83,8 +83,8 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     final keyScaffod = GlobalKey<ScaffoldState>();
-    if (connectionStatus == ConnectivityStatus.Offline) {
-      return NotInteernet();
+    if (connectionStatus == ConnectivityStatus.offline) {
+      return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
@@ -181,7 +181,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
                             ),
                             child: Center(
                               child: AutoSizeText(
-                                widget.grupoCodigo == ModalidadeTipo.EducacaoInfantil
+                                widget.grupoCodigo == ModalidadeTipo.educacaoInfantil
                                     ? MensagemSistema.abaLabelRelatorio
                                     : MensagemSistema.abaLabelBoletim,
                                 maxFontSize: 16,
@@ -229,7 +229,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     content(
@@ -239,7 +239,7 @@ class EstudanteResumoViewState extends State<EstudanteResumoView> {
                       keyScaffod,
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

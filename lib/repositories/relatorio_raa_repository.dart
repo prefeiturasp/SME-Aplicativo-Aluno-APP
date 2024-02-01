@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import '../interfaces/IRelatorioRaaRepository.dart';
+import '../interfaces/relatorio_raa_repository_interface.dart';
 import '../stores/usuario.store.dart';
 import '../utils/app_config_reader.dart';
 
