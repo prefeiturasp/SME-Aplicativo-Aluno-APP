@@ -92,7 +92,12 @@ class RecoverPasswordState extends State<RecoverPassword> {
         ),
       ),
       body: PopScope(
-        canPop: false,
+        canPop: true,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            Nav.pop(context);
+          }
+        },
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(left: screenHeight * 2.5, right: screenHeight * 2.5),
