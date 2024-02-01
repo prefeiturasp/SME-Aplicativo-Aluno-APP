@@ -75,8 +75,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  bool _onBackPress() {
-    bool retorno = false;
+  void _onBackPress() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -87,14 +86,13 @@ class RedefinePasswordState extends State<RedefinePassword> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
+                Navigator.of(context).pop(true);
                 Navigator.of(context).pop(true);
               },
             ),
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             ),
@@ -102,7 +100,6 @@ class RedefinePasswordState extends State<RedefinePassword> {
         );
       },
     );
-    return retorno;
   }
 
   @override
@@ -117,8 +114,13 @@ class RedefinePasswordState extends State<RedefinePassword> {
         backgroundColor: const Color(0xffEEC25E),
       ),
       body: PopScope(
-        canPop:
-            (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress() : false,
+        canPop: (_password.isEmpty || _oldPassword.isEmpty || _confirmPassword.isEmpty),
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            return;
+          }
+          _onBackPress();
+        },
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),

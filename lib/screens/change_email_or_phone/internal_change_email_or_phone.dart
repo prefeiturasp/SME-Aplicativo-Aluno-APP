@@ -100,8 +100,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     }
   }
 
-  bool _onBackPress()  {
-    bool retorno = false;
+  void _onBackPress() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -112,14 +111,13 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
+                Navigator.of(context).pop(true);
                 Navigator.of(context).pop(true);
               },
             ),
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             ),
@@ -127,7 +125,6 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
         );
       },
     );
-    return retorno;
   }
 
   @override
@@ -136,7 +133,13 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
     return PopScope(
-      canPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty) ? _onBackPress() : false,
+      canPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty),
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        _onBackPress();
+      },
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,

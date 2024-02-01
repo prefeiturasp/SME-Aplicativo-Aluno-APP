@@ -91,8 +91,7 @@ class ChangePasswordState extends State<ChangePassword> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  bool _onBackPress() {
-    bool retorno = false;
+  void onBackPress() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -103,14 +102,13 @@ class ChangePasswordState extends State<ChangePassword> {
             ElevatedButton(
               child: const Text('SIM'),
               onPressed: () {
-                retorno = true;
+                Navigator.of(context).pop(true);
                 Navigator.of(context).pop(true);
               },
             ),
             ElevatedButton(
               child: const Text('NÃO'),
               onPressed: () {
-                retorno = false;
                 Navigator.of(context).pop(false);
               },
             ),
@@ -118,8 +116,6 @@ class ChangePasswordState extends State<ChangePassword> {
         );
       },
     );
-
-    return retorno;
   }
 
   @override
@@ -134,7 +130,13 @@ class ChangePasswordState extends State<ChangePassword> {
         backgroundColor: const Color(0xffEEC25E),
       ),
       body: PopScope(
-        canPop: (_password.isNotEmpty || _oldPassword.isNotEmpty || _confirmPassword.isNotEmpty) ? _onBackPress() : false,
+        canPop: (_password.isEmpty && _oldPassword.isEmpty && _confirmPassword.isEmpty),
+        onPopInvoked: (bool e) {
+          if (e) {
+            return;
+          }
+          onBackPress();
+        },
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
@@ -203,7 +205,6 @@ class ChangePasswordState extends State<ChangePassword> {
                                 labelText: 'Senha Antiga',
                                 labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
                                 errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                // hintText: "Data de nascimento do aluno",
                                 border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.text,
@@ -256,7 +257,6 @@ class ChangePasswordState extends State<ChangePassword> {
                                 labelText: 'Nova senha',
                                 labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
                                 errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                // hintText: "Data de nascimento do aluno",
                                 border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.text,
@@ -297,11 +297,9 @@ class ChangePasswordState extends State<ChangePassword> {
                                     });
                                   },
                                 ),
-
                                 labelText: 'Confirmar a nova senha',
                                 labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
                                 errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                // hintText: "Data de nascimento do aluno",
                                 border: InputBorder.none,
                               ),
                               validator: (value) {
