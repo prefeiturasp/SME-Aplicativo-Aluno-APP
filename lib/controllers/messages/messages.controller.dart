@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:mobx/mobx.dart';
 
@@ -107,51 +106,34 @@ abstract class MessagesControllerBase with Store {
     var auxList = ObservableList<Message>();
     if (smeCheck && ueCheck && dreCheck) {
       final condition1 = messages ?? ObservableList<Message>.of(messages!);
-      for (var element in condition1) {
-        log(element.toString());
-      }
       auxList = ObservableList<Message>.of(condition1);
     } else if (smeCheck && ueCheck && !dreCheck) {
       final condition2 = ObservableList<Message>.of(messages!.where((e) => e.categoriaNotificacao != 'DRE').toList());
-      for (var element in condition2) {
-        log(element.toString());
-      }
+
       auxList = ObservableList<Message>.of(condition2);
     } else if (smeCheck && !ueCheck && dreCheck) {
       final condition3 = messages ??
           ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao != 'UE').toList();
-      for (var element in condition3) {
-        log(element.toString());
-      }
+
       auxList = ObservableList<Message>.of(condition3);
     } else if (smeCheck && !ueCheck && !dreCheck) {
       final condition4 = messages ??
           ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'SME').toList();
-      for (var element in condition4) {
-        log(element.toString());
-      }
+
       auxList = ObservableList<Message>.of(condition4);
     } else if (!smeCheck && ueCheck && dreCheck) {
       final condition5 = messages ??
           ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao != 'SME').toList();
-      for (var element in condition5) {
-        log(element.toString());
-      }
+
       auxList = ObservableList<Message>.of(condition5);
     } else if (!smeCheck && ueCheck && !dreCheck) {
       final condition6 = messages ??
           ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'UE').toList();
-      for (var element in condition6) {
-        log(element.toString());
-      }
+
       auxList = ObservableList<Message>.of(condition6);
     } else if (!smeCheck && !ueCheck && dreCheck) {
       final condition7 = messages ??
           ObservableList<Message>.of(messages!).where((element) => element.categoriaNotificacao == 'DRE').toList();
-
-      for (var element in condition7) {
-        log(element.toString());
-      }
 
       auxList = ObservableList<Message>.of(condition7);
     } else if (!smeCheck && !ueCheck && !dreCheck) {

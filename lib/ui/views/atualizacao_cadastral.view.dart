@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
@@ -306,7 +304,6 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
                                     if (value.isNotEmpty) {
                                       final data = value.split('/');
                                       _dataNascimento = DateTime.parse('${data[2]}${data[1]}${data[0]}');
-                                      log(_dataNascimento.toString());
                                     }
                                   },
                                 );

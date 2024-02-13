@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get_it/get_it.dart';
 import 'package:sentry/sentry.dart';
 
@@ -23,11 +21,9 @@ class EventRepository extends IEventRepository {
         }
         return retorno;
       } else {
-        log('Erro ao obter eventos ${response.statusCode}');
         return retorno;
       }
     } catch (e) {
-      log('Erro ao obter eventos $e');
       GetIt.I.get<SentryClient>().captureException(e);
       return [];
     }

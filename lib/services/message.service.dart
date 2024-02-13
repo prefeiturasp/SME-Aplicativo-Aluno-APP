@@ -1,5 +1,5 @@
-import 'dart:developer';
-
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/message/message.dart';
@@ -14,7 +14,7 @@ class MessageService {
     try {
       await db.insert(tbMESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
     } catch (ex) {
-      log('Erro ao criar mensagem no sqlLite: $ex');
+      GetIt.I.get<SentryClient>().captureException('Erro ao criar mensagem no sqlLite: $ex');
     }
   }
 
@@ -39,7 +39,7 @@ class MessageService {
       );
       return messages;
     } catch (ex) {
-      log('MessageService ALL $ex');
+      GetIt.I.get<SentryClient>().captureException('MessageService ALL $ex');
       return [];
     }
   }
@@ -53,7 +53,7 @@ class MessageService {
         whereArgs: [id],
       );
     } catch (ex) {
-      log('Erro ao deletar mensagem: $ex');
+      GetIt.I.get<SentryClient>().captureException('Erro ao deletar mensagem: $ex');
     }
   }
 }

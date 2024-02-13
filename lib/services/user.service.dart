@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../models/message/message.dart';
 import '../models/user/user.dart' as user_model;
@@ -31,12 +32,9 @@ class UserService {
           );
         },
       );
-      log('--------------------------');
-      log('Lista de usuários carregada: $users}');
-      log('--------------------------');
       return users;
     } catch (ex) {
-      log(ex.toString());
+      GetIt.I.get<SentryClient>().captureException(ex.toString());
 
       throw Exception(ex);
     }
@@ -46,11 +44,8 @@ class UserService {
     final Database db = await dbHelper.initDatabase();
     try {
       await db.insert(tbUSER, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-      log('--------------------------');
-      log('Usuário criado com sucesso: ${model.toMap()}');
-      log('--------------------------');
     } catch (ex) {
-      log('Erro ao criar usuário: $ex');
+      GetIt.I.get<SentryClient>().captureException('Erro ao criar usuário: $ex');
       throw Exception(ex);
     }
   }
@@ -72,14 +67,9 @@ class UserService {
         atualizarDadosCadastrais: maps[0]['atualizarDadosCadastrais'] == 1 ? true : false,
         celular: maps[0]['celular'],
       );
-      log('--------------------------');
-      log('Usuário encontrado com sucesso: ${user.toMap()}');
-      log('--------------------------');
       return user;
     } catch (ex) {
-      log('<--------------------------');
-      log('Erro ao encontrar usuário: $ex');
-      log('<--------------------------');
+      GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
   }
@@ -93,13 +83,8 @@ class UserService {
         where: 'id = ?',
         whereArgs: [model.id],
       );
-      log('--------------------------');
-      log('Usuário atualizado com sucesso: ${model.toMap()}');
-      log('--------------------------');
     } catch (ex) {
-      log('<--------------------------');
-      log('Erro ao atualizar usuário: $ex');
-      log('<--------------------------');
+      GetIt.I.get<SentryClient>().captureException(ex);
     }
   }
 
@@ -107,11 +92,8 @@ class UserService {
     try {
       final Database db = await dbHelper.initDatabase();
       await db.rawQuery('delete from user where id =$id');
-      log('Usuário removido com sucesso: $id');
     } catch (ex) {
-      log('<--------------------------');
-      log('Erro ao deletar usuário: $ex');
-      log('<--------------------------');
+      GetIt.I.get<SentryClient>().captureException(ex);
     }
   }
 
@@ -119,11 +101,8 @@ class UserService {
     final Database db = await dbHelper.initDatabase();
     try {
       await db.insert(tbMESSAGE, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-      log('--------------------------');
-      log('Mensagem criada com sucesso: ${model.toMap()}');
-      log('--------------------------');
     } catch (ex) {
-      log('Erro ao criar mensagem: $ex');
+      GetIt.I.get<SentryClient>().captureException('Erro ao criar mensagem: $ex');
       throw Exception(ex);
     }
   }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +95,7 @@ class LoginViewState extends State<LoginView> {
       setState(() {
         _carregando = false;
       });
-      log('Erro ao tentar se autenticar LoginView $e');
+
       GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar LoginView $e');
       const snackBar = SnackBar(
         backgroundColor: Colors.red,

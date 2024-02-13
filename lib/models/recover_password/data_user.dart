@@ -9,7 +9,7 @@ import '../user/user.dart';
 class DataUser {
   bool ok;
   List<String> erros;
-  User data;
+  User? data;
   DataUser({
     required this.ok,
     required this.erros,
@@ -32,17 +32,21 @@ class DataUser {
     return <String, dynamic>{
       'ok': ok,
       'erros': erros,
-      'data': data.toMap(),
+      'data': data?.toMap(),
     };
   }
 
   factory DataUser.fromMap(Map<String, dynamic> map) {
-    return DataUser(ok: map['ok'], erros: List<String>.from((map['erros'])), data: User.fromMap(map['data']));
+    return DataUser(
+      ok: map['ok'],
+      erros: map['erros'] != null ? List<String>.from((map['erros'])) : [],
+      data: map['data'] != null ? User.fromMap(map['data']) : null,
+    );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DataUser.fromJson(String source) => DataUser.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DataUser.fromJson(String source) => DataUser.fromMap(json.decode(source));
 
   @override
   String toString() => 'DataUser(ok: $ok, erros: $erros, data: $data)';

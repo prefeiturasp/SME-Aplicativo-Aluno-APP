@@ -25,13 +25,11 @@ class Auth {
       final List<Message> messages = await messageService.all();
 
       for (var i = 0; i < groups.length; i++) {
-        log('Grupo removido: ${groups[i].toMap()}');
         await firebaseMessaging.unsubscribeFromTopic(groups[i].codigo);
         await groupMessageService.delete(groups[i].id);
       }
 
       for (var i = 0; i < messages.length; i++) {
-        log('Mensagem removida: ${messages[i].toMap()}');
         await messageService.delete(messages[i].id);
       }
 

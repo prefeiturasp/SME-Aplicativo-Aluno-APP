@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 
 import '../../controllers/auth/recover_password.controller.dart';
+import '../../ui/views/login.view.dart';
 import '../../ui/widgets/buttons/ea_deafult_button.widget.dart';
 import '../../utils/navigator.dart';
 import 'show_info.dart';
@@ -41,32 +42,44 @@ class RecoverPasswordState extends State<RecoverPassword> {
   }
 
   Future<void> _onPressGetToken(String cpf, BuildContext context) async {
-    setState(() {
-      loading = true;
-    });
-    await _recoverPasswordController.sendToken(cpf);
-    setState(() {
-      loading = false;
-    });
-    if (_recoverPasswordController.data!.email.isNotEmpty && context.mounted) {
-      Nav.push(
-        context,
-        ShowInfo(
-          email: _recoverPasswordController.data!.email,
-          cpf: cpf,
-        ),
-      );
-    } else {
-      onError();
+    try {
+      setState(() {
+        loading = true;
+      });
+      await _recoverPasswordController.sendToken(cpf);
+      setState(() {
+        loading = false;
+      });
+      if (_recoverPasswordController.data!.email.isNotEmpty && context.mounted) {
+        Nav.push(
+          context,
+          ShowInfo(
+            email: _recoverPasswordController.data!.email,
+            cpf: cpf,
+          ),
+        );
+      } else {
+        setState(() {
+          loading = false;
+        });
+        onError(null);
+      }
+    } on Exception catch (_) {
+      setState(() {
+        loading = false;
+      });
+      onError(null);
     }
   }
 
-  void onError() {
+  void onError(String? msg) {
     final snackbar = SnackBar(
       backgroundColor: Colors.red,
       content: _recoverPasswordController.data != null
           ? Text(_recoverPasswordController.data!.erros[0])
-          : const Text('Erro de serviço'),
+          : msg != null
+              ? Text(msg)
+              : const Text('Erro de serviço'),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -88,14 +101,20 @@ class RecoverPasswordState extends State<RecoverPassword> {
             Icons.arrow_back_ios,
             color: Color(0xffF36621),
           ),
-          onPressed: () => Nav.pop(context),
+          onPressed: () => {
+            Future.delayed(Duration.zero, () {
+              Nav.pushReplacement(context, const LoginView(notice: null));
+            }),
+          },
         ),
       ),
       body: PopScope(
         canPop: true,
         onPopInvoked: (didPop) {
           if (didPop) {
-            Nav.pop(context);
+            Future.delayed(Duration.zero, () {
+              Nav.pushReplacement(context, const LoginView(notice: null));
+            });
           }
         },
         child: SingleChildScrollView(
@@ -182,13 +201,17 @@ class RecoverPasswordState extends State<RecoverPassword> {
                           ),
                           Container(
                             alignment: Alignment.bottomRight,
-                            child: GestureDetector(
+                            child: InkWell(
                               onTap: () {
+                                if (_cpf.length < 14) {
+                                  onError('Informe o CPF');
+                                  return;
+                                }
                                 Nav.push(
                                   context,
                                   ShowInfo(
                                     hasToken: true,
-                                    email: _recoverPasswordController.data!.email,
+                                    email: _recoverPasswordController.data?.email,
                                     cpf: _cpf,
                                   ),
                                 );
