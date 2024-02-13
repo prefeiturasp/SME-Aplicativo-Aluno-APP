@@ -48,7 +48,7 @@ class UsuarioDataModel {
 
   factory UsuarioDataModel.fromJson(String source) {
     final jsonString = json.decode(source);
-    final usr = UsuarioDataModel.fromMap(jsonString as Map<dynamic, dynamic>);
+    final usr = UsuarioDataModel.fromMap(jsonString);
     return usr;
   }
 

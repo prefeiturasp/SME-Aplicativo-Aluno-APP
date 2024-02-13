@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get_it/get_it.dart';
 import 'package:sentry/sentry.dart';
 
@@ -21,18 +19,15 @@ class EstudanteRepository {
         final dataEstudents = DataStudent.fromMap(response.data);
         return dataEstudents;
       } else if (response.statusCode == 408) {
-        log(AppConfigReader.getErrorMessageTimeOut());
         return DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []);
       } else {
         final dataError = DataStudent.fromJson(response.data);
-        log('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes()');
         GetIt.I.get<SentryClient>().captureException(
               'Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}',
             );
         return dataError;
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $stacktrace');
       GetIt.I.get<SentryClient>().captureException(
             'Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace',
           );
@@ -62,7 +57,6 @@ class EstudanteRepository {
         return [];
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $stacktrace');
       GetIt.I.get<SentryClient>().captureException(
             'Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $e $stacktrace',
           );
@@ -83,7 +77,6 @@ class EstudanteRepository {
         return [];
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $stacktrace');
       GetIt.I.get<SentryClient>().captureException(
             'Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $e $stacktrace',
           );

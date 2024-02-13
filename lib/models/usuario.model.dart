@@ -78,6 +78,22 @@ class UsuarioModel {
   }
 
   factory UsuarioModel.fromMap(Map<String, dynamic> map) {
+    DateTime dateNascimentoFormat;
+    if (map['dataNascimento'].toString().contains('-')) {
+      dateNascimentoFormat = DateTime.parse(map['dataNascimento']);
+    } else if (map['dataNascimento'] != null) {
+      dateNascimentoFormat = DateTime.fromMicrosecondsSinceEpoch(map['dataNascimento']);
+    } else {
+      dateNascimentoFormat = DateTime.now();
+    }
+
+    DateTime? dateAtualizacaoFormat;
+    if (map['ultimaAtualizacao'].toString().contains('-')) {
+      dateAtualizacaoFormat = DateTime.parse(map['ultimaAtualizacao']);
+    } else if (map['ultimaAtualizacao'] != null) {
+      dateAtualizacaoFormat = DateTime.fromMicrosecondsSinceEpoch(map['ultimaAtualizacao']);
+    }
+
     final usr = UsuarioModel(
       id: map['id'] ?? 0,
       nome: map['nome'] ?? '',
@@ -88,8 +104,8 @@ class UsuarioModel {
       primeiroAcesso: map['primeiroAcesso'] ?? false,
       atualizarDadosCadastrais: map['atualizarDadosCadastrais'] ?? false,
       celular: map['celular'] ?? '',
-      dataNascimento: map['dataNascimento'] != null ? DateTime.parse(map['dataNascimento']) : DateTime.now(),
-      ultimaAtualizacao: map['ultimaAtualizacao'] != null ? DateTime.parse(map['ultimaAtualizacao']) : null,
+      dataNascimento: dateNascimentoFormat,
+      ultimaAtualizacao: dateAtualizacaoFormat,
       senha: map['senha'] ?? '',
     );
     return usr;
@@ -97,7 +113,7 @@ class UsuarioModel {
 
   String toJson() => json.encode(toMap());
 
-  factory UsuarioModel.fromJson(String source) => UsuarioModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UsuarioModel.fromJson(String source) => UsuarioModel.fromMap(json.decode(source));
 
   @override
   String toString() {

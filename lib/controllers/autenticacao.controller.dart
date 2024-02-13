@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:sentry/sentry.dart';
@@ -29,7 +28,6 @@ class AutenticacaoController {
       }
       return data;
     } catch (e) {
-      log('Erro ao tentar se autenticar AutenticacaoController $e');
       GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar AutenticacaoController $e');
       throw Exception(e);
     }

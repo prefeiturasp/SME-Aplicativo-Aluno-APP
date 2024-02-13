@@ -10,29 +10,30 @@ class InfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(screenHeight * 2),
-          margin: EdgeInsets.only(
-            top: screenHeight * 5,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(0xffFFC6C8),
+    return SingleChildScrollView(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(screenHeight * 2),
+            margin: EdgeInsets.only(
+              top: screenHeight * 5,
             ),
-            borderRadius: BorderRadius.circular(screenHeight * 2),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xffFFC6C8),
+              ),
+              borderRadius: BorderRadius.circular(screenHeight * 2),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: content,
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: content,
-          ),
-        ),
-        Visibility(
-          visible: icon != null,
-          child: Positioned(
+          Visibility(
+            visible: icon != null,
+            child: Positioned(
               top: screenHeight * 2.5,
               right: screenHeight * 2.5,
               child: Container(
@@ -44,9 +45,11 @@ class InfoBox extends StatelessWidget {
                   size: screenHeight * 2.3,
                   color: const Color(0xff666666),
                 ),
-              ),),
-        ),
-      ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

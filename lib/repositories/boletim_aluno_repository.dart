@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +47,6 @@ class BoletimAlunoRepository implements IBoletimRepository {
       }
       return false;
     } catch (e) {
-      log('solicitar boletim pdf $e');
       GetIt.I.get<SentryClient>().captureException(e);
       return false;
     }
