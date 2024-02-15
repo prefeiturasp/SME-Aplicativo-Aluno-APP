@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get_it/get_it.dart';
 import 'package:sentry/sentry.dart';
 
@@ -15,11 +13,8 @@ class GroupMessageService {
     final Database db = await dbHelper.initDatabase();
     try {
       await db.insert(tbGroupMessage, model.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
-      log('--------------------------');
-      log('Grupo de menssagem criado com sucesso: ${model.toMap()}');
-      log('--------------------------');
     } catch (ex) {
-      log('Erro ao criar mensagem: $ex');
+      GetIt.I.get<SentryClient>().captureException('Erro ao criar mensagem: $ex');
       GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
@@ -38,12 +33,9 @@ class GroupMessageService {
           );
         },
       );
-      log('--------------------------');
-      log('Lista de grupos de mensagens: ${groups.cast()}');
-      log('--------------------------');
       return groups;
     } catch (ex) {
-      log(ex.toString());
+      GetIt.I.get<SentryClient>().captureException(ex.toString());
       GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }
@@ -57,11 +49,7 @@ class GroupMessageService {
         where: 'id = ?',
         whereArgs: [id],
       );
-      log('Grupo de Mensagem removida com sucesso: $id');
     } catch (ex) {
-      log('<--------------------------');
-      log('Erro ao deletar usuário: $ex');
-      log('<--------------------------');
       GetIt.I.get<SentryClient>().captureException(ex);
       throw Exception(ex);
     }

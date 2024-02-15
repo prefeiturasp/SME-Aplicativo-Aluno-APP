@@ -56,7 +56,7 @@ abstract class BackgroundFetchControllerBase with Store {
         ),
       );
     } catch (ex) {
-      log('BackgroundFetchController $ex');
+      GetIt.I.get<SentryClient>().captureException('BackgroundFetchController $ex');
     }
   }
 

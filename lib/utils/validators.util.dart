@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:email_validator/email_validator.dart';
 import 'package:intl/intl.dart';
 
@@ -73,7 +71,6 @@ class ValidatorsUtil {
         if (nomeValidador[i].length == 1 && nomeValidador[i].toLowerCase() != 'e') {
           return '$nomeCampo não pode ser abreviado';
         }
-        log(nomeValidador[i].length.toString());
       }
     }
     return null;

@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../dtos/validacao_erro_dto.dart';
 import '../interfaces/first_access_repository_interface.dart';
@@ -69,7 +69,9 @@ class FirstAccessRepository implements IFirstAccessRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      log('[fetchFirstAccess] Erro de requisição $stacktrace');
+      GetIt.I
+          .get<SentryClient>()
+          .captureException('Erro ao tentar se autenticar AutenticacaoController $error $stacktrace ');
       throw Exception(error);
     }
   }
@@ -118,7 +120,9 @@ class FirstAccessRepository implements IFirstAccessRepository {
         throw Exception(dataError);
       }
     } catch (error, stacktrace) {
-      log('[changeEmailAndPhone] Erro de requisição $stacktrace');
+      GetIt.I
+          .get<SentryClient>()
+          .captureException('Erro ao tentar se autenticar AutenticacaoController $error $stacktrace');
       return DataChangeEmailAndPhone();
     }
   }

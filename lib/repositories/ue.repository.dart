@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../models/ue/data_ue.dart';
 import '../services/api.service.dart';
@@ -15,11 +14,10 @@ class UERepository {
         final ue = DadosUE.fromMap(response.data);
         return ue;
       } else {
-        log('Erro ao obter dados');
         throw Exception(response.statusCode);
       }
     } catch (e) {
-      log('$e');
+      GetIt.I.get<SentryClient>().captureException('$e');
       throw Exception(e);
     }
   }

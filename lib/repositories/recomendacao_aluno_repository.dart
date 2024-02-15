@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 import '../dtos/recomendacao_aluno.dto.dart';
 import '../interfaces/recomendacoes_aluno_interface.dart';
 import '../stores/usuario.store.dart';
@@ -37,7 +36,7 @@ class RecomendacaoAlunoRepository implements IRecomendacaoAluno {
         return recomendacao;
       }
     } catch (e) {
-      log('$e');
+      GetIt.I.get<SentryClient>().captureException('$e');
       recomendacao.erro = true;
       recomendacao.mensagemAlerta = 'Erro ao obter a recomendação do aluno';
       return recomendacao;

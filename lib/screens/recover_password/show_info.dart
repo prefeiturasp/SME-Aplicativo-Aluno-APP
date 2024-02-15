@@ -14,10 +14,10 @@ import '../redefine_password/redefine_password.dart';
 
 class ShowInfo extends StatefulWidget {
   final String cpf;
-  final String email;
+  final String? email;
   final bool hasToken;
 
-  const ShowInfo({super.key, required this.email, this.hasToken = false, required this.cpf});
+  const ShowInfo({super.key, this.email, this.hasToken = false, required this.cpf});
 
   @override
   ShowInfoState createState() => ShowInfoState();
@@ -128,7 +128,7 @@ class ShowInfoState extends State<ShowInfo> {
                         widget.hasToken
                             ? Container()
                             : AutoSizeText(
-                                StringSupport.replaceEmailSecurity(widget.email, 3),
+                                widget.email != null ? StringSupport.replaceEmailSecurity(widget.email!, 3) : '',
                                 textAlign: TextAlign.center,
                                 maxFontSize: 16,
                                 minFontSize: 14,

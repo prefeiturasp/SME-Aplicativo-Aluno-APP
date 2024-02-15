@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 
 import '../dtos/response.dto.dart';
 import '../interfaces/repositories/iusuario.repository.dart';
@@ -32,7 +32,7 @@ class UsuarioRepository extends IUsuarioRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      log('[Atualizar Usuário] Erro de requisição $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('[Atualizar Usuário] Erro de requisição $stacktrace');
       return ResponseDTO(ok: false, erros: ['Erro de requisição'], data: null);
     }
   }
@@ -47,7 +47,7 @@ class UsuarioRepository extends IUsuarioRepository {
       }
       return UsuarioModel.clear();
     } catch (error, stacktrace) {
-      log('[Atualizar Usuário] Erro de requisição $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('[Atualizar Usuário] Erro de requisição $stacktrace');
       return UsuarioModel.clear();
     }
   }
