@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 import '../dtos/validacao_erro_dto.dart';
 import '../interfaces/settings_repository_interface.dart';
 import '../models/settings/data.dart';
@@ -66,7 +66,7 @@ class SettingsRepository implements ISettingsRepository {
         return dataError;
       }
     } catch (error, stacktrace) {
-      log('[AlterarSenha] Erro de requisição $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('[AlterarSenha] Erro de requisição $stacktrace');
       throw Exception(error);
     }
   }

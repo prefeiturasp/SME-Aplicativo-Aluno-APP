@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/terms_repository_interface.dart';
 import '../models/terms/term.dart';
@@ -22,11 +22,10 @@ class TermsRepository extends ITermsRepository {
       } else if (response.statusCode == 204) {
         return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       } else {
-        log('Erro ao obter dados');
         return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
       }
     } catch (e) {
-      log('$e');
+      GetIt.I.get<SentryClient>().captureException('$e');
       return Term(politicaDePrivacidade: '', termosDeUso: '', versao: 0);
     }
   }
@@ -39,11 +38,10 @@ class TermsRepository extends ITermsRepository {
         final termo = Term.fromMap(response.data);
         return termo;
       } else {
-        log('Erro ao obter dados fetchTermsCurrentUser');
         return Term.clear();
       }
     } catch (e) {
-      log('Erro ao obter dados fetchTermsCurrentUser $e');
+      GetIt.I.get<SentryClient>().captureException('Erro ao obter dados fetchTermsCurrentUser $e');
       return Term.clear();
     }
   }
@@ -72,11 +70,10 @@ class TermsRepository extends ITermsRepository {
       if (response.statusCode == 200) {
         return response.body == true.toString() ? true : false;
       } else {
-        log('Erro ao obter dados');
         throw Exception(response.reasonPhrase);
       }
     } catch (e) {
-      log('$e');
+      GetIt.I.get<SentryClient>().captureException('$e');
 
       throw Exception(e);
     }

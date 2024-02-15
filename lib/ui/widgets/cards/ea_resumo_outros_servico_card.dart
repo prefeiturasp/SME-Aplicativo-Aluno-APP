@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sentry/sentry.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/outros_servicos/outro_servico.model.dart';
@@ -190,7 +190,6 @@ class OutrosLinksInfoWidget extends StatelessWidget {
         height: screenHeight * 9,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          log('obterIcone outros seriços $error');
           return Image.asset(
             'assets/images/icone_erro.png',
             width: screenHeight * 9,
@@ -201,7 +200,7 @@ class OutrosLinksInfoWidget extends StatelessWidget {
       );
       return imaage;
     } on Exception catch (e) {
-      log('obterIcone outros seriços $e');
+      GetIt.I.get<SentryClient>().captureException('obterIcone outros seriços $e');
       return Image.asset(
         'assets/images/icone_erro.png',
         width: screenHeight * 9,

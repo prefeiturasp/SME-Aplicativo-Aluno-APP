@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/responsible_repository_interface.dart';
 import '../stores/index.dart';
@@ -13,8 +14,9 @@ class ResponsibleRepository implements IResponsibleRepository {
   @override
   Future<bool> checkIfResponsibleHasStudent(int userId) async {
     try {
-      final url =
-          Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario!.cpf}');
+      final url = Uri.parse(
+        '${AppConfigReader.getApiHost()}/Autenticacao/usuario/responsavel?cpf=${usuarioStore.usuario!.cpf}',
+      );
       final response = await http.get(
         url,
         headers: {'Authorization': 'Bearer ${usuarioStore.usuario!.token}', 'Content-Type': 'application/json'},
@@ -28,7 +30,7 @@ class ResponsibleRepository implements IResponsibleRepository {
         return false;
       }
     } catch (error, stacktrace) {
-      log('Erro ao verificar se resposável tem aluno: $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao verificar se resposável tem aluno: $stacktrace');
       return false;
     }
   }

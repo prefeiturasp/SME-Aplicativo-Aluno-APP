@@ -1,19 +1,18 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:sentry/sentry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../dtos/validacao_erro_dto.dart';
 import '../interfaces/recover_password_interface.dart';
 import '../models/recover_password/data.dart';
 import '../models/recover_password/data_user.dart';
-import '../services/user.service.dart';
+import '../stores/usuario.store.dart';
 import '../utils/app_config_reader.dart';
 
 class RecoverPasswordRepository implements IRecoverPasswordRepository {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final UserService _userService = UserService();
 
   @override
   Future<Data> sendToken(String cpf) async {
@@ -34,8 +33,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
       );
 
       if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final data = Data.fromJson(decodeJson);
+        final data = Data.fromJson(response.body);
         return data;
       } else if (response.statusCode == 408) {
         return Data(
@@ -50,7 +48,7 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         return dataError;
       }
     } catch (e, stacktrace) {
-      log('[RecoverPassword] sendToken - Erro de requisição $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao enviar token  $e , $stacktrace}');
       throw Exception(e);
     }
   }
@@ -71,16 +69,14 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
         body: body,
       );
       if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final data = Data.fromJson(decodeJson);
+        final data = Data.fromJson(response.body);
         return data;
       } else {
-        final decodeError = jsonDecode(response.body);
-        final dataError = Data.fromJson(decodeError);
+        final dataError = Data.fromJson(response.body);
         return dataError;
       }
     } catch (e, stacktrace) {
-      log('[RecoverPassword] validateToken - Erro de requisição $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao validar token  $e , $stacktrace}');
       throw Exception(e);
     }
   }
@@ -88,33 +84,30 @@ class RecoverPasswordRepository implements IRecoverPasswordRepository {
   @override
   Future<DataUser> redefinePassword(String password, String token) async {
     final String? idDevice = await _firebaseMessaging.getToken();
+    final usuarioStore = GetIt.I.get<UsuarioStore>();
     final Map data = {'token': token, 'senha': password, 'dispositivoId': idDevice};
     final body = json.encode(data);
 
-    try {
-      final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir');
-      final response = await http.put(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-      if (response.statusCode == 200) {
-        final decodeJson = jsonDecode(response.body);
-        final user = DataUser.fromJson(decodeJson);
-        if (user.data.cpf.isNotEmpty) {
-          _userService.create(user.data);
-        }
-        return user;
-      } else {
-        final decodeError = jsonDecode(response.body);
-        final dataError = DataUser.fromJson(decodeError);
-        return dataError;
+    final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao/Senha/Redefinir');
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      final user = DataUser.fromJson(response.body);
+      if (user.data!.cpf.isNotEmpty) {
+        await usuarioStore.limparUsuario();
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('eaUsuario', jsonEncode(user.data!.toJson()));
+        await usuarioStore.carregarUsuario();
       }
-    } catch (e, stacktrace) {
-      log('[RecoverPassword] redefinePassword - Erro de requisição $stacktrace');
-      throw Exception(e);
+      return user;
+    } else {
+      final dataError = DataUser.fromJson(response.body);
+      return dataError;
     }
   }
 }

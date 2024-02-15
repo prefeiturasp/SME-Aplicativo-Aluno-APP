@@ -61,7 +61,11 @@ class RedefinePasswordState extends State<RedefinePassword> {
 
   void _changePassword(String password, String token) async {
     await _recoverPasswordController.redefinePassword(password, token);
-    _navigateToScreen();
+    if (_recoverPasswordController.dataUser!.ok) {
+      _navigateToScreen();
+    } else {
+      onError();
+    }
   }
 
   void onError() {

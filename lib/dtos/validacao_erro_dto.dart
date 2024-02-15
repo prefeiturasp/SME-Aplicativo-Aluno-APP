@@ -35,16 +35,15 @@ class ValidacaoErros {
 
   factory ValidacaoErros.fromMap(Map<String, dynamic> map) {
     return ValidacaoErros(
-        additionalProp1: List<String>.from(map['additionalProp1'] as List<String>),
-        additionalProp2: List<String>.from(map['additionalProp2'] as List<String>),
-        additionalProp3: List<String>.from(
-          (map['additionalProp3'] as List<String>),
-        ),);
+      additionalProp1: List<String>.from(map['additionalProp1']),
+      additionalProp2: List<String>.from(map['additionalProp2']),
+      additionalProp3: List<String>.from((map['additionalProp3'])),
+    );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ValidacaoErros.fromJson(String source) => ValidacaoErros.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ValidacaoErros.fromJson(String source) => ValidacaoErros.fromMap(json.decode(source));
 
   @override
   String toString() =>
