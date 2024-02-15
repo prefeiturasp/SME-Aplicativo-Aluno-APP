@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/message_repository_interface.dart';
 import '../models/message/message.dart';
@@ -18,7 +19,6 @@ class MessageRepository implements IMessageRepository {
   @override
   Future<List<Message>> fetchNewMessages(int codigoEol) async {
     try {
-      log('MessageRepository fetchNewMessages');
       final List<Message> messagesDB = await _messageService.all();
       final messageRecent = messagesDB[0].criadoEm;
       final dateFormaet = messageRecent.replaceAll(':', '%3A');
@@ -37,7 +37,7 @@ class MessageRepository implements IMessageRepository {
       }
       return messagesDB;
     } catch (e) {
-      log('fetchNewMessages $e');
+      GetIt.I.get<SentryClient>().captureException('fetchNewMessages $e');
       return [];
     }
   }
@@ -60,7 +60,7 @@ class MessageRepository implements IMessageRepository {
         codigoEOL: 0,
       );
     } catch (e) {
-      log('getMessageById $e');
+      GetIt.I.get<SentryClient>().captureException('getMessageById $e');
       return Message(
         id: 0,
         mensagem: '',
@@ -111,12 +111,12 @@ class MessageRepository implements IMessageRepository {
 
           return sortMessages;
         } else {
-          log('Status Code fetchMessages ${response.statusCode}');
+          GetIt.I.get<SentryClient>().captureException('Status Code fetchMessages ${response.statusCode}');
           return List<Message>() = [];
         }
       }
     } catch (e) {
-      log('MessageRepository fetchMessages $e');
+      GetIt.I.get<SentryClient>().captureException('MessageRepository fetchMessages $e');
       return List<Message>() = [];
     }
   }
@@ -151,8 +151,7 @@ class MessageRepository implements IMessageRepository {
         return false;
       }
     } catch (error, stacktrace) {
-      log('[MessageRepository] Erro de requisição $stacktrace');
-      log('[MessageRepository] Erro de requisição $error');
+      GetIt.I.get<SentryClient>().captureException('[MessageRepository] Erro de requisição $error $stacktrace');
       return false;
     }
   }
@@ -174,7 +173,7 @@ class MessageRepository implements IMessageRepository {
         return false;
       }
     } catch (e) {
-      log('Erro ao tentar excluir mensagem $e');
+      GetIt.I.get<SentryClient>().captureException('Erro ao tentar excluir mensagem $e');
 
       return false;
     }

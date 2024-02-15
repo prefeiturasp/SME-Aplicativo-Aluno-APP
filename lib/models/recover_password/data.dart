@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -42,15 +41,18 @@ class Data {
 
   factory Data.fromMap(Map<String, dynamic> map) {
     return Data(
-        ok: map['ok'],
-        email: map['email'],
-        erros: List<String>.from(map['erros'] as List<String>),
-        validacaoErros: ValidacaoErros.fromMap(map['validacaoErros']),);
+      ok: map['ok'],
+      email: map['email'] ?? '',
+      erros: List<String>.from(map['erros'] ?? ''),
+      validacaoErros: map['validacaoErros'] != null
+          ? ValidacaoErros.fromJson(map['validacaoErros'])
+          : ValidacaoErros(additionalProp1: [], additionalProp2: [], additionalProp3: []),
+    );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Data.fromJson(String source) => Data.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Data.fromJson(String source) => Data.fromMap(json.decode(source));
 
   @override
   String toString() {

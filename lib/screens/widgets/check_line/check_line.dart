@@ -25,19 +25,20 @@ class CheckLine extends StatelessWidget {
                 size: screenHeight * 2,
               ),
         SizedBox(
-          width: screenHeight * 1,
+          width: screenHeight * 2,
         ),
         SizedBox(
-          width: screenHeight * 36,
+          width: screenHeight * 28,
           child: AutoSizeText(
             text,
-            maxFontSize: 17,
-            minFontSize: 15,
+            maxFontSize: 16,
+            minFontSize: 14,
             maxLines: 3,
             style: TextStyle(
-                color: checked ? const Color(0xff00AE6E) : const Color(0xffff0000),
-                height: screenHeight * 0.2,
-                fontWeight: FontWeight.w500,),
+              color: checked ? const Color(0xff00AE6E) : const Color(0xffff0000),
+              height: screenHeight * 0.2,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       ],

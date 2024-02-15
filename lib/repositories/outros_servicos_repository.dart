@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry/sentry.dart';
 
 import '../interfaces/outros_servicos_repository_interface.dart';
 import '../models/outros_servicos/outro_servico.model.dart';
@@ -35,7 +36,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
         return retorno;
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Links  obterLinksPioritario $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Links  obterLinksPioritario $stacktrace');
       return List<OutroServicoModel>() = [];
     }
   }
@@ -60,7 +61,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
         return false;
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Links  $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Links  $stacktrace');
       throw Exception(e);
     }
   }
@@ -88,7 +89,7 @@ class OutrosServicosRepository implements IOutrosServicosRepository {
         return retorno;
       }
     } catch (e, stacktrace) {
-      log('Erro ao carregar lista de Links  $stacktrace');
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Links  $stacktrace');
       throw Exception(e);
     }
   }

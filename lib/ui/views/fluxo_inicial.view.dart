@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry/sentry.dart';
 
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/messages/messages.controller.dart';
@@ -69,7 +68,7 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
         },
       );
     } catch (ex) {
-      log('initPushNotificationHandlers $ex');
+      GetIt.I.get<SentryClient>().captureException('initPushNotificationHandlers $ex');
     }
   }
 

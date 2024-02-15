@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -21,7 +20,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
       await Future.delayed(const Duration(seconds: 2));
       idDevice = await firebaseMessaging.getToken();
       await Future.delayed(const Duration(seconds: 3));
-      log('FIREBASE TOKEN: $idDevice');
 
       final Map parametrosLogin = {
         'cpf': cpf,
@@ -33,19 +31,12 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao');
 
-      final response = await http
-          .post(
+      final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
         },
         body: body,
-      )
-          .timeout(
-        const Duration(seconds: 360),
-        onTimeout: () {
-          return http.Response('Erro ao tentar se autenticar', 408);
-        },
       );
 
       if (response.statusCode == 200) {
@@ -53,7 +44,6 @@ class AuthenticateRepository implements IAuthenticateRepository {
         return user;
       } else if (response.statusCode == 408) {
         final usuarioRetorno = UsuarioDataModel(ok: false, erros: [response.body], data: UsuarioModel.clear());
-        log('Erro ao tentar se autenticar status code ${response.statusCode}');
         GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar status code ${response.statusCode}');
         return usuarioRetorno;
       } else {
@@ -63,11 +53,9 @@ class AuthenticateRepository implements IAuthenticateRepository {
         for (var i = 0; i < erros.length; i++) {
           usuarioRetorno.erros.add(erros[i]);
         }
-        log('Erro ao tentar se autenticar status code ${response.statusCode}');
         return usuarioRetorno;
       }
     } on DioException catch (error, stacktrace) {
-      log('Erro ao tentar se autenticar $stacktrace');
       GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar  $error , $stacktrace}');
       return UsuarioDataModel(ok: false, erros: ['Erro ao tentar se autenticar'], data: UsuarioModel.clear());
     }
