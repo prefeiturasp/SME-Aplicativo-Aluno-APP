@@ -31,19 +31,12 @@ class AuthenticateRepository implements IAuthenticateRepository {
 
       final url = Uri.parse('${AppConfigReader.getApiHost()}/Autenticacao');
 
-      final response = await http
-          .post(
+      final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
         },
         body: body,
-      )
-          .timeout(
-        const Duration(seconds: 360),
-        onTimeout: () {
-          return http.Response('Erro ao tentar se autenticar', 408);
-        },
       );
 
       if (response.statusCode == 200) {
