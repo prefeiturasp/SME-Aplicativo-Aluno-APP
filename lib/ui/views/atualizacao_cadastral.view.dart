@@ -165,7 +165,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: PopScope(
-        canPop: _onBackPress(),
+        canPop: false,
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(screenHeight * 2.5),
