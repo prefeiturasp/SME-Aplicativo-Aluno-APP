@@ -219,7 +219,7 @@ class FirstAccessState extends State<FirstAccess> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: PopScope(
-          canPop: _onBackPress(),
+          canPop: false,
           child: SingleChildScrollView(
             child: Container(
               padding: EdgeInsets.all(screenHeight * 2.5),
