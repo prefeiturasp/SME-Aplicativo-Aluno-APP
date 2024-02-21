@@ -265,7 +265,6 @@ class LoginViewState extends State<LoginView> {
                                 labelText: 'Senha',
                                 labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
                                 errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                // hintText: "Data de nascimento do aluno",
                                 border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.text,
@@ -332,7 +331,12 @@ class LoginViewState extends State<LoginView> {
                           const SizedBox(
                             height: 30,
                           ),
-                          Center(child: Text(numeroVersaoApp)),
+                          Center(
+                            child: Text(
+                              numeroVersaoApp,
+                              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ],
                       ),
                     ),
