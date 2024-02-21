@@ -6,8 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sentry/sentry.dart';
-
 import '../../controllers/autenticacao.controller.dart';
+import '../../controllers/settings/settings.controller.dart';
 import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
 import '../../screens/firstAccess/first_access.dart';
@@ -27,6 +27,7 @@ class LoginView extends StatefulWidget {
 
 class LoginViewState extends State<LoginView> {
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
+  final settingsCtrl = GetIt.I.get<SettingsController>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -41,10 +42,12 @@ class LoginViewState extends State<LoginView> {
   String _cpf = '';
   String _cpfRaw = '';
   String _password = '';
+  String numeroVersaoApp = '';
 
   @override
   void initState() {
     super.initState();
+    versaoApp();
   }
 
   Future<void> handleSignIn(
@@ -107,6 +110,13 @@ class LoginViewState extends State<LoginView> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
+  }
+
+  Future<void> versaoApp() async {
+    final versao = await settingsCtrl.obterNumeroVersaoApp();
+    setState(() {
+      numeroVersaoApp = versao;
+    });
   }
 
   @override
@@ -257,7 +267,6 @@ class LoginViewState extends State<LoginView> {
                                 labelText: 'Senha',
                                 labelStyle: const TextStyle(color: Color(0xff8e8e8e)),
                                 errorStyle: const TextStyle(fontWeight: FontWeight.w700),
-                                // hintText: "Data de nascimento do aluno",
                                 border: InputBorder.none,
                               ),
                               keyboardType: TextInputType.text,
@@ -321,6 +330,15 @@ class LoginViewState extends State<LoginView> {
                                     }
                                   },
                                 ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Center(
+                            child: Text(
+                              numeroVersaoApp,
+                              style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ],
                       ),
                     ),
