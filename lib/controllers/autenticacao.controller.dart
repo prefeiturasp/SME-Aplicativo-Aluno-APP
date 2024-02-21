@@ -16,13 +16,6 @@ class AutenticacaoController {
   }
   final usuarioStore = GetIt.I.get<UsuarioStore>();
 
-  Future<String> obterNumeroVersaoApp() async {
-    final prefs = await SharedPreferences.getInstance();
-    final versao = prefs.getString('versaoApp');
-    final valor = versao != null ? 'Versão ${versao.toString().replaceAll('"', '')}' : '';
-    return valor;
-  }
-
   Future<UsuarioDataModel> authenticateUser(String cpf, String password) async {
     try {
       final data = await repository.loginUser(cpf, password);

@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sentry/sentry.dart';
 import '../../controllers/autenticacao.controller.dart';
+import '../../controllers/settings/settings.controller.dart';
 import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
 import '../../screens/firstAccess/first_access.dart';
@@ -26,6 +27,7 @@ class LoginView extends StatefulWidget {
 
 class LoginViewState extends State<LoginView> {
   final autenticacaoController = GetIt.I.get<AutenticacaoController>();
+  final settingsCtrl = GetIt.I.get<SettingsController>();
   final usuarioController = GetIt.I.get<UsuarioController>();
   final usuarioStore = GetIt.I.get<UsuarioStore>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -111,7 +113,7 @@ class LoginViewState extends State<LoginView> {
   }
 
   Future<void> versaoApp() async {
-    final versao = await autenticacaoController.obterNumeroVersaoApp();
+    final versao = await settingsCtrl.obterNumeroVersaoApp();
     setState(() {
       numeroVersaoApp = versao;
     });
