@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import '../controllers/index.dart';
+import '../controllers/settings/settings.controller.dart';
 import '../repositories/index.dart';
 import '../services/index.dart';
 import '../stores/index.dart';
@@ -38,5 +39,6 @@ class DependenciasIoC {
     getIt.registerSingleton<EstudanteController>(EstudanteController());
     getIt.registerSingleton<EstudanteNotasController>(EstudanteNotasController());
     getIt.registerSingleton<EstudanteFrequenciaController>(EstudanteFrequenciaController());
+    getIt.registerSingleton<SettingsController>(SettingsController());
   }
 }
