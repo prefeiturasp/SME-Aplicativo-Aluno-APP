@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
@@ -49,8 +52,15 @@ Future<void> initializeiOS() async {
   }
 }
 
+Future<void> obterVersaoApp() async {
+  final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('versaoApp', jsonEncode(packageInfo.version));
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  obterVersaoApp();
   await Firebase.initializeApp();
   await initializeAppConfig();
   await Future.delayed(const Duration(seconds: 3));

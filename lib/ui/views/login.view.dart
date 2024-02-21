@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:sentry/sentry.dart';
-
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/usuario.controller.dart';
 import '../../models/index.dart';
@@ -41,10 +40,12 @@ class LoginViewState extends State<LoginView> {
   String _cpf = '';
   String _cpfRaw = '';
   String _password = '';
+  String numeroVersaoApp = '';
 
   @override
   void initState() {
     super.initState();
+    versaoApp();
   }
 
   Future<void> handleSignIn(
@@ -107,6 +108,13 @@ class LoginViewState extends State<LoginView> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
+  }
+
+  Future<void> versaoApp() async {
+    final versao = await autenticacaoController.obterNumeroVersaoApp();
+    setState(() {
+      numeroVersaoApp = versao;
+    });
   }
 
   @override
@@ -321,6 +329,10 @@ class LoginViewState extends State<LoginView> {
                                     }
                                   },
                                 ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Center(child: Text(numeroVersaoApp)),
                         ],
                       ),
                     ),
