@@ -4,7 +4,7 @@ description: SME Aplicativo do Aluno
 version: 1.4.13+13
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
+  sdk: '>=3.2.6 <4.0.0'
 
 scripts:
   pget: flutter pub get
@@ -31,7 +31,7 @@ dependencies:
   json_annotation: ^4.8.1
   firebase_messaging: ^14.6.7
   firebase_analytics: ^10.6.1
-  intl: ^0.18.1
+  intl: ^0.19.0
   flutter_html: ^3.0.0-beta.2
   flutter_widget_from_html_core: ^0.14.3
   
