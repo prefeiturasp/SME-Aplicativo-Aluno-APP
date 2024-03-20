@@ -85,10 +85,10 @@ packages:
     dependency: "direct main"
     description:
       name: brasil_fields
-      sha256: "6b04a76cff0105368504e4b8e55552ffbcaf50b46822794b3ec622026430d60d"
+      sha256: "33b419e732079637831e88b118ba0e7caa17a798afd86081b3bc568d4fee2748"
       url: "https://pub.dev"
     source: hosted
-    version: "1.14.1"
+    version: "1.14.3"
   build:
     dependency: transitive
     description:
@@ -612,10 +612,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.1"
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
