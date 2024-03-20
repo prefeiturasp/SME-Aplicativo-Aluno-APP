@@ -205,10 +205,10 @@ packages:
     dependency: "direct main"
     description:
       name: connectivity_plus
-      sha256: d3316397a50b3aa228535776c783a55fb19610b44e893e7788d4c152207e9d01
+      sha256: "224a77051d52a11fbad53dd57827594d3bd24f945af28bd70bab376d68d437f0"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "5.0.2"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:

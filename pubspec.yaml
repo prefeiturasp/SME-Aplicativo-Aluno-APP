@@ -22,7 +22,7 @@ dependencies:
   http: ^1.1.0
   auto_size_text: ^3.0.0
   font_awesome_flutter: ^10.6.0
-  connectivity_plus: ^6.0.0
+  connectivity_plus: ^5.0.2
   mobx: ^2.2.1
   flutter_mobx: ^2.1.0+1
   brasil_fields: ^1.14.1
