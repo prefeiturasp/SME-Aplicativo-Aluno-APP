@@ -72,11 +72,11 @@ class LoginViewState extends State<LoginView> {
           content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
         );
 
-        if (context.mounted) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       } else {
-        if (usuarioStore.usuario!.primeiroAcesso && context.mounted) {
+        if (usuarioStore.usuario!.primeiroAcesso && mounted) {
           Nav.push(
             context,
             FirstAccess(
@@ -85,11 +85,11 @@ class LoginViewState extends State<LoginView> {
             ),
           );
         } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
-          if (context.mounted) {
+          if (mounted) {
             Nav.push(context, const AtualizacaoCadastralView());
           }
         } else {
-          if (context.mounted) {
+          if (mounted) {
             Nav.push(context, const EstudanteListaView());
           }
         }
@@ -106,7 +106,7 @@ class LoginViewState extends State<LoginView> {
         content: Text('Erro ao tentar se autenticar!'),
       );
 
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
