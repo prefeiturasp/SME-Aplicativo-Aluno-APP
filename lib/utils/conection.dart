@@ -9,14 +9,14 @@ class ConnectivityService {
   StreamController<ConnectivityStatus> connectionStatusController = StreamController<ConnectivityStatus>();
   ConnectivityService() {
     // Assine a conectividade Steam alterado
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
       // Use Connectivity () aqui para obter mais informações, se você precisar
       connectionStatusController.add(_getStatusFromResult(result));
     });
   }
   // Converter da terceira parte enum para a nossa própria enum
-  ConnectivityStatus _getStatusFromResult(ConnectivityResult result) {
-    switch (result) {
+  ConnectivityStatus _getStatusFromResult(List<ConnectivityResult> result) {
+    switch (result.first) {
       case ConnectivityResult.mobile:
         return ConnectivityStatus.celular;
       case ConnectivityResult.wifi:
