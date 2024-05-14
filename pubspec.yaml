@@ -39,7 +39,7 @@ dependencies:
   url_launcher: ^6.1.14
   string_validator: ^1.0.2
   email_validator: ^2.1.17
-  sentry: ^7.10.1
+  sentry: ^8.2.0
   awesome_dialog: ^3.1.0
   sqflite: ^2.3.0
   path: ^1.8.3 
@@ -48,7 +48,7 @@ dependencies:
   hexcolor: ^3.0.1
   get_it: ^7.6.4
   shared_preferences: ^2.2.2
-  extended_masked_text: ^2.3.1
+  extended_masked_text: ^3.0.0
   dio: ^5.3.3
   grouped_list: ^5.1.2
   flutter_easyloading: ^3.0.5
@@ -56,13 +56,13 @@ dependencies:
   get_ip_address: ^0.0.6
   firebase_core: ^2.19.0
   html: ^0.15.4
-  package_info_plus: ^6.0.0
+  package_info_plus: ^8.0.0
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mobx_codegen: ^2.4.0 
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.6 
   flutter_launcher_icons: ^0.13.1
 
