@@ -222,7 +222,7 @@ class ViewMessageState extends State<ViewMessage> {
                       Navigator.of(context).pop();
                     },
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: const BorderSide(
                             color: Color(0xffd06d12),
