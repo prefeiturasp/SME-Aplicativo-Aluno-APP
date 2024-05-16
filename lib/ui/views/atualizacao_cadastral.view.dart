@@ -90,7 +90,7 @@ class AtualizacaoCadastralViewState extends State<AtualizacaoCadastralView> {
     });
 
     if (response.ok) {
-      if (context.mounted) {
+      if (mounted) {
         Navigator.push(
           context,
           MaterialPageRoute(

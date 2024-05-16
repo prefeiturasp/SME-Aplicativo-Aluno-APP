@@ -102,7 +102,7 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
 
     await _messagesController.loadById(message0.id, usuarioStore.usuario!.id);
     message0.mensagem = _messagesController.message!.mensagem;
-    if (context.mounted) {
+    if (mounted) {
       Nav.push(
         context,
         ViewMessageNotification(
