@@ -31,13 +31,7 @@ class Dashboard extends StatefulWidget {
   final int codigoGrupo;
   final int userId;
 
-  const Dashboard({
-    super.key,
-    required this.estudante,
-    required this.groupSchool,
-    required this.codigoGrupo,
-    required this.userId,
-  });
+  const Dashboard({super.key, required this.estudante, required this.groupSchool, required this.codigoGrupo, required this.userId});
 
   @override
   DashboardState createState() => DashboardState();
@@ -59,12 +53,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   void _loadingCalendar() async {
-    _eventController.fetchEvento(
-      widget.estudante.codigoEol,
-      _eventController.currentDate.month,
-      _eventController.currentDate.year,
-      widget.userId,
-    );
+    _eventController.fetchEvento(widget.estudante.codigoEol, _eventController.currentDate.month, _eventController.currentDate.year, widget.userId);
   }
 
   Widget _buildItemMEssage(Message message, int totalCategories, BuildContext context) {
@@ -74,8 +63,8 @@ class DashboardState extends State<Dashboard> {
       countMessages: message.categoriaNotificacao == 'SME'
           ? _messagesController.countMessageSME
           : message.categoriaNotificacao == 'UE'
-              ? _messagesController.countMessageUE
-              : _messagesController.countMessageDRE,
+          ? _messagesController.countMessageUE
+          : _messagesController.countMessageDRE,
       codigoGrupo: widget.codigoGrupo,
       deleteBtn: false,
       recent: !message.mensagemVisualizada,
@@ -83,11 +72,7 @@ class DashboardState extends State<Dashboard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewMessage(
-              userId: widget.userId,
-              message: message,
-              codigoAlunoEol: widget.estudante.codigoEol,
-            ),
+            builder: (context) => ViewMessage(userId: widget.userId, message: message, codigoAlunoEol: widget.estudante.codigoEol),
           ),
         ).whenComplete(() => loadingBackRecentMessage());
       },
@@ -95,21 +80,14 @@ class DashboardState extends State<Dashboard> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ListMessages(
-              userId: widget.userId,
-              codigoGrupo: widget.codigoGrupo,
-              codigoAlunoEol: widget.estudante.codigoEol,
-            ),
+            builder: (context) => ListMessages(userId: widget.userId, codigoGrupo: widget.codigoGrupo, codigoAlunoEol: widget.estudante.codigoEol),
           ),
         ).whenComplete(() => loadingBackRecentMessage());
       },
     );
   }
 
-  Widget listEvents(
-    List<Event> events,
-    BuildContext context,
-  ) {
+  Widget listEvents(List<Event> events, BuildContext context) {
     final List<Widget> list = [];
     for (int i = 0; i < events.length; i++) {
       final String diaSemana = (events[i].diaSemana).substring(0, 1).toUpperCase() + (events[i].diaSemana).substring(1);
@@ -118,10 +96,7 @@ class DashboardState extends State<Dashboard> {
         Column(
           children: [
             EventItem(
-              customTitle: TitleEvent(
-                dayOfWeek: diaSemana,
-                title: events[i].nome,
-              ),
+              customTitle: TitleEvent(dayOfWeek: diaSemana, title: events[i].nome),
               titleEvent: events[i].nome,
               desc: events[i].descricao.isNotEmpty ? (events[i].descricao.length > 3 ? true : false) : false,
               eventDesc: events[i].descricao,
@@ -129,9 +104,7 @@ class DashboardState extends State<Dashboard> {
               tipoEvento: events[i].tipoEvento,
               componenteCurricular: events[i].componenteCurricular,
             ),
-            const Divider(
-              color: Color(0xffCDCDCD),
-            ),
+            const Divider(color: Color(0xffCDCDCD)),
           ],
         ),
       );
@@ -139,10 +112,7 @@ class DashboardState extends State<Dashboard> {
     return Column(children: list);
   }
 
-  Widget _listEvents(
-    List<Event> events,
-    BuildContext context,
-  ) {
+  Widget _listEvents(List<Event> events, BuildContext context) {
     final List<Widget> list = [];
 
     for (int i = 0; i < events.length; i++) {
@@ -152,10 +122,7 @@ class DashboardState extends State<Dashboard> {
         Column(
           children: [
             EventItem(
-              customTitle: TitleEvent(
-                dayOfWeek: diaSemana,
-                title: events[i].nome,
-              ),
+              customTitle: TitleEvent(dayOfWeek: diaSemana, title: events[i].nome),
               titleEvent: events[i].nome,
               desc: events[i].descricao.isNotEmpty ? (events[i].descricao.length > 3 ? true : false) : false,
               eventDesc: events[i].descricao,
@@ -163,9 +130,7 @@ class DashboardState extends State<Dashboard> {
               tipoEvento: events[i].tipoEvento,
               componenteCurricular: events[i].componenteCurricular,
             ),
-            const Divider(
-              color: Color(0xffCDCDCD),
-            ),
+            const Divider(color: Color(0xffCDCDCD)),
           ],
         ),
       );
@@ -178,7 +143,7 @@ class DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final connectionStatus = Provider.of<ConnectivityStatus>(context);
     if (connectionStatus == ConnectivityStatus.offline) {
-      return const NotInteernet();
+    return const NotInteernet();
     } else {
       final size = MediaQuery.of(context).size;
       final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
@@ -192,11 +157,7 @@ class DashboardState extends State<Dashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                EAResumoEstudanteCard(
-                  estudante: widget.estudante,
-                  modalidade: widget.groupSchool,
-                  codigoGrupo: widget.codigoGrupo.toString(),
-                ),
+                EAResumoEstudanteCard(estudante: widget.estudante, modalidade: widget.groupSchool, codigoGrupo: widget.codigoGrupo.toString()),
                 Observer(
                   builder: (context) {
                     if (_messagesController.isLoading) {
@@ -210,7 +171,7 @@ class DashboardState extends State<Dashboard> {
                     } else {
                       if (_messagesController.messages != null) {
                         _messagesController.loadRecentMessagesPorCategory();
-
+      
                         if (_messagesController.recentMessages!.isEmpty) {
                           return Visibility(
                             visible: true,
@@ -231,11 +192,7 @@ class DashboardState extends State<Dashboard> {
                                   margin: EdgeInsets.only(top: screenHeight * 3),
                                   child: Visibility(
                                     visible: _messagesController.recentMessages!.length > 1,
-                                    replacement: _buildItemMEssage(
-                                      _messagesController.recentMessages![0],
-                                      _messagesController.recentMessages!.length,
-                                      context,
-                                    ),
+                                    replacement: _buildItemMEssage(_messagesController.recentMessages![0], _messagesController.recentMessages!.length, context),
                                     child: ListView.builder(
                                       itemCount: _messagesController.recentMessages!.length,
                                       scrollDirection: Axis.horizontal,
@@ -280,10 +237,7 @@ class DashboardState extends State<Dashboard> {
                           totalEventos: '${_eventController.events!.length} evento(s) esse mês',
                           widget: Observer(
                             builder: (_) {
-                              return _listEvents(
-                                _eventController.priorityEvents as List<Event>,
-                                context,
-                              );
+                              return _listEvents(_eventController.priorityEvents as List<Event>, context);
                             },
                           ),
                           onPress: () {
@@ -301,12 +255,7 @@ class DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        drawer: DrawerMenu(
-          estudante: widget.estudante,
-          codigoGrupo: widget.codigoGrupo,
-          userId: widget.userId,
-          groupSchool: widget.groupSchool,
-        ),
+        drawer: DrawerMenu(estudante: widget.estudante, codigoGrupo: widget.codigoGrupo, userId: widget.userId, groupSchool: widget.groupSchool),
       );
     }
   }

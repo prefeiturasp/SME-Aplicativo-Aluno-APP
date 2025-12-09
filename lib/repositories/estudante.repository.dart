@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sentry/sentry.dart';
 
@@ -22,33 +24,22 @@ class EstudanteRepository {
         return DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []);
       } else {
         final dataError = DataStudent.fromJson(response.data);
-        GetIt.I.get<SentryClient>().captureException(
-              'Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}',
-            );
+        GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}');
         return dataError;
       }
     } catch (e, stacktrace) {
-      GetIt.I.get<SentryClient>().captureException(
-            'Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace',
-          );
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace');
       throw Exception(e);
     }
   }
 
-  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(
-    List<int> bimestres,
-    String codigoUe,
-    String codigoTurma,
-    String alunoCodigo,
-  ) async {
+  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(List<int> bimestres, String codigoUe, String codigoTurma, String alunoCodigo) async {
     try {
       final bimestresJoin = bimestres.join('&bimestres=');
       if (bimestresJoin.isEmpty) {
         return List<ComponenteCurricularDTO>() = [];
       }
-      final response = await _api.dio.get(
-        '/Aluno/ues/$codigoUe/turmas/$codigoTurma/alunos/$alunoCodigo/componentes-curriculares?bimestres=$bimestresJoin',
-      );
+      final response = await _api.dio.get('/Aluno/ues/$codigoUe/turmas/$codigoTurma/alunos/$alunoCodigo/componentes-curriculares?bimestres=$bimestresJoin');
 
       if (response.statusCode == 200) {
         final retorno = (response.data as List).map((x) => ComponenteCurricularDTO.fromJson(x)).toList();
@@ -57,30 +48,37 @@ class EstudanteRepository {
         return [];
       }
     } catch (e, stacktrace) {
-      GetIt.I.get<SentryClient>().captureException(
-            'Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $e $stacktrace',
-          );
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Bimestres disponíveis EstudanteRepository.obterComponentesCurriculares() $e $stacktrace');
       return List<ComponenteCurricularDTO>() = [];
     }
   }
 
-  Future<List<int>> obterBimestresDisponiveisParaVisualizacao(String turmaCodigo) async {
+  Future<Either<List<String>, List<int>>> obterBimestresDisponiveisParaVisualizacao(String turmaCodigo) async {
     try {
       final url = '/Aluno/turmas/$turmaCodigo/boletins/liberacoes/bimestres';
       final response = await _api.dio.get(url);
 
       if (response.statusCode == 200) {
         final bimestres = response.data;
-        return bimestres.cast<int>();
+        return Right(bimestres.cast<int>());
       } else {
         GetIt.I.get<SentryClient>().captureException(response);
-        return [];
+        return Left(['Erro ao carregar lista de Bimestres']);
       }
-    } catch (e, stacktrace) {
-      GetIt.I.get<SentryClient>().captureException(
-            'Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $e $stacktrace',
-          );
-      return [];
+    } on DioException catch (ex, stacktrace) {
+      final List<String> listaErros = [];
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $ex $stacktrace');
+      final Response<dynamic>? err = ex.response;
+      final List<String> erros = err?.data['erros'] != null ? List<String>.from(err!.data['erros']) : [];
+
+      if (erros.isNotEmpty) {
+        listaErros.addAll(erros);
+      }
+      return Left(listaErros);
+    } on Exception catch (ex, stacktrace) {
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $ex $stacktrace');
+
+      return Left(['Erro ao carregar lista de Bimestres']);
     }
   }
 }

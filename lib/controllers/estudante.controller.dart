@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,8 +24,7 @@ class EstudanteController {
         _groupMessageService.create(Group(codigo: 'TE-${estudante.codigoTipoEscola}'));
 
         _firebaseMessaging.subscribeToTopic('MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}');
-        _groupMessageService
-            .create(Group(codigo: 'MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}'));
+        _groupMessageService.create(Group(codigo: 'MODALIDADE-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}'));
 
         _firebaseMessaging.subscribeToTopic('DRE-${estudante.codigoDre}');
         _groupMessageService.create(Group(codigo: 'DRE-${estudante.codigoDre}'));
@@ -41,12 +41,8 @@ class EstudanteController {
         _firebaseMessaging.subscribeToTopic('UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}');
         _groupMessageService.create(Group(codigo: 'UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}'));
 
-        _firebaseMessaging.subscribeToTopic(
-          'UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}',
-        );
-        _groupMessageService.create(
-          Group(codigo: 'UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}'),
-        );
+        _firebaseMessaging.subscribeToTopic('UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}');
+        _groupMessageService.create(Group(codigo: 'UE-${estudante.codigoEscola}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}'));
 
         _firebaseMessaging.subscribeToTopic('TUR-${estudante.codigoTurma}');
         _groupMessageService.create(Group(codigo: 'TUR-${estudante.codigoTurma}'));
@@ -55,32 +51,16 @@ class EstudanteController {
         _groupMessageService.create(Group(codigo: 'ALU-${estudante.codigoEol}'));
 
         _firebaseMessaging.subscribeToTopic('SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}');
-        _groupMessageService
-            .create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}'));
+        _groupMessageService.create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}'));
 
-        _firebaseMessaging.subscribeToTopic(
-          'SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}',
-        );
-        _groupMessageService.create(
-          Group(
-            codigo:
-                'SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}',
-          ),
-        );
+        _firebaseMessaging.subscribeToTopic('SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}');
+        _groupMessageService.create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-MOD-${element.codigoGrupo}-TE-${estudante.codigoTipoEscola}'));
 
         _firebaseMessaging.subscribeToTopic('SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}');
-        _groupMessageService
-            .create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}'));
+        _groupMessageService.create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}'));
 
-        _firebaseMessaging.subscribeToTopic(
-          'SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}',
-        );
-        _groupMessageService.create(
-          Group(
-            codigo:
-                'SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}',
-          ),
-        );
+        _firebaseMessaging.subscribeToTopic('SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}');
+        _groupMessageService.create(Group(codigo: 'SERIERESUMIDA-${estudante.serieResumida}-DRE-${estudante.codigoDre}-TE-${estudante.codigoTipoEscola}'));
       });
     });
   }
@@ -99,19 +79,14 @@ class EstudanteController {
     }
   }
 
-  Future<List<int>> obterBimestresDisponiveisParaVisualizacao(String turmaCodigo) async {
+  Future<Either<List<String>, List<int>>> obterBimestresDisponiveisParaVisualizacao(String turmaCodigo) async {
     _estudanteStore.carregando = true;
     final data = await _estudanteRepository.obterBimestresDisponiveisParaVisualizacao(turmaCodigo);
     _estudanteStore.carregando = false;
     return data;
   }
 
-  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(
-    List<int> bimestres,
-    String codigoUe,
-    String codigoTurma,
-    String alunoCodigo,
-  ) async {
+  Future<List<ComponenteCurricularDTO>> obterComponentesCurriculares(List<int> bimestres, String codigoUe, String codigoTurma, String alunoCodigo) async {
     _estudanteStore.carregando = true;
     final data = await _estudanteRepository.obterComponentesCurriculares(bimestres, codigoUe, codigoTurma, alunoCodigo);
     _estudanteStore.carregando = false;

@@ -5,6 +5,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
@@ -39,15 +40,7 @@ Future initializeAppConfig() async {
 Future<void> initializeiOS() async {
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   if (Platform.isIOS) {
-    firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    firebaseMessaging.requestPermission(alert: true, announcement: false, badge: true, carPlay: false, criticalAlert: false, provisional: false, sound: true);
   }
 }
 
@@ -63,12 +56,7 @@ void main() async {
   await Firebase.initializeApp();
   await initializeAppConfig();
   await Future.delayed(const Duration(seconds: 3));
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Color(0xffde9524),
-      statusBarBrightness: Brightness.dark,
-    ),
-  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Color(0xffde9524), statusBarBrightness: Brightness.dark));
 
   final ioc = DependenciasIoC();
 
@@ -94,21 +82,19 @@ class MyApp extends StatelessWidget {
         Provider<RecoverPasswordController>.value(value: RecoverPasswordController()),
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         Provider<TermsController>.value(value: TermsController()),
-        StreamProvider<ConnectivityStatus>(
-          initialData: ConnectivityStatus.celular,
-          create: (context) => ConnectivityService().connectionStatusController.stream,
-        ),
+        StreamProvider<ConnectivityStatus>(initialData: ConnectivityStatus.celular, create: (context) => ConnectivityService().connectionStatusController.stream),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'SME Aplicativo do Aluno',
-        color: const Color(0xffEEC25E),
-        theme: ThemeData(
-          primaryColor: const Color(0xFFEEC25E),
-          useMaterial3: false,
+      child: SafeArea(
+        bottom: true,
+        top: false,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'SME Aplicativo do Aluno',
+          color: const Color(0xffEEC25E),
+          theme: ThemeData(primaryColor: const Color(0xFFEEC25E), useMaterial3: false),
+          home: const FluxoInicialView(),
+          builder: EasyLoading.init(),
         ),
-        home: const FluxoInicialView(),
-        builder: EasyLoading.init(),
       ),
     );
   }
