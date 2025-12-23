@@ -35,8 +35,8 @@ class EstudanteFrequenciaRepository {
   }
 
   Future<List<EstudanteFrequenciaModel>> fetchCurricularComponent(
-    anoLetivo,
-    codigoUE,
+    dynamic anoLetivo,
+    dynamic codigoUE,
     String codigoTurma,
     String codigoAluno,
     String codigoComponenteCurricular,

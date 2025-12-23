@@ -36,7 +36,7 @@ abstract class EventControllerBase with Store {
   String? currentMonth;
 
   @action
-  void loadingCurrentMonth(month) {
+  void loadingCurrentMonth(dynamic month) {
     switch (month) {
       case 1:
         currentMonth = 'Janeiro';
@@ -106,7 +106,7 @@ abstract class EventControllerBase with Store {
   }
 
   @action
-  void listPriorityEvents(eventsList) {
+  void listPriorityEvents(dynamic eventsList) {
     var filterList = ObservableList<Event>.of([]);
     var sortList = ObservableList<Event>.of([]);
     var takeList = ObservableList<Event>.of([]);

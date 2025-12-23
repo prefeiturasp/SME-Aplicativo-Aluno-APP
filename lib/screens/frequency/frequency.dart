@@ -20,7 +20,7 @@ import '../widgets/cards/frequency_global_card.dart';
 class Frequency extends StatefulWidget {
   final EstudanteModel? student;
 
-  const Frequency({super.key, @required this.student});
+  const Frequency({super.key, required this.student});
 
   @override
   FrequencyState createState() => FrequencyState();
@@ -164,12 +164,12 @@ class FrequencyState extends State<Frequency> {
     return Column(children: list);
   }
 
-  Container _buildLoadingWidget(size, screenHeight) => Container(
+  Container _buildLoadingWidget(dynamic size, screenHeight) => Container(
     margin: EdgeInsets.all(screenHeight * 1.5),
     child: const GFLoader(type: GFLoaderType.square, loaderColorOne: Color(0xffDE9524), loaderColorTwo: Color(0xffC65D00), loaderColorThree: Color(0xffC65D00), size: GFSize.LARGE),
   );
 
-  Container _buildFrequencyExpandedPanel(index, size, screenHeight) {
+  Container _buildFrequencyExpandedPanel(dynamic index, size, screenHeight) {
     final comp = _componentesCurriculares![index];
 
     return Container(

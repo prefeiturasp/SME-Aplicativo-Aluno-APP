@@ -5,7 +5,6 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/date_symbol_data_local.dart' as date_symbol_data_local;
@@ -13,6 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constantes/colors.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
@@ -56,7 +56,7 @@ void main() async {
   await Firebase.initializeApp();
   await initializeAppConfig();
   await Future.delayed(const Duration(seconds: 3));
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Color(0xffde9524), statusBarBrightness: Brightness.dark));
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: statusBarColor, statusBarBrightness: Brightness.dark));
 
   final ioc = DependenciasIoC();
 
@@ -90,8 +90,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'SME Aplicativo do Aluno',
-          color: const Color(0xffEEC25E),
-          theme: ThemeData(primaryColor: const Color(0xFFEEC25E), useMaterial3: false),
+          color: primaryColor,
+          theme: ThemeData(primaryColor: primaryColor, useMaterial3: false),
           home: const FluxoInicialView(),
           builder: EasyLoading.init(),
         ),
