@@ -20,10 +20,28 @@ class OutrosServicosListaState extends State<OutrosServicosLista> {
     final List<OutroServicoModel> valorInicial = [];
     return Scaffold(
       appBar: const AppBarEscolaAqui(titulo: 'Outros Serviços'),
-      body: FutureBuilder(
+      body: FutureBuilder<List<OutroServicoModel>>(
         future: outroServicosRepository.obterTodosLinks(),
         initialData: valorInicial,
         builder: (context, AsyncSnapshot<List<OutroServicoModel>> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Erro ao carregar serviços: ${snapshot.error}'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('Nenhum serviço disponível'),
+            );
+          }
+
           return GroupedListView<dynamic, String>(
             elements: snapshot.data!.toList(),
             groupBy: (servico) => servico.categoria,
