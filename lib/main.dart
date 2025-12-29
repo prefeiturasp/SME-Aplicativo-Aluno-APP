@@ -12,6 +12,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'constantes/colors.dart';
 import 'controllers/auth/first_access.controller.dart';
 import 'controllers/auth/recover_password.controller.dart';
 import 'controllers/messages/messages.controller.dart';
@@ -39,15 +40,7 @@ Future initializeAppConfig() async {
 Future<void> initializeiOS() async {
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   if (Platform.isIOS) {
-    firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    firebaseMessaging.requestPermission(alert: true, announcement: false, badge: true, carPlay: false, criticalAlert: false, provisional: false, sound: true);
   }
 }
 
@@ -63,12 +56,7 @@ void main() async {
   await Firebase.initializeApp();
   await initializeAppConfig();
   await Future.delayed(const Duration(seconds: 3));
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Color(0xffde9524),
-      statusBarBrightness: Brightness.dark,
-    ),
-  );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: statusBarColor, statusBarBrightness: Brightness.dark));
 
   final ioc = DependenciasIoC();
 
@@ -94,21 +82,19 @@ class MyApp extends StatelessWidget {
         Provider<RecoverPasswordController>.value(value: RecoverPasswordController()),
         Provider<FirstAccessController>.value(value: FirstAccessController()),
         Provider<TermsController>.value(value: TermsController()),
-        StreamProvider<ConnectivityStatus>(
-          initialData: ConnectivityStatus.celular,
-          create: (context) => ConnectivityService().connectionStatusController.stream,
-        ),
+        StreamProvider<ConnectivityStatus>(initialData: ConnectivityStatus.celular, create: (context) => ConnectivityService().connectionStatusController.stream),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'SME Aplicativo do Aluno',
-        color: const Color(0xffEEC25E),
-        theme: ThemeData(
-          primaryColor: const Color(0xFFEEC25E),
-          useMaterial3: false,
+      child: SafeArea(
+        bottom: true,
+        top: false,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'SME Aplicativo do Aluno',
+          color: primaryColor,
+          theme: ThemeData(primaryColor: primaryColor, useMaterial3: false),
+          home: const FluxoInicialView(),
+          builder: EasyLoading.init(),
         ),
-        home: const FluxoInicialView(),
-        builder: EasyLoading.init(),
       ),
     );
   }

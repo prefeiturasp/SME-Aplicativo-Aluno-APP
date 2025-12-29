@@ -35,8 +35,8 @@ class EstudanteFrequenciaRepository {
   }
 
   Future<List<EstudanteFrequenciaModel>> fetchCurricularComponent(
-    anoLetivo,
-    codigoUE,
+    dynamic anoLetivo,
+    dynamic codigoUE,
     String codigoTurma,
     String codigoAluno,
     String codigoComponenteCurricular,
@@ -66,7 +66,8 @@ class EstudanteFrequenciaRepository {
     String codigoAluno,
   ) async {
     try {
-      final response = await _api.dio.get('/Aluno/frequencia-global?turmaCodigo=$codigoTurma&alunoCodigo=$codigoAluno');
+      final url = '/Aluno/frequencia-global?turmaCodigo=$codigoTurma&alunoCodigo=$codigoAluno';
+      final response = await _api.dio.get(url);
       if (response.statusCode == 200) {
         return EstudanteFrequenciaGlobalDTO.fromJson(response.data);
       } else {

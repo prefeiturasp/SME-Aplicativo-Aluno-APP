@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../constantes/colors.dart';
+
 class LabelEvent extends StatelessWidget {
   final String labelName;
   final Color labelColor;
@@ -42,7 +44,7 @@ class LabelEvent extends StatelessWidget {
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            color: Color(0xff333333),
+            color: autoSizeTextColor,
           ),
         ),
       ],

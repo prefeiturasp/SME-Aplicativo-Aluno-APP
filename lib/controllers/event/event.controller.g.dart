@@ -9,8 +9,10 @@ part of 'event.controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$EventController on EventControllerBase, Store {
-  late final _$eventAtom =
-      Atom(name: 'EventControllerBase.event', context: context);
+  late final _$eventAtom = Atom(
+    name: 'EventControllerBase.event',
+    context: context,
+  );
 
   @override
   Event? get event {
@@ -25,8 +27,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$eventsAtom =
-      Atom(name: 'EventControllerBase.events', context: context);
+  late final _$eventsAtom = Atom(
+    name: 'EventControllerBase.events',
+    context: context,
+  );
 
   @override
   ObservableList<Event>? get events {
@@ -41,8 +45,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$eventsSortDateAtom =
-      Atom(name: 'EventControllerBase.eventsSortDate', context: context);
+  late final _$eventsSortDateAtom = Atom(
+    name: 'EventControllerBase.eventsSortDate',
+    context: context,
+  );
 
   @override
   ObservableList<Event>? get eventsSortDate {
@@ -57,8 +63,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$priorityEventsAtom =
-      Atom(name: 'EventControllerBase.priorityEvents', context: context);
+  late final _$priorityEventsAtom = Atom(
+    name: 'EventControllerBase.priorityEvents',
+    context: context,
+  );
 
   @override
   ObservableList<Event>? get priorityEvents {
@@ -73,8 +81,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$loadingAtom =
-      Atom(name: 'EventControllerBase.loading', context: context);
+  late final _$loadingAtom = Atom(
+    name: 'EventControllerBase.loading',
+    context: context,
+  );
 
   @override
   bool get loading {
@@ -89,8 +99,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$currentDateAtom =
-      Atom(name: 'EventControllerBase.currentDate', context: context);
+  late final _$currentDateAtom = Atom(
+    name: 'EventControllerBase.currentDate',
+    context: context,
+  );
 
   @override
   DateTime get currentDate {
@@ -105,8 +117,10 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$currentMonthAtom =
-      Atom(name: 'EventControllerBase.currentMonth', context: context);
+  late final _$currentMonthAtom = Atom(
+    name: 'EventControllerBase.currentMonth',
+    context: context,
+  );
 
   @override
   String? get currentMonth {
@@ -121,31 +135,40 @@ mixin _$EventController on EventControllerBase, Store {
     });
   }
 
-  late final _$fetchEventoAsyncAction =
-      AsyncAction('EventControllerBase.fetchEvento', context: context);
+  late final _$fetchEventoAsyncAction = AsyncAction(
+    'EventControllerBase.fetchEvento',
+    context: context,
+  );
 
   @override
   Future<void> fetchEvento(int codigoAluno, int mes, int ano, int userId) {
-    return _$fetchEventoAsyncAction
-        .run(() => super.fetchEvento(codigoAluno, mes, ano, userId));
+    return _$fetchEventoAsyncAction.run(
+      () => super.fetchEvento(codigoAluno, mes, ano, userId),
+    );
   }
 
-  late final _$changeCurrentMonthAsyncAction =
-      AsyncAction('EventControllerBase.changeCurrentMonth', context: context);
+  late final _$changeCurrentMonthAsyncAction = AsyncAction(
+    'EventControllerBase.changeCurrentMonth',
+    context: context,
+  );
 
   @override
   Future<void> changeCurrentMonth(int month, int codigoEol, int userId) {
-    return _$changeCurrentMonthAsyncAction
-        .run(() => super.changeCurrentMonth(month, codigoEol, userId));
+    return _$changeCurrentMonthAsyncAction.run(
+      () => super.changeCurrentMonth(month, codigoEol, userId),
+    );
   }
 
-  late final _$EventControllerBaseActionController =
-      ActionController(name: 'EventControllerBase', context: context);
+  late final _$EventControllerBaseActionController = ActionController(
+    name: 'EventControllerBase',
+    context: context,
+  );
 
   @override
   void loadingCurrentMonth(dynamic month) {
     final _$actionInfo = _$EventControllerBaseActionController.startAction(
-        name: 'EventControllerBase.loadingCurrentMonth');
+      name: 'EventControllerBase.loadingCurrentMonth',
+    );
     try {
       return super.loadingCurrentMonth(month);
     } finally {
@@ -156,7 +179,8 @@ mixin _$EventController on EventControllerBase, Store {
   @override
   void listPriorityEvents(dynamic eventsList) {
     final _$actionInfo = _$EventControllerBaseActionController.startAction(
-        name: 'EventControllerBase.listPriorityEvents');
+      name: 'EventControllerBase.listPriorityEvents',
+    );
     try {
       return super.listPriorityEvents(eventsList);
     } finally {

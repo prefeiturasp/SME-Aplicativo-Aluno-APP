@@ -13,6 +13,7 @@ import '../../enumeradores/modalidade_tipo.dart';
 import '../../repositories/boletim_aluno_repository.dart';
 import '../../repositories/recomendacao_aluno_repository.dart';
 import '../../repositories/relatorio_raa_repository.dart';
+import '../../stores/estudante.store.dart';
 import '../../ui/widgets/buttons/ea_deafult_button.widget.dart';
 import '../../utils/mensagem_sistema.dart';
 import '../widgets/cards/card_alert.dart';
@@ -52,11 +53,15 @@ class Expansion extends StatefulWidget {
 
 class ExpansionState extends State<Expansion> {
   final _estudanteNotasController = GetIt.I.get<EstudanteNotasController>();
+  final _estudanteStore = GetIt.I.get<EstudanteStore>();
+
   final _estudanteController = GetIt.I.get<EstudanteController>();
   final _boletimRepositorio = BoletimAlunoRepository();
   final _relatorioRaarepositorio = RelatorioRaaRepository();
   final _repositorioRecomandacao = RecomendacaoAlunoRepository();
   DateTime? dateTime;
+  List<String> _bimestresErros = [];
+  late List<int> _bimestres = [];
   var recomendacaoAluno = RecomendacaoAlunoDto();
   @override
   void initState() {
@@ -64,62 +69,58 @@ class ExpansionState extends State<Expansion> {
     dateTime = DateTime.now();
     _estudanteNotasController.limparNotas();
     _buscarRecomandacao();
+    carregarNotas();
   }
 
   Future<void> carregarNotas() async {
-    final bimestres = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
-    if (bimestres.isNotEmpty) {
-      _estudanteNotasController.obterNotasConceito(bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
+    final response = await _estudanteController.obterBimestresDisponiveisParaVisualizacao(widget.codigoTurma);
+
+    response.fold((e) => _bimestresErros = e, (b) => _bimestres = b);
+
+    if (_bimestresErros.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _alertaErroObterBimestres();
+      });
+    }
+
+    if (_bimestres.isNotEmpty) {
+      _estudanteNotasController.obterNotasConceito(_bimestres, widget.codigoUe, widget.codigoTurma, widget.codigoAluno);
     } else {
       _estudanteNotasController.limparNotas();
     }
   }
 
   String? _buildNotesDescUm(index) {
-    return _estudanteNotasController.listNotesUm != null
-        ? _estudanteNotasController.listNotesUm![index].notaDescricao
-        : '';
+    return _estudanteNotasController.listNotesUm != null ? _estudanteNotasController.listNotesUm![index].notaDescricao : '';
   }
 
   String? _buildNotesDescDois(index) {
-    return _estudanteNotasController.listNotesDois != null
-        ? _estudanteNotasController.listNotesDois![index].notaDescricao
-        : '';
+    return _estudanteNotasController.listNotesDois != null ? _estudanteNotasController.listNotesDois![index].notaDescricao : '';
   }
 
   String? _buildNotesDescTres(index) {
-    return _estudanteNotasController.listNotesTres != null
-        ? _estudanteNotasController.listNotesTres![index].notaDescricao
-        : '';
+    return _estudanteNotasController.listNotesTres != null ? _estudanteNotasController.listNotesTres![index].notaDescricao : '';
   }
 
   String? _buildNotesDescQuatro(index) {
-    return _estudanteNotasController.listNotesQuatro != null
-        ? _estudanteNotasController.listNotesQuatro![index].notaDescricao
-        : '';
+    return _estudanteNotasController.listNotesQuatro != null ? _estudanteNotasController.listNotesQuatro![index].notaDescricao : '';
   }
 
   String? _buildNotesDescFinal(index) {
-    return _estudanteNotasController.listNotesFinal != null
-        ? _estudanteNotasController.listNotesFinal![index].notaDescricao
-        : '';
+    return _estudanteNotasController.listNotesFinal != null ? _estudanteNotasController.listNotesFinal![index].notaDescricao : '';
   }
 
   String _obterNota(int index, int bimestre) {
-    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!
-        .where((element) => element.bimestre == bimestre);
+    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!.where((element) => element.bimestre == bimestre);
     final qtdRegistros = notaConceito?.length ?? 0;
     if (qtdRegistros > 0) {
-      return notaConceito != null
-          ? (notaConceito.first.conceitoId > 0 ? notaConceito.first.notaConceito : notaConceito.first.nota.toString())
-          : '-';
+      return notaConceito != null ? (notaConceito.first.conceitoId > 0 ? notaConceito.first.notaConceito : notaConceito.first.nota.toString()) : '-';
     }
     return '-';
   }
 
   Color _obterCor(int index, int bimestre) {
-    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!
-        .where((element) => element.bimestre == bimestre);
+    final notaConceito = _estudanteNotasController.componentesCurricularesNotasConceitos?[index].notasConceitos!.where((element) => element.bimestre == bimestre);
     final qtdRegistros = notaConceito?.length ?? 0;
     if (qtdRegistros > 0) {
       return notaConceito != null ? HexColor(notaConceito.first.corDaNota.toString()) : const Color(0xFFD4D4D4);
@@ -150,31 +151,22 @@ class ExpansionState extends State<Expansion> {
   }
 
   Container _buildLoader(screenHeight) => Container(
-        margin: EdgeInsets.all(screenHeight * 1.5),
-        child: const GFLoader(
-          type: GFLoaderType.square,
-          loaderColorOne: Color(0xffDE9524),
-          loaderColorTwo: Color(0xffC65D00),
-          loaderColorThree: Color(0xffC65D00),
-          size: GFSize.LARGE,
-        ),
-      );
+    margin: EdgeInsets.all(screenHeight * 1.5),
+    child: const GFLoader(type: GFLoaderType.square, loaderColorOne: Color(0xffDE9524), loaderColorTwo: Color(0xffC65D00), loaderColorThree: Color(0xffC65D00), size: GFSize.LARGE),
+  );
 
   TileItem _montarNotasConceito(screenHeight) => TileItem(
-        body: [
-          Container(
-            height: screenHeight * 50,
-            margin: EdgeInsets.all(screenHeight * 1),
-            child: Scrollbar(
-              child: ListView.builder(
-                itemCount: _estudanteNotasController.componentesCurricularesNotasConceitos?.length ?? 0,
-                itemBuilder: _corpoNotasMontar,
-              ),
-            ),
-          ),
-        ],
-        header: 'Notas e conceitos do estudante',
-      );
+    body: [
+      Container(
+        height: screenHeight * 50,
+        margin: EdgeInsets.all(screenHeight * 1),
+        child: Scrollbar(
+          child: ListView.builder(itemCount: _estudanteNotasController.componentesCurricularesNotasConceitos?.length ?? 0, itemBuilder: _corpoNotasMontar),
+        ),
+      ),
+    ],
+    header: 'Notas e conceitos do estudante',
+  );
 
   Future _modalInfo(double screenHeight, String msg) {
     final size = MediaQuery.of(context).size;
@@ -185,10 +177,7 @@ class ExpansionState extends State<Expansion> {
       isScrollControlled: true,
       builder: (context) => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(screenHeight * 8),
-            topLeft: Radius.circular(screenHeight * 8),
-          ),
+          borderRadius: BorderRadius.only(topRight: Radius.circular(screenHeight * 8), topLeft: Radius.circular(screenHeight * 8)),
           color: Colors.white,
         ),
         height: screenHeight * 30,
@@ -198,48 +187,25 @@ class ExpansionState extends State<Expansion> {
               width: screenHeight * 8,
               height: screenHeight * 1,
               margin: EdgeInsets.only(top: screenHeight * 2),
-              decoration: BoxDecoration(
-                color: const Color(0xffDADADA),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(screenHeight * 1),
-                ),
-              ),
+              decoration: BoxDecoration(color: const Color(0xffDADADA), borderRadius: BorderRadius.all(Radius.circular(screenHeight * 1))),
             ),
-            SizedBox(
-              height: screenHeight * 3,
-            ),
+            SizedBox(height: screenHeight * 3),
             const AutoSizeText(
               'AVISO',
               maxFontSize: 18,
               minFontSize: 16,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
             ),
-            const Expanded(
-              child: Divider(),
-            ),
+            const Expanded(child: Divider()),
             Container(
               height: screenHeight * 20,
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.all(screenHeight * 2.5),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
+              decoration: const BoxDecoration(color: Colors.white),
               child: Column(
                 children: [
-                  AutoSizeText(
-                    msg,
-                    maxFontSize: 10,
-                    minFontSize: 8,
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  AutoSizeText(msg, maxFontSize: 10, minFontSize: 8, style: const TextStyle(color: Colors.black)),
+                  const SizedBox(height: 8),
                   Flexible(
                     child: EADefaultButton(
                       text: MensagemSistema.labelBotaoEntendi,
@@ -315,9 +281,7 @@ class ExpansionState extends State<Expansion> {
   }
 
   Widget _gerarPdf(double screenHeight, GlobalKey<ScaffoldState> scaffoldstate) {
-    if (widget.codigoModalidade == ModalidadeTipo.eja ||
-        widget.codigoModalidade == ModalidadeTipo.medio ||
-        widget.codigoModalidade == ModalidadeTipo.fundamental) {
+    if (widget.codigoModalidade == ModalidadeTipo.eja || widget.codigoModalidade == ModalidadeTipo.medio || widget.codigoModalidade == ModalidadeTipo.fundamental) {
       return mostrarBotao
           ? EADefaultButton(
               btnColor: Colors.white,
@@ -371,27 +335,34 @@ class ExpansionState extends State<Expansion> {
   }
 
   TileItem _montarObs(screenHeight) => TileItem(
-        body: [
-          Container(
-            height: screenHeight * 50,
-            margin: EdgeInsets.all(screenHeight * 1),
-            child: Scrollbar(
-              child: ObsBody(
-                current: true,
-                recomendacoesAluno: recomendacaoAluno.recomendacoesAluno ?? recomendacaoAluno.mensagemAlerta,
-                recomendacoesFamilia:
-                    recomendacaoAluno.recomendacoesFamilia ?? 'Sem recomendações à familía para exibir',
-                title: 'Recomendações',
-              ),
-            ),
+    body: [
+      Container(
+        height: screenHeight * 50,
+        margin: EdgeInsets.all(screenHeight * 1),
+        child: Scrollbar(
+          child: ObsBody(
+            current: true,
+            recomendacoesAluno: recomendacaoAluno.recomendacoesAluno ?? recomendacaoAluno.mensagemAlerta,
+            recomendacoesFamilia: recomendacaoAluno.recomendacoesFamilia ?? 'Sem recomendações à familía para exibir',
+            title: 'Recomendações',
           ),
-        ],
-        header: 'Observações',
-      );
+        ),
+      ),
+    ],
+    header: 'Observações',
+  );
+
+  void _alertaErroObterBimestres() {
+    final mensagem = _bimestresErros.join('\n');
+    final snackBar = SnackBar(backgroundColor: Colors.red, duration: const Duration(seconds: 10), content: Text(mensagem.isNotEmpty ? mensagem : 'Erro ao carregar bimestres'));
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    carregarNotas();
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
 
@@ -401,47 +372,28 @@ class ExpansionState extends State<Expansion> {
         children: [
           Observer(
             builder: (context) {
-              if (_estudanteNotasController.loading) {
+              if (_estudanteNotasController.loading || _estudanteStore.carregando) {
                 return _buildLoader(screenHeight);
               }
 
               if (widget.codigoModalidade != ModalidadeTipo.educacaoInfantil) {
-                return Column(
-                  children: [
-                    _montarNotasConceito(screenHeight),
-                    _montarObs(screenHeight),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _gerarPdf(screenHeight, widget.scaffoldState),
-                  ],
-                );
+                return Column(children: [_montarNotasConceito(screenHeight), _montarObs(screenHeight), const SizedBox(height: 10), _gerarPdf(screenHeight, widget.scaffoldState)]);
               }
               if (widget.codigoModalidade == ModalidadeTipo.educacaoInfantil) {
                 return Column(
                   children: [
                     Text(
                       MensagemSistema.textoTelaSolicitacaoRaa,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[600]),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     _botaoRaa(screenHeight, widget.scaffoldState),
                   ],
                 );
               }
               return CardAlert(
                 title: 'NOTAS',
-                icon: Icon(
-                  FontAwesomeIcons.calendar,
-                  color: const Color(0xffFFD037),
-                  size: screenHeight * 6,
-                ),
+                icon: Icon(FontAwesomeIcons.calendar, color: const Color(0xffFFD037), size: screenHeight * 6),
                 text: 'Não foi encontrado nenhuma nota para este estudante.',
               );
             },

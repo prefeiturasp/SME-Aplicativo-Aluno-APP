@@ -69,16 +69,16 @@ class DadosUE {
 
   factory DadosUE.fromMap(Map<String, dynamic> map) {
     return DadosUE(
-      nomeCompletoUe: map['nomeCompletoUe'] as String,
-      tipoLogradouro: map['tipoLogradouro'] as String,
-      logradouro: map['logradouro'] as String,
-      numero: map['numero'] as String,
-      bairro: map['bairro'] as String,
-      cep: map['cep'] as int,
-      municipio: map['municipio'] as String,
-      uf: map['uf'] as String,
-      email: map['email'] as String,
-      telefone: map['telefone'] as String,
+      nomeCompletoUe: map['nomeCompletoUe'] as String? ?? '',
+      tipoLogradouro: map['tipoLogradouro'] as String? ?? '',
+      logradouro: map['logradouro'] as String? ?? '',
+      numero: map['numero'] as String? ?? '',
+      bairro: map['bairro'] as String? ?? '',
+      cep: map['cep'] as int? ?? 0,
+      municipio: map['municipio'] as String? ?? '',
+      uf: map['uf'] as String? ?? '',
+      email: map['email'] as String? ?? '',
+      telefone: map['telefone'] as String? ?? '',
     );
   }
 

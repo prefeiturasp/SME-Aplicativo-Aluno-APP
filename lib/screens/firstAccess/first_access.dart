@@ -56,7 +56,6 @@ class FirstAccessState extends State<FirstAccess> {
   String _ip = 'Unknown';
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-  late final ReactionDisposer _disposer;
 
   bool _showPassword = true;
   bool _busy = false;
@@ -518,7 +517,6 @@ class FirstAccessState extends State<FirstAccess> {
 
   @override
   void dispose() {
-    _disposer();
     super.dispose();
   }
 }
