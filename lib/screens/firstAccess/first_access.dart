@@ -11,7 +11,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_ip_address/get_ip_address.dart';
 import 'package:get_it/get_it.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:mobx/mobx.dart';
 
 import '../../controllers/autenticacao.controller.dart';
 import '../../controllers/auth/first_access.controller.dart';

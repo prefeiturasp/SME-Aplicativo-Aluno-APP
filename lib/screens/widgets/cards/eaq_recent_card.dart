@@ -101,14 +101,14 @@ class EAQRecentCardMessageState extends State<EAQRecentCardMessage> {
               color: widget.message.categoriaNotificacao == 'SME'
                   ? widget.recent
                       ? colorSME
-                      : colorSME.withOpacity(0.4)
+                      : colorSME.withValues(alpha: 0.4)
                   : widget.message.categoriaNotificacao == 'UE'
                       ? widget.recent
                           ? colorUE
-                          : colorUE.withOpacity(0.4)
+                          : colorUE.withValues(alpha: 0.4)
                       : widget.recent
                           ? colorDRE
-                          : colorDRE.withOpacity(0.4),
+                          : colorDRE.withValues(alpha: 0.4),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(screenHeight * 2),
                 topRight: Radius.circular(screenHeight * 2),

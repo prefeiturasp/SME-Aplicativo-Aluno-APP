@@ -55,10 +55,10 @@ class CardMessage extends StatelessWidget {
                             ? colorUE
                             : colorTURMA
                     : categoriaNotificacao == 'SME'
-                        ? colorSME.withOpacity(0.4)
+                        ? colorSME.withValues(alpha: 0.4)
                         : categoriaNotificacao == 'UE'
-                            ? colorUE.withOpacity(0.4)
-                            : colorTURMA.withOpacity(0.4),
+                            ? colorUE.withValues(alpha: 0.4)
+                            : colorTURMA.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(screenHeight * 2), topRight: Radius.circular(screenHeight * 2),),),
             child: Row(

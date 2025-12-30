@@ -134,7 +134,7 @@ class InternalChangeEmailOrPhoneState extends State<InternalChangeEmailOrPhone> 
 
     return PopScope(
       canPop: (_emailData.isNotEmpty || _phoneData.isNotEmpty),
-      onPopInvoked: (didPop) {
+       onPopInvokedWithResult: (bool didPop, dynamic result) {
         if (didPop) {
           return;
         }
