@@ -193,7 +193,7 @@ class FrequencyState extends State<Frequency> {
     );
   }
 
-  Observer _frequencyContainerBodyObserver(index, size, screenHeight) => Observer(
+  Observer _frequencyContainerBodyObserver(dynamic index,dynamic  size,dynamic  screenHeight) => Observer(
     builder: (context) {
       Widget? result;
 
@@ -230,7 +230,7 @@ class FrequencyState extends State<Frequency> {
     }
   }
 
-  ExpansionPanel _frequencyExpandedPanel(index, size, screenHeight) => ExpansionPanel(
+  ExpansionPanel _frequencyExpandedPanel(dynamic index, dynamic size, dynamic screenHeight) => ExpansionPanel(
     headerBuilder: (BuildContext context, bool isExpanded) {
       return Container(
         padding: EdgeInsets.all(screenHeight * 2.5),
@@ -253,7 +253,7 @@ class FrequencyState extends State<Frequency> {
     isExpanded: _componentesCurriculares![index].expandido,
   );
 
-  CardAlert _buildAlertEmptyFrequency(size, screenHeight) => CardAlert(
+  CardAlert _buildAlertEmptyFrequency(dynamic size, screenHeight) => CardAlert(
     title: 'FREQUÊNCIA',
     icon: Icon(FontAwesomeIcons.calendarDays, color: const Color(0xffFFD037), size: screenHeight * 6),
     text: 'Não foi encontrado nenhum dado de frequência para este estudante.',
@@ -267,7 +267,7 @@ class FrequencyState extends State<Frequency> {
       borderRadius: BorderRadius.all(Radius.circular(screenHeight * 1)),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.6),
+          color: Colors.grey.withValues(alpha: 0.6),
           spreadRadius: 1,
           blurRadius: 2,
           offset: const Offset(0, 2), // changes position of shadow
@@ -282,7 +282,7 @@ class FrequencyState extends State<Frequency> {
     ),
   );
 
-  ExpansionPanelList _buildMainFrequencyContainer(size, screenHeight) {
+  ExpansionPanelList _buildMainFrequencyContainer(dynamic size, screenHeight) {
     final List compList = _componentesCurriculares!;
     final List<ExpansionPanel> children = compList.asMap().entries.map<ExpansionPanel>((entry) => _frequencyExpandedPanel(entry.key, size, screenHeight)).toList();
 
@@ -291,7 +291,7 @@ class FrequencyState extends State<Frequency> {
 
   SizedBox _buildEmptyContainer() => const SizedBox(height: 0, width: 0);
 
-  Observer _globalFrequencyObserver(size, screenHeight) => Observer(
+  Observer _globalFrequencyObserver(dynamic size, screenHeight) => Observer(
     builder: (context) {
       if (_frequencyController.loadingFrequency) {
         return _buildLoadingWidget(size, screenHeight);
@@ -304,7 +304,7 @@ class FrequencyState extends State<Frequency> {
     },
   );
 
-  Observer _detailedFrequencyObserver(size, screenHeight) => Observer(
+  Observer _detailedFrequencyObserver(dynamic size, screenHeight) => Observer(
     builder: (context) {
       if (_frequencyController.loadingFrequency) {
         return _buildLoadingWidget(size, screenHeight);

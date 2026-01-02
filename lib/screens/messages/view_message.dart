@@ -122,7 +122,7 @@ class ViewMessageState extends State<ViewMessage> {
     await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
-  Future<bool> launchURL(url) async {
+  Future<bool> launchURL(dynamic url) async {
     final Uri uri = Uri.parse(url);
     final codigo = _obterCodigoRelatorio(url);
     final bool relatorioExiste = await _relatorioExiste(codigo);

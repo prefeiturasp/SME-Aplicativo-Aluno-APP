@@ -72,11 +72,11 @@ class EstudanteFrequenciaRepository {
         return EstudanteFrequenciaGlobalDTO.fromJson(response.data);
       } else {
         GetIt.I.get<SentryClient>().captureException('Erro ao obter a frequencia do aluno ${response.statusCode}');
-        throw Exception(response.statusCode);
+        return EstudanteFrequenciaGlobalDTO(frequencia: 0.0, corDaFrequencia: '#000000');
       }
     } catch (e) {
       GetIt.I.get<SentryClient>().captureException(e);
-      throw Exception(e);
+      return EstudanteFrequenciaGlobalDTO(frequencia: 0.0, corDaFrequencia: '#000000');
     }
   }
 }

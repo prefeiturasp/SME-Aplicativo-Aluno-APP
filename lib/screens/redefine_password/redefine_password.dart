@@ -119,7 +119,7 @@ class RedefinePasswordState extends State<RedefinePassword> {
       ),
       body: PopScope(
         canPop: (_password.isEmpty || _oldPassword.isEmpty || _confirmPassword.isEmpty),
-        onPopInvoked: (didPop) {
+        onPopInvokedWithResult: (bool didPop, dynamic result) {
           if (didPop) {
             return;
           }

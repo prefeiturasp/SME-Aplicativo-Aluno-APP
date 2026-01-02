@@ -90,23 +90,23 @@ class ExpansionState extends State<Expansion> {
     }
   }
 
-  String? _buildNotesDescUm(index) {
+  String? _buildNotesDescUm(dynamic index) {
     return _estudanteNotasController.listNotesUm != null ? _estudanteNotasController.listNotesUm![index].notaDescricao : '';
   }
 
-  String? _buildNotesDescDois(index) {
+  String? _buildNotesDescDois(dynamic index) {
     return _estudanteNotasController.listNotesDois != null ? _estudanteNotasController.listNotesDois![index].notaDescricao : '';
   }
 
-  String? _buildNotesDescTres(index) {
+  String? _buildNotesDescTres(dynamic index) {
     return _estudanteNotasController.listNotesTres != null ? _estudanteNotasController.listNotesTres![index].notaDescricao : '';
   }
 
-  String? _buildNotesDescQuatro(index) {
+  String? _buildNotesDescQuatro(dynamic index) {
     return _estudanteNotasController.listNotesQuatro != null ? _estudanteNotasController.listNotesQuatro![index].notaDescricao : '';
   }
 
-  String? _buildNotesDescFinal(index) {
+  String? _buildNotesDescFinal(dynamic index) {
     return _estudanteNotasController.listNotesFinal != null ? _estudanteNotasController.listNotesFinal![index].notaDescricao : '';
   }
 
@@ -128,7 +128,7 @@ class ExpansionState extends State<Expansion> {
     return const Color(0xFFD4D4D4);
   }
 
-  Widget _corpoNotasMontar(context, int index) {
+  Widget _corpoNotasMontar(dynamic context, int index) {
     return CorpoNotas(
       groupSchool: widget.groupSchool,
       title: _estudanteNotasController.componentesCurricularesNotasConceitos?[index].componenteCurricularNome ?? '',
@@ -150,12 +150,12 @@ class ExpansionState extends State<Expansion> {
     );
   }
 
-  Container _buildLoader(screenHeight) => Container(
+  Container _buildLoader(dynamic screenHeight) => Container(
     margin: EdgeInsets.all(screenHeight * 1.5),
     child: const GFLoader(type: GFLoaderType.square, loaderColorOne: Color(0xffDE9524), loaderColorTwo: Color(0xffC65D00), loaderColorThree: Color(0xffC65D00), size: GFSize.LARGE),
   );
 
-  TileItem _montarNotasConceito(screenHeight) => TileItem(
+  TileItem _montarNotasConceito(dynamic screenHeight) => TileItem(
     body: [
       Container(
         height: screenHeight * 50,
@@ -334,7 +334,7 @@ class ExpansionState extends State<Expansion> {
     }
   }
 
-  TileItem _montarObs(screenHeight) => TileItem(
+  TileItem _montarObs(dynamic screenHeight) => TileItem(
     body: [
       Container(
         height: screenHeight * 50,

@@ -83,7 +83,7 @@ class OutrosServicosListaState extends State<OutrosServicosLista> {
     );
   }
 
-  Image obterIcone(servico) {
+  Image obterIcone(dynamic servico) {
     return Image.network(
       servico.icone,
       fit: BoxFit.cover,

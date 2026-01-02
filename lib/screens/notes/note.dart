@@ -73,9 +73,9 @@ class Note extends StatelessWidget {
                   Border.all(width: current ? screenHeight * 0.3 : 0.0, color: current ? color : Colors.transparent),
               borderRadius: BorderRadius.all(Radius.circular(screenHeight * 1)),
               color: noteValue == '-'
-                  ? const Color(0xFFEDEDED).withOpacity(0.4)
+                  ? const Color(0xFFEDEDED).withValues(alpha: 0.4)
                   : current
-                      ? color.withOpacity(0.4)
+                      ? color.withValues(alpha: 0.4)
                       : const Color(0xFFEDEDED),
             ),
             width: screenHeight * 8,

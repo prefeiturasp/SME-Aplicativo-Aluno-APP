@@ -31,7 +31,7 @@ class FrequencyGlobalCard extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.6),
+                    color: Colors.grey.withValues(alpha: 0.6),
                     spreadRadius: 1,
                     blurRadius: 2,
                     offset: const Offset(0, 2), // changes position of shadow
@@ -94,7 +94,7 @@ class FrequencyGlobalCard extends StatelessWidget {
         : buildLoader(screenHeight);
   }
 
-  Container buildLoader(screenHeight) => Container(
+  Container buildLoader(dynamic screenHeight) => Container(
         margin: EdgeInsets.all(screenHeight * 1.5),
         child: const GFLoader(
           type: GFLoaderType.square,
