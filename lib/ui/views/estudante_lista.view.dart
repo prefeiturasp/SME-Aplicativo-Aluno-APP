@@ -185,9 +185,9 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
                         );
                       } else {
                         if (_estudanteStore.erroCarregar) {
-                          return const Center(
+                          return  Center(
                             child: AutoSizeText(
-                              'Não foi possível carregar a lista de estudantes no momento',
+                              _estudanteStore.mensagensErro.first,
                               maxFontSize: 18,
                               minFontSize: 14,
                               style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
