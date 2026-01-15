@@ -12,7 +12,6 @@ import '../utils/app_config_reader.dart';
 class EstudanteRepository {
   final _api = GetIt.I.get<ApiService>();
   final _usuarioStore = GetIt.I.get<UsuarioStore>();
-  final url = AppConfigReader.getApiHost();
 
   Future<Either<List<String>, DataStudent>> obterEstudantes() async {
     try {
@@ -25,15 +24,15 @@ class EstudanteRepository {
         return Right(DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []));
       } else {
         final dataError = DataStudent.fromJson(response.data);
-        GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data} $url');
+        GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data} ');
         return Right(dataError);
       }
     } 
     on DioException catch (ex, stacktrace) {
       final List<String> listaErros = [];
-      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $ex $stacktrace $url');
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $ex $stacktrace ');
       final Response<dynamic>? err = ex.response;
-      final List<String> erros = err?.data['erros'] != null ? List<String>.from(err!.data['erros']) : ['Não foi possível carregar a lista de estudantes no momento $url'];
+      final List<String> erros = err?.data['erros'] != null ? List<String>.from(err!.data['erros']) : ['Não foi possível carregar a lista de estudantes no momento '];
 
       if (erros.isNotEmpty) {
         listaErros.addAll(erros);
@@ -42,7 +41,7 @@ class EstudanteRepository {
     }
     catch (e, stacktrace) {
       GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace');
-      return Left(['Não foi possível carregar a lista de estudantes no momento $url']);
+      return Left(['Não foi possível carregar a lista de estudantes no momento ']);
     }
   }
 
