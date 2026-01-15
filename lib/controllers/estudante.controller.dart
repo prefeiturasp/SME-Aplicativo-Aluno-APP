@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import '../dtos/componente_curricular.dto.dart';
 import '../models/message/group.dart';
+import '../models/student/data_student.dart';
 import '../repositories/index.dart';
 import '../services/group_messages.service.dart';
 import '../stores/index.dart';
@@ -13,6 +14,8 @@ class EstudanteController {
   final _groupMessageService = GroupMessageService();
   final _estudanteRepository = GetIt.I.get<EstudanteRepository>();
   final _estudanteStore = GetIt.I.get<EstudanteStore>();
+  List<String> _alunosErros = [];
+  late DataStudent _alunos;
 
   void subscribeGroupIdToFirebase() {
     _estudanteStore.gruposEstudantes.asMap().forEach((index, element) {
@@ -68,14 +71,24 @@ class EstudanteController {
   Future<void> obterEstudantes() async {
     try {
       _estudanteStore.carregando = true;
-      final data = await _estudanteRepository.obterEstudantes();
-      _estudanteStore.carregarGrupos(data.data);
-      subscribeGroupIdToFirebase();
-      _estudanteStore.carregando = false;
-      _estudanteStore.erroCarregar = false;
-    } on Exception {
+      final  Either<List<String>, DataStudent> data = await _estudanteRepository.obterEstudantes();
+      data.fold((e) => _alunosErros = e, (b) => _alunos = b);
+      if(_alunos.data.isNotEmpty){
+        _estudanteStore.carregarGrupos(_alunos.data);
+        subscribeGroupIdToFirebase();
+        _estudanteStore.carregando = false;
+        _estudanteStore.erroCarregar = false;
+        _estudanteStore.mensagensErro = _alunosErros;
+      }else{
+        _estudanteStore.carregando = false;
+        _estudanteStore.erroCarregar = true;
+        _estudanteStore.mensagensErro = _alunosErros;
+      }
+
+    } catch(e) {
       _estudanteStore.carregando = false;
       _estudanteStore.erroCarregar = true;
+      _estudanteStore.mensagensErro = _alunosErros;
     }
   }
 

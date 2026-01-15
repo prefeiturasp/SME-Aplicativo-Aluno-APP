@@ -13,23 +13,35 @@ class EstudanteRepository {
   final _api = GetIt.I.get<ApiService>();
   final _usuarioStore = GetIt.I.get<UsuarioStore>();
 
-  Future<DataStudent> obterEstudantes() async {
+  Future<Either<List<String>, DataStudent>> obterEstudantes() async {
     try {
       final response = await _api.dio.get('/Aluno?cpf=${_usuarioStore.cpf}');
 
       if (response.statusCode == 200) {
         final dataEstudents = DataStudent.fromMap(response.data);
-        return dataEstudents;
+        return Right(dataEstudents);
       } else if (response.statusCode == 408) {
-        return DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []);
+        return Right(DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []));
       } else {
         final dataError = DataStudent.fromJson(response.data);
         GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}');
-        return dataError;
+        return Right(dataError);
       }
-    } catch (e, stacktrace) {
+    } 
+    on DioException catch (ex, stacktrace) {
+      final List<String> listaErros = [];
+      GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $ex $stacktrace');
+      final Response<dynamic>? err = ex.response;
+      final List<String> erros = err?.data['erros'] != null ? List<String>.from(err!.data['erros']) : ['Não foi possível carregar a lista de estudantes no momento'];
+
+      if (erros.isNotEmpty) {
+        listaErros.addAll(erros);
+      }
+      return Left(listaErros);
+    }
+    catch (e, stacktrace) {
       GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes EstudanteRepository.obterEstudantes() $e $stacktrace');
-      throw Exception(e);
+      return Left(['Não foi possível carregar a lista de estudantes no momento']);
     }
   }
 
