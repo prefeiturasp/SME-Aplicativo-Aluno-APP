@@ -25,7 +25,7 @@ class EstudanteRepository {
         return Right(DataStudent(ok: false, erros: [AppConfigReader.getErrorMessageTimeOut()], data: []));
       } else {
         final dataError = DataStudent.fromJson(response.data);
-        GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data}');
+        GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Estudantes - EstudanteRepository.obterEstudantes() ${response.data} $url');
         return Right(dataError);
       }
     } 
@@ -83,7 +83,7 @@ class EstudanteRepository {
       GetIt.I.get<SentryClient>().captureException('Erro ao carregar lista de Bimestres disponíveis obterBimestresDisponiveisParaVisualizacao $ex $stacktrace');
       final Response<dynamic>? err = ex.response;
       final List<String> erros = err?.data['erros'] != null ? List<String>.from(err!.data['erros']) : [];
-
+       
       if (erros.isNotEmpty) {
         listaErros.addAll(erros);
       }
