@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class EAQFilterPage extends StatefulWidget {
   final List<Widget> items;
-
   const EAQFilterPage({super.key, required this.items});
+
   @override
   EAQFilterPageState createState() => EAQFilterPageState();
 }
@@ -17,13 +17,14 @@ class EAQFilterPageState extends State<EAQFilterPage> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(screenHeight * 10),
+        borderRadius: BorderRadius.circular(screenHeight * 2),
       ),
-      margin: EdgeInsets.only(top: screenHeight * 4),
-      padding: EdgeInsets.only(
-          left: screenHeight * 1.5, top: screenHeight * 1, right: screenHeight * 1, bottom: screenHeight * 1,),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      margin: EdgeInsets.only(top: screenHeight * 2),
+      padding: EdgeInsets.all(screenHeight * 1.5),
+      child: Wrap(
+        spacing: screenHeight * 1.5,
+        runSpacing: screenHeight * 1,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: widget.items,
       ),
     );
