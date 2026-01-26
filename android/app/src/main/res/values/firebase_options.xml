@@ -1,0 +1,8 @@
+<resources>
+    <string name="firebase_database_url">...</string>
+    <string name="firebase_storage_bucket">...</string>
+    <string name="firebase_project_id">...</string>
+    <string name="firebase_api_key">...</string>
+    <string name="google_app_id">...</string>
+    <string name="google_crash_reporting_api_key">...</string>
+</resources>

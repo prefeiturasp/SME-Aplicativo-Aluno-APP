@@ -11,10 +11,10 @@ abstract class IFrequencyRepository {
   );
 
   Future<CurricularComponent> fetchCurricularComponent(
-    anoLetivo,
-    codigoUE,
-    codigoTurma,
-    codigoAluno,
-    codigoComponenteCurricular,
+    dynamic anoLetivo,
+    dynamic codigoUE,
+    dynamic codigoTurma,
+    dynamic codigoAluno,
+    dynamic codigoComponenteCurricular,
   );
 }

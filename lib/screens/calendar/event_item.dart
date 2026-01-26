@@ -4,6 +4,8 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../../constantes/colors.dart';
+
 class EventItem extends StatelessWidget {
   final int tipoEvento;
   final Widget customTitle;
@@ -28,9 +30,6 @@ class EventItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    const colorAvaliacao = Color(0xFF9C33AD);
-    const colorReuniao = Color(0xFFE1771D);
-    const colorOutros = Color(0xFFC4C4C4);
 
     final DateTime dataInicio = DateTime.parse(dia);
     final formatDate = DateFormat('dd/MM/yyyy');
@@ -81,7 +80,7 @@ class EventItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Divider(
-                              color: Color(0xffCDCDCD),
+                              color: dividerColor,
                             ),
                             const Text(
                               'Componente Curricular',
@@ -101,12 +100,12 @@ class EventItem extends StatelessWidget {
                               ),
                             ),
                             const Divider(
-                              color: Color(0xffCDCDCD),
+                              color: dividerColor,
                             ),
                           ],
                         )
                       : const Divider(
-                          color: Color(0xffCDCDCD),
+                          color: dividerColor,
                         ),
                   const Text(
                     'Nome da Avaliação',
@@ -124,7 +123,7 @@ class EventItem extends StatelessWidget {
                     style: const TextStyle(color: Colors.black),
                   ),
                   const Divider(
-                    color: Color(0xffCDCDCD),
+                    color: dividerColor,
                   ),
                   const Text(
                     'Conteúdo',
@@ -137,7 +136,7 @@ class EventItem extends StatelessWidget {
                   ),
                   HtmlWidget(eventDesc),
                   const Divider(
-                    color: Color(0xffCDCDCD),
+                    color: dividerColor,
                   ),
                 ],
               ),
@@ -182,7 +181,7 @@ class EventItem extends StatelessWidget {
                 tipoEvento == 0
                     ? Icon(
                         FontAwesomeIcons.solidNoteSticky,
-                        color: const Color(0xFF086397),
+                        color: solidNoteStickyColor,
                         size: screenHeight * 2.1,
                       )
                     : const SizedBox.shrink(),

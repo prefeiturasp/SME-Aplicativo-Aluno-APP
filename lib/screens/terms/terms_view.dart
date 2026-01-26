@@ -10,13 +10,7 @@ class TermsView extends StatefulWidget {
   final VoidCallback changeStatusTerm;
   final String cpf;
   final bool showBtn;
-  const TermsView({
-    super.key,
-    required this.term,
-    required this.changeStatusTerm,
-    required this.cpf,
-    this.showBtn = true,
-  });
+  const TermsView({super.key, required this.term, required this.changeStatusTerm, required this.cpf, this.showBtn = true});
 
   @override
   TermsViewState createState() => TermsViewState();
@@ -59,54 +53,44 @@ class TermsViewState extends State<TermsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(screenHeight * 4),
-          height: widget.showBtn ? screenHeight * 70 : screenHeight * 86,
-          child: Scrollbar(
-            child: ListView(
-              controller: _controller,
-              children: <Widget>[
-                Column(
-                  children: [
-                    const AutoSizeText(
-                      'Termos e condições de uso',
-                      minFontSize: 16,
-                      maxFontSize: 18,
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 4,
-                    ),
-                    HtmlWidget(widget.term.termosDeUso),
-                    const AutoSizeText(
-                      'Política de privacidade',
-                      minFontSize: 14,
-                      maxFontSize: 16,
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    HtmlWidget(widget.term.politicaDePrivacidade),
-                  ],
-                ),
-              ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(screenHeight * 4),
+            height: widget.showBtn ? screenHeight * 70 : screenHeight * 86,
+            child: Scrollbar(
+              child: ListView(
+                controller: _controller,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      const AutoSizeText('Termos e condições de uso', minFontSize: 16, maxFontSize: 18, style: TextStyle(fontWeight: FontWeight.w700)),
+                      SizedBox(height: screenHeight * 4),
+                      HtmlWidget(widget.term.termosDeUso),
+                      const AutoSizeText('Política de privacidade', minFontSize: 14, maxFontSize: 16, style: TextStyle(fontWeight: FontWeight.w700)),
+                      HtmlWidget(widget.term.politicaDePrivacidade),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        widget.showBtn
-            ? Container(
-                padding: EdgeInsets.all(screenHeight * 1.8),
-                alignment: Alignment.center,
-                child: EADefaultButton(
-                  text: 'ACEITAR TODOS OS TERMOS',
-                  iconColor: const Color(0xffffd037),
-                  btnColor: const Color(0xffd06d12),
-                  enabled: reachEnd,
-                  onPress: widget.changeStatusTerm,
-                ),
-              )
-            : const SizedBox.shrink(),
-      ],
+          widget.showBtn
+              ? Container(
+                  padding: EdgeInsets.all(screenHeight * 1.8),
+                  alignment: Alignment.center,
+                  child: EADefaultButton(
+                    text: 'ACEITAR TODOS OS TERMOS',
+                    iconColor: const Color(0xffffd037),
+                    btnColor: const Color(0xffd06d12),
+                    enabled: reachEnd,
+                    onPress: widget.changeStatusTerm,
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ],
+      ),
     );
   }
 }

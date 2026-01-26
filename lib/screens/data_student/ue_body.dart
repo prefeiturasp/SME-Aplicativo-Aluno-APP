@@ -27,7 +27,9 @@ class UEBody extends StatelessWidget {
     Future<void> fazerLigacao(String telefone) async {
       final url = Uri.parse('tel:$telefone');
       if (!await launchUrl(url)) {
-        showAlerta(Colors.red, 'Não foi possível realizar a ação para o número $url');
+        if (context.mounted) {
+          showAlerta(Colors.red, 'Não foi possível realizar a ação para o número $url');
+        }
       }
     }
 
@@ -35,13 +37,14 @@ class UEBody extends StatelessWidget {
       return InkWell(
         onTap: infoData.isNotEmpty
             ? () async {
-                await Clipboard.setData(ClipboardData(text: infoData)).then((_) {
+                await Clipboard.setData(ClipboardData(text: infoData));
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('$infoName copiado para área de transferência!'),
                     ),
                   );
-                });
+                }
               }
             : null,
         child: Column(

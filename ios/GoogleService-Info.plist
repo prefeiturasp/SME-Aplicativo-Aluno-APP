@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>862361861343-lb8gnof70rqr4b807bbo8mmml96ljq47.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.862361861343-lb8gnof70rqr4b807bbo8mmml96ljq47</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC7daWYzRKOl9d_Yn_c9YeZO0QPgvKqPow</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +13,7 @@
 	<key>PROJECT_ID</key>
 	<string>app-escolaaqui-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>app-escolaaqui-prod.appspot.com</string>
+	<string>app-escolaaqui-prod.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>

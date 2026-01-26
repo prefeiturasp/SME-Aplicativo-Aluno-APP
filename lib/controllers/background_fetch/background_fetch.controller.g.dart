@@ -10,8 +10,9 @@ part of 'background_fetch.controller.dart';
 
 mixin _$BackgroundFetchController on BackgroundFetchControllerBase, Store {
   late final _$responsibleHasStudentAtom = Atom(
-      name: 'BackgroundFetchControllerBase.responsibleHasStudent',
-      context: context);
+    name: 'BackgroundFetchControllerBase.responsibleHasStudent',
+    context: context,
+  );
 
   @override
   bool get responsibleHasStudent {
@@ -21,31 +22,41 @@ mixin _$BackgroundFetchController on BackgroundFetchControllerBase, Store {
 
   @override
   set responsibleHasStudent(bool value) {
-    _$responsibleHasStudentAtom.reportWrite(value, super.responsibleHasStudent,
-        () {
-      super.responsibleHasStudent = value;
-    });
+    _$responsibleHasStudentAtom.reportWrite(
+      value,
+      super.responsibleHasStudent,
+      () {
+        super.responsibleHasStudent = value;
+      },
+    );
   }
 
   late final _$initPlatformStateAsyncAction = AsyncAction(
-      'BackgroundFetchControllerBase.initPlatformState',
-      context: context);
+    'BackgroundFetchControllerBase.initPlatformState',
+    context: context,
+  );
 
   @override
   Future<void> initPlatformState(
-      Function onBackgroundFetch, String taskId, int delay) {
-    return _$initPlatformStateAsyncAction
-        .run(() => super.initPlatformState(onBackgroundFetch, taskId, delay));
+    Function onBackgroundFetch,
+    String taskId,
+    int delay,
+  ) {
+    return _$initPlatformStateAsyncAction.run(
+      () => super.initPlatformState(onBackgroundFetch, taskId, delay),
+    );
   }
 
   late final _$checkIfResponsibleHasStudentAsyncAction = AsyncAction(
-      'BackgroundFetchControllerBase.checkIfResponsibleHasStudent',
-      context: context);
+    'BackgroundFetchControllerBase.checkIfResponsibleHasStudent',
+    context: context,
+  );
 
   @override
   Future<bool> checkIfResponsibleHasStudent(int userId) {
-    return _$checkIfResponsibleHasStudentAsyncAction
-        .run(() => super.checkIfResponsibleHasStudent(userId));
+    return _$checkIfResponsibleHasStudentAsyncAction.run(
+      () => super.checkIfResponsibleHasStudent(userId),
+    );
   }
 
   @override
