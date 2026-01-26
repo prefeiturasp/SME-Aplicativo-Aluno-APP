@@ -14,6 +14,9 @@ abstract class EstudanteStoreBase with Store {
   bool erroCarregar = false;
 
   @observable
+  List<String> mensagensErro = [];
+
+  @observable
   List<GrupoEstudanteModel> gruposEstudantes = [];
 
   @action

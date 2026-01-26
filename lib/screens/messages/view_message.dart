@@ -122,7 +122,7 @@ class ViewMessageState extends State<ViewMessage> {
     await _messagesController.deleteMessage(codigoEol, idNotificacao, userId);
   }
 
-  Future<bool> launchURL(url) async {
+  Future<bool> launchURL(dynamic url) async {
     final Uri uri = Uri.parse(url);
     final codigo = _obterCodigoRelatorio(url);
     final bool relatorioExiste = await _relatorioExiste(codigo);
@@ -222,7 +222,7 @@ class ViewMessageState extends State<ViewMessage> {
                       Navigator.of(context).pop();
                     },
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           side: const BorderSide(
                             color: Color(0xffd06d12),

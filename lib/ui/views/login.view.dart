@@ -50,10 +50,7 @@ class LoginViewState extends State<LoginView> {
     versaoApp();
   }
 
-  Future<void> handleSignIn(
-    String cpf,
-    String password,
-  ) async {
+  Future<void> handleSignIn(String cpf, String password) async {
     try {
       setState(() {
         _carregando = true;
@@ -72,24 +69,18 @@ class LoginViewState extends State<LoginView> {
           content: usuario.erros.isNotEmpty ? Text(usuario.erros[0]) : const Text('Erro de serviço'),
         );
 
-        if (context.mounted) {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       } else {
-        if (usuarioStore.usuario!.primeiroAcesso && context.mounted) {
-          Nav.push(
-            context,
-            FirstAccess(
-              id: usuarioStore.usuario!.id,
-              cpf: usuarioStore.usuario!.cpf,
-            ),
-          );
+        if (usuarioStore.usuario!.primeiroAcesso && mounted) {
+          Nav.push(context, FirstAccess(id: usuarioStore.usuario!.id, cpf: usuarioStore.usuario!.cpf));
         } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
-          if (context.mounted) {
+          if (mounted) {
             Nav.push(context, const AtualizacaoCadastralView());
           }
         } else {
-          if (context.mounted) {
+          if (mounted) {
             Nav.push(context, const EstudanteListaView());
           }
         }
@@ -100,13 +91,9 @@ class LoginViewState extends State<LoginView> {
       });
 
       GetIt.I.get<SentryClient>().captureException('Erro ao tentar se autenticar LoginView $e');
-      const snackBar = SnackBar(
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 20),
-        content: Text('Erro ao tentar se autenticar!'),
-      );
+      const snackBar = SnackBar(backgroundColor: Colors.red, duration: Duration(seconds: 20), content: Text('Erro ao tentar se autenticar!'));
 
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }
@@ -150,12 +137,7 @@ class LoginViewState extends State<LoginView> {
                         children: <Widget>[
                           widget.notice != null
                               ? Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(screenHeight * 1.5),
-                                    ),
-                                  ),
+                                  decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.all(Radius.circular(screenHeight * 1.5))),
                                   padding: EdgeInsets.all(screenHeight * 2),
                                   child: AutoSizeText(
                                     widget.notice!,
@@ -165,18 +147,13 @@ class LoginViewState extends State<LoginView> {
                                   ),
                                 )
                               : const SizedBox.shrink(),
-                          SizedBox(
-                            height: screenHeight * 4,
-                          ),
+                          SizedBox(height: screenHeight * 4),
                           Container(
                             padding: EdgeInsets.only(left: screenHeight * 2),
                             decoration: BoxDecoration(
                               color: const Color(0xfff0f0f0),
                               border: Border(
-                                bottom: BorderSide(
-                                  color: _cpfIsError ? Colors.red : const Color(0xffD06D12),
-                                  width: screenHeight * 0.39,
-                                ),
+                                bottom: BorderSide(color: _cpfIsError ? Colors.red : const Color(0xffD06D12), width: screenHeight * 0.39),
                               ),
                             ),
                             child: TextFormField(
@@ -206,32 +183,19 @@ class LoginViewState extends State<LoginView> {
 
                                 return null;
                               },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                                CpfInputFormatter(),
-                              ],
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly, CpfInputFormatter()],
                               keyboardType: TextInputType.number,
                             ),
                           ),
-                          SizedBox(
-                            height: screenHeight * 1,
-                          ),
-                          const AutoSizeText(
-                            'Digite o CPF do responsável!',
-                            maxFontSize: 14,
-                            minFontSize: 12,
-                            style: TextStyle(color: Color(0xff979797)),
-                          ),
+                          SizedBox(height: screenHeight * 1),
+                          const AutoSizeText('Digite o CPF do responsável!', maxFontSize: 14, minFontSize: 12, style: TextStyle(color: Color(0xff979797))),
                           Container(
                             margin: EdgeInsets.only(top: screenHeight * 5),
                             padding: EdgeInsets.only(left: screenHeight * 2),
                             decoration: BoxDecoration(
                               color: const Color(0xfff0f0f0),
                               border: Border(
-                                bottom: BorderSide(
-                                  color: _passwordIsError ? Colors.red : const Color(0xffD06D12),
-                                  width: screenHeight * 0.39,
-                                ),
+                                bottom: BorderSide(color: _passwordIsError ? Colors.red : const Color(0xffD06D12), width: screenHeight * 0.39),
                               ),
                             ),
                             child: TextFormField(
@@ -253,9 +217,7 @@ class LoginViewState extends State<LoginView> {
                               },
                               decoration: InputDecoration(
                                 suffixIcon: IconButton(
-                                  icon: _showPassword
-                                      ? const Icon(FontAwesomeIcons.eye)
-                                      : const Icon(FontAwesomeIcons.eyeSlash),
+                                  icon: _showPassword ? const Icon(FontAwesomeIcons.eye) : const Icon(FontAwesomeIcons.eyeSlash),
                                   color: const Color(0xff6e6e6e),
                                   iconSize: screenHeight * 3.0,
                                   onPressed: () {
@@ -272,21 +234,15 @@ class LoginViewState extends State<LoginView> {
                               keyboardType: TextInputType.text,
                             ),
                           ),
-                          SizedBox(
-                            height: screenHeight * 1,
-                          ),
+                          SizedBox(height: screenHeight * 1),
                           const AutoSizeText(
                             'Digite a sua senha. Caso você ainda não tenha uma senha pessoal informe a data de nascimento do aluno no padrão ddmmaaaa.',
                             maxFontSize: 14,
                             minFontSize: 12,
                             maxLines: 3,
-                            style: TextStyle(
-                              color: Color(0xff979797),
-                            ),
+                            style: TextStyle(color: Color(0xff979797)),
                           ),
-                          SizedBox(
-                            height: screenHeight * 3,
-                          ),
+                          SizedBox(height: screenHeight * 3),
                           Container(
                             alignment: Alignment.bottomCenter,
                             child: GestureDetector(
@@ -302,9 +258,7 @@ class LoginViewState extends State<LoginView> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: screenHeight * 4,
-                          ),
+                          SizedBox(height: screenHeight * 4),
                           _carregando
                               ? const GFLoader(
                                   type: GFLoaderType.square,
@@ -330,9 +284,7 @@ class LoginViewState extends State<LoginView> {
                                     }
                                   },
                                 ),
-                          const SizedBox(
-                            height: 30,
-                          ),
+                          const SizedBox(height: 30),
                           Center(
                             child: Text(
                               numeroVersaoApp,

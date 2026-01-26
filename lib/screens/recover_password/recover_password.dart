@@ -103,17 +103,21 @@ class RecoverPasswordState extends State<RecoverPassword> {
           ),
           onPressed: () => {
             Future.delayed(Duration.zero, () {
-              Nav.pushReplacement(context, const LoginView(notice: null));
+              if(context.mounted){
+                Nav.pushReplacement(context, const LoginView(notice: null));
+              }
             }),
           },
         ),
       ),
       body: PopScope(
         canPop: true,
-        onPopInvoked: (didPop) {
+        onPopInvokedWithResult: (bool didPop, dynamic result) {
           if (didPop) {
             Future.delayed(Duration.zero, () {
-              Nav.pushReplacement(context, const LoginView(notice: null));
+              if(context.mounted){
+                Nav.pushReplacement(context, const LoginView(notice: null));
+              }
             });
           }
         },

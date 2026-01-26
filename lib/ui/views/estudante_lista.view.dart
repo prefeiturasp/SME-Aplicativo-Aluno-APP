@@ -148,7 +148,7 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
       ),
       body: PopScope(
         canPop: true,
-        onPopInvoked: (bool e) {
+        onPopInvokedWithResult: (bool didPop, dynamic result) {
           onBackPress();
         },
         child: SingleChildScrollView(
@@ -185,9 +185,9 @@ class EstudanteListaViewState extends State<EstudanteListaView> {
                         );
                       } else {
                         if (_estudanteStore.erroCarregar) {
-                          return const Center(
+                          return  Center(
                             child: AutoSizeText(
-                              'Erro ao carregar lista de Estudantes',
+                              _estudanteStore.mensagensErro.first,
                               maxFontSize: 18,
                               minFontSize: 14,
                               style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500),

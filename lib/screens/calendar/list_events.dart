@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/getwidget.dart';
 
+import '../../constantes/colors.dart';
 import '../../controllers/event/event.controller.dart';
 import '../../models/estudante.model.dart';
 import '../../models/event/event.dart';
@@ -64,7 +65,7 @@ class ListEventsState extends State<ListEvents> {
           componenteCurricular: event.componenteCurricular,
         ),
         const Divider(
-          color: Color(0xffCDCDCD),
+          color: dividerColor,
         ),
       ],
     );
@@ -74,9 +75,7 @@ class ListEventsState extends State<ListEvents> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final screenHeight = (size.height - MediaQuery.of(context).padding.top) / 100;
-    const colorAvaliacao = Color(0xFF9C33AD);
-    const colorDemaisEventos = Color(0xFFE1771D);
-    const colorDiasSemAula = Color(0xFFC4C4C4);
+
     return Scaffold(
       backgroundColor: const Color(0xffFFFFFF),
       appBar: AppBar(

@@ -1,10 +1,10 @@
 name: sme_app_aluno
 description: SME Aplicativo do Aluno
 
-version: 1.4.13+13
+version: 1.5.00+10
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
+  sdk: ^3.10.0
 
 scripts:
   pget: flutter pub get
@@ -17,54 +17,60 @@ dependencies:
   percent_indicator: ^4.2.3
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.8
   provider: ^6.0.5
   http: ^1.1.0
   auto_size_text: ^3.0.0
   font_awesome_flutter: ^10.6.0
-  connectivity_plus: ^5.0.1
-  mobx: ^2.2.1
-  flutter_mobx: ^2.1.0+1
+  connectivity_plus: ^7.0.0
+  mobx: ^2.5.0
+  flutter_mobx: ^2.3.0
   brasil_fields: ^1.14.1
   cpf_cnpj_validator: ^2.0.0
-  json_serializable: ^6.7.1
+  json_serializable: ^6.11.3
   json_annotation: ^4.8.1
-  firebase_messaging: ^14.6.7
-  firebase_analytics: ^10.6.1
-  intl: ^0.18.1
+  firebase_messaging: ^16.0.4
+  firebase_analytics: ^12.0.4
+  intl: ^0.20.2
   flutter_html: ^3.0.0-beta.2
-  flutter_widget_from_html_core: ^0.14.3
+  flutter_widget_from_html_core: ^0.17.0
   
-  device_info_plus: ^9.1.0
+  device_info_plus: ^12.3.0
   url_launcher: ^6.1.14
   string_validator: ^1.0.2
-  email_validator: ^2.1.17
-  sentry: ^7.10.1
+  email_validator: ^3.0.0
+  sentry: ^9.8.0
   awesome_dialog: ^3.1.0
   sqflite: ^2.3.0
   path: ^1.8.3 
-  local_auth: ^2.1.7 
-  background_fetch: ^1.2.1
+  local_auth: ^3.0.0 
+  background_fetch: ^1.5.0
   hexcolor: ^3.0.1
-  get_it: ^7.6.4
+  get_it: ^9.2.0
   shared_preferences: ^2.2.2
-  extended_masked_text: ^2.3.1
+  extended_masked_text: ^3.0.0
   dio: ^5.3.3
-  grouped_list: ^5.1.2
+  grouped_list: ^6.0.0
   flutter_easyloading: ^3.0.5
-  getwidget: ^4.0.0
+  getwidget: ^7.0.0
   get_ip_address: ^0.0.6
-  firebase_core: ^2.19.0
+  firebase_core: ^4.2.1
   html: ^0.15.4
-  package_info_plus: ^5.0.1
+  package_info_plus: ^9.0.0
+  win32: ^5.3.0
+  dartz: ^0.10.1
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mobx_codegen: ^2.4.0 
-  flutter_lints: ^3.0.0
-  build_runner: ^2.4.6 
-  flutter_launcher_icons: ^0.13.1
+  mobx_codegen: ^2.7.4 
+  flutter_lints: ^6.0.0
+  build_runner: ^2.10.4 
+  flutter_launcher_icons: ^0.14.4
+
+dependency_overrides:
+  flutter_plugin_android_lifecycle: ^2.0.20
+  analyzer: ^8.4.0
 
 flutter:
   uses-material-design: true
