@@ -62,23 +62,23 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       _firebaseonOnMessageOpenedApp.listen((event) async {
         await navigateToMessageView(event.data);
       });
-      FirebaseMessaging.onBackgroundMessage(
-        (message) async {
-          await navigateToMessageView(message.data);
-        },
-      );
+      FirebaseMessaging.onBackgroundMessage((message) async {
+        await navigateToMessageView(message.data);
+      });
     } catch (ex) {
       GetIt.I.get<SentryClient>().captureException('initPushNotificationHandlers $ex');
     }
   }
 
   Future<void> popUpNotification(Map<String, dynamic> message) async {
+    final String categoria = (message['categoriaNotificacao'] ?? '').toString().trim();
+
     AwesomeDialog(
       context: context,
       headerAnimationLoop: true,
       dialogType: DialogType.success,
       animType: AnimType.bottomSlide,
-      title: "NOTIFICAÇÃO - ${message["categoriaNotificacao"]}",
+      title: categoria.isEmpty ? 'NOTIFICAÇÃO' : 'NOTIFICAÇÃO - $categoria',
       desc: 'Você acaba de receber uma \n mensagem.',
       btnOkOnPress: () {
         navigateToMessageView(message);
@@ -90,11 +90,11 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
   Future<void> navigateToMessageView(Map<String, dynamic> message) async {
     final Message message0 = Message(
       id: int.parse(message['Id']),
-      titulo: message['Titulo'],
-      mensagem: message['Mensagem'],
-      criadoEm: message['CriadoEm'],
+      titulo: message['Titulo'] ?? '',
+      mensagem: message['Mensagem'] ?? '',
+      criadoEm: message['CriadoEm'] ?? '',
       codigoEOL: message['CodigoEOL'] != null ? int.parse(message['CodigoEOL']) : 0,
-      categoriaNotificacao: message['categoriaNotificacao'],
+      categoriaNotificacao: (message['categoriaNotificacao'] ?? '').toString(),
       dataEnvio: message['DataEnvio'] ?? DateTime.now().toIso8601String(),
       alteradoEm: message['AlteradoEm'] ?? '',
       mensagemVisualizada: message['MensagemVisualizada'] ?? false,
@@ -102,23 +102,15 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
 
     await _messagesController.loadById(message0.id, usuarioStore.usuario!.id);
     message0.mensagem = _messagesController.message!.mensagem;
+
     if (mounted) {
-      Nav.push(
-        context,
-        ViewMessageNotification(
-          message: message0,
-          userId: usuarioStore.usuario!.id,
-        ),
-      );
+      Nav.push(context, ViewMessageNotification(message: message0, userId: usuarioStore.usuario!.id));
     }
   }
 
   Widget fluxoLogin() {
     if (usuarioStore.usuario!.primeiroAcesso) {
-      return FirstAccess(
-        id: usuarioStore.usuario!.id,
-        cpf: usuarioStore.usuario!.cpf,
-      );
+      return FirstAccess(id: usuarioStore.usuario!.id, cpf: usuarioStore.usuario!.cpf);
     } else if (usuarioStore.usuario!.atualizarDadosCadastrais) {
       return const AtualizacaoCadastralView();
     } else {
@@ -134,15 +126,8 @@ class FluxoInicialViewState extends State<FluxoInicialView> {
       return const NotInteernet();
     } else {
       return Observer(
-        builder: (context) => usuarioStore.usuario?.id == null
-            ? const LoginView(
-                notice: null,
-              )
-            : (usuarioStore.usuario?.primeiroAcesso != false
-                ? const LoginView(
-                    notice: null,
-                  )
-                : fluxoLogin()),
+        builder: (context) =>
+            usuarioStore.usuario?.id == null ? const LoginView(notice: null) : (usuarioStore.usuario?.primeiroAcesso != false ? const LoginView(notice: null) : fluxoLogin()),
       );
     }
   }
