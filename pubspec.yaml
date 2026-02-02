@@ -1,7 +1,7 @@
 name: sme_app_aluno
 description: SME Aplicativo do Aluno
 
-version: 1.5.00+22
+version: 1.5.00+23
 
 environment:
   sdk: ^3.10.0
